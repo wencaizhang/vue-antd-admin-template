@@ -5,22 +5,30 @@ module.exports = {
     node: true,
   },
 
-  extends: [
-    'plugin:vue/essential',
-    '@vue/airbnb',
+  'extends': [
+    'plugin:vue/strongly-recommended',
+    '@vue/airbnb'
   ],
 
-  rules: {
-    'no-console': 'off',
-    'no-debugger': 'off',
+  "rules": {
+    "generator-star-spacing": "off",
+    "no-mixed-operators": 0,
+    "vue/max-attributes-per-line": [
+      2,
+      {
+        "singleline": 5,
+        "multiline": {
+          "max": 1,
+          "allowFirstLine": false
+        }
+      }
+    ],
+    "vue/attribute-hyphenation": 0,
+    "vue/html-self-closing": 0,
+    "no-console": 0
   },
 
   parserOptions: {
     parser: 'babel-eslint',
   },
-
-  'extends': [
-    'plugin:vue/strongly-recommended',
-    '@vue/airbnb'
-  ]
 };
