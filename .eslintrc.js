@@ -7,7 +7,7 @@ module.exports = {
 
   'extends': [
     'plugin:vue/strongly-recommended',
-    '@vue/airbnb'
+    // '@vue/airbnb'
   ],
 
   "rules": {

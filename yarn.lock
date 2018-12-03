@@ -7135,6 +7135,10 @@ vue-loader@^15.4.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-ls@^3.2.0:
+  version "3.2.0"
+  resolved "http://registry.npm.taobao.org/vue-ls/download/vue-ls-3.2.0.tgz#33356ad3ec9c30dac203757cf4036abe4ff767b3"
+
 vue-ref@^1.0.2:
   version "1.0.2"
   resolved "http://registry.npm.taobao.org/vue-ref/download/vue-ref-1.0.2.tgz#8822640ece91665f01e958bd1fde4038c75e0f34"

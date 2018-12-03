@@ -1,0 +1,86 @@
+<template>
+  <a-layout id="components-layout-demo-custom-trigger">
+
+    <a-layout-sider :trigger="null" collapsible v-model="collapsed">
+      <div class="logo"/>
+      <side-menu
+        theme="dark" mode="inline"
+        :menus="menuData"
+        :collapsed="collapsed"
+        :collapsible="true"
+      >
+      </side-menu>
+    </a-layout-sider>
+
+    <a-layout>
+      <basic-header @collapseHandle="collapseHandle" />
+
+      <a-layout-content class="layout-content">
+        <router-view></router-view>
+      </a-layout-content>
+
+      <a-layout-footer style="padding: 0px">
+        <basic-footer />
+      </a-layout-footer>
+    </a-layout>
+
+  </a-layout>
+</template>
+
+<script>
+import BasicHeader from "@/components/Layout/BasicHeader"
+import BasicFooter from '@/components/Layout/BasicFooter'
+import SideMenu from "@/components/menu/Sidebar"
+import { asyncRouterMap } from "@/router/config"
+
+export default {
+  name: "basic-layout",
+  components: {
+    BasicHeader,
+    BasicFooter,
+    SideMenu
+  },
+  data() {
+    return {
+      collapsed: false,
+      menuData: [],
+    };
+  },
+  mounted () {
+    this.menuData = asyncRouterMap.find((item) => item.path === '/').children
+  },
+  methods: {
+    collapseHandle () {
+      this.collapsed = !this.collapsed;
+    },
+  }
+};
+</script>
+<style>
+#components-layout-demo-custom-trigger {
+  min-height: 100vh;
+}
+#components-layout-demo-custom-trigger .trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
+  color: #1890ff;
+}
+
+#components-layout-demo-custom-trigger .logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
+
+.layout-content {
+  margin: 24px 16px;
+  padding: 24px;
+  background: #fff;
+}
+</style>
