@@ -26,7 +26,7 @@ export default {
       default: false
     }
   },
-  data () {
+  data() {
     return {
       openKeys: [],
       selectedKeys: [],
@@ -40,11 +40,11 @@ export default {
       return keys
     }
   },
-  created () {
+  created() {
     this.updateMenu()
   },
   watch: {
-    collapsed (val) {
+    collapsed(val) {
       if (val) {
         this.cachedOpenKeys = this.openKeys
         this.openKeys = []
@@ -52,94 +52,98 @@ export default {
         this.openKeys = this.cachedOpenKeys
       }
     },
-    '$route': function () {
+    '$route'() {
       this.updateMenu()
     }
   },
   methods: {
-    renderIcon: function (h, icon) {
+    getKey (menu, pIndex, index) {
+      return menu.name ? menu.name : 'item_' + pIndex + '_' + index
+    },
+    renderIcon(h, icon) {
       return icon === 'none' || icon === undefined ? null
         : h(Icon, { props: { type: icon !== undefined ? icon : '' } })
     },
-    renderMenuItem: function (h, menu, pIndex, index) {
-      return h(Item, { key: menu.path ? menu.path : 'item_' + pIndex + '_' + index },
+    renderMenuItem(h, menu, pIndex, index) {
+      return h(Item, { key: this.getKey (menu, pIndex, index) },
         [
           h(
             'router-link',
             { attrs: { to: { name: menu.name } } },
             [
               this.renderIcon(h, menu.meta.icon),
-              h('span', [ menu.meta.title ])
+              h('span', [menu.meta.title])
             ]
           )
         ]
       )
     },
-    renderSubMenu: function (h, menu, pIndex, index) {
-      const this2_ = this;
-      let subItem = [ h('span',
+    renderSubMenu(h, menu, pIndex, index) {
+      let subItem = [h('span',
         { slot: 'title' },
         [
           this.renderIcon(h, menu.meta.icon),
-          h('span', [ menu.meta.title ])
+          h('span', [menu.meta.title])
         ]
-      ) ]
+      )]
       let itemArr = []
       let pIndex_ = pIndex + '_' + index
       if (!menu.alwaysShow) {
-        menu.children.forEach(function (item, i) {
-          itemArr.push(this2_.renderItem(h, item, pIndex_, i))
+        menu.children.forEach((item, i) => {
+          itemArr.push(this.renderItem(h, item, pIndex_, i))
         })
       }
       return h(
         SubMenu,
-        { key: menu.path ? menu.path : 'submenu_' + pIndex + '_' + index },
+        { key: this.getKey (menu, pIndex, index) },
         subItem.concat(itemArr)
       )
     },
-    renderItem: function (h, menu, pIndex, index) {
+    renderItem(h, menu, pIndex, index) {
       if (!menu.hidden) {
-        return menu.children && !menu.alwaysShow ? this.renderSubMenu(h, menu, pIndex, index) : this.renderMenuItem(h, menu, pIndex, index)
+        return menu.children && !menu.alwaysShow
+          ? this.renderSubMenu(h, menu, pIndex, index)
+          : this.renderMenuItem(h, menu, pIndex, index)
       }
     },
-    renderMenu: function (h, menuTree) {
-      const this2_ = this
+    renderMenu(h, menuTree) {
       let menuArr = []
-      menuTree.forEach(function (menu, i) {
+      menuTree.forEach((menu, i) => {
         if (!menu.hidden) {
-          menuArr.push(this2_.renderItem(h, menu, '0', i))
+          menuArr.push(this.renderItem(h, menu, '0', i))
         }
       })
       return menuArr
     },
-    onOpenChange (openKeys) {
+    onOpenChange(openKeys) {
       const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
       if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
         this.openKeys = openKeys
       } else {
-        this.openKeys = latestOpenKey ? [ latestOpenKey ] : []
+        this.openKeys = latestOpenKey ? [latestOpenKey] : []
       }
     },
-    updateMenu () {
+    updateMenu() {
+
       let routes = this.$route.matched.concat()
       if (routes.length >= 4 && this.$route.meta.hidden) {
         routes.pop()
-        this.selectedKeys = [ routes[2].path ]
+        this.selectedKeys = [routes[2].name]
       } else {
-        this.selectedKeys = [ routes.pop().path ]
+        this.selectedKeys = [routes.pop().name]
       }
 
       let openKeys = []
       if (this.mode === 'inline') {
         routes.forEach((item) => {
-          openKeys.push(item.path)
+          openKeys.push(item.name)
         })
       }
 
       this.collapsed ? this.cachedOpenKeys = openKeys : this.openKeys = openKeys
     }
   },
-  render (h) {
+  render(h) {
     return h(
       Menu,
       {

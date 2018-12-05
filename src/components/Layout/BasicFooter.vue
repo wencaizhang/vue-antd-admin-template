@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <div class="copyright">Copyright
-      <a-icon type="copyright"/> 2018
+      <a-icon type="copyright"/> 北京友普产品与研发部
     </div>
   </div>
 </template>

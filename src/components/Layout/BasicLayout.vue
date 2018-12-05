@@ -1,40 +1,44 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger">
-
-    <a-layout-sider :trigger="null" collapsible v-model="collapsed">
+    <a-layout-sider
+      :trigger="null"
+      width="256px"
+      collapsible
+      v-model="collapsed"
+    >
       <div class="logo"/>
       <side-menu
-        theme="dark" mode="inline"
+        theme="dark"
+        mode="inline"
         :menus="menuData"
         :collapsed="collapsed"
         :collapsible="true"
-      >
-      </side-menu>
+      ></side-menu>
     </a-layout-sider>
 
     <a-layout>
-      <basic-header @collapseHandle="collapseHandle" />
+      <basic-header @collapseHandle="collapseHandle"/>
 
       <a-layout-content class="layout-content">
         <router-view></router-view>
       </a-layout-content>
 
       <a-layout-footer style="padding: 0px">
-        <basic-footer />
+        <basic-footer/>
       </a-layout-footer>
     </a-layout>
-
   </a-layout>
 </template>
 
 <script>
-import BasicHeader from "@/components/Layout/BasicHeader"
-import BasicFooter from '@/components/Layout/BasicFooter'
-import SideMenu from "@/components/menu/Sidebar"
-import { asyncRouterMap } from "@/router/config"
+import BasicHeader from "@/components/Layout/BasicHeader";
+import BasicFooter from "@/components/Layout/BasicFooter";
+import SideMenu from "@/components/menu/Sidebar";
+import { asyncRouterMap } from "@/router/config";
 
 export default {
-  name: "basic-layout",
+  // name: "basic-layout",
+  name: "BasicLayout",
   components: {
     BasicHeader,
     BasicFooter,
@@ -43,16 +47,16 @@ export default {
   data() {
     return {
       collapsed: false,
-      menuData: [],
+      menuData: []
     };
   },
-  mounted () {
-    this.menuData = asyncRouterMap.find((item) => item.path === '/').children
+  mounted() {
+    this.menuData = asyncRouterMap.find(item => item.path === "/").children;
   },
   methods: {
-    collapseHandle () {
+    collapseHandle() {
       this.collapsed = !this.collapsed;
-    },
+    }
   }
 };
 </script>

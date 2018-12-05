@@ -4,6 +4,7 @@
     :class="siderClassName"
     :collapsible="collapsible"
     :trigger="null"
+    width="256px"
   >
     <!-- <logo/> -->
     <s-menu
@@ -53,21 +54,17 @@ export default {
   created() {},
   computed: {
     ...mapState({
-      // device: state => state.app.device,
       fixSiderbar: state => state.app.fixSiderbar
     }),
     siderClassName() {
       return {
         sider: true,
         shadow: 'ant-fixed-sidemenu',
-        // shadow: this.device === "desktop",
-        // "ant-fixed-sidemenu": this.fixSiderbar
       };
     }
   },
   methods: {
     onSelect(obj) {
-      console.log(obj)
       this.$emit("menuSelect", obj);
     },
   }
