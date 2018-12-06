@@ -4,30 +4,79 @@
       <a-form-item
         :labelCol="{ span: 8 }"
         :wrapperCol="{ span: 12 }"
-        label="映像提供方："
-        fieldDecoratorId="supporter"
-        :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个映像提供方!' }]}"
+        label="可用区"
+        fieldDecoratorId="可用区"
+        :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个可用区!' }]}"
       >
         <a-radio-group buttonStyle="solid">
-          <a-radio-button value="large">系统</a-radio-button>
-          <a-radio-button value="default">自有</a-radio-button>
-          <a-radio-button value="small">共享</a-radio-button>
+          <a-radio-button value="large">北京1区</a-radio-button>
+          <a-radio-button value="default">北京2区</a-radio-button>
         </a-radio-group>
       </a-form-item>
       <a-form-item
         :labelCol="{ span: 8 }"
         :wrapperCol="{ span: 12 }"
-        label="选择操作系统："
-        fieldDecoratorId="mirror"
-        :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个操作系统!' }]}"
+        label="CPU"
+        fieldDecoratorId="cpu"
+        :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个CPU!' }]}"
       >
-        <a-select placeholder="请选择">
-          <a-select-option
-            v-for="item in optionList.mirror"
+        <a-radio-group buttonStyle="solid">
+          <a-radio-button
+            v-for="item in optionList.cpu"
             :key="item.value"
             :value="item.value"
-          >{{item.text}}</a-select-option>
-        </a-select>
+          >{{item.text}}</a-radio-button>
+        </a-radio-group>
+      </a-form-item>
+      <a-form-item
+        :labelCol="{ span: 8 }"
+        :wrapperCol="{ span: 12 }"
+        label="内存"
+        fieldDecoratorId="memory"
+        :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个内存!' }]}"
+      >
+        <a-radio-group buttonStyle="solid">
+          <a-radio-button
+            v-for="item in optionList.memory"
+            :key="item.value"
+            :value="item.value"
+          >{{item.text}}</a-radio-button>
+        </a-radio-group>
+      </a-form-item>
+      <a-form-item
+        :labelCol="{ span: 8 }"
+        :wrapperCol="{ span: 12 }"
+        label="系统盘"
+        fieldDecoratorId="systemDisk"
+        :fieldDecoratorOptions="{rules: [{  type: 'string', message: '请选择一个系统盘!' }]}"
+      >
+        <a-col :span="4">
+          <a-input-number :min="1" :max="20"/>
+        </a-col>
+      </a-form-item>
+      <a-form-item
+        :labelCol="{ span: 8 }"
+        :wrapperCol="{ span: 12 }"
+        label="硬盘"
+        fieldDecoratorId="systemDisk"
+        :fieldDecoratorOptions="{rules: [{  type: 'string', message: '请选择一个系统盘!' }]}"
+      >
+        <a-alert type="info" showIcon style="margin-bottom: 16px; text-align: left;">
+          <div slot="message">
+            已选择&nbsp;
+            <a style="font-weight: 600">{{ selectedDiskRowKeys.length }}</a>&nbsp;&nbsp;项
+            <a style="margin-left: 24px" @click="onDiskClearSelected">清空</a>
+          </div>
+        </a-alert>
+        <a-table
+          bordered
+          :rowSelection="{selectedRowKeys: selectedDiskRowKeys, onChange: onDiskSelectChange}"
+          :columns="columns"
+          :rowKey="record => record.login.uuid"
+          :dataSource="data"
+          :pagination="pagination"
+          :loading="loading"
+        ></a-table>
       </a-form-item>
     </a-form>
   </div>
@@ -74,19 +123,90 @@ const optionList = {
   ]
 };
 
+const columns = [
+  {
+    title: "ID",
+    dataIndex: "cell"
+  },
+  {
+    title: "名称",
+    dataIndex: "name.first"
+  },
+  {
+    title: "子网",
+    dataIndex: "login.password"
+  },
+  {
+    title: "类型",
+    dataIndex: "id.name"
+  }
+];
 export default {
+  mounted() {
+    this.fetch();
+  },
   data() {
     return {
+      data: [],
+      columns,
+      loading: false,
+      systemDisk: 1,
       optionList,
+      pagination: {
+        showSizeChanger: true
+      },
+      forms: [],
+      selectedDiskRowKeys: []
     };
   },
   methods: {
     submitForm() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.$emit('next', { step1: values })
+          // 硬盘需要单独处理
+          if (!this.selectedDiskRowKeys.length) {
+            this.$message.warn("请至少选择一个硬盘");
+            return false;
+          }
+          this.$emit("next", {
+            step2: Object.assign({}, values, {
+              selectedDiskRowKeys: this.selectedDiskRowKeys
+            })
+          });
         }
       });
+    },
+    handleSliderChange(value) {
+      this.systemDisk = value;
+    },
+    handleInputChange(value) {
+      console.log("changed", value);
+    },
+    onDiskSelectChange(selectedRowKeys) {
+      this.selectedDiskRowKeys = selectedRowKeys;
+    },
+    onDiskClearSelected() {
+      this.selectedDiskRowKeys = [];
+    },
+    fetch(params = {}) {
+      this.loading = true;
+      let url = "https://randomuser.me/api";
+      this.$http
+        .get(url, {
+          params: {
+            results: 10,
+            ...params
+          }
+        })
+        .then(data => {
+          const pagination = { ...this.pagination };
+          // Read total count from server
+          // pagination.total = data.totalCount;
+          pagination.total = 200;
+          this.loading = false;
+          this.data = data.results;
+          this.pagination = pagination;
+        });
     }
   }
 };

@@ -8,10 +8,6 @@ import Dashboard from "@/views/Dashboard/Container";
 
 import Instance from "@/views/Compute/Instance";
 import CreateInstance from "@/views/Compute/CreateInstance/Container";
-import Step1 from "@/views/Compute/CreateInstance/Step1";
-import Step2 from "@/views/Compute/CreateInstance/Step2";
-import Step3 from "@/views/Compute/CreateInstance/Step3";
-import Step4 from "@/views/Compute/CreateInstance/Step4";
 
 /**
  * 基础路由
@@ -86,32 +82,6 @@ export const asyncRouterMap = [
             name: "create",
             component: CreateInstance,
             meta: { title: "创建实例", permission: ["dashboard"] },
-            children: [
-              {
-                path: "Step1",
-                name: "Step1",
-                component: Step1,
-                meta: { title: "选择映像", hide: true, permission: ["dashboard"] }
-              },
-              {
-                path: "Step2",
-                name: "Step2",
-                component: Step2,
-                meta: { title: "配置选择", hide: true, permission: ["dashboard"] }
-              },
-              {
-                path: "Step3",
-                name: "Step3",
-                component: Step3,
-                meta: { title: "网络设置", hide: true, permission: ["dashboard"] }
-              },
-              {
-                path: "Step4",
-                name: "Step4",
-                component: Step4,
-                meta: { title: "基本信息", hide: true, permission: ["dashboard"] }
-              },
-            ]
           },
           {
             path: "mirror",

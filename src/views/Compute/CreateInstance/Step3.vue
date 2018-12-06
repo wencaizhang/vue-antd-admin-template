@@ -1,103 +1,130 @@
 <template>
   <div>
-    <div class="table-operator" style="margin-bottom: 16px; margin-left: 16px; text-align: left;">
-      <span style="margin-bottom: 16px; ">私有网络：保证租户之间 100% 隔离的专属网络，推荐使用。</span>
-      <a-button type="primary" style="margin-right: 10px;" icon="plus">新建</a-button>
-    </div>
     <a-form :autoFormCreate="(form)=>{this.form = form }">
-      <a-alert type="info" showIcon style="margin-bottom: 16px; text-align: left;">
-        <div slot="message">
-          已选择&nbsp;
-          <a style="font-weight: 600">{{ selectedNetworkRowKeys.length }}</a>&nbsp;&nbsp;项
-          <a style="margin-left: 24px" @click="onNetworkClearSelected">清空</a>
+      <a-form-item
+        :labelCol="{ span: 8 }"
+        :wrapperCol="{ span: 12 }"
+        label="计费方式："
+        fieldDecoratorId="payType"
+        :fieldDecoratorOptions="{rules: [{  required: true, message: '请选择计费方式!' }]}"
+      >
+        <a-radio-group>
+          <a-radio value="1">按需计费</a-radio>
+          <a-radio value="2">按合约计费</a-radio>
+        </a-radio-group>
+      </a-form-item>
+      <a-form-item
+        :labelCol="{ span: 8 }"
+        :wrapperCol="{ span: 12 }"
+        label="主机名称："
+        fieldDecoratorId="hostName"
+        :fieldDecoratorOptions="{rules: [{  required: true, message: '请选择主机名称!' }]}"
+      >
+        <a-input placeholder="Basic usage"/>
+      </a-form-item>
+      <a-form-item
+        :labelCol="{ span: 8 }"
+        :wrapperCol="{ span: 12 }"
+        label="主机数量："
+        fieldDecoratorId="hostNum"
+        :fieldDecoratorOptions="{rules: [{  required: true, message: '请选择主机数量!' }]}"
+      >
+        <a-input placeholder="Basic usage"/>
+      </a-form-item>
+      <a-form-item
+        :labelCol="{ span: 8 }"
+        :wrapperCol="{ span: 12 }"
+        label="用户名："
+        fieldDecoratorId="username"
+        :fieldDecoratorOptions="{rules: [{  required: true, message: '请选择用户名!' }]}"
+      >
+        <a-select style="width: 120px">
+          <a-select-option value="jack">Jack</a-select-option>
+          <a-select-option value="lucy">Lucy</a-select-option>
+          <a-select-option value="disabled" disabled>Disabled</a-select-option>
+          <a-select-option value="Yiminghe">yiminghe</a-select-option>
+        </a-select>
+      </a-form-item>
+      <a-form-item
+        :labelCol="{ span: 8 }"
+        :wrapperCol="{ span: 12 }"
+        label="SSH秘钥："
+        fieldDecoratorId="SSH"
+        :fieldDecoratorOptions="{rules: [{  required: true, message: '请选择SSH秘钥!' }]}"
+      >
+        <div>
+          <span style="margin-right: 3px;">已有请选择上传</span>
+          <span style="margin-right: 3px;">，如无请</span>
+          <a>新建</a>
         </div>
-      </a-alert>
-      <a-table
-        :rowSelection="{selectedRowKeys: selectedNetworkRowKeys, onChange: onNetworkSelectChange}"
-        :columns="columns"
-        :rowKey="record => record.login.uuid"
-        :dataSource="data"
-        :pagination="pagination"
-        :loading="loading"
-      ></a-table>
+        <a-upload
+          action="//jsonplaceholder.typicode.com/posts/"
+          :multiple="true"
+          :fileList="fileList"
+          @change="handleFileChange"
+        >
+          <a-button>
+            <a-icon type="upload"/>上传
+          </a-button>
+        </a-upload>
+      </a-form-item>
+      <a-form-item
+        :labelCol="{ span: 8 }"
+        :wrapperCol="{ span: 12 }"
+        label="用户数据："
+        fieldDecoratorId="userData"
+        :fieldDecoratorOptions="{rules: [{  required: true, message: '请选择用户数据!' }]}"
+      >
+        <a-radio-group>
+          <a-radio :value="1">无</a-radio>
+          <a-radio :value="2">文本</a-radio>
+          <a-radio :value="3">可执行文件</a-radio>
+        </a-radio-group>
+      </a-form-item>
     </a-form>
   </div>
 </template>
 <script>
-const columns = [
-  {
-    title: "ID",
-    dataIndex: "cell"
-  },
-  {
-    title: "名称",
-    dataIndex: "name.first"
-  },
-  {
-    title: "子网",
-    dataIndex: "login.password"
-  },
-  {
-    title: "类型",
-    dataIndex: "id.name"
-  }
-];
 export default {
-  mounted() {
-    this.fetch();
-  },
   data() {
     return {
-      data: [],
-      columns,
-      loading: false,
-      pagination: {
-        showSizeChanger: true
-      },
-      selectedNetworkRowKeys: [],
-      selectedDiskRowKeys: []
+      fileList: []
     };
   },
   methods: {
     submitForm() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          // 网络需要单独处理
-          if (!this.selectedNetworkRowKeys.length) {
-            this.$message.warn("请至少选择一个私有网络");
-            return false;
-          }
-          this.$emit("next", {
-            step3: Object.assign(values, { selectedNetworkRowKeys: this.selectedDiskRowKeys })
-          });
+          // 已经是最后一步，进行提交
+          this.$emit("submit", { step4: values });
         }
       });
     },
-    onNetworkSelectChange(selectedRowKeys) {
-      this.selectedNetworkRowKeys = selectedRowKeys;
-    },
-    onNetworkClearSelected() {
-      this.selectedNetworkRowKeys = [];
-    },
-    fetch(params = {}) {
-      this.loading = true;
-      let url = "https://randomuser.me/api";
-      this.$http
-        .get(url, {
-          params: {
-            results: 10,
-            ...params
-          }
-        })
-        .then(data => {
-          const pagination = { ...this.pagination };
-          // Read total count from server
-          // pagination.total = data.totalCount;
-          pagination.total = 200;
-          this.loading = false;
-          this.data = data.results;
-          this.pagination = pagination;
-        });
+    handleFileChange(info) {
+      let fileList = info.fileList;
+
+      // 1. Limit the number of uploaded files
+      //    Only to show two recent uploaded files, and old ones will be replaced by the new
+      fileList = fileList.slice(-2);
+
+      // 2. read from response and show file link
+      fileList = fileList.map(file => {
+        if (file.response) {
+          // Component will show file.url as link
+          file.url = file.response.url;
+        }
+        return file;
+      });
+
+      // 3. filter successfully uploaded files according to response from server
+      fileList = fileList.filter(file => {
+        if (file.response) {
+          return file.response.status === "success";
+        }
+        return true;
+      });
+
+      this.fileList = fileList;
     }
   }
 };

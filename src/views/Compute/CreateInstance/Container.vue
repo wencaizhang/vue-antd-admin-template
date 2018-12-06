@@ -3,8 +3,11 @@
     <a-steps :current="current">
       <a-step v-for="item in steps" :key="item.title" :title="item.title"/>
     </a-steps>
-    <div class="steps-content" >
-      <router-view ref="content" @next="nextStep" @submit="submitHandle"></router-view>
+    <div class="steps-content">
+      <Step0 v-show="current === 0" ref="content0" @next="nextStep" @submit="submitHandle"/>
+      <Step1 v-show="current === 1" ref="content1" @next="nextStep" @submit="submitHandle"/>
+      <Step2 v-show="current === 2" ref="content2" @next="nextStep" @submit="submitHandle"/>
+      <Step3 v-show="current === 3" ref="content3" @next="nextStep" @submit="submitHandle"/>
     </div>
     <div class="steps-action">
       <a-button v-if="current>0" @click="prev">上一步</a-button>
@@ -13,7 +16,7 @@
         v-if="current == steps.length - 1"
         type="primary"
         @click="handleNextClick"
-      >提交</a-button>
+      >创建</a-button>
       <a-button
         v-if="current < steps.length - 1"
         style="margin-left: 8px"
@@ -24,14 +27,20 @@
   </div>
 </template>
 <script>
+import Step0 from "./Step0";
+import Step1 from "./Step1";
+import Step2 from "./Step2";
+import Step3 from "./Step3";
+
 export default {
+  components: { Step0, Step1, Step2, Step3, },
   data() {
     return {
       current: 0,
       steps: [
         {
           title: "选择映像",
-          name: "step1",
+          name: "step1"
         },
         {
           title: "配置选择",
@@ -52,19 +61,18 @@ export default {
   },
   methods: {
     submitHandle(payload) {
-      Object.assign(this.values, payload)
+      Object.assign(this.values, payload);
       console.log(this.values);
       this.$message.success("创建成功！");
     },
-    nextStep (payload) {
+    nextStep(payload) {
       this.current++;
-      Object.assign(this.values, payload)
-      this.$router.push({ name: `Step${this.current + 1}` })
+      Object.assign(this.values, payload);
     },
-    handleNextClick () {
-      this.$refs.content.submitForm();
+    handleNextClick() {
+      this.$refs['content' + this.current].submitForm();
     },
-    nextFunction () {
+    nextFunction() {
       const ref = this.$refs.content.submitForm();
       if (step1) {
         this.current++;
@@ -103,8 +111,7 @@ export default {
     },
     prev() {
       this.current--;
-      this.$router.push({ name: `Step${this.current - 1}` })
-    },
+    }
   }
 };
 </script>
