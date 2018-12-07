@@ -33,7 +33,7 @@ import Step2 from "./Step2";
 import Step3 from "./Step3";
 
 export default {
-  components: { Step0, Step1, Step2, Step3, },
+  components: { Step0, Step1, Step2, Step3 },
   data() {
     return {
       current: 0,
@@ -70,7 +70,7 @@ export default {
       Object.assign(this.values, payload);
     },
     handleNextClick() {
-      this.$refs['content' + this.current].submitForm();
+      this.$refs["content" + this.current].submitForm();
     },
     nextFunction() {
       const ref = this.$refs.content.submitForm();

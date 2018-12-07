@@ -6,6 +6,7 @@ import 'ant-design-vue/dist/antd.css';
 import './assets/styles.css';
 import router from './router';
 import store from './store';
+import Viser from 'viser-vue'
 import axios from '@/utils/request'
 import App from './App.vue';
 import config from '@/settings'
@@ -15,6 +16,7 @@ Vue.prototype.$http = axios;
 
 Vue.use(Storage, config.storageOptions)
 Vue.use(Antd);
+Vue.use(Viser)
 Vue.config.productionTip = false;
 
 new Vue({

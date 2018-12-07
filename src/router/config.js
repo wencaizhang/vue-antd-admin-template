@@ -6,7 +6,8 @@ import RouteView from "@/components/Layout/RouteView";
 import BasicLayout from "@/components/Layout/BasicLayout";
 import Dashboard from "@/views/Dashboard/Container";
 
-import Instance from "@/views/Compute/Instance";
+import Instance from "@/views/Compute/Instance/Container";
+import Mirror from "@/views/Compute/Mirror/Container";
 import CreateInstance from "@/views/Compute/CreateInstance/Container";
 
 /**
@@ -86,7 +87,7 @@ export const asyncRouterMap = [
           {
             path: "mirror",
             name: "mirror",
-            component: Home,
+            component: Mirror,
             meta: { title: "镜像", permission: ["dashboard"] }
           },
           {
