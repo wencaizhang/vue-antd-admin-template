@@ -57,6 +57,21 @@ export default {
     }
   },
   methods: {
+    filterMenuData (data=this.menu) {
+      // 将 hidden: true 的过滤掉，不展示在 sidebar 中
+      data.forEach(item => {
+        if (item.children) {
+          const filter = item.children.filter(i => !i.hidden)
+          if (filter.length == 0) {
+            item.children = null
+          } else {
+            this.filterMenuData(item.children);
+          }
+        }
+      });
+
+      console.log(data)
+    },
     getKey (menu, pIndex, index) {
       return menu.name ? menu.name : 'item_' + pIndex + '_' + index
     },
@@ -107,6 +122,7 @@ export default {
       }
     },
     renderMenu(h, menuTree) {
+      this.filterMenuData()
       let menuArr = []
       menuTree.forEach((menu, i) => {
         if (!menu.hidden) {

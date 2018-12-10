@@ -2,25 +2,30 @@
   <div>
     <PageLayout>
       <div slot="header" >
-        <p>镜像（Image） 是基于主流的操作系统的进行定制，用于实例创建的模板。用户也可以基于己有镜像创建主机，也可以将自有主机捕获为新镜像，以备后用。</p>
-        <a-tabs defaultActiveKey="1" @change="handleTabChange">
-          <a-tab-pane tab="系统" key="1">
-          </a-tab-pane>
-          <a-tab-pane tab="自有" key="2">
-          </a-tab-pane>
-        </a-tabs>
+        <p>如果您使用的是 Linux 主机，强烈建议使用 SSH 公钥/私钥 （Keypair）进行远程登录身份验证。您可以创建一个 SSH 密钥，并立刻下载其私钥。请保管好私钥，因为 YPCloud 是不保存您的私钥的</p>
       </div>
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">
           <a-row type="flex" justify="space-between">
             <a-col>
-              <p v-show="tabKey == 1">系统：是友普官方基于主流的Linux，Windows提供的镜像模板，并与上游厂商的更新保持及时更新。</p>
-              <p v-show="tabKey == 2">自有：是用户自己上传或者将云主机制作为镜像模板，用于日后创建云主机使用。</p>
+              <a-row type="flex" justify="space-between">
+                <create-modal/>
+                <import-modal v-bind:obj="obj"/>
+                <a-dropdown>
+                  <a-menu slot="overlay" @click="handleMenuClick">
+                    <a-menu-item key="1">修改</a-menu-item>
+                    <a-menu-item key="2">删除</a-menu-item>
+                    <a-menu-item key="3">绑定标签</a-menu-item>
+                  </a-menu>
+                  <a-button type="primary" style="margin-left: 8px">批量操作
+                    <a-icon type="down"/>
+                  </a-button>
+                </a-dropdown>
+              </a-row>
             </a-col>
             <a-col>
               <a-row type="flex" justify="space-between">
-                <edit-modal v-bind:obj="obj"/>
-                <create-modal/>
+
               </a-row>
             </a-col>
           </a-row>
@@ -45,41 +50,42 @@
         </a-table>
       </div>
     </PageLayout>
+    <a-modal
+      title="删除秘钥对"
+      okText="删除"
+      okType="danger"
+      :visible="showDeleteModal"
+      :confirmLoading="confirmLoading"
+      @ok="handleDeleteModalOk"
+      @cancel="showDeleteModal = false;"
+    >
+      <p>您已选择了秘钥 <span style="color: #ff4d4f;">“test-keypair”</span>，请确认你的操作，</p>
+      <p>删除前请确认你已经备份该秘钥，或者确定已不再使用该秘钥。</p>
+    </a-modal>
   </div>
 </template>
 
 <script>
 import CreateModal from "./CreateModal";
 import EditModal from "./EditModal";
+import ImportModal from "./ImportModal";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 const columns = [
-  {
-    title: "ID",
-    dataIndex: "cell"
-  },
+
   {
     title: "名称",
     dataIndex: "name.first"
   },
   {
-    title: "状态",
+    title: "创建时间",
     dataIndex: "phone",
-    filters: [
-      { text: "状态", value: "状态" },
-      { text: "等待中", value: "等待中" },
-      { text: "运行中", value: "运行中" },
-      { text: "已暂停", value: "已暂停" },
-      { text: "已关闭", value: "已关闭" },
-      { text: "已删除", value: "已删除" },
-      { text: "重启中", value: "重启中" }
-    ]
   },
   {
-    title: "容量（G)",
+    title: "加密方法",
     dataIndex: "id.name"
   },
   {
-    title: "平台",
+    title: "所属项目",
     dataIndex: "id.value"
   }
 ];
@@ -88,14 +94,17 @@ export default {
   components: {
     CreateModal,
     EditModal,
+    ImportModal,
     PageLayout
   },
   mounted() {
-    this.fetch();
+    // this.fetch();
   },
   data() {
     return {
       tabKey: 1,
+      confirmLoading: false,
+      showDeleteModal: false,
       obj: {
         名称: "aaa1231313aaa",
         描述: "bbbb",
@@ -131,12 +140,25 @@ export default {
         ...filters
       });
     },
-    handleTabChange (v) {
-      console.log('==========');
-      console.log(v)
-      this.tabKey = v;
-      console.log('==========');
+    handleMenuClick ({ key }) {
+      console.log(`Click on item ${key}`);
+      switch (key) {
+        case '1':
+          
+          break;
+        case '2':
+          this.showDeleteModal = true;
+      console.log(`Click on item ${key}`);
+          break;
+        case '3':
+          
+          break;
+      
+        default:
+          break;
+      }
     },
+
     fetch(params = {}) {
       this.loading = true;
       let url = "https://randomuser.me/api";
@@ -162,7 +184,10 @@ export default {
     },
     onClearSelected() {
       this.selectedRowKeys = [];
-    }
+    },
+
+    // 删除弹框
+    handleDeleteModalOk () {},
   }
 };
 </script>

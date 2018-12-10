@@ -1,29 +1,31 @@
 <template>
   <div>
-    <a-steps :current="current">
-      <a-step v-for="item in steps" :key="item.title" :title="item.title"/>
-    </a-steps>
-    <div class="steps-content">
-      <Step0 v-show="current === 0" ref="content0" @next="nextStep" @submit="submitHandle"/>
-      <Step1 v-show="current === 1" ref="content1" @next="nextStep" @submit="submitHandle"/>
-      <Step2 v-show="current === 2" ref="content2" @next="nextStep" @submit="submitHandle"/>
-      <Step3 v-show="current === 3" ref="content3" @next="nextStep" @submit="submitHandle"/>
-    </div>
-    <div class="steps-action">
-      <a-button v-if="current>0" @click="prev">上一步</a-button>
-      <a-button
-        style="margin-left: 8px"
-        v-if="current == steps.length - 1"
-        type="primary"
-        @click="handleNextClick"
-      >创建</a-button>
-      <a-button
-        v-if="current < steps.length - 1"
-        style="margin-left: 8px"
-        type="primary"
-        @click="handleNextClick"
-      >下一步</a-button>
-    </div>
+    <page-layout>
+      <a-steps :current="current">
+        <a-step v-for="item in steps" :key="item.title" :title="item.title"/>
+      </a-steps>
+      <div class="steps-content">
+        <Step0 v-show="current === 0" ref="content0" @next="nextStep" @submit="submitHandle"/>
+        <Step1 v-show="current === 1" ref="content1" @next="nextStep" @submit="submitHandle"/>
+        <Step2 v-show="current === 2" ref="content2" @next="nextStep" @submit="submitHandle"/>
+        <Step3 v-show="current === 3" ref="content3" @next="nextStep" @submit="submitHandle"/>
+      </div>
+      <div class="steps-action">
+        <a-button v-if="current>0" @click="prev">上一步</a-button>
+        <a-button
+          style="margin-left: 8px"
+          v-if="current == steps.length - 1"
+          type="primary"
+          @click="handleNextClick"
+        >创建</a-button>
+        <a-button
+          v-if="current < steps.length - 1"
+          style="margin-left: 8px"
+          type="primary"
+          @click="handleNextClick"
+        >下一步</a-button>
+      </div>
+    </page-layout>
   </div>
 </template>
 <script>
@@ -31,9 +33,10 @@ import Step0 from "./Step0";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
+import PageLayout from "@/components/Layout/PageLayout.vue";
 
 export default {
-  components: { Step0, Step1, Step2, Step3 },
+  components: { Step0, Step1, Step2, Step3, PageLayout },
   data() {
     return {
       current: 0,

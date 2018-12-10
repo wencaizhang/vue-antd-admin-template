@@ -8,6 +8,7 @@ import Dashboard from "@/views/Dashboard/Container";
 
 import Instance from "@/views/Compute/Instance/Container";
 import Mirror from "@/views/Compute/Mirror/Container";
+import KeyPair from "@/views/Compute/KeyPair/Container";
 import CreateInstance from "@/views/Compute/CreateInstance/Container";
 
 /**
@@ -70,17 +71,20 @@ export const asyncRouterMap = [
         path: "compute",
         name: "compute",
         component: RouteView,
+        redirect: "compute/instance",
         meta: { title: "计算", icon: "dashboard", permission: ["dashboard"] },
         children: [
           {
             path: "instance",
             name: "instance",
             component: Instance,
-            meta: { title: "实例", permission: ["dashboard"] }
+            meta: { title: "实例", permission: ["dashboard"] },
+
           },
           {
-            path: "create",
-            name: "create",
+            path: "instance/create",
+            name: "CreateInstance",
+            hidden: true,
             component: CreateInstance,
             meta: { title: "创建实例", permission: ["dashboard"] },
           },
@@ -93,8 +97,8 @@ export const asyncRouterMap = [
           {
             path: "key-pair",
             name: "key-pair",
-            component: Home,
-            meta: { title: "密钥对", permission: ["dashboard"] }
+            component: KeyPair,
+            meta: { title: "SSH秘钥对", permission: ["dashboard"] }
           }
         ]
       },
@@ -103,6 +107,7 @@ export const asyncRouterMap = [
         path: "network",
         name: "network",
         component: RouteView,
+        redirect: "compute/route",
         meta: { title: "网络", icon: "dashboard", permission: ["dashboard"] },
         children: [
           {

@@ -1,11 +1,6 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger">
-    <a-layout-sider
-      :trigger="null"
-      width="256px"
-      collapsible
-      v-model="collapsed"
-    >
+    <a-layout-sider :trigger="null" width="256px" collapsible v-model="collapsed">
       <div class="logo"/>
       <side-menu
         theme="dark"
@@ -16,12 +11,12 @@
       ></side-menu>
     </a-layout-sider>
 
-    <a-layout>
+    <a-layout class="ant-layout-container">
       <basic-header @collapseHandle="collapseHandle"/>
 
-      <a-layout-content class="layout-content">
+      <div class="ant-layout-content">
         <router-view></router-view>
-      </a-layout-content>
+      </div>
 
       <a-layout-footer style="padding: 0px">
         <basic-footer/>
@@ -42,7 +37,7 @@ export default {
   components: {
     BasicHeader,
     BasicFooter,
-    SideMenu
+    SideMenu,
   },
   data() {
     return {
@@ -82,9 +77,11 @@ export default {
   margin: 16px;
 }
 
-.layout-content {
-  margin: 24px 16px;
-  padding: 24px;
-  background: #fff;
+.ant-layout-container {
+  display: flex;
+  flex-direction: column;
+}
+.ant-layout-content {
+  flex-grow: 1;
 }
 </style>

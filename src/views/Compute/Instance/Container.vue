@@ -1,43 +1,52 @@
 <template>
   <div>
-    <div class="table-operator" style="margin-bottom: 16px;">
-      <a-button type="primary" style="margin-right: 10px;" icon="plus">新建</a-button>
-      <a-button type="primary" style="margin-right: 10px;" icon="caret-right">启动</a-button>
-      <a-button type="primary" style="margin-right: 10px;" icon="plus">关机</a-button>
-      <a-dropdown @click="handleMenuClick" style="margin-right: 10px;">
-        <a-menu slot="overlay">
-          <a-menu-item v-for="(item, index) in operations" :key="index">
-            {{ item.text }}
-          </a-menu-item>
-        </a-menu>
-        <a-button style="margin-left: 8px">批量操作
-          <a-icon type="down"/>
-        </a-button>
-      </a-dropdown>
-      <a-input-search placeholder="input search text" @search="onSearch" style="width: 200px" enterButton/>
-    </div>
-    <a-alert type="info" showIcon style="margin-bottom: 16px;">
-      <div slot="message">
-        已选择&nbsp;
-        <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>&nbsp;&nbsp;项
-        <a style="margin-left: 24px" @click="onClearSelected">清空</a>
+    <page-layout>
+      <div class="content">
+        <div class="table-operator" style="margin-bottom: 16px;">
+          <a-button type="primary" style="margin-right: 10px;" icon="plus" @click="handleCreate">新建</a-button>
+          <a-button type="primary" style="margin-right: 10px;" icon="caret-right">启动</a-button>
+          <a-button type="primary" style="margin-right: 10px;" icon="plus">关机</a-button>
+          <a-dropdown @click="handleMenuClick" style="margin-right: 10px;">
+            <a-menu slot="overlay">
+              <a-menu-item v-for="(item, index) in operations" :key="index">{{ item.text }}</a-menu-item>
+            </a-menu>
+            <a-button style="margin-left: 8px">批量操作
+              <a-icon type="down"/>
+            </a-button>
+          </a-dropdown>
+          <a-input-search
+            placeholder="input search text"
+            @search="onSearch"
+            style="width: 200px"
+            enterButton
+          />
+        </div>
+        <a-alert type="info" showIcon style="margin-bottom: 16px;">
+          <div slot="message">
+            已选择&nbsp;
+            <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>&nbsp;&nbsp;项
+            <a style="margin-left: 24px" @click="onClearSelected">清空</a>
+          </div>
+        </a-alert>
+        <a-table
+          :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+          :columns="columns"
+          :rowKey="record => record.login.uuid"
+          :dataSource="data"
+          :pagination="pagination"
+          :loading="loading"
+          @change="handleTableChange"
+        >
+          <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
+        </a-table>
       </div>
-    </a-alert>
-    <a-table
-      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-      :columns="columns"
-      :rowKey="record => record.login.uuid"
-      :dataSource="data"
-      :pagination="pagination"
-      :loading="loading"
-      @change="handleTableChange"
-    >
-      <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
-    </a-table>
+    </page-layout>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
+import PageLayout from "@/components/Layout/PageLayout.vue";
 const columns = [
   {
     title: "ID",
@@ -95,6 +104,9 @@ const columns = [
 ];
 
 export default {
+  components: {
+    PageLayout
+  },
   mounted() {
     this.fetch();
   },
@@ -108,15 +120,15 @@ export default {
       columns,
       selectedRowKeys: [],
       operations: [
-        { text: '更多操作' },
-        { text: '重启' },
-        { text: '修改配置' },
-        { text: '创建快照' },
-        { text: '编辑安全组' },
-        { text: '进入控制台' },
-        { text: '绑定公网IP' },
-        { text: '解绑公网IP' },
-        { text: '查看主机概况' },
+        { text: "更多操作" },
+        { text: "重启" },
+        { text: "修改配置" },
+        { text: "创建快照" },
+        { text: "编辑安全组" },
+        { text: "进入控制台" },
+        { text: "绑定公网IP" },
+        { text: "解绑公网IP" },
+        { text: "查看主机概况" }
       ]
     };
   },
@@ -165,13 +177,16 @@ export default {
     onClearSelected() {
       this.selectedRowKeys = [];
     },
-    onSearch (value) {
-      console.log(value)
+    onSearch(value) {
+      console.log(value);
     },
-    handleMenuClick (e) {
+    handleMenuClick(e) {
       let key = e.key;
-      console.log(this.operations[key])
+      console.log(this.operations[key]);
     },
+    handleCreate() {
+      this.$router.push({ name: "CreateInstance" });
+    }
   }
 };
 </script>

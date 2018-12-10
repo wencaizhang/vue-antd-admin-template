@@ -10,6 +10,7 @@ const CollectionCreateForm = Form.create()({
         visible={visible}
         title="创建镜像"
         okText="创建"
+        bodyStyle={{ 'max-height': '500px', overflow: 'auto'}}
         onCancel={() => {
           this.$emit("cancel");
         }}
