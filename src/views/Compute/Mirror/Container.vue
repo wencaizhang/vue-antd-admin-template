@@ -2,8 +2,8 @@
   <div>
     <PageLayout>
       <div slot="header" >
-        <p>镜像（Image） 是基于主流的操作系统的进行定制，用于实例创建的模板。用户也可以基于己有镜像创建主机，也可以将自有主机捕获为新镜像，以备后用。</p>
-        <a-tabs defaultActiveKey="1" @change="handleTabChange">
+        <p style="margin: 0;">镜像（Image） 是基于主流的操作系统的进行定制，用于实例创建的模板。用户也可以基于己有镜像创建主机，也可以将自有主机捕获为新镜像，以备后用。</p>
+        <a-tabs defaultActiveKey="1" @change="handleTabChange" style="position:relative; top: 17px;">
           <a-tab-pane tab="系统" key="1">
           </a-tab-pane>
           <a-tab-pane tab="自有" key="2">

@@ -2,7 +2,7 @@
   <div>
     <PageLayout>
       <div slot="header" >
-        <p>如果您使用的是 Linux 主机，强烈建议使用 SSH 公钥/私钥 （Keypair）进行远程登录身份验证。您可以创建一个 SSH 密钥，并立刻下载其私钥。请保管好私钥，因为 YPCloud 是不保存您的私钥的。</p>
+        <p>硬盘为主机提供块存储设备，它独立于主机的生命周期而存在，可以被连接到任意运行中的主机上。注意，硬盘附加到主机上后，您还需要登录到您的主机的操作系统中去加载该硬盘。当然，也可以从主机上卸载硬盘、并转至其他主机。注意，请先在您的主机的操作系统中卸载硬盘，然后再在友普云控制台上卸载。</p>
       </div>
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">
@@ -71,23 +71,26 @@ import EditModal from "./EditModal";
 import ImportModal from "./ImportModal";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 const columns = [
-
+  {
+    title: "ID",
+    dataIndex: "phone",
+  },
   {
     title: "名称",
     dataIndex: "name.first"
   },
   {
-    title: "创建时间",
-    dataIndex: "phone",
-  },
-  {
-    title: "加密方法",
+    title: "状态",
     dataIndex: "id.name"
   },
   {
-    title: "所属项目",
-    dataIndex: "id.value"
-  }
+    title: "外部网络",
+    dataIndex: "id"
+  },
+  {
+    title: "可用域",
+    dataIndex: "name.last"
+  },
 ];
 
 export default {

@@ -2,7 +2,7 @@
   <div>
     <PageLayout>
       <div slot="header" >
-        <p>如果您使用的是 Linux 主机，强烈建议使用 SSH 公钥/私钥 （Keypair）进行远程登录身份验证。您可以创建一个 SSH 密钥，并立刻下载其私钥。请保管好私钥，因为 YPCloud 是不保存您的私钥的。</p>
+        <p>子网即租户的私有网络（Vxnet）用于主机之间互联，它类似物理世界中使用交换机（L2Switch）组成的局域网。不同用户的私有网络之间是100%隔离的。私有网络可以作为子网加入到 路由器的端口上进而与互联网打通。</p>
       </div>
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">
@@ -71,23 +71,26 @@ import EditModal from "./EditModal";
 import ImportModal from "./ImportModal";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 const columns = [
-
+  {
+    title: "ID",
+    dataIndex: "phone",
+  },
   {
     title: "名称",
     dataIndex: "name.first"
   },
   {
-    title: "创建时间",
-    dataIndex: "phone",
-  },
-  {
-    title: "加密方法",
+    title: "状态",
     dataIndex: "id.name"
   },
   {
-    title: "所属项目",
-    dataIndex: "id.value"
-  }
+    title: "外部网络",
+    dataIndex: "id"
+  },
+  {
+    title: "可用域",
+    dataIndex: "name.last"
+  },
 ];
 
 export default {

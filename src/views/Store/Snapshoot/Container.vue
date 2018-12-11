@@ -2,7 +2,7 @@
   <div>
     <PageLayout>
       <div slot="header" >
-        <p>如果您使用的是 Linux 主机，强烈建议使用 SSH 公钥/私钥 （Keypair）进行远程登录身份验证。您可以创建一个 SSH 密钥，并立刻下载其私钥。请保管好私钥，因为 YPCloud 是不保存您的私钥的。</p>
+        <p>硬盘快照指的是云硬盘数据在某个时刻的完整拷贝或镜像，是一种重要的数据容灾手段，当数据丢失时，可通过快照将数据完整的恢复到快照时间点。创建硬盘快照速度很快可以在几秒钟内完成，恢复数据时可快速通过快照创建新的云硬盘，这样硬盘在初始状态就具有快照中的数据。</p>
       </div>
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">
@@ -71,23 +71,26 @@ import EditModal from "./EditModal";
 import ImportModal from "./ImportModal";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 const columns = [
-
+  {
+    title: "ID",
+    dataIndex: "phone",
+  },
   {
     title: "名称",
     dataIndex: "name.first"
   },
   {
-    title: "创建时间",
-    dataIndex: "phone",
-  },
-  {
-    title: "加密方法",
+    title: "状态",
     dataIndex: "id.name"
   },
   {
-    title: "所属项目",
-    dataIndex: "id.value"
-  }
+    title: "外部网络",
+    dataIndex: "id"
+  },
+  {
+    title: "可用域",
+    dataIndex: "name.last"
+  },
 ];
 
 export default {

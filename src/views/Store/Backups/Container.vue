@@ -2,7 +2,7 @@
   <div>
     <PageLayout>
       <div slot="header" >
-        <p>如果您使用的是 Linux 主机，强烈建议使用 SSH 公钥/私钥 （Keypair）进行远程登录身份验证。您可以创建一个 SSH 密钥，并立刻下载其私钥。请保管好私钥，因为 YPCloud 是不保存您的私钥的。</p>
+        <p>硬盘备份可以为云硬盘创建在线备份。针对病毒入侵、人为误删除、软硬件故障等导致数据丢失或者损坏的场景，可通过任意时刻的备份恢复数据，以保证用户数据正确性和安全性，确保您的数据安全。创建硬盘备份的速度和硬盘大小有关系，硬盘越大速度越慢。恢复数据时备份可以用来创建新的云硬盘或者恢复数据到云硬盘，恢复备份的时间和原硬盘大小成正比。</p>
       </div>
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">
@@ -71,23 +71,26 @@ import EditModal from "./EditModal";
 import ImportModal from "./ImportModal";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 const columns = [
-
+  {
+    title: "ID",
+    dataIndex: "phone",
+  },
   {
     title: "名称",
     dataIndex: "name.first"
   },
   {
-    title: "创建时间",
-    dataIndex: "phone",
-  },
-  {
-    title: "加密方法",
+    title: "状态",
     dataIndex: "id.name"
   },
   {
-    title: "所属项目",
-    dataIndex: "id.value"
-  }
+    title: "外部网络",
+    dataIndex: "id"
+  },
+  {
+    title: "可用域",
+    dataIndex: "name.last"
+  },
 ];
 
 export default {
