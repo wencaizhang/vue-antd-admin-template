@@ -70,7 +70,6 @@ export default {
         }
       });
 
-      console.log(data)
     },
     getKey (menu, pIndex, index) {
       return menu.name ? menu.name : 'item_' + pIndex + '_' + index
