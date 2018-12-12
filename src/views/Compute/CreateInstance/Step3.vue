@@ -9,8 +9,8 @@
         :fieldDecoratorOptions="{rules: [{  required: true, message: '请选择计费方式!' }]}"
       >
         <a-radio-group>
-          <a-radio value="1">按需计费</a-radio>
           <a-radio value="2">按合约计费</a-radio>
+          <a-radio value="1">按需计费</a-radio>
         </a-radio-group>
       </a-form-item>
       <a-form-item

@@ -28,14 +28,24 @@ export default {
       const yData = this.data.children.map(item => item.text);
       const xData = this.data.children.map(item => item.value);
 
+      console.log(yData);
+
       // 绘制图表
       myChart.setOption({
         title: { text: this.data.title },
         tooltip: {},
         yAxis: {
           data: yData,
-          nameTextStyle: {
-            // width: '200px'
+          formatter: function(value) {
+            return "{test|" + value + "}";
+          },
+          axisLabel: {
+            rich: {
+              test: {
+                color: "red",
+                lineHeight: 10
+              }
+            }
           }
         },
         xAxis: {

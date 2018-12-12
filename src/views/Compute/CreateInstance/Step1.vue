@@ -8,9 +8,9 @@
         fieldDecoratorId="可用区"
         :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个可用区!' }]}"
       >
-        <a-radio-group buttonStyle="solid">
-          <a-radio-button value="large">北京1区</a-radio-button>
-          <a-radio-button value="default">北京2区</a-radio-button>
+        <a-radio-group defaultValue="1" buttonStyle="solid">
+          <a-radio-button value="1">北京1区</a-radio-button>
+          <a-radio-button value="2">北京2区</a-radio-button>
         </a-radio-group>
       </a-form-item>
       <a-form-item
@@ -20,7 +20,7 @@
         fieldDecoratorId="cpu"
         :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个CPU!' }]}"
       >
-        <a-radio-group buttonStyle="solid">
+        <a-radio-group defaultValue="1核" buttonStyle="solid">
           <a-radio-button
             v-for="item in optionList.cpu"
             :key="item.value"
@@ -35,7 +35,7 @@
         fieldDecoratorId="memory"
         :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个内存!' }]}"
       >
-        <a-radio-group buttonStyle="solid">
+        <a-radio-group defaultValue="1G" buttonStyle="solid">
           <a-radio-button
             v-for="item in optionList.memory"
             :key="item.value"
@@ -50,8 +50,8 @@
         fieldDecoratorId="systemDisk"
         :fieldDecoratorOptions="{rules: [{  type: 'string', message: '请选择一个系统盘!' }]}"
       >
-        <a-col :span="4">
-          <a-input-number :min="1" :max="20"/>
+        <a-col >
+          <a-input-number :defaultValue="40" :min="40" :max="200"/><span style="margin-left: 5px;">G</span>
         </a-col>
       </a-form-item>
       <a-form-item
@@ -133,13 +133,17 @@ const columns = [
     dataIndex: "name.first"
   },
   {
-    title: "子网",
+    title: "大小",
     dataIndex: "login.password"
   },
   {
     title: "类型",
     dataIndex: "id.name"
-  }
+  },
+  {
+    title: "状态",
+    dataIndex: "name.last"
+  },
 ];
 export default {
   mounted() {

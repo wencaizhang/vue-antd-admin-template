@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageLayout>
-      <div slot="header" >
+      <div slot="header">
         <p>如果您使用的是 Linux 主机，强烈建议使用 SSH 公钥/私钥 （Keypair）进行远程登录身份验证。您可以创建一个 SSH 密钥，并立刻下载其私钥。请保管好私钥，因为 YPCloud 是不保存您的私钥的。</p>
       </div>
       <div class="content">
@@ -13,7 +13,6 @@
                 <import-modal v-bind:obj="obj"/>
                 <a-dropdown>
                   <a-menu slot="overlay" @click="handleMenuClick">
-                    <a-menu-item key="1">修改</a-menu-item>
                     <a-menu-item key="2">删除</a-menu-item>
                     <a-menu-item key="3">绑定标签</a-menu-item>
                   </a-menu>
@@ -24,9 +23,7 @@
               </a-row>
             </a-col>
             <a-col>
-              <a-row type="flex" justify="space-between">
-
-              </a-row>
+              <a-row type="flex" justify="space-between"></a-row>
             </a-col>
           </a-row>
         </div>
@@ -46,7 +43,9 @@
           :loading="loading"
           @change="handleTableChange"
         >
-          <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
+          <template slot="operation" slot-scope="text, record">
+            <a-button type="primary" icon="edit">修改</a-button>
+          </template>
         </a-table>
       </div>
     </PageLayout>
@@ -59,7 +58,10 @@
       @ok="handleDeleteModalOk"
       @cancel="showDeleteModal = false;"
     >
-      <p>您已选择了秘钥 <span style="color: #ff4d4f;">“test-keypair”</span>，请确认你的操作，</p>
+      <p>
+        您已选择了秘钥
+        <span style="color: #ff4d4f;">“test-keypair”</span>，请确认你的操作，
+      </p>
       <p>删除前请确认你已经备份该秘钥，或者确定已不再使用该秘钥。</p>
     </a-modal>
   </div>
@@ -71,14 +73,13 @@ import EditModal from "./EditModal";
 import ImportModal from "./ImportModal";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 const columns = [
-
   {
     title: "名称",
     dataIndex: "name.first"
   },
   {
     title: "创建时间",
-    dataIndex: "phone",
+    dataIndex: "phone"
   },
   {
     title: "加密方法",
@@ -87,6 +88,11 @@ const columns = [
   {
     title: "所属项目",
     dataIndex: "id.value"
+  },
+  {
+    title: "操作",
+    dataIndex: "operation",
+    scopedSlots: { customRender: "operation" }
   }
 ];
 
@@ -140,20 +146,18 @@ export default {
         ...filters
       });
     },
-    handleMenuClick ({ key }) {
+    handleMenuClick({ key }) {
       console.log(`Click on item ${key}`);
       switch (key) {
-        case '1':
-          
+        case "1":
           break;
-        case '2':
+        case "2":
           this.showDeleteModal = true;
-      console.log(`Click on item ${key}`);
+          console.log(`Click on item ${key}`);
           break;
-        case '3':
-          
+        case "3":
           break;
-      
+
         default:
           break;
       }
@@ -187,7 +191,7 @@ export default {
     },
 
     // 删除弹框
-    handleDeleteModalOk () {},
+    handleDeleteModalOk() {}
   }
 };
 </script>

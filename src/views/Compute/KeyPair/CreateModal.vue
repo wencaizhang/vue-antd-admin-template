@@ -36,25 +36,6 @@ const CollectionCreateForm = Form.create()({
           <a-form-item
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 14 }}
-            label="方式："
-          >
-            {getFieldDecorator("方式", {
-              rules: [
-                {
-                  required: true,
-                  message: "Please input the title of collection!"
-                }
-              ]
-            })(
-                <a-radio-group name="radioGroup">
-                  <a-radio value="1">创建新秘钥</a-radio>
-                  <a-radio value="2">使用已有秘钥</a-radio>
-                </a-radio-group>
-            )}
-          </a-form-item>
-          <a-form-item
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 14 }}
             label="加密方式："
           >
             {getFieldDecorator("加密方式", {

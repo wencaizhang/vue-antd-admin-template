@@ -93,7 +93,7 @@ export const asyncRouterMap = [
             path: "key-pair",
             name: "key-pair",
             component: () => import(/* webpackChunkName: "compute" */ '@/views/Compute/KeyPair/Container'),
-            meta: { title: "SSH秘钥对", permission: ["dashboard"] }
+            meta: { title: "SSH密钥对", permission: ["dashboard"] }
           }
         ]
       },
