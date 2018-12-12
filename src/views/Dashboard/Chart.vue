@@ -58,7 +58,7 @@ export default {
               normal: {
                 show: true,
                 formatter(params) {
-                  console.log(params);
+                  // console.log(params);
                   return `${params.data}/10`;
                 },
                 position: "inside"

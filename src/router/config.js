@@ -19,13 +19,13 @@ export const constantRouterMap = [
     children: [
       {
         path: "login",
-        name: "login"
-        // component: () => import(/* webpackChunkName: "user" */ '/views/user/Login')
+        name: "login",
+        // component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login')
       },
       {
         path: "register",
         name: "register"
-        // component: () => import(/* webpackChunkName: "user" */ '/views/user/Register')
+        // component: () => import(/* webpackChunkName: "user" */ '@/views/user/Register')
       },
       {
         path: "register-result",
@@ -102,6 +102,7 @@ export const asyncRouterMap = [
       {
         path: "store",
         name: "store",
+        component: RouteView,
         redirect: "store/harddisk",
         meta: { title: "存储", icon: "dashboard", permission: ["dashboard"] },
         children: [
@@ -125,7 +126,6 @@ export const asyncRouterMap = [
           },
         ]
       },
-
       // 网络
       {
         path: "network",
