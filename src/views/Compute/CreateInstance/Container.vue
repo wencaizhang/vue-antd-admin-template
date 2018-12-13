@@ -67,6 +67,8 @@ export default {
       Object.assign(this.values, payload);
       console.log(this.values);
       this.$message.success("创建成功！");
+
+      this.$router.push({ name: 'instance' })
     },
     nextStep(payload) {
       this.current++;

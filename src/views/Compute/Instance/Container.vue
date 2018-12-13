@@ -44,7 +44,7 @@
           <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
-              <a-menu slot="overlay" @click="handleSingleMenuClick(record.key)">
+              <a-menu slot="overlay" @click="handleSingleMenuClick(record, $event)">
                 <a-menu-item v-for="(item, index) in singleOperations" :key="index">{{ item.text }}</a-menu-item>
               </a-menu>
               <a-button style="margin-left: 8px">操作
@@ -54,13 +54,49 @@
           </template>
         </a-table>
       </div>
+      <create-snapshoot-modal
+        :visible="singleOperations[0].showModal"
+        :data="selectedRowData"
+        v-on:cancel="singleOperations[0].showModal = false"
+        v-on:success="update"
+      />
+      <bind-IP-modal
+        :visible="singleOperations[1].showModal"
+        :data="selectedRowData"
+        v-on:cancel="singleOperations[1].showModal = false"
+        v-on:success="update"
+      />
+      <rebuild-cloud-host-modal
+        :visible="singleOperations[4].showModal"
+        :data="selectedRowData"
+        v-on:cancel="singleOperations[4].showModal = false"
+        v-on:success="update"
+      />
+      <edit-security-group-modal
+        :visible="singleOperations[5].showModal"
+        :data="selectedRowData"
+        v-on:cancel="singleOperations[5].showModal = false"
+        v-on:success="update"
+      />
+      <overview-modal
+        :visible="singleOperations[7].showModal"
+        :data="selectedRowData"
+        v-on:cancel="singleOperations[7].showModal = false"
+        v-on:success="update"
+      />
     </page-layout>
-    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import PageLayout from "@/components/Layout/PageLayout.vue";
+
+import CreateSnapshootModal from "./Modals/CreateSnapshootModal";
+import BindIPModal from "./Modals/BindIPModal";
+import RebuildCloudHostModal from "./Modals/RebuildCloudHostModal";
+import EditSecurityGroupModal from "./Modals/EditSecurityGroupModal";
+import OverviewModal from "./Modals/OverviewModal";
+
 const columns = [
   {
     title: "ID",
@@ -125,7 +161,12 @@ const columns = [
 
 export default {
   components: {
-    PageLayout
+    PageLayout,
+    CreateSnapshootModal,
+    BindIPModal,
+    RebuildCloudHostModal,
+    EditSecurityGroupModal,
+    OverviewModal
   },
   mounted() {
     this.fetch();
@@ -138,21 +179,20 @@ export default {
       },
       loading: false,
       columns,
-      selectedRowKeys: [],
-      batchOperations: [
-        { text: "删除" },
-        { text: "重启" },
-        { text: "软重启" }
-      ],
+      selectedRowKeys: [], // 多行选择
+      selectedRowData: null, // 当行操作
+      batchOperations: [{ text: "删除" }, { text: "重启" }, { text: "软重启" }],
       singleOperations: [
-        { text: "创建快照" },
-        { text: "绑定公网IP" },
-        { text: "解绑公网IP" },
-        { text: "进入控制台" },
-        { text: "重建云主机" },
-        { text: "编辑安全组" },
-        { text: "删除云主机" }
-      ]
+        { showModal: false, text: "创建快照" },
+        { showModal: false, text: "绑定公网IP" },
+        { showModal: false, text: "解绑公网IP" },
+        { showModal: false, text: "进入控制台" },
+        { showModal: false, text: "重建云主机" },
+        { showModal: false, text: "编辑安全组" },
+        { showModal: false, text: "删除云主机" },
+        { showModal: false, text: "查看主机状况" }
+      ],
+      selectedOperationKey: 0
     };
   },
   computed: {
@@ -162,6 +202,18 @@ export default {
     }
   },
   methods: {
+    update() {
+      console.log("update");
+      this.singleOperations[this.selectedOperationKey].showModal = false;
+      this.openNotification();
+    },
+    openNotification() {
+      this.$notification.open({
+        message: "提醒",
+        description: "创建成功，数据已更新",
+        icon: <a-icon type="check-circle" style="color: #52c41a" />
+      });
+    },
     handleTableChange(pagination, filters, sorter) {
       const pager = { ...this.pagination };
       pager.current = pagination.current;
@@ -196,6 +248,7 @@ export default {
     },
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys;
+      console.log(this.selectedRowKeys);
     },
     onSearch(value) {
       console.log(value);
@@ -207,8 +260,60 @@ export default {
     handleCreate() {
       this.$router.push({ name: "CreateInstance" });
     },
-    handleSingleMenuClick(key) {
-      console.log("key", key);
+    handleDeleteCloudHost(record) {
+      this.$confirm({
+        title: "您已经选择了云主机“VM1”，即将删除此云主机，请确认你的操作。",
+        iconType: "warning",
+        okText: '删除',
+        okType: 'danger',
+        // content: 'When clicked the OK button, this dialog will be closed after 1 second',
+        onOk() {
+          return new Promise((resolve, reject) => {
+            setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          }).catch(() => console.log("Oops errors!"));
+        },
+        onCancel() {}
+      });
+    },
+    handleUnBindIP (record) {
+      this.$confirm({
+        title: "您已经选择了云主机“VM1”，其绑定的公网IP将被解绑，请确认你的操作。",
+        iconType: "warning",
+        okText: '解绑',
+        okType: 'danger',
+        // content: 'When clicked the OK button, this dialog will be closed after 1 second',
+        onOk() {
+          return new Promise((resolve, reject) => {
+            setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          }).catch(() => console.log("Oops errors!"));
+        },
+        onCancel() {}
+      });
+    },
+    handleSingleMenuClick(record, { key }) {
+      // 针对单项数据操作
+      console.log("key", key, typeof key);
+      console.log("当前行的数据是：", record);
+      switch (key) {
+        case 2:
+          // 解绑IP
+          this.handleUnBindIP(record);
+          break;
+        case 3:
+          // 进入控制台
+
+          break;
+        case 6:
+          // 删除云主机
+          this.handleDeleteCloudHost(record);
+          break;
+
+        default:
+          this.selectedOperationKey = key;
+          this.singleOperations[key].showModal = true;
+          this.selectedRowData = record;
+          break;
+      }
     }
   }
 };

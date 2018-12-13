@@ -8,7 +8,7 @@
         fieldDecoratorId="可用区"
         :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个可用区!' }]}"
       >
-        <a-radio-group defaultValue="1" buttonStyle="solid">
+        <a-radio-group buttonStyle="solid">
           <a-radio-button value="1">北京1区</a-radio-button>
           <a-radio-button value="2">北京2区</a-radio-button>
         </a-radio-group>
@@ -20,7 +20,7 @@
         fieldDecoratorId="cpu"
         :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个CPU!' }]}"
       >
-        <a-radio-group defaultValue="1核" buttonStyle="solid">
+        <a-radio-group buttonStyle="solid">
           <a-radio-button
             v-for="item in optionList.cpu"
             :key="item.value"
@@ -35,7 +35,7 @@
         fieldDecoratorId="memory"
         :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个内存!' }]}"
       >
-        <a-radio-group defaultValue="1G" buttonStyle="solid">
+        <a-radio-group buttonStyle="solid">
           <a-radio-button
             v-for="item in optionList.memory"
             :key="item.value"
@@ -50,8 +50,13 @@
         fieldDecoratorId="systemDisk"
         :fieldDecoratorOptions="{rules: [{  type: 'string', message: '请选择一个系统盘!' }]}"
       >
-        <a-col >
-          <a-input-number :defaultValue="40" :min="40" :max="200"/><span style="margin-left: 5px;">G</span>
+        <a-col>
+          <a-input-number
+            :min="40"
+            :max="200"
+            :formatter="value => `${value} G`"
+            :parser="value => value.replace(' G', '')"
+          />
         </a-col>
       </a-form-item>
       <a-form-item
@@ -143,11 +148,17 @@ const columns = [
   {
     title: "状态",
     dataIndex: "name.last"
-  },
+  }
 ];
 export default {
   mounted() {
     this.fetch();
+    this.form.setFieldsValue({
+      cpu: "1核",
+      memory: "1G",
+      systemDisk: "40",
+      可用区: '1',
+    });
   },
   data() {
     return {
@@ -166,6 +177,7 @@ export default {
   methods: {
     submitForm() {
       this.form.validateFields((err, values) => {
+        console.log("values", values);
         if (!err) {
           // 硬盘需要单独处理
           if (!this.selectedDiskRowKeys.length) {

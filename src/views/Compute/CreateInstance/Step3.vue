@@ -9,8 +9,8 @@
         :fieldDecoratorOptions="{rules: [{  required: true, message: '请选择计费方式!' }]}"
       >
         <a-radio-group>
-          <a-radio value="2">按合约计费</a-radio>
-          <a-radio value="1">按需计费</a-radio>
+          <a-radio value="1">按合约计费</a-radio>
+          <a-radio value="2">按需计费</a-radio>
         </a-radio-group>
       </a-form-item>
       <a-form-item
@@ -18,18 +18,23 @@
         :wrapperCol="{ span: 12 }"
         label="主机名称："
         fieldDecoratorId="hostName"
-        :fieldDecoratorOptions="{rules: [{  required: true, message: '请选择主机名称!' }]}"
+        :fieldDecoratorOptions="{rules: [{  required: true, message: '请填写主机名称!' }]}"
       >
-        <a-input placeholder="Basic usage"/>
+        <a-input placeholder=""/>
       </a-form-item>
       <a-form-item
         :labelCol="{ span: 8 }"
         :wrapperCol="{ span: 12 }"
         label="主机数量："
         fieldDecoratorId="hostNum"
-        :fieldDecoratorOptions="{rules: [{  required: true, message: '请选择主机数量!' }]}"
+        :fieldDecoratorOptions="{rules: [{  required: true, message: '请填写主机数量!' }]}"
       >
-        <a-input placeholder="Basic usage"/>
+        <a-input-number
+          :min="1"
+          :max="10"
+          :formatter="value => value ? `${value} 台` : '' "
+          :parser="value => value.replace(' 台', '')"
+        />
       </a-form-item>
       <a-form-item
         :labelCol="{ span: 8 }"
@@ -38,10 +43,10 @@
         fieldDecoratorId="username"
         :fieldDecoratorOptions="{rules: [{  required: true, message: '请选择用户名!' }]}"
       >
-        <a-select style="width: 120px">
+        <a-select style="width: 200px">
           <a-select-option value="jack">Jack</a-select-option>
           <a-select-option value="lucy">Lucy</a-select-option>
-          <a-select-option value="disabled" disabled>Disabled</a-select-option>
+          <a-select-option value="disabled">Disabled</a-select-option>
           <a-select-option value="Yiminghe">yiminghe</a-select-option>
         </a-select>
       </a-form-item>
@@ -58,7 +63,7 @@
           <a>新建</a>
         </div>
         <a-upload
-          action="//jsonplaceholder.typicode.com/posts/"
+          action="/"
           :multiple="true"
           :fileList="fileList"
           @change="handleFileChange"
@@ -90,6 +95,11 @@ export default {
     return {
       fileList: []
     };
+  },
+  mounted() {
+    this.form.setFieldsValue({
+      payType: "1"
+    });
   },
   methods: {
     submitForm() {
