@@ -92,18 +92,33 @@
       </a-form-item>
       <a-row style="margin-bottom: 24px;">
         <a-col :offset="8" :span="12" style="text-align: left;">
-          <a-textarea v-if="userData == 2" placeholder="Basic usage" :rows="4"/>
-          <a-upload
-            v-if="userData == 3"
-            action="/"
-            :multiple="true"
-            :fileList="fileList"
-            @change="handleFileChange"
+          <a-form-item
+            v-show="userData == 2"
+            :help="customValidateErrors.userDataText ? '请填写用户数据!' : ''"
+            :validateStatus="customValidateErrors.userDataText ? 'error' : ''"
           >
-            <a-button>
-              <a-icon type="upload"/>上传
-            </a-button>
-          </a-upload>
+            <a-textarea v-decorator="[ 'userDataText', ]" placeholder="请填写用户数据" :rows="4"/>
+          </a-form-item>
+          <a-form-item
+            v-show="userData == 3"
+            :help="customValidateErrors.userDataFile ? '请上传用户数据文件!' : ''"
+            :validateStatus="customValidateErrors.userDataFile ? 'error' : ''"
+          >
+            <a-upload
+              v-decorator="['userDataFile', {
+                valuePropName: 'fileList',
+                getValueFromEvent: normFile,
+              }]"
+              action="/"
+              :multiple="true"
+              :fileList="fileList"
+              @change="handleFileChange"
+            >
+              <a-button>
+                <a-icon type="upload"/>上传
+              </a-button>
+            </a-upload>
+          </a-form-item>
         </a-col>
       </a-row>
     </a-form>
@@ -117,7 +132,11 @@ export default {
       labelCol: { span: 8 },
       wrapperCol: { span: 12 },
       fileList: [],
-      userData: 0
+      userData: 0,
+      customValidateErrors: {
+        userDataText: false,
+        userDataText: false
+      }
     };
   },
   mounted() {
@@ -127,14 +146,33 @@ export default {
   },
   methods: {
     handleSubmit() {
+      // this.form.validateFields([]);
       this.form.validateFields((err, values) => {
+        this.handleValidateUserData(values);
         if (!err) {
           this.$emit("submit", { step4: values });
         }
       });
     },
+    handleValidateUserData(values) {
+      if (values.userData === 2) {
+        Object.assign(this.customValidateErrors, {
+          userDataText: !values.userDataText,
+          userDataFile: false
+        });
+      } else if (values.userData === 3) {
+        Object.assign(this.customValidateErrors, {
+          userDataText: false,
+          userDataFile: !values.userDataFile
+        });
+      } else {
+        Object.assign(this.customValidateErrors, {
+          userDataText: false,
+          userDataFile: false
+        });
+      }
+    },
     handleUserDataChange(e) {
-      console.log("radio checked", e.target.value);
       this.userData = e.target.value;
     },
     normFile(e) {

@@ -13,8 +13,8 @@
                 <import-modal v-bind:obj="obj"/>
                 <a-dropdown>
                   <a-menu slot="overlay" @click="handleMenuClick">
-                    <a-menu-item key="2">删除</a-menu-item>
-                    <a-menu-item key="3">绑定标签</a-menu-item>
+                    <a-menu-item key="1">删除</a-menu-item>
+                    <a-menu-item key="2">绑定标签</a-menu-item>
                   </a-menu>
                   <a-button type="primary" style="margin-left: 8px">批量操作
                     <a-icon type="down"/>
@@ -64,12 +64,14 @@
       </p>
       <p>删除前请确认你已经备份该秘钥，或者确定已不再使用该秘钥。</p>
     </a-modal>
+    <tag-modal :visible="showTagModal" v-on:cancel="showTagModal = false;" />
   </div>
 </template>
 
 <script>
 import CreateModal from "./CreateModal";
 import EditModal from "./EditModal";
+import TagModal from "./TagModal";
 import ImportModal from "./ImportModal";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 const columns = [
@@ -100,6 +102,7 @@ export default {
   components: {
     CreateModal,
     EditModal,
+    TagModal,
     ImportModal,
     PageLayout
   },
@@ -111,6 +114,7 @@ export default {
       tabKey: 1,
       confirmLoading: false,
       showDeleteModal: false,
+      showTagModal: false,
       obj: {
         名称: "aaa1231313aaa",
         描述: "bbbb",
@@ -150,12 +154,13 @@ export default {
       console.log(`Click on item ${key}`);
       switch (key) {
         case "1":
-          break;
-        case "2":
+          // 删除
           this.showDeleteModal = true;
           console.log(`Click on item ${key}`);
           break;
-        case "3":
+        case "2":
+          // 打标签
+          this.showTagModal = true;
           break;
 
         default:

@@ -21,13 +21,13 @@ const CollectionCreateForm = Form.create()({
           <a-form-item
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 14 }}
-            label="秘钥对名称："
+            label="密钥对名称："
           >
-            {getFieldDecorator("秘钥对名称", {
+            {getFieldDecorator("密钥对名称", {
               rules: [
                 {
                   required: true,
-                  message: "Please input the title of collection!"
+                  message: "请输入密钥对名称!"
                 }
               ]
             })(<a-input />)}
@@ -41,7 +41,7 @@ const CollectionCreateForm = Form.create()({
               rules: [
                 {
                   required: true,
-                  message: "Please input the title of collection!"
+                  message: "请在此粘贴您的SSH公钥!"
                 }
               ]
             })(<a-textarea placeholder="请在此粘贴您的SSH公钥" />)}

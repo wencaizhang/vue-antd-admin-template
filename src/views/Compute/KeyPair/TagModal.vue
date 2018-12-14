@@ -8,9 +8,9 @@ const CollectionCreateForm = Form.create()({
     return (
       <a-modal
         visible={visible}
-        title="创建密钥对"
-        okText="创建"
-        bodyStyle={{ 'max-height': '400px', overflow: 'auto'}}
+        title="密钥标签"
+        okText="确定"
+        bodyStyle={{ "max-height": "400px", overflow: "auto" }}
         onCancel={() => {
           this.$emit("cancel");
         }}
@@ -18,17 +18,17 @@ const CollectionCreateForm = Form.create()({
           this.$emit("create");
         }}
       >
-        <a-form >
+        <a-form>
           <a-form-item
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 14 }}
-            label="名称："
+            label="标签名："
           >
-            {getFieldDecorator("名称", {
+            {getFieldDecorator("标签名", {
               rules: [
                 {
                   required: true,
-                  message: "请输入名称!"
+                  message: "请输入标签名!"
                 }
               ]
             })(<a-input />)}
@@ -36,21 +36,16 @@ const CollectionCreateForm = Form.create()({
           <a-form-item
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 14 }}
-            label="加密方式："
+            label="描述："
           >
-            {getFieldDecorator("加密方式", {
+            {getFieldDecorator("描述", {
               rules: [
                 {
                   required: true,
-                  message: "Please input the title of collection!"
+                  message: "请输入描述!"
                 }
               ]
-            })(
-              <a-select >
-                <a-select-option value="ssh-rsa">ssh-rsa</a-select-option>
-                <a-select-option value="ssh-dss">ssh-dss</a-select-option>
-              </a-select>
-            )}
+            })(<a-textarea />)}
           </a-form-item>
         </a-form>
       </a-modal>
@@ -59,17 +54,13 @@ const CollectionCreateForm = Form.create()({
 });
 
 export default {
+  props: ["visible"],
   data() {
-    return {
-      visible: false
-    };
+    return {};
   },
   methods: {
-    showModal() {
-      this.visible = true;
-    },
     handleCancel() {
-      this.visible = false;
+      this.$emit("cancel");
     },
     handleCreate() {
       const form = this.formRef.form;
@@ -80,7 +71,7 @@ export default {
 
         console.log("Received values of form: ", values);
         form.resetFields();
-        this.visible = false;
+        this.$emit("cancel");
       });
     },
     saveFormRef(formRef) {
@@ -91,14 +82,6 @@ export default {
   render() {
     return (
       <div>
-        <a-button
-          type="primary"
-          style="margin-right: 10px;"
-          icon="plus"
-          onClick={this.showModal}
-        >
-          创建
-        </a-button>
         <CollectionCreateForm
           wrappedComponentRef={this.saveFormRef}
           visible={this.visible}
