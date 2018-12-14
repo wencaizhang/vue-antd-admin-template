@@ -44,7 +44,7 @@
           @change="handleTableChange"
         >
           <template slot="operation" slot-scope="text, record">
-            <a-button type="primary" icon="edit">修改</a-button>
+            <a-button type="primary" icon="edit" @click="handleEdit(record)">修改</a-button>
           </template>
         </a-table>
       </div>
@@ -65,6 +65,7 @@
       <p>删除前请确认你已经备份该秘钥，或者确定已不再使用该秘钥。</p>
     </a-modal>
     <tag-modal :visible="showTagModal" v-on:cancel="showTagModal = false;" />
+    <edit-modal :visible="showEditModal" v-on:cancel="showEditModal = false;" />
   </div>
 </template>
 
@@ -107,7 +108,7 @@ export default {
     PageLayout
   },
   mounted() {
-    // this.fetch();
+    this.fetch();
   },
   data() {
     return {
@@ -115,6 +116,7 @@ export default {
       confirmLoading: false,
       showDeleteModal: false,
       showTagModal: false,
+      showEditModal: false,
       obj: {
         名称: "aaa1231313aaa",
         描述: "bbbb",
@@ -196,7 +198,11 @@ export default {
     },
 
     // 删除弹框
-    handleDeleteModalOk() {}
+    handleDeleteModalOk() {},
+    handleEdit(record) {
+      console.log(record);
+      this.showEditModal = true;
+    }
   }
 };
 </script>
