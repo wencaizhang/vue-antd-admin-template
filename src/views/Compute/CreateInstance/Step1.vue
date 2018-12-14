@@ -1,26 +1,26 @@
 <template>
   <div>
-    <a-form :autoFormCreate="(form)=>{this.form = form }">
-      <a-form-item
-        :labelCol="{ span: 8 }"
-        :wrapperCol="{ span: 12 }"
-        label="可用区"
-        fieldDecoratorId="可用区"
-        :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个可用区!' }]}"
-      >
-        <a-radio-group buttonStyle="solid">
+    <a-form :form="form">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="可用区">
+        <a-radio-group
+          buttonStyle="solid"
+          v-decorator="[
+            'area',
+            {rules: [{ required: true, message: '请选择一个可用区!' }]}
+          ]"
+        >
           <a-radio-button value="1">北京1区</a-radio-button>
           <a-radio-button value="2">北京2区</a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item
-        :labelCol="{ span: 8 }"
-        :wrapperCol="{ span: 12 }"
-        label="CPU"
-        fieldDecoratorId="cpu"
-        :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个CPU!' }]}"
-      >
-        <a-radio-group buttonStyle="solid">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="CPU">
+        <a-radio-group
+          buttonStyle="solid"
+          v-decorator="[
+            'cpu',
+            {rules: [{ required: true, message: '请选择一个CPU!' }]}
+          ]"
+        >
           <a-radio-button
             v-for="item in optionList.cpu"
             :key="item.value"
@@ -28,14 +28,14 @@
           >{{item.text}}</a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item
-        :labelCol="{ span: 8 }"
-        :wrapperCol="{ span: 12 }"
-        label="内存"
-        fieldDecoratorId="memory"
-        :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个内存!' }]}"
-      >
-        <a-radio-group buttonStyle="solid">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="内存">
+        <a-radio-group
+          buttonStyle="solid"
+          v-decorator="[
+            'memory',
+            {rules: [{ required: true, message: '请选择一个内存!' }]}
+          ]"
+        >
           <a-radio-button
             v-for="item in optionList.memory"
             :key="item.value"
@@ -43,28 +43,26 @@
           >{{item.text}}</a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item
-        :labelCol="{ span: 8 }"
-        :wrapperCol="{ span: 12 }"
-        label="系统盘"
-        fieldDecoratorId="systemDisk"
-        :fieldDecoratorOptions="{rules: [{  type: 'string', message: '请选择一个系统盘!' }]}"
-      >
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="系统盘">
         <a-col>
           <a-input-number
+            v-decorator="[
+            'systemDisk',
+            {rules: [{ required: true, message: '请填写系统盘大小!' }]}
+          ]"
             :min="40"
             :max="200"
-            :formatter="value => `${value} G`"
+            :formatter="value => value ? `${value} G` : '' "
             :parser="value => value.replace(' G', '')"
           />
         </a-col>
       </a-form-item>
       <a-form-item
-        :labelCol="{ span: 8 }"
-        :wrapperCol="{ span: 12 }"
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
         label="硬盘"
-        fieldDecoratorId="systemDisk"
-        :fieldDecoratorOptions="{rules: [{  type: 'string', message: '请选择一个系统盘!' }]}"
+        fieldDecoratorId="hardDisk"
+        :fieldDecoratorOptions="{rules: [{  type: 'string', message: '请选择一个硬盘!' }]}"
       >
         <a-alert type="info" showIcon style="margin-bottom: 16px; text-align: left;">
           <div slot="message">
@@ -156,12 +154,15 @@ export default {
     this.form.setFieldsValue({
       cpu: "1核",
       memory: "1G",
-      systemDisk: "40",
-      可用区: '1',
+      systemDisk: 40,
+      area: "1"
     });
   },
   data() {
     return {
+      form: this.$form.createForm(this),
+      labelCol: { span: 8 },
+      wrapperCol: { span: 12 },
       data: [],
       columns,
       loading: false,
@@ -170,14 +171,12 @@ export default {
       pagination: {
         showSizeChanger: true
       },
-      forms: [],
       selectedDiskRowKeys: []
     };
   },
   methods: {
-    submitForm() {
+    handleSubmit() {
       this.form.validateFields((err, values) => {
-        console.log("values", values);
         if (!err) {
           // 硬盘需要单独处理
           if (!this.selectedDiskRowKeys.length) {
@@ -223,6 +222,12 @@ export default {
           this.data = data.results;
           this.pagination = pagination;
         });
+    },
+    handleSelectChange(value) {
+      console.log(value);
+      this.form.setFieldsValue({
+        note: `Hi, ${value === "male" ? "man" : "lady"}!`
+      });
     }
   }
 };

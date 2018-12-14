@@ -1,54 +1,68 @@
+<template>
+  <a-modal
+    title="编辑云主机安全组"
+    okText="确定"
+    :visible="visible"
+    :bodyStyle="{ 'max-height': '500px', overflow: 'auto' }"
+    :confirmLoading="confirmLoading"
+    @cancel="$emit('cancel')"
+    @ok="$emit('create')"
+  >
+    <a-transfer
+      :dataSource="mockData"
+      :titles="['全部安全组', '云主机安全组']"
+      :targetKeys="targetKeys"
+      :selectedKeys="selectedKeys"
+      :render="item=>item.title"
+      @change="handleChange"
+      @selectChange="handleSelectChange"
+      @scroll="handleScroll"
+    ></a-transfer>
+  </a-modal>
+</template>
 <script>
-import { Form } from "ant-design-vue";
-const CollectionCreateForm = Form.create()({
-  props: ["visible", "confirmLoading"],
-  render() {
-    const { visible, form, confirmLoading } = this;
-    const { getFieldDecorator } = form;
-    return (
-      <a-modal
-        visible={visible}
-        title="编辑安全组"
-        okText={confirmLoading ? '绑定中' : '绑定'}
-        bodyStyle={{ "max-height": "500px", overflow: "auto" }}
-        confirmLoading={confirmLoading}
-        onCancel={() => {
-          this.$emit("cancel");
-        }}
-        onOk={() => {
-          this.$emit("create");
-        }}
-      >
-        <a-alert message="从可用的安全组中增加和删除" type="info" style="margin-bottom: 10px;" showIcon />
-        <a-form>
-          <a-form-item
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 14 }}
-            label="IP地址："
-          >
-            {getFieldDecorator("IP地址", {
-              rules: [
-                {
-                  required: true,
-                  message: "请选择IP地址！"
-                }
-              ]
-            })(<a-input />)}
-          </a-form-item>
-        </a-form>
-      </a-modal>
-    );
-  }
-});
-
 export default {
-  props: ["data", "visible"],
+  props: ["record", "visible"],
   data() {
+    const mockData = [];
+    for (let i = 0; i < 20; i++) {
+      mockData.push({
+        key: i.toString(),
+        title: `content${i + 1}`,
+        description: `description of content${i + 1}`,
+        disabled: i % 3 < 1
+      });
+    }
+
+    const targetKeys = mockData
+      .filter(item => +item.key % 3 > 1)
+      .map(item => item.key);
     return {
-      confirmLoading: false,
+      mockData,
+      targetKeys,
+      selectedKeys: ["1", "4"],
+      confirmLoading: false
     };
   },
   methods: {
+    handleChange(nextTargetKeys, direction, moveKeys) {
+      this.targetKeys = nextTargetKeys;
+
+      console.log("targetKeys: ", this.targetKeys);
+      console.log("direction: ", direction);
+      console.log("moveKeys: ", moveKeys);
+    },
+    handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
+      this.selectedKeys = [...sourceSelectedKeys, ...targetSelectedKeys];
+
+      console.log("sourceSelectedKeys: ", sourceSelectedKeys);
+      console.log("targetSelectedKeys: ", targetSelectedKeys);
+    },
+    handleScroll(direction, e) {
+      console.log("direction:", direction);
+      console.log("target:", e.target);
+    },
+
     handleCancel() {
       this.$emit("cancel");
     },
@@ -58,7 +72,6 @@ export default {
         if (err) {
           return;
         }
-
         console.log("Received values of form: ", values);
         this.submit(values);
       });
@@ -72,24 +85,7 @@ export default {
         form.resetFields();
         this.$emit("success");
       }, 2000);
-    },
-    saveFormRef(formRef) {
-      this.formRef = formRef;
     }
-  },
-
-  render() {
-    return (
-      <div>
-        <CollectionCreateForm
-          wrappedComponentRef={this.saveFormRef}
-          visible={this.visible}
-          confirmLoading={this.confirmLoading}
-          onCancel={this.handleCancel}
-          onCreate={this.handleCreate}
-        />
-      </div>
-    );
   }
 };
 </script>

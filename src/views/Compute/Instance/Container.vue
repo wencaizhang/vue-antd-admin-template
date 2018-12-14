@@ -4,8 +4,14 @@
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">
           <a-button type="primary" style="margin-right: 10px;" icon="plus" @click="handleCreate">新建</a-button>
-          <a-button type="primary" style="margin-right: 10px;" icon="caret-right">启动</a-button>
-          <a-button type="primary" style="margin-right: 10px;" icon="plus" class="shut-down">关机</a-button>
+          <a-button type="primary" style="margin-right: 10px;" icon="caret-right" disabled>启动</a-button>
+          <a-button
+            type="primary"
+            style="margin-right: 10px;"
+            icon="plus"
+            class="shut-down"
+            disabled
+          >关机</a-button>
           <a-dropdown @click="handleMenuClick" style="margin-right: 10px;">
             <a-menu slot="overlay">
               <a-menu-item v-for="(item, index) in batchOperations" :key="index">{{ item.text }}</a-menu-item>
@@ -252,6 +258,7 @@ export default {
     },
     onSearch(value) {
       console.log(value);
+      this.data = []
     },
     handleMenuClick(e) {
       let key = e.key;
@@ -264,8 +271,8 @@ export default {
       this.$confirm({
         title: "您已经选择了云主机“VM1”，即将删除此云主机，请确认你的操作。",
         iconType: "warning",
-        okText: '删除',
-        okType: 'danger',
+        okText: "删除",
+        okType: "danger",
         // content: 'When clicked the OK button, this dialog will be closed after 1 second',
         onOk() {
           return new Promise((resolve, reject) => {
@@ -275,12 +282,13 @@ export default {
         onCancel() {}
       });
     },
-    handleUnBindIP (record) {
+    handleUnBindIP(record) {
       this.$confirm({
-        title: "您已经选择了云主机“VM1”，其绑定的公网IP将被解绑，请确认你的操作。",
+        title:
+          "您已经选择了云主机“VM1”，其绑定的公网IP将被解绑，请确认你的操作。",
         iconType: "warning",
-        okText: '解绑',
-        okType: 'danger',
+        okText: "解绑",
+        okType: "danger",
         // content: 'When clicked the OK button, this dialog will be closed after 1 second',
         onOk() {
           return new Promise((resolve, reject) => {
@@ -322,5 +330,13 @@ export default {
 <style>
 .shut-down i {
   background: #fff;
+  color: #fff;
+}
+.shut-down[disabled] i {
+  background: rgba(0, 0, 0, 0.25);
+  color: rgba(0, 0, 0, 0.25);
+}
+.shut-down[disabled] {
+  color: rgba(0, 0, 0, 0.25);
 }
 </style>

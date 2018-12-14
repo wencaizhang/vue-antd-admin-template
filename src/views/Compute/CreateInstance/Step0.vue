@@ -1,27 +1,27 @@
 <template>
   <div>
-    <a-form :autoFormCreate="(form)=>{this.form = form }">
-      <a-form-item
-        :labelCol="{ span: 8 }"
-        :wrapperCol="{ span: 12 }"
-        label="映像提供方："
-        fieldDecoratorId="supporter"
-        :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个映像提供方!' }]}"
-      >
-        <a-radio-group buttonStyle="solid">
+    <a-form :form="form">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="映像提供方：">
+        <a-radio-group
+          buttonStyle="solid"
+          v-decorator="[
+            'supporter',
+            {rules: [{ required: true, message: '请选择一个映像提供方!' }]}
+          ]"
+        >
           <a-radio-button value="large">系统</a-radio-button>
           <a-radio-button value="default">自有</a-radio-button>
           <a-radio-button value="small">共享</a-radio-button>
         </a-radio-group>
       </a-form-item>
-      <a-form-item
-        :labelCol="{ span: 8 }"
-        :wrapperCol="{ span: 12 }"
-        label="选择操作系统："
-        fieldDecoratorId="mirror"
-        :fieldDecoratorOptions="{rules: [{ required: true, message: '请选择一个操作系统!' }]}"
-      >
-        <a-select placeholder="请选择">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="选择操作系统：">
+        <a-select
+          v-decorator="[
+            'mirror',
+            {rules: [{ required: true, message: '请选择一个操作系统!' }]}
+          ]"
+          placeholder="请选择"
+        >
           <a-select-option
             v-for="item in optionList.mirror"
             :key="item.value"
@@ -77,14 +77,18 @@ const optionList = {
 export default {
   data() {
     return {
-      optionList,
+      form: this.$form.createForm(this),
+      labelCol: { span: 8 },
+      wrapperCol: { span: 12 },
+      optionList
     };
   },
   methods: {
-    submitForm() {
+    handleSubmit() {
       this.form.validateFields((err, values) => {
         if (!err) {
-          this.$emit('next', { step1: values })
+          console.log("Received values of form: ", values);
+          this.$emit("next", { step1: values });
         }
       });
     }

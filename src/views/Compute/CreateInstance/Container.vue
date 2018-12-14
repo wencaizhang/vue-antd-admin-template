@@ -5,10 +5,10 @@
         <a-step v-for="item in steps" :key="item.title" :title="item.title"/>
       </a-steps>
       <div class="steps-content">
-        <Step0 v-show="current === 0" ref="content0" @next="nextStep" @submit="submitHandle"/>
-        <Step1 v-show="current === 1" ref="content1" @next="nextStep" @submit="submitHandle"/>
-        <Step2 v-show="current === 2" ref="content2" @next="nextStep" @submit="submitHandle"/>
-        <Step3 v-show="current === 3" ref="content3" @next="nextStep" @submit="submitHandle"/>
+        <Step0 v-show="current === 0" ref="content0" @next="nextStep"/>
+        <Step1 v-show="current === 1" ref="content1" @next="nextStep"/>
+        <Step2 v-show="current === 2" ref="content2" @next="nextStep"/>
+        <Step3 v-show="current === 3" ref="content3" @next="nextStep" @submit="handleSubmit"/>
       </div>
       <div class="steps-action">
         <a-button v-if="current>0" @click="prev">上一步</a-button>
@@ -63,56 +63,19 @@ export default {
     };
   },
   methods: {
-    submitHandle(payload) {
+    handleSubmit(payload) {
       Object.assign(this.values, payload);
       console.log(this.values);
       this.$message.success("创建成功！");
 
-      this.$router.push({ name: 'instance' })
+      this.$router.push({ name: "instance" });
     },
     nextStep(payload) {
       this.current++;
       Object.assign(this.values, payload);
     },
     handleNextClick() {
-      this.$refs["content" + this.current].submitForm();
-    },
-    nextFunction() {
-      const ref = this.$refs.content.submitForm();
-      if (step1) {
-        this.current++;
-      }
-      return false;
-      this.forms[this.current].validateFields((err, values) => {
-        if (!err) {
-          if (this.current === 1) {
-            // 硬盘需要单独处理
-            if (!this.selectedDiskRowKeys.length) {
-              this.$message.warn("请至少选择一个硬盘");
-              return false;
-            }
-            this.values.push(
-              Object.assign({}, values, { selectedDiskRowKeys })
-            );
-          } else if (this.current === 2) {
-            // 网络需要单独处理
-            if (!this.selectedNetworkRowKeys.length) {
-              this.$message.warn("请至少选择一个私有网络");
-              return false;
-            }
-            this.values.push({ selectedNetworkRowKeys });
-          } else if (this.current === 3) {
-            this.values.push(values);
-            // 已经是最后一步，进行提交
-            this.submitHandle();
-            return false;
-          } else {
-            this.values.push(values);
-          }
-
-          this.current++;
-        }
-      });
+      this.$refs["content" + this.current].handleSubmit();
     },
     prev() {
       this.current--;

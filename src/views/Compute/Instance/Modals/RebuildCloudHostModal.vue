@@ -68,7 +68,7 @@ const CollectionCreateForm = Form.create()({
 });
 
 export default {
-  props: ["data", "visible"],
+  props: ["record", "visible"],
   data() {
     return {
       confirmLoading: false

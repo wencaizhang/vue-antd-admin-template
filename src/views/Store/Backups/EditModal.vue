@@ -10,7 +10,7 @@ const CollectionCreateForm = Form.create()({
         visible={visible}
         title="修改秘钥属性"
         okText="提交"
-        bodyStyle={{ 'max-height': '500px', overflow: 'auto'}}
+        bodyStyle={{ 'max-height': '400px', overflow: 'auto'}}
         onCancel={() => {
           this.$emit("cancel");
         }}
