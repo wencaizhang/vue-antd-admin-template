@@ -4,16 +4,16 @@
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">
           <a-button type="primary" style="margin-right: 10px;" icon="plus" @click="handleCreate">新建</a-button>
-          <a-button type="primary" style="margin-right: 10px;" icon="caret-right" disabled>启动</a-button>
+          <a-button type="primary" style="margin-right: 10px;" icon="play-circle" disabled>启动</a-button>
           <a-button
             type="primary"
             style="margin-right: 10px;"
-            icon="plus"
+            icon="poweroff"
             class="shut-down"
             disabled
           >关机</a-button>
-          <a-dropdown @click="handleMenuClick" style="margin-right: 10px;">
-            <a-menu slot="overlay">
+          <a-dropdown style="margin-right: 10px;">
+            <a-menu slot="overlay" @click="handleBatchMenuClick">
               <a-menu-item v-for="(item, index) in batchOperations" :key="index">{{ item.text }}</a-menu-item>
             </a-menu>
             <a-button style="margin-left: 8px">批量操作
@@ -41,7 +41,7 @@
         <a-table
           :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
           :columns="columns"
-          :rowKey="record => record.login.uuid"
+          :rowKey="record => record.cell"
           :dataSource="data"
           :pagination="pagination"
           :loading="loading"
@@ -258,7 +258,7 @@ export default {
     },
     onSearch(value) {
       console.log(value);
-      this.data = []
+      this.data = [];
     },
     handleMenuClick(e) {
       let key = e.key;
@@ -267,17 +267,59 @@ export default {
     handleCreate() {
       this.$router.push({ name: "CreateInstance" });
     },
-    handleDeleteCloudHost(record) {
+    handleBatchDelete() {
+      const vm = this;
+      const mapResult = this.selectedRowKeys.map(item => {
+        return `<li>${item}</li>`;
+      });
+
+      // 批量删除
       this.$confirm({
-        title: "您已经选择了云主机“VM1”，即将删除此云主机，请确认你的操作。",
+        title: "您已经选择了下列云主机，即将进行删除，请确认你的操作。",
+        content: mapResult.join(""),
         iconType: "warning",
         okText: "删除",
         okType: "danger",
         // content: 'When clicked the OK button, this dialog will be closed after 1 second',
         onOk() {
           return new Promise((resolve, reject) => {
-            setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-          }).catch(() => console.log("Oops errors!"));
+            setTimeout(resolve, 1000);
+          })
+            .then(() => {
+              const indexs = vm.selectedRowKeys.map(key => {
+                return vm.data.findIndex(item => item.cell == key);
+              });
+              vm._deleteData(indexs);
+            })
+            .catch(() => console.log("Oops errors!"));
+        },
+        onCancel() {}
+      });
+    },
+    handleBatchRestart() {
+      // 批量重启
+    },
+    handleBatchSoftReset() {
+      // 批量软重启
+    },
+    handleDeleteCloudHost(record) {
+      const vm = this;
+      this.$confirm({
+        title: `您已经选择了云主机“${
+          record.name.first
+        }”，即将删除此云主机，请确认你的操作。`,
+        iconType: "warning",
+        okText: "删除",
+        okType: "danger",
+        onOk() {
+          return new Promise((resolve, reject) => {
+            setTimeout(resolve, 1000);
+          })
+            .then(() => {
+              let index = vm.data.indexOf(record);
+              vm._deleteData([index]);
+            })
+            .catch(() => console.log("Oops errors!"));
         },
         onCancel() {}
       });
@@ -285,7 +327,7 @@ export default {
     handleUnBindIP(record) {
       this.$confirm({
         title:
-          "您已经选择了云主机“VM1”，其绑定的公网IP将被解绑，请确认你的操作。",
+          "您已经选择了云主机“${record.name.first}”，其绑定的公网IP将被解绑，请确认你的操作。",
         iconType: "warning",
         okText: "解绑",
         okType: "danger",
@@ -298,10 +340,32 @@ export default {
         onCancel() {}
       });
     },
+    handleBatchMenuClick({ key }) {
+      // 批量操作
+      if (this.selectedRowKeys.length === 0) {
+        this.$message.info("请先选择您要操作的实例");
+        return;
+      }
+      switch (key) {
+        case 0:
+          // 删除
+          this.handleBatchDelete();
+          break;
+        case 1:
+          // 重启
+          this.handleBatchRestart();
+          break;
+        case 2:
+          // 软重启
+          this.handleBatchSoftReset();
+          break;
+
+        default:
+          break;
+      }
+    },
     handleSingleMenuClick(record, { key }) {
       // 针对单项数据操作
-      console.log("key", key, typeof key);
-      console.log("当前行的数据是：", record);
       switch (key) {
         case 2:
           // 解绑IP
@@ -322,21 +386,33 @@ export default {
           this.selectedRowData = record;
           break;
       }
-    }
+    },
+    _deleteData(indexs = []) {
+      if (!indexs.length) return;
+      // 数组删除一个元素之后，索引会发生变化。所以要对删除目标的索引进行处理。
+      const parseIndexs = indexs.map((item, index) => item - index);
+      console.log(parseIndexs)
+      const keys = parseIndexs.map(index => {
+        const key = this.data[index].cell;
+        this.data.splice(index, 1);
+        return key
+      });
+      this.$message.success('删除成功！')
+      this._updateSelectedRowKeys(keys);
+    },
+    _updateSelectedRowKeys(keys) {
+      // 删除后需要更新 selectedRowKeys
+      keys.forEach(key => {
+        let index = this.selectedRowKeys.findIndex(item => item === key);
+        if (index !== -1) {
+          this.selectedRowKeys.splice(index, 1)
+        }
+      })
+    },
+    _addData() {},
   }
 };
 </script>
 
 <style>
-.shut-down i {
-  background: #fff;
-  color: #fff;
-}
-.shut-down[disabled] i {
-  background: rgba(0, 0, 0, 0.25);
-  color: rgba(0, 0, 0, 0.25);
-}
-.shut-down[disabled] {
-  color: rgba(0, 0, 0, 0.25);
-}
 </style>
