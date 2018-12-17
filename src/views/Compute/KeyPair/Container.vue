@@ -44,7 +44,17 @@
           @change="handleTableChange"
         >
           <template slot="operation" slot-scope="text, record">
-            <a-button type="primary" icon="edit" @click="handleEdit(record)">修改</a-button>
+            <a-dropdown style="margin-right: 10px;">
+              <a-menu slot="overlay" @click="handleSingleMenuClick(record, $event)">
+                <a-menu-item key="1">修改</a-menu-item>
+                <a-menu-item key="2">下载</a-menu-item>
+              </a-menu>
+              <a-button style="margin-left: 8px">操作
+                <a-icon type="down"/>
+              </a-button>
+            </a-dropdown>
+            <!-- <a-button type="primary" icon="edit" @click="handleEdit(record)">修改</a-button>
+            <a-button type="primary" icon="download" @click="handleDownload(record)">下载</a-button>-->
           </template>
         </a-table>
       </div>
@@ -64,8 +74,18 @@
       </p>
       <p>删除前请确认你已经备份该秘钥，或者确定已不再使用该秘钥。</p>
     </a-modal>
-    <tag-modal :visible="showTagModal" v-on:cancel="showTagModal = false;" />
-    <edit-modal :visible="showEditModal" v-on:cancel="showEditModal = false;" />
+    <a-modal
+      title="下载密钥对"
+      okText="下载"
+      :visible="showDownloadModal"
+      :confirmLoading="confirmLoading"
+      @ok="handleDownloadModalOk"
+      @cancel="showDownloadModal = false;"
+    >
+      <p>通过点击“下载”按钮，可以获取私钥，此下载链接将保留5分钟。</p>
+    </a-modal>
+    <tag-modal :visible="showTagModal" v-on:cancel="showTagModal = false;"/>
+    <edit-modal :visible="showEditModal" v-on:cancel="showEditModal = false;"/>
   </div>
 </template>
 
@@ -117,6 +137,7 @@ export default {
       showDeleteModal: false,
       showTagModal: false,
       showEditModal: false,
+      showDownloadModal: false,
       obj: {
         名称: "aaa1231313aaa",
         描述: "bbbb",
@@ -202,6 +223,25 @@ export default {
     handleEdit(record) {
       console.log(record);
       this.showEditModal = true;
+    },
+    handleDownload(record) {
+      console.log(record);
+      this.showDownloadModal = true;
+    },
+    handleDownloadModalOk() {},
+    handleSingleMenuClick(record, { key }) {
+      console.log(record, key);
+      switch (key) {
+        case "1":
+          this.showEditModal = true;
+          break;
+        case "2":
+          this.showDownloadModal = true;
+          break;
+
+        default:
+          break;
+      }
     }
   }
 };

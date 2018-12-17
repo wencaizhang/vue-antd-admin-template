@@ -1,5 +1,3 @@
-import Home from "../views/Home.vue";
-import About from "../views/About.vue";
 import Login from "../views/User/Login.vue";
 
 import RouteView from "@/components/Layout/RouteView";

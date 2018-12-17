@@ -3,7 +3,15 @@ import { Form } from "ant-design-vue";
 const CollectionCreateForm = Form.create()({
   props: ["visible", "sourceType", "validateUrlPass", "validateFilePass"],
   render() {
-    const { form, visible, sourceType,  validateUrlPass, validateFilePass, handleFileChange, fileList } = this;
+    const {
+      form,
+      visible,
+      sourceType,
+      validateUrlPass,
+      validateFilePass,
+      handleFileChange,
+      fileList
+    } = this;
     const { getFieldDecorator } = form;
     return (
       <a-modal
@@ -191,6 +199,20 @@ const CollectionCreateForm = Form.create()({
               />
             )}
           </a-form-item>
+          <a-form-item
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 14,offset:8 }}
+            label=""
+          >
+            {getFieldDecorator("copy", {})(<a-checkbox>数据复刻</a-checkbox>)}
+          </a-form-item>
+          <a-form-item
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 14,offset:8 }}
+            label=""
+          >
+            {getFieldDecorator("public", {})(<a-checkbox>公有</a-checkbox>)}
+          </a-form-item>
         </a-form>
       </a-modal>
     );
@@ -204,7 +226,7 @@ export default {
       fileList: [],
       sourceType: 0,
       validateUrlPass: true,
-      validateFilePass: true,
+      validateFilePass: true
     };
   },
   methods: {
@@ -217,15 +239,14 @@ export default {
     handleCreate() {
       const form = this.formRef.form;
       form.validateFields((err, values) => {
-
-        const {source, url, file} = values;
+        const { source, url, file } = values;
         if (source == 0 && !file) {
-          this.validateFilePass = false
+          this.validateFilePass = false;
         }
         if (source == 1 && !url) {
-          this.validateUrlPass = false
+          this.validateUrlPass = false;
         }
-        
+
         if (err) {
           return;
         }
@@ -240,9 +261,9 @@ export default {
     },
     handleSelectSource(value) {
       if (value == 0) {
-        this.validateUrlPass = true
+        this.validateUrlPass = true;
       } else {
-        this.validateFilePass = true
+        this.validateFilePass = true;
       }
       this.sourceType = value;
     },
