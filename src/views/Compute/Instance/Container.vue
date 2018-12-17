@@ -269,14 +269,15 @@ export default {
     },
     handleBatchDelete() {
       const vm = this;
-      const mapResult = this.selectedRowKeys.map(item => {
-        return `<li>${item}</li>`;
-      });
+      const h = this.$createElement;
+      const vnode = h('ul',  this.selectedRowKeys.map(item => {
+        return h('li', item);
+      }))
 
       // 批量删除
       this.$confirm({
         title: "您已经选择了下列云主机，即将进行删除，请确认你的操作。",
-        content: mapResult.join(""),
+        content: vnode,
         iconType: "warning",
         okText: "删除",
         okType: "danger",
@@ -415,4 +416,8 @@ export default {
 </script>
 
 <style>
+ul {
+
+    padding-inline-start: 20px;
+}
 </style>
