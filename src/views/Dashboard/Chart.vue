@@ -34,12 +34,18 @@ export default {
       myChart.setOption({
         title: { text: this.data.title },
         tooltip: {},
-        yAxis: {
+        xAxis: {
           data: yData,
           formatter: function(value) {
             return "{test|" + value + "}";
           },
           axisLabel: {
+            rotate: 35, //刻度旋转45度角
+            fontSize: 12,
+            margin: 2,
+            textStyle: {
+              // color: "red"
+            },
             rich: {
               test: {
                 color: "red",
@@ -48,7 +54,7 @@ export default {
             }
           }
         },
-        xAxis: {
+        yAxis: {
           axisLabel: {
             formatter(value) {
               return `${value}/10`;

@@ -65,7 +65,7 @@ export const asyncRouterMap = [
         name: "compute",
         component: RouteView,
         redirect: "compute/instance",
-        meta: { title: "计算", icon: "dashboard", permission: ["dashboard"] },
+        meta: { title: "计算", icon: "calculator", permission: ["dashboard"] },
         children: [
           {
             path: "instance",
@@ -102,7 +102,7 @@ export const asyncRouterMap = [
         name: "store",
         component: RouteView,
         redirect: "store/harddisk",
-        meta: { title: "存储", icon: "dashboard", permission: ["dashboard"] },
+        meta: { title: "存储", icon: "save", permission: ["dashboard"] },
         children: [
           {
             path: "harddisk",
@@ -130,7 +130,7 @@ export const asyncRouterMap = [
         name: "network",
         component: RouteView,
         redirect: "network/router",
-        meta: { title: "网络", icon: "dashboard", permission: ["dashboard"] },
+        meta: { title: "网络", icon: "wifi", permission: ["dashboard"] },
         children: [
           {
             path: "router",
@@ -159,7 +159,7 @@ export const asyncRouterMap = [
         name: "safety",
         component: RouteView,
         redirect: "safety/firewall",
-        meta: { title: "安全", icon: "dashboard", permission: ["dashboard"] },
+        meta: { title: "安全", icon: "safety-certificate", permission: ["dashboard"] },
         children: [
           {
             path: "firewall",
@@ -176,7 +176,7 @@ export const asyncRouterMap = [
         name: "expense",
         component: RouteView,
         redirect: "expense/overview",
-        meta: { title: "费用", icon: "dashboard", permission: ["dashboard"] },
+        meta: { title: "费用", icon: "pay-circle", permission: ["dashboard"] },
         children: [
           {
             path: "overview",
