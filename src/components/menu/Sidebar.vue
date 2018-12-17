@@ -49,7 +49,7 @@ export default {
     menus: {
       type: Array,
       required: true
-    },
+    }
   },
   created() {},
   computed: {
@@ -59,14 +59,43 @@ export default {
     siderClassName() {
       return {
         sider: true,
-        shadow: 'ant-fixed-sidemenu',
+        shadow: "ant-fixed-sidemenu"
       };
     }
   },
   methods: {
     onSelect(obj) {
       this.$emit("menuSelect", obj);
-    },
+    }
   }
 };
 </script>
+
+<style>
+.ant-menu li i {
+  height: 14px;
+  background-size: contain;
+}
+.ant-menu li i:before {
+  content: "";
+}
+
+.ant-menu li:nth-child(1) i.anticon {
+  background-image: url(../../assets/sidebar/clock.png);
+}
+.ant-menu li:nth-child(2) i.anticon {
+  background-image: url(../../assets/sidebar/j.png);
+}
+.ant-menu li:nth-child(3) i.anticon {
+  background-image: url(../../assets/sidebar/postion.png);
+}
+.ant-menu li:nth-child(4) i.anticon {
+  background-image: url(../../assets/sidebar/wifi.png);
+}
+/* .ant-menu li:nth-child(5) i.anticon {
+  background-image: url(../../assets/sidebar/wifi.png);
+}
+.ant-menu li:nth-child(6) i.anticon {
+  background-image: url(../../assets/sidebar/wifi.png);
+} */
+</style>

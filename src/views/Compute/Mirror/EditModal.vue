@@ -17,7 +17,7 @@ const CollectionCreateForm = Form.create()({
           this.$emit("create");
         }}
       >
-        <a-form >
+        <a-form>
           <a-form-item
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 14 }}
@@ -27,7 +27,7 @@ const CollectionCreateForm = Form.create()({
               rules: [
                 {
                   required: true,
-                  message: "Please input the title of collection!"
+                  message: "请填写名称!"
                 }
               ]
             })(<a-input />)}
@@ -41,7 +41,7 @@ const CollectionCreateForm = Form.create()({
               rules: [
                 {
                   required: true,
-                  message: "Please input the title of collection!"
+                  message: "请填写描述!"
                 }
               ]
             })(<a-input />)}
@@ -55,11 +55,11 @@ const CollectionCreateForm = Form.create()({
               rules: [
                 {
                   required: true,
-                  message: "Please input the title of collection!"
+                  message: "请选择镜像格式!"
                 }
               ]
             })(
-              <a-select >
+              <a-select>
                 <a-select-option value="jack">Jack</a-select-option>
                 <a-select-option value="lucy">Lucy</a-select-option>
                 <a-select-option value="Yiminghe">yiminghe</a-select-option>
@@ -71,28 +71,49 @@ const CollectionCreateForm = Form.create()({
             wrapperCol={{ span: 14 }}
             label="最小磁盘(GB)："
           >
-            {getFieldDecorator("最小磁盘", {
+            {getFieldDecorator("minDisk", {
               rules: [
                 {
                   required: true,
-                  message: "Please input the title of collection!"
+                  message: "请填写最小磁盘!"
                 }
               ]
-            })(<a-input />)}
+            })(
+              <a-input-number
+                min={40}
+                max={200}
+                formatter={value => (value ? `${value} G` : "")}
+                parser={value => value.replace(" G", "")}
+              />
+            )}
           </a-form-item>
           <a-form-item
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 14 }}
             label="最低内存(GB)："
           >
-            {getFieldDecorator("最低内存", {
+            {getFieldDecorator("minMomery", {
               rules: [
                 {
                   required: true,
-                  message: "Please input the title of collection!"
+                  message: "请填写最低内存!"
                 }
               ]
-            })(<a-input />)}
+            })(
+              <a-input-number
+                min={2}
+                max={100}
+                formatter={value => (value ? `${value} G` : "")}
+                parser={value => value.replace(" G", "")}
+              />
+            )}
+          </a-form-item>
+          <a-form-item
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 14, offset: 8 }}
+            label=""
+          >
+            {getFieldDecorator("public", {})(<a-checkbox>公有</a-checkbox>)}
           </a-form-item>
         </a-form>
       </a-modal>
@@ -106,12 +127,10 @@ export default {
       visible: false
     };
   },
-  props: ['obj'],
+  props: ["obj"],
   mounted() {
     const form = this.formRef.form;
-    form.setFieldsValue(
-      this.obj || {}
-    );
+    form.setFieldsValue(this.obj || {});
   },
   methods: {
     showModal() {
