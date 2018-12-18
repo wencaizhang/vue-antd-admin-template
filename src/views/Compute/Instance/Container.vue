@@ -243,25 +243,22 @@ export default {
         ...filters
       });
     },
-    fetch(params = {}) {
+    async fetch(params = {}) {
       this.loading = true;
       let url = "https://randomuser.me/api";
-      this.$http
-        .get(url, {
+      try {
+        const data = awaitthis.$http.get(url, {
           params: {
             results: 10,
             ...params
           }
-        })
-        .then(data => {
-          const pagination = { ...this.pagination };
-          // Read total count from server
-          // pagination.total = data.totalCount;
-          pagination.total = 200;
-          this.loading = false;
-          this.data = data.results;
-          this.pagination = pagination;
         });
+        const pagination = { ...this.pagination };
+        pagination.total = 200;
+        this.loading = false;
+        this.data = data.results;
+        this.pagination = pagination;
+      } catch (e) {}
     },
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys;
@@ -269,7 +266,7 @@ export default {
     },
     onSearch(value) {
       console.log(value);
-      this.data = [];
+      this.fetch();
     },
     handleMenuClick(e) {
       let key = e.key;
@@ -281,9 +278,12 @@ export default {
     handleBatchDelete() {
       const vm = this;
       const h = this.$createElement;
-      const vnode = h('ul',  this.selectedRowKeys.map(item => {
-        return h('li', item);
-      }))
+      const vnode = h(
+        "ul",
+        this.selectedRowKeys.map(item => {
+          return h("li", item);
+        })
+      );
 
       // 批量删除
       this.$confirm({
@@ -343,7 +343,6 @@ export default {
         iconType: "warning",
         okText: "解绑",
         okType: "danger",
-        // content: 'When clicked the OK button, this dialog will be closed after 1 second',
         onOk() {
           return new Promise((resolve, reject) => {
             setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
@@ -403,13 +402,13 @@ export default {
       if (!indexs.length) return;
       // 数组删除一个元素之后，索引会发生变化。所以要对删除目标的索引进行处理。
       const parseIndexs = indexs.map((item, index) => item - index);
-      console.log(parseIndexs)
+      console.log(parseIndexs);
       const keys = parseIndexs.map(index => {
         const key = this.data[index].cell;
         this.data.splice(index, 1);
-        return key
+        return key;
       });
-      this.$message.success('删除成功！')
+      this.$message.success("删除成功！");
       this._updateSelectedRowKeys(keys);
     },
     _updateSelectedRowKeys(keys) {
@@ -417,18 +416,17 @@ export default {
       keys.forEach(key => {
         let index = this.selectedRowKeys.findIndex(item => item === key);
         if (index !== -1) {
-          this.selectedRowKeys.splice(index, 1)
+          this.selectedRowKeys.splice(index, 1);
         }
-      })
+      });
     },
-    _addData() {},
+    _addData() {}
   }
 };
 </script>
 
 <style>
 ul {
-
-    padding-inline-start: 20px;
+  padding-inline-start: 20px;
 }
 </style>

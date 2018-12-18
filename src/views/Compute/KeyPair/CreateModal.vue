@@ -42,7 +42,7 @@ const CollectionCreateForm = Form.create()({
               rules: [
                 {
                   required: true,
-                  message: "Please input the title of collection!"
+                  message: "请选择加密方式!"
                 }
               ]
             })(
@@ -81,6 +81,7 @@ export default {
         console.log("Received values of form: ", values);
         form.resetFields();
         this.visible = false;
+        this.$emit('showDownload')
       });
     },
     saveFormRef(formRef) {
