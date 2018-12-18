@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div :id="data.id" :style="{width: '100%', height: '300px'}"></div>
+    <div :id="data.id" :style="{width: '100%', height: '400px'}"></div>
   </section>
 </template>
 

@@ -71,6 +71,13 @@
         :data="selectedRowData"
         v-on:cancel="singleOperations[1].showModal = false"
         v-on:success="update"
+        v-on:allotIP="singleOperations[1].showModal = false; showAllotIPModal=true;"
+      />
+      <allot-IP-modal
+        :visible="showAllotIPModal"
+        :data="selectedRowData"
+        v-on:cancel="showAllotIPModal = false"
+        v-on:success="update"
       />
       <rebuild-cloud-host-modal
         :visible="singleOperations[4].showModal"
@@ -99,6 +106,7 @@ import PageLayout from "@/components/Layout/PageLayout.vue";
 
 import CreateSnapshootModal from "./Modals/CreateSnapshootModal";
 import BindIPModal from "./Modals/BindIPModal";
+import AllotIPModal from "./Modals/AllotIPModal";
 import RebuildCloudHostModal from "./Modals/RebuildCloudHostModal";
 import EditSecurityGroupModal from "./Modals/EditSecurityGroupModal";
 import OverviewModal from "./Modals/OverviewModal";
@@ -170,6 +178,7 @@ export default {
     PageLayout,
     CreateSnapshootModal,
     BindIPModal,
+    AllotIPModal,
     RebuildCloudHostModal,
     EditSecurityGroupModal,
     OverviewModal
@@ -198,6 +207,7 @@ export default {
         { showModal: false, text: "删除云主机" },
         { showModal: false, text: "查看主机状况" }
       ],
+      showAllotIPModal: false,
       selectedOperationKey: 0
     };
   },
@@ -211,12 +221,13 @@ export default {
     update() {
       console.log("update");
       this.singleOperations[this.selectedOperationKey].showModal = false;
+      this.showAllotIPModal = false;
       this.openNotification();
     },
     openNotification() {
       this.$notification.open({
         message: "提醒",
-        description: "创建成功，数据已更新",
+        description: "操作成功，数据已更新",
         icon: <a-icon type="check-circle" style="color: #52c41a" />
       });
     },

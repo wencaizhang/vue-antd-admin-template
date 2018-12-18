@@ -204,7 +204,9 @@ const CollectionCreateForm = Form.create()({
             wrapperCol={{ span: 14,offset:8 }}
             label=""
           >
-            {getFieldDecorator("copy", {})(<a-checkbox>数据复刻</a-checkbox>)}
+            {getFieldDecorator("copy", {
+              // initialValue: 'on',
+            })(<a-checkbox checked>数据复刻</a-checkbox>)}
           </a-form-item>
           <a-form-item
             labelCol={{ span: 8 }}
