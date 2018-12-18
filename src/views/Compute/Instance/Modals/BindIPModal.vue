@@ -33,10 +33,21 @@ const CollectionCreateForm = Form.create()({
                 }
               ]
             })(
-              <a-select placeholder="请选择一个IP地址">
-                <a-select-option value="jack">Jack</a-select-option>
-                <a-select-option value="lucy">Lucy</a-select-option>
-              </a-select>
+                <a-select class="container-----" placeholder="请选择一个IP地址">
+                  <a-select-option value="jack">Jack</a-select-option>
+                  <a-select-option value="lucy">Lucy</a-select-option>
+                  <a-icon
+                    slot="suffixIcon"
+                    class="addonAfter"
+                    title="分配公网IP"
+                    type="plus-circle"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      this.$emit("allotIP");
+                      return false;
+                    }}
+                  />
+                </a-select>
             )}
           </a-form-item>
           <a-form-item
@@ -110,9 +121,24 @@ export default {
           confirmLoading={this.confirmLoading}
           onCancel={this.handleCancel}
           onCreate={this.handleCreate}
+          onAllotIP={() => {
+            this.$emit("allotIP");
+          }}
         />
       </div>
     );
   }
 };
 </script>
+<style>
+.container----- {
+  position: relative;
+}
+.container----- .addonAfter {
+  position: absolute;
+  top: 0;
+  right: -35px;
+  font-size: 16px;
+  cursor: pointer;
+}
+</style>

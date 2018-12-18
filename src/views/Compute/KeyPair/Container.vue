@@ -47,14 +47,12 @@
             <a-dropdown style="margin-right: 10px;">
               <a-menu slot="overlay" @click="handleSingleMenuClick(record, $event)">
                 <a-menu-item key="1">修改</a-menu-item>
-                <a-menu-item key="2">下载</a-menu-item>
+                <a-menu-item key="2" :disabled="record | downloadable">下载</a-menu-item>
               </a-menu>
               <a-button style="margin-left: 8px">操作
                 <a-icon type="down"/>
               </a-button>
             </a-dropdown>
-            <!-- <a-button type="primary" icon="edit" @click="handleEdit(record)">修改</a-button>
-            <a-button type="primary" icon="download" @click="handleDownload(record)">下载</a-button>-->
           </template>
         </a-table>
       </div>
@@ -159,6 +157,11 @@ export default {
       let len = this.selectedRowKeys.length;
       return `已选择 ${len} 项`;
     }
+  },
+  filters: {
+    downloadable(record) {
+      return Math.random() > 0.5
+    },
   },
   methods: {
     handleTableChange(pagination, filters, sorter) {
