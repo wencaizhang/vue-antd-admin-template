@@ -130,7 +130,7 @@ export const asyncRouterMap = [
         name: "network",
         component: RouteView,
         redirect: "network/router",
-        meta: { title: "网络", icon: "wifi", permission: ["dashboard"] },
+        meta: { title: "网络", icon: "global", permission: ["dashboard"] },
         children: [
           {
             path: "router",

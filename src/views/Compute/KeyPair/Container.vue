@@ -9,7 +9,7 @@
           <a-row type="flex" justify="space-between">
             <a-col>
               <a-row type="flex" justify="space-between">
-                <create-modal/>
+                <create-modal v-on:showDownload="showDownloadModal=true;"/>
                 <import-modal v-bind:obj="obj"/>
                 <a-dropdown>
                   <a-menu slot="overlay" @click="handleMenuClick">
@@ -37,7 +37,7 @@
         <a-table
           :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
           :columns="columns"
-          :rowKey="record => record.login.uuid"
+          :rowKey="record => record.cell"
           :dataSource="data"
           :pagination="pagination"
           :loading="loading"
@@ -57,21 +57,6 @@
         </a-table>
       </div>
     </PageLayout>
-    <a-modal
-      title="删除秘钥对"
-      okText="删除"
-      okType="danger"
-      :visible="showDeleteModal"
-      :confirmLoading="confirmLoading"
-      @ok="handleDeleteModalOk"
-      @cancel="showDeleteModal = false;"
-    >
-      <p>
-        您已选择了秘钥
-        <span style="color: #ff4d4f;">“test-keypair”</span>，请确认你的操作，
-      </p>
-      <p>删除前请确认你已经备份该秘钥，或者确定已不再使用该秘钥。</p>
-    </a-modal>
     <a-modal
       title="下载密钥对"
       okText="下载"
@@ -132,7 +117,6 @@ export default {
     return {
       tabKey: 1,
       confirmLoading: false,
-      showDeleteModal: false,
       showTagModal: false,
       showEditModal: false,
       showDownloadModal: false,
@@ -160,8 +144,8 @@ export default {
   },
   filters: {
     downloadable(record) {
-      return Math.random() > 0.5
-    },
+      return Math.random() > 0.5;
+    }
   },
   methods: {
     handleTableChange(pagination, filters, sorter) {
@@ -176,13 +160,50 @@ export default {
         ...filters
       });
     },
+    handleBatchDelete() {
+      const vm = this;
+      const h = this.$createElement;
+      const vnode = h(
+        "ul",
+        this.selectedRowKeys.map(item => {
+          return h("li", item);
+        })
+      );
+
+      // 批量删除
+      this.$confirm({
+        title:
+          "您已经选择了下列密钥，删除前请确认你已经备份该秘钥，或者确定已不再使用该秘钥。",
+        content: vnode,
+        iconType: "warning",
+        okText: "删除",
+        okType: "danger",
+        // content: 'When clicked the OK button, this dialog will be closed after 1 second',
+        onOk() {
+          return new Promise((resolve, reject) => {
+            setTimeout(resolve, 1000);
+          })
+            .then(() => {
+              const indexs = vm.selectedRowKeys.map(key => {
+                return vm.data.findIndex(item => item.cell == key);
+              });
+              vm._deleteData(indexs);
+            })
+            .catch(() => console.log("Oops errors!"));
+        },
+        onCancel() {}
+      });
+    },
     handleMenuClick({ key }) {
-      console.log(`Click on item ${key}`);
+      // 批量操作
+      if (this.selectedRowKeys.length === 0) {
+        this.$message.info("请先选择您要操作的实例");
+        return;
+      }
       switch (key) {
         case "1":
           // 删除
-          this.showDeleteModal = true;
-          console.log(`Click on item ${key}`);
+          this.handleBatchDelete();
           break;
         case "2":
           // 打标签
@@ -231,7 +252,9 @@ export default {
       console.log(record);
       this.showDownloadModal = true;
     },
-    handleDownloadModalOk() {},
+    handleDownloadModalOk() {
+      this.showDownloadModal = false;
+    },
     handleSingleMenuClick(record, { key }) {
       console.log(record, key);
       switch (key) {
@@ -245,6 +268,27 @@ export default {
         default:
           break;
       }
+    },
+    _deleteData(indexs = []) {
+      if (!indexs.length) return;
+      // 数组删除一个元素之后，索引会发生变化。所以要对删除目标的索引进行处理。
+      const parseIndexs = indexs.map((item, index) => item - index);
+      const keys = parseIndexs.map(index => {
+        const key = this.data[index].cell;
+        this.data.splice(index, 1);
+        return key;
+      });
+      this.$message.success("删除成功！");
+      this._updateSelectedRowKeys(keys);
+    },
+    _updateSelectedRowKeys(keys) {
+      // 删除后需要更新 selectedRowKeys
+      keys.forEach(key => {
+        let index = this.selectedRowKeys.findIndex(item => item === key);
+        if (index !== -1) {
+          this.selectedRowKeys.splice(index, 1);
+        }
+      });
     }
   }
 };

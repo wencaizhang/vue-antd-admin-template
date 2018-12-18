@@ -134,11 +134,11 @@ export default {
       //   dataIndex: "phone",
       //   customRender: renderContent
       // },
-      {
-        title: "Address",
-        dataIndex: "address",
-        customRender: renderContent
-      }
+      // {
+      //   title: "Address",
+      //   dataIndex: "address",
+      //   customRender: renderContent
+      // }
     ];
     return {
       data,
