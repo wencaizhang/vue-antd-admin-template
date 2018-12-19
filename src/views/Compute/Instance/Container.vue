@@ -111,6 +111,7 @@ import RebuildCloudHostModal from "./Modals/RebuildCloudHostModal";
 import EditSecurityGroupModal from "./Modals/EditSecurityGroupModal";
 import OverviewModal from "./Modals/OverviewModal";
 
+import tablePageMixins from "@/utils/mixins/tablePageMixins";
 const columns = [
   {
     title: "ID",
@@ -174,6 +175,7 @@ const columns = [
 ];
 
 export default {
+  mixins    : [tablePageMixins],
   components: {
     PageLayout,
     CreateSnapshootModal,
@@ -183,18 +185,11 @@ export default {
     EditSecurityGroupModal,
     OverviewModal
   },
-  mounted() {
-    this.fetch();
-  },
+
   data() {
     return {
-      data: [],
-      pagination: {
-        showSizeChanger: true
-      },
-      loading: false,
+
       columns,
-      selectedRowKeys: [], // 多行选择
       selectedRowData: null, // 当行操作
       batchOperations: [{ text: "删除" }, { text: "重启" }, { text: "软重启" }],
       singleOperations: [
@@ -211,12 +206,7 @@ export default {
       selectedOperationKey: 0
     };
   },
-  computed: {
-    message() {
-      let len = this.selectedRowKeys.length;
-      return `已选择 ${len} 项`;
-    }
-  },
+
   methods: {
     update() {
       console.log("update");
@@ -230,43 +220,6 @@ export default {
         description: "操作成功，数据已更新",
         icon: <a-icon type="check-circle" style="color: #52c41a" />
       });
-    },
-    handleTableChange(pagination, filters, sorter) {
-      const pager = { ...this.pagination };
-      pager.current = pagination.current;
-      this.pagination = pager;
-      this.fetch({
-        results: pagination.pageSize,
-        page: pagination.current,
-        sortField: sorter.field,
-        sortOrder: sorter.order,
-        ...filters
-      });
-    },
-    async fetch(params = {}) {
-      this.loading = true;
-      let url = "https://randomuser.me/api";
-      try {
-        const data = awaitthis.$http.get(url, {
-          params: {
-            results: 10,
-            ...params
-          }
-        });
-        const pagination = { ...this.pagination };
-        pagination.total = 200;
-        this.loading = false;
-        this.data = data.results;
-        this.pagination = pagination;
-      } catch (e) {}
-    },
-    onSelectChange(selectedRowKeys) {
-      this.selectedRowKeys = selectedRowKeys;
-      console.log(this.selectedRowKeys);
-    },
-    onSearch(value) {
-      console.log(value);
-      this.fetch();
     },
     handleMenuClick(e) {
       let key = e.key;
@@ -398,29 +351,6 @@ export default {
           break;
       }
     },
-    _deleteData(indexs = []) {
-      if (!indexs.length) return;
-      // 数组删除一个元素之后，索引会发生变化。所以要对删除目标的索引进行处理。
-      const parseIndexs = indexs.map((item, index) => item - index);
-      console.log(parseIndexs);
-      const keys = parseIndexs.map(index => {
-        const key = this.data[index].cell;
-        this.data.splice(index, 1);
-        return key;
-      });
-      this.$message.success("删除成功！");
-      this._updateSelectedRowKeys(keys);
-    },
-    _updateSelectedRowKeys(keys) {
-      // 删除后需要更新 selectedRowKeys
-      keys.forEach(key => {
-        let index = this.selectedRowKeys.findIndex(item => item === key);
-        if (index !== -1) {
-          this.selectedRowKeys.splice(index, 1);
-        }
-      });
-    },
-    _addData() {}
   }
 };
 </script>

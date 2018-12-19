@@ -65,6 +65,8 @@ import CreateModal from "./CreateModal";
 import EditModal from "./EditModal";
 import DetailModal from "./DetailModal";
 import PageLayout from "@/components/Layout/PageLayout.vue";
+
+import tablePageMixins from "@/utils/mixins/tablePageMixins";
 const columns = [
   {
     title: "ID",
@@ -100,15 +102,14 @@ const columns = [
 ];
 
 export default {
+  mixins    : [tablePageMixins],
   components: {
     CreateModal,
     EditModal,
     DetailModal,
     PageLayout
   },
-  mounted() {
-    this.fetch();
-  },
+
   data() {
     return {
       tabKey: 1,
@@ -119,64 +120,16 @@ export default {
         minDisk: "42",
         镜像格式: "Yiminghe"
       },
-      data: [],
-      pagination: {
-        showSizeChanger: true
-      },
-      loading: false,
       columns,
-      selectedRowKeys: [],
       showDetailModal: false,
       selectedRowData: {}
     };
   },
-  computed: {
-    message() {
-      let len = this.selectedRowKeys.length;
-      return `已选择 ${len} 项`;
-    }
-  },
+
   methods: {
-    handleTableChange(pagination, filters, sorter) {
-      const pager = { ...this.pagination };
-      pager.current = pagination.current;
-      this.pagination = pager;
-      this.fetch({
-        results: pagination.pageSize,
-        page: pagination.current,
-        sortField: sorter.field,
-        sortOrder: sorter.order,
-        ...filters
-      });
-    },
+
     handleTabChange(v) {
       this.tabKey = v;
-    },
-    fetch(params = {}) {
-      this.loading = true;
-      let url = "https://randomuser.me/api";
-      this.$http
-        .get(url, {
-          params: {
-            results: 10,
-            ...params
-          }
-        })
-        .then(data => {
-          const pagination = { ...this.pagination };
-          // Read total count from server
-          // pagination.total = data.totalCount;
-          pagination.total = 200;
-          this.loading = false;
-          this.data = data.results;
-          this.pagination = pagination;
-        });
-    },
-    onSelectChange(selectedRowKeys) {
-      this.selectedRowKeys = selectedRowKeys;
-    },
-    onClearSelected() {
-      this.selectedRowKeys = [];
     },
     handleViewDetail(record) {
       console.log(record);

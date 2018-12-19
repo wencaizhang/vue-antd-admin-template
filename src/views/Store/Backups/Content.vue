@@ -7,9 +7,9 @@
             <a-button icon="sync" @click="handleRefresh" style="margin-right: 10px;" title="刷新"></a-button>
             <a-button type="danger" @click="handleBatchDelete" style="margin-right: 10px;">删除</a-button>
             <a-input-search
-              placeholder="input search text"
-              @search="onSearch"
-              style="width: 200px"
+              placeholder = "input search text"
+              @search     = "onSearch"
+              style       = "width: 200px"
               enterButton
             />
           </a-row>
@@ -27,13 +27,13 @@
       </div>
     </a-alert>
     <a-table
-      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-      :columns="columns"
-      :rowKey="record => record.login.uuid"
-      :dataSource="data"
-      :pagination="pagination"
-      :loading="loading"
-      @change="handleTableChange"
+      :rowSelection = "{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+      :columns      = "columns"
+      :rowKey       = "record => record.login.uuid"
+      :dataSource   = "data"
+      :pagination   = "pagination"
+      :loading      = "loading"
+        @change     = "handleTableChange"
     >
       <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
       <template slot="operation" slot-scope="text, record">
@@ -60,37 +60,37 @@ import EditModal from "./Modal/Edit";
 import DeleteModal from "./Modal/Delete";
 import DetailModal from "./Modal/Detail";
 
-import tablePageMixins from "../tablePageMixins";
+import tablePageMixins from "@/utils/mixins/tablePageMixins";
 const columns = [
   {
-    title: "ID",
+    title    : "ID",
     dataIndex: "phone"
   },
   {
-    title: "名称",
+    title    : "名称",
     dataIndex: "name.first"
   },
   {
-    title: "状态",
+    title    : "状态",
     dataIndex: "id.name"
   },
   {
-    title: "外部网络",
+    title    : "外部网络",
     dataIndex: "id"
   },
   {
-    title: "可用域",
+    title    : "可用域",
     dataIndex: "name.last"
   },
   {
-    title: "操作",
-    dataIndex: "operation",
+    title      : "操作",
+    dataIndex  : "operation",
     scopedSlots: { customRender: "operation" }
   }
 ];
 
 export default {
-  mixins: [tablePageMixins],
+  mixins    : [tablePageMixins],
   components: {
     CreateModal,
     EditModal,
@@ -100,28 +100,28 @@ export default {
 
   data() {
     return {
-      name: "backups",
-      confirmLoading: false,
+      name           : "backups",
+      confirmLoading : false,
       showDeleteModal: false,
       columns,
       singleOperations: [
         {
           modalName: "create",
-          text: "创建硬盘"
+          text     : "创建硬盘"
         },
         {
           modalName: "edit",
-          text: "编辑硬盘快照"
+          text     : "编辑硬盘快照"
         },
         {
           modalName: "delete",
-          text: "删除硬盘快照"
+          text     : "删除硬盘快照"
         }
       ]
     };
   },
   computed: {},
-  methods: {
+  methods : {
     // 删除弹框
     handleDeleteModalOk() {},
 
@@ -131,8 +131,8 @@ export default {
         return;
       }
 
-      const vm = this;
-      const h = this.$createElement;
+      const vm    = this;
+      const h     = this.$createElement;
       const vnode = h(
         "ul",
         this.selectedRowKeys.map(item => {
@@ -142,11 +142,11 @@ export default {
 
       // 批量删除
       this.$confirm({
-        title: "您已经选择了下列硬盘，即将进行删除，请确认你的操作。",
-        content: vnode,
+        title   : "您已经选择了下列硬盘，即将进行删除，请确认你的操作。",
+        content : vnode,
         iconType: "warning",
-        okText: "删除",
-        okType: "danger",
+        okText  : "删除",
+        okType  : "danger",
         onOk() {
           return new Promise((resolve, reject) => {
             setTimeout(resolve, 1000);

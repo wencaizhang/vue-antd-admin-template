@@ -58,6 +58,10 @@ const CollectionCreateForm = Form.create()({
   }
 });
 
+
+/*
+* 创建完成之后立即显示下载弹框，避免用户不知情
+*/
 export default {
   data() {
     return {

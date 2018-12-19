@@ -60,7 +60,7 @@ import EditModal from "./Modal/Edit";
 import DeleteModal from "./Modal/Delete";
 import DetailModal from "./Modal/Detail";
 
-import tablePageMixins from "../tablePageMixins";
+import tablePageMixins from "@/utils/mixins/tablePageMixins";
 const columns = [
   {
     title: "ID",
