@@ -81,7 +81,7 @@ import Delete from "./Modal/Delete";
 import Upload from "./Modal/Upload";
 import ChangeDiskType from "./Modal/ChangeDiskType";
 
-import tablePageMixins from "../tablePageMixins";
+import tablePageMixins from "@/utils/mixins/tablePageMixins";
 const columns = [
   {
     title: "ID",
