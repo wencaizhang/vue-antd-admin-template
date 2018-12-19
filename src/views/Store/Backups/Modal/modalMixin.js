@@ -12,12 +12,12 @@ export const baseModalMixins = {
   },
   computed: {
     visible() {
-      return this.$store.state.store.disk.modalVisible[this.name];
+      return this.$store.state.store.backups.modalVisible[this.name];
     }
   },
   methods: {
     handleCancel() {
-      this.$store.commit("disk/toggleModalVisible", this.name);
+      this.$store.commit("backups/toggleModalVisible", this.name);
     },
     handleCreate() {
       this.confirmLoading = true;
@@ -48,12 +48,12 @@ export const formModalMixins = {
   },
   computed: {
     visible() {
-      return this.$store.state.store.disk.modalVisible[this.name];
+      return this.$store.state.store.backups.modalVisible[this.name];
     }
   },
   methods: {
     handleCancel() {
-      this.$store.commit("disk/toggleModalVisible", this.name);
+      this.$store.commit("backups/toggleModalVisible", this.name);
     },
     handleCreate() {
       this.form.validateFields((err, values) => {

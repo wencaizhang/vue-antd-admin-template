@@ -4,6 +4,7 @@
       @cancel="handleCancel"
       @ok="handleCreate"
       :visible="visible"
+      :confirmLoading="confirmLoading"
       title="更改硬盘类型"
       okText="保存"
     >
@@ -45,12 +46,10 @@ export default {
   mixins: [formModalMixins],
   data() {
     return {
-      name: "changeDiskType",
+      name: "changeDiskType"
     };
   },
 
-  methods: {
-
-  }
+  methods: {}
 };
 </script>

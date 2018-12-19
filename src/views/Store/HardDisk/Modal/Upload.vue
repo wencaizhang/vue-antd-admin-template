@@ -5,6 +5,7 @@
       @cancel="handleCancel"
       @ok="handleCreate"
       :visible="visible"
+      :confirmLoading="confirmLoading"
       title="上传硬盘到镜像"
       okText="提交"
     >
@@ -42,12 +43,10 @@ export default {
   mixins: [formModalMixins],
   data() {
     return {
-      name: "upload",
+      name: "upload"
     };
   },
 
-  methods: {
-
-  }
+  methods: {}
 };
 </script>

@@ -20,7 +20,7 @@
           </li>
         </ul>
         <template v-else>
-          <h1>快照</h1>
+          <Snapshoot />
         </template>
       </div>
     </PageLayout>
@@ -29,9 +29,11 @@
 
 <script>
 import PageLayout from "@/components/Layout/PageLayout.vue";
+import Snapshoot from "../Snapshoot/Content";
 export default {
   components: {
-    PageLayout
+    PageLayout,
+    Snapshoot
   },
   data() {
     return {
