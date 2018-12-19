@@ -1,6 +1,7 @@
 export default {
   state: {
     modalVisible: {
+      create: false,
       edit: false,
       uninstall: false,
       dilatation: false,
@@ -10,7 +11,8 @@ export default {
       delete: false,
       upload: false,
       changeDiskType: false,
-    }
+    },
+    handleRowData: {}
   },
   mutations: {
     toggleModalVisible: (state, name = "") => {
@@ -24,6 +26,9 @@ export default {
       if (name) {
         state.modalVisible[name] = !visible;
       }
+    },
+    setHandleRowData: (state, record) => {
+      Object.assign(state.handleRowData, record);
     }
   },
   actions: {},

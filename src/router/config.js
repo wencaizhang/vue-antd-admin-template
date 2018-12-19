@@ -3,7 +3,6 @@ import Login from "../views/User/Login.vue";
 import RouteView from "@/components/Layout/RouteView";
 import BasicLayout from "@/components/Layout/BasicLayout";
 
-
 /**
  * 基础路由
  * @type { *[] }
@@ -17,7 +16,7 @@ export const constantRouterMap = [
     children: [
       {
         path: "login",
-        name: "login",
+        name: "login"
         // component: () => import(/* webpackChunkName: "user" */ '@/views/user/Login')
       },
       {
@@ -55,7 +54,7 @@ export const asyncRouterMap = [
       {
         path: "dashboard",
         name: "dashboard",
-        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard/Container'),
+        component: () => import(/* webpackChunkName: "dashboard" */ "@/views/Dashboard/Container"),
         meta: { title: "总览", icon: "dashboard", permission: ["dashboard"] }
       },
 
@@ -70,27 +69,30 @@ export const asyncRouterMap = [
           {
             path: "instance",
             name: "instance",
-            component: () => import(/* webpackChunkName: "compute" */ '@/views/Compute/Instance/Container'),
-            meta: { title: "实例", permission: ["dashboard"] },
-
+            component: () =>
+              import(/* webpackChunkName: "compute" */ "@/views/Compute/Instance/Container"),
+            meta: { title: "实例", permission: ["dashboard"] }
           },
           {
             path: "instance/create",
             name: "CreateInstance",
             hidden: true,
-            component: () => import(/* webpackChunkName: "compute" */ '@/views/Compute/CreateInstance/Container'),
-            meta: { title: "创建实例", permission: ["dashboard"] },
+            component: () =>
+              import(/* webpackChunkName: "compute" */ "@/views/Compute/CreateInstance/Container"),
+            meta: { title: "创建实例", permission: ["dashboard"] }
           },
           {
             path: "mirror",
             name: "mirror",
-            component: () => import(/* webpackChunkName: "compute" */ '@/views/Compute/Mirror/Container'),
+            component: () =>
+              import(/* webpackChunkName: "compute" */ "@/views/Compute/Mirror/Container"),
             meta: { title: "镜像", permission: ["dashboard"] }
           },
           {
             path: "key-pair",
             name: "key-pair",
-            component: () => import(/* webpackChunkName: "compute" */ '@/views/Compute/KeyPair/Container'),
+            component: () =>
+              import(/* webpackChunkName: "compute" */ "@/views/Compute/KeyPair/Container"),
             meta: { title: "SSH密钥对", permission: ["dashboard"] }
           }
         ]
@@ -107,21 +109,35 @@ export const asyncRouterMap = [
           {
             path: "harddisk",
             name: "harddisk",
-            component: () => import(/* webpackChunkName: "store" */ '@/views/Store/HardDisk/Container'),
-            meta: { title: "硬盘", permission: ["dashboard"] }
+            component: () =>
+              import(/* webpackChunkName: "store" */ "@/views/Store/HardDisk/Container"),
+            meta: { title: "硬盘", permission: ["dashboard"] },
+            children: [
+              {
+                path: ":id",
+                name: "diskInstance",
+                hidden: true,
+                component: () =>
+                  import(/* webpackChunkName: "store" */ "@/views/Store/HardDisk/Instance"),
+                meta: { title: "硬盘", permission: ["dashboard"] }
+              }
+            ]
           },
+
           {
             path: "snapshoot",
             name: "snapshoot",
-            component: () => import(/* webpackChunkName: "store" */ '@/views/Store/Snapshoot/Container'),
+            component: () =>
+              import(/* webpackChunkName: "store" */ "@/views/Store/Snapshoot/Container"),
             meta: { title: "快照", permission: ["dashboard"] }
           },
           {
             path: "backups",
             name: "backups",
-            component: () => import(/* webpackChunkName: "store" */ '@/views/Store/Backups/Container'),
+            component: () =>
+              import(/* webpackChunkName: "store" */ "@/views/Store/Backups/Container"),
             meta: { title: "备份", permission: ["dashboard"] }
-          },
+          }
         ]
       },
       // 网络
@@ -135,19 +151,22 @@ export const asyncRouterMap = [
           {
             path: "router",
             name: "router",
-            component: () => import(/* webpackChunkName: "network" */ '@/views/Network/Router/Container'),
+            component: () =>
+              import(/* webpackChunkName: "network" */ "@/views/Network/Router/Container"),
             meta: { title: "路由器", permission: ["dashboard"] }
           },
           {
             path: "subnet",
             name: "subnet",
-            component: () => import(/* webpackChunkName: "network" */ '@/views/Network/Subnet/Container'),
+            component: () =>
+              import(/* webpackChunkName: "network" */ "@/views/Network/Subnet/Container"),
             meta: { title: "子网", permission: ["dashboard"] }
           },
           {
             path: "ip",
             name: "ip",
-            component: () => import(/* webpackChunkName: "network" */ '@/views/Network/IP/Container'),
+            component: () =>
+              import(/* webpackChunkName: "network" */ "@/views/Network/IP/Container"),
             meta: { title: "公网IP", permission: ["dashboard"] }
           }
         ]
@@ -164,9 +183,10 @@ export const asyncRouterMap = [
           {
             path: "firewall",
             name: "firewall",
-            component: () => import(/* webpackChunkName: "expense" */ '@/views/Safety/Firewall/Container'),
+            component: () =>
+              import(/* webpackChunkName: "expense" */ "@/views/Safety/Firewall/Container"),
             meta: { title: "防火墙", permission: ["dashboard"] }
-          },
+          }
         ]
       },
 
@@ -181,29 +201,33 @@ export const asyncRouterMap = [
           {
             path: "overview",
             name: "overview",
-            component: () => import(/* webpackChunkName: "expense" */ '@/views/Expense/Overview/Container'),
+            component: () =>
+              import(/* webpackChunkName: "expense" */ "@/views/Expense/Overview/Container"),
             meta: { title: "费用概览", permission: ["dashboard"] }
           },
           {
             path: "record",
             name: "record",
-            component: () => import(/* webpackChunkName: "expense" */ '@/views/Expense/Record/Container'),
+            component: () =>
+              import(/* webpackChunkName: "expense" */ "@/views/Expense/Record/Container"),
             meta: { title: "充值记录", permission: ["dashboard"] }
           },
           {
             path: "order",
             name: "order",
-            component: () => import(/* webpackChunkName: "expense" */ '@/views/Expense/Order/Container'),
+            component: () =>
+              import(/* webpackChunkName: "expense" */ "@/views/Expense/Order/Container"),
             meta: { title: "消费订单", permission: ["dashboard"] }
           },
           {
             path: "bill-detail",
             name: "bill-detail",
-            component: () => import(/* webpackChunkName: "expense" */ '@/views/Expense/BillDetail/Container'),
+            component: () =>
+              import(/* webpackChunkName: "expense" */ "@/views/Expense/BillDetail/Container"),
             meta: { title: "账单明细", permission: ["dashboard"] }
-          },
+          }
         ]
-      },
+      }
     ]
   },
   {

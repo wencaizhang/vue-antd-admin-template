@@ -1,144 +1,222 @@
-<script>
-import { Form } from "ant-design-vue";
-const CollectionCreateForm = Form.create()({
-  props: ["visible"],
-  render() {
-    const { visible, form } = this;
-    const { getFieldDecorator } = form;
-    return (
-      <a-modal
-        visible={visible}
-        title="创建硬盘"
-        okText="创建"
-        bodyStyle={{ 'max-height': '400px', overflow: 'auto'}}
-        onCancel={() => {
-          this.$emit("cancel");
-        }}
-        onOk={() => {
-          this.$emit("create");
-        }}
-      >
-        <a-form >
-          <a-form-item
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 14 }}
-            label="路由器名称："
+<template>
+  <div>
+    <a-modal
+      @cancel="handleCancel"
+      @ok="handleCreate"
+      :bodyStyle="bodyStyle"
+      :visible="visible"
+      title="创建硬盘"
+      okText="保存"
+    >
+      <a-form :form="form">
+        <a-form-item
+          label="名称"
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
+          <a-input
+            v-decorator="[
+              'name',
+              {
+                rules: [{ required: true, message: '请输入名称' }]
+              }
+            ]"
+            placeholder="请输入名称"
+          />
+        </a-form-item>
+        <a-form-item
+          label="描述："
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
+          <a-textarea
+            placeholder="请输入描述"
+            v-decorator="[
+              'desc',
+              {
+                rules: [{ required: true, message: '请输入描述' }]}
+            ]"
+          />
+        </a-form-item>
+        <a-form-item
+          label="数量："
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
+          <a-input-number
+            :min="1"
+            v-decorator="[
+              'num',
+              {
+                rules: [{ required: true, message: '请输入数量' }]}
+            ]"
+          />
+        </a-form-item>
+        <a-form-item
+          label="硬盘来源："
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
+          <a-select
+            @select="handleSelect"
+            v-decorator="[
+              'source',
+              {
+                rules: [{ required: true, message: '请选择硬盘来源' }]}
+            ]"
           >
-            {getFieldDecorator("路由器名称", {
-              rules: [
-                {
-                  required: true,
-                  message: "Please input the title of collection!"
-                }
-              ]
-            })(<a-input />)}
-          </a-form-item>
-          <a-form-item
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 14 }}
-            label="外部网络："
+            <a-select-option
+              v-for="item in sourceOptions"
+              :key="item.id"
+              :value="item.value"
+            >{{item.text}}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item
+          v-if="source && source != 0"
+          :label="formItemData.label"
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
+          <!-- 此 item 根据硬盘来源进行变化 -->
+          <a-select
+            v-decorator="[
+              formItemData.id,
+              {
+                initialValue: formItemData.option[0]
+              }
+            ]"
           >
-            {getFieldDecorator("外部网络", {
-              rules: [
-                {
-                  required: true,
-                  message: "Please input the title of collection!"
-                }
-              ]
-            })(
-                <a-radio-group name="radioGroup">
-                  <a-radio value="1">external</a-radio>
-                  <a-radio value="2">使用已有秘钥</a-radio>
-                </a-radio-group>
-            )}
-          </a-form-item>
-          <a-form-item
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 14 }}
-            label="启用管理员状态："
+            <a-select-option v-for="item in formItemData.option" :key="item" :value="item">{{item}}</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item
+          label="类型："
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
+          <a-radio-group
+            v-decorator="[
+              'type',
+              {
+                rules: [{ required: true, message: '请选择类型' }]}
+            ]"
           >
-            {getFieldDecorator("管理员状态", {
-              rules: [
-                {
-                  required: true,
-                  message: "Please input the title of collection!"
-                }
-              ]
-            })(
-              <a-checkbox >启用</a-checkbox>
-            )}
-          </a-form-item>
-          <a-form-item
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 14 }}
-            label="启动SNAT："
+            <a-radio value="普通">普通</a-radio>
+            <a-radio value="SSD">SSD</a-radio>
+          </a-radio-group>
+        </a-form-item>
+        <a-form-item
+          label="容量："
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
+          <a-input-number
+            :min="1"
+            :formatter="value => value ? `${value} GB` : '' "
+            :parser="value => value.replace(' GB', '')"
+            v-decorator="[
+              'size',
+              {
+                rules: [{ required: true, message: '请输入容量' }]}
+            ]"
+          />
+        </a-form-item>
+        <a-form-item
+          label="购买时长："
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
+          <a-select
+            v-decorator="[
+              'time',
+              {
+                rules: [{ required: true, message: '请选择购买时长' }]}
+            ]"
           >
-            {getFieldDecorator("启动SNAT", {
-              rules: [
-                {
-                  required: true,
-                  message: "Please input the title of collection!"
-                }
-              ]
-            })(
-              <a-checkbox >启动</a-checkbox>
-            )}
-          </a-form-item>
-        </a-form>
-      </a-modal>
-    );
-  }
-});
+            <a-select-option value="1">1个月</a-select-option>
+            <a-select-option value="2">2个月</a-select-option>
+            <a-select-option value="3">3个月</a-select-option>
+            <a-select-option value="6">半年</a-select-option>
+            <a-select-option value="12">1年</a-select-option>
+            <a-select-option value="24">2年</a-select-option>
+            <a-select-option value="36">3年</a-select-option>
+          </a-select>
+        </a-form-item>
+      </a-form>
+      <a-row>
+        <a-col :span="12" :offset="8">配置费用： ￥10.00</a-col>
+      </a-row>
+    </a-modal>
+  </div>
+</template>
 
+<script>
+import { formModalMixins } from "./modalMixin";
 export default {
+  mixins: [formModalMixins],
   data() {
     return {
-      visible: false
+      name: "create",
+      source: "",
+      sourceOptions: [
+        {
+          value: 0,
+          text: "空白硬盘",
+          id: "blank",
+          option: ["web1-2018.10.11", "web1-2012.13.11"]
+        },
+        {
+          value: 1,
+          text: "快照",
+          id: "snapshoot",
+          option: ["web1-2018.10.11", "web1-2012.13.11"]
+        },
+        {
+          value: 2,
+          text: "备份",
+          id: "backup",
+          option: ["db3-2018.11.10", "db3-2018.11.11"]
+        },
+        {
+          value: 3,
+          text: "硬盘",
+          id: "disk",
+          option: ["db3", "web1", "centos7.4"]
+        },
+        {
+          value: 4,
+          text: "镜像",
+          id: "mirror",
+          option: [
+            "ubunt14.04",
+            "ubunt16.04",
+            "ubunt18.04",
+            "centos6.8",
+            "centos7.5"
+          ]
+        }
+      ]
     };
   },
-  methods: {
-    showModal() {
-      this.visible = true;
-    },
-    handleCancel() {
-      this.visible = false;
-    },
-    handleCreate() {
-      const form = this.formRef.form;
-      form.validateFields((err, values) => {
-        if (err) {
-          return;
-        }
-
-        console.log("Received values of form: ", values);
-        form.resetFields();
-        this.visible = false;
-      });
-    },
-    saveFormRef(formRef) {
-      this.formRef = formRef;
+  computed: {
+    formItemData() {
+      const key = Number.parseInt(this.source);
+      const item = this.sourceOptions[key];
+      const data = {
+        id: item.id,
+        validateStatus: "success",
+        help: `请选择${item.text}`,
+        label: `选择${item.text}`,
+        option: item.option
+      };
+      return data;
     }
   },
-
-  render() {
-    return (
-      <div>
-        <a-button
-          type="primary"
-          style="margin-right: 10px;"
-          icon="plus"
-          onClick={this.showModal}
-        >
-          创建
-        </a-button>
-        <CollectionCreateForm
-          wrappedComponentRef={this.saveFormRef}
-          visible={this.visible}
-          onCancel={this.handleCancel}
-          onCreate={this.handleCreate}
-        />
-      </div>
-    );
+  methods: {
+    handleSelect(v) {
+      this.source = v;
+    }
   }
 };
 </script>

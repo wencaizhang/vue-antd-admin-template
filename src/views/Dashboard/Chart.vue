@@ -28,7 +28,7 @@ export default {
       const yData = this.data.children.map(item => item.text);
       const xData = this.data.children.map(item => item.value);
 
-      console.log(yData);
+      // console.log(yData);
 
       // 绘制图表
       myChart.setOption({
