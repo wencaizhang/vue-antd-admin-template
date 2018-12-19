@@ -15,23 +15,18 @@
   </div>
 </template>
 <script>
+import { baseModalMixins } from "./modalMixin";
 export default {
+  mixins: [baseModalMixins],
   data() {
     return {
       name: "uninstall"
     };
   },
-  computed: {
-    visible() {
-      return this.$store.state.store.modalVisible[this.name];
-    }
-  },
+
   methods: {
-    handleCancel() {
-      this.$store.commit("toggleModalVisible", this.name);
-    },
     handleCreate() {
-      this.$store.commit("toggleModalVisible", this.name);
+      this.handleCancel();
     }
   }
 };

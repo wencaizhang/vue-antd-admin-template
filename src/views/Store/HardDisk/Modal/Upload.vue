@@ -5,7 +5,7 @@
       @cancel="handleCancel"
       @ok="handleCreate"
       :visible="visible"
-      title="上传镜像到硬盘"
+      title="上传硬盘到镜像"
       okText="提交"
     >
       <a-form :form="form">
@@ -37,36 +37,17 @@
   </div>
 </template>
 <script>
+import { formModalMixins } from "./modalMixin";
 export default {
+  mixins: [formModalMixins],
   data() {
     return {
       name: "upload",
-      formItemLayout: {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 14 }
-      },
-      form: this.$form.createForm(this)
     };
   },
-  computed: {
-    visible() {
-      return this.$store.state.store.modalVisible[this.name];
-    }
-  },
+
   methods: {
-    handleCancel() {
-      this.$store.commit("toggleModalVisible", this.name);
-    },
-    handleCreate() {
-      this.form.validateFields((err, values) => {
-        if (err) {
-          return;
-        }
-        console.log("Received values of form: ", values);
-        this.form.resetFields();
-        this.$store.commit("toggleModalVisible", this.name);
-      });
-    }
+
   }
 };
 </script>

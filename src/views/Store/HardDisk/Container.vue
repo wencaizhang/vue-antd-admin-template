@@ -1,15 +1,30 @@
 <template>
   <div>
-    <PageLayout>
+    <router-view v-if="$route.matched.length === 4"></router-view>
+    <PageLayout v-else>
       <div slot="header">
         <p>硬盘为主机提供块存储设备，它独立于主机的生命周期而存在，可以被连接到任意运行中的主机上。注意，硬盘附加到主机上后，您还需要登录到您的主机的操作系统中去加载该硬盘。当然，也可以从主机上卸载硬盘、并转至其他主机。注意，请先在您的主机的操作系统中卸载硬盘，然后再在友普云控制台上卸载。</p>
+        <a-tabs
+          v-if="$route.matched.length === 4"
+          defaultActiveKey="1"
+          @change="handleTabChange"
+          style="position:relative; top: 17px;"
+        >
+          <a-tab-pane tab="概览" key="1"></a-tab-pane>
+          <a-tab-pane tab="快照" key="2"></a-tab-pane>
+        </a-tabs>
       </div>
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">
           <a-row type="flex" justify="space-between">
             <a-col>
               <a-row type="flex" justify="space-between">
-                <create-modal/>
+                <a-button
+                  type="primary"
+                  style="margin-right: 10px;"
+                  icon="plus"
+                  @click="handleCreate"
+                >创建</a-button>
                 <a-button type="danger" @click="handleBatchDelete" style="margin-right: 10px;">删除</a-button>
                 <a-input-search
                   placeholder="input search text"
@@ -40,7 +55,9 @@
           :loading="loading"
           @change="handleTableChange"
         >
-          <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
+          <template slot="name" slot-scope="name, record">
+            <a href="javascript:;" @click="handleViewDetail(record)">{{name.first}} {{name.last}}</a>
+          </template>
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
               <a-menu slot="overlay" @click="handleSingleMenuClick(record, $event)">
@@ -52,33 +69,19 @@
             </a-dropdown>
           </template>
         </a-table>
+
+        <CreateModal/>
+        <EditModal/>
+        <Uninstall/>
+        <Dilatation/>
+        <Mount/>
+        <CreateSnapshoot/>
+        <CreateBackups/>
+        <Upload/>
+        <Delete/>
+        <ChangeDiskType/>
       </div>
     </PageLayout>
-    <a-modal
-      title="删除秘钥对"
-      okText="删除"
-      okType="danger"
-      :visible="showDeleteModal"
-      :confirmLoading="confirmLoading"
-      @ok="handleDeleteModalOk"
-      @cancel="showDeleteModal = false;"
-    >
-      <p>
-        您已选择了秘钥
-        <span style="color: #ff4d4f;">“test-keypair”</span>，请确认你的操作，
-      </p>
-      <p>删除前请确认你已经备份该秘钥，或者确定已不再使用该秘钥。</p>
-    </a-modal>
-
-    <EditModal/>
-    <Uninstall/>
-    <Dilatation/>
-    <Mount/>
-    <CreateSnapshoot />
-    <CreateBackups />
-    <Upload />
-    <Delete />
-    <ChangeDiskType/>
   </div>
 </template>
 
@@ -101,7 +104,8 @@ const columns = [
   },
   {
     title: "名称",
-    dataIndex: "name.first"
+    dataIndex: "name",
+    scopedSlots: { customRender: "name" }
   },
   {
     title: "状态",
@@ -137,31 +141,61 @@ export default {
     PageLayout
   },
   mounted() {
+    if (this.$route.matched.length === 4) {
+      this.$route.meta.title = "硬盘实例";
+    }
     this.fetch();
   },
   data() {
     return {
-      confirmLoading: false,
-      showDeleteModal: false,
-      obj: {
-        名称: "aaa1231313aaa",
-        描述: "bbbb",
-        最低内存: "dddddd",
-        最小磁盘: "ccccc",
-        镜像格式: "Yiminghe"
-      },
       // 状态为可用，则全部显示，状态为使用中，则显示 visible: true 的操作选项
       singleOperations: [
-        { showModal: false, modalName: 'edit', visible: true, text: "修改" },
-        { showModal: false, modalName: 'uninstall', visible: true, text: "卸载硬盘" },
-        { showModal: false, modalName: 'dilatation', visible: false, text: "扩容" },
-        { showModal: false, modalName: 'mount', visible: false, text: "加载硬盘到主机" },
-        { showModal: false, modalName: 'createSnapshoot', visible: true, text: "创建快照" },
-        { showModal: false, modalName: 'createBackups', visible: false, text: "创建备份" },
-        { showModal: false, modalName: 'changeDiskType', visible: false, text: "修改硬盘类型" },
-        { showModal: false, modalName: 'changeDiskType', visible: false, text: "克隆硬盘" },
-        { showModal: false, modalName: 'upload', visible: true, text: "上传镜像" },
-        { showModal: false, modalName: 'delete', visible: false, text: "删除硬盘" }
+        { modalName: "edit", visible: true, text: "修改" },
+        {
+          modalName: "uninstall",
+          visible: true,
+          text: "卸载硬盘"
+        },
+        {
+          modalName: "dilatation",
+          visible: false,
+          text: "扩容"
+        },
+        {
+          modalName: "mount",
+          visible: false,
+          text: "加载硬盘到主机"
+        },
+        {
+          modalName: "createSnapshoot",
+          visible: true,
+          text: "创建快照"
+        },
+        {
+          modalName: "createBackups",
+          visible: false,
+          text: "创建备份"
+        },
+        {
+          modalName: "changeDiskType",
+          visible: false,
+          text: "修改硬盘类型"
+        },
+        {
+          modalName: "changeDiskType",
+          visible: false,
+          text: "克隆硬盘"
+        },
+        {
+          modalName: "upload",
+          visible: true,
+          text: "上传镜像"
+        },
+        {
+          modalName: "delete",
+          visible: false,
+          text: "删除硬盘"
+        }
       ],
       data: [],
       pagination: {
@@ -169,7 +203,8 @@ export default {
       },
       loading: false,
       columns,
-      selectedRowKeys: []
+      selectedRowKeys: [],
+      handleRowData: {}
     };
   },
   computed: {
@@ -179,6 +214,16 @@ export default {
     }
   },
   methods: {
+    handleCreate() {
+      this.$store.commit("toggleModalVisible", "create");
+    },
+    handleViewDetail(record) {
+      this.$store.commit("setHandleRowData", record);
+      this.$router.push({
+        name: "diskInstance",
+        params: { id: record.id.value || "abcdef" }
+      });
+    },
     handleTableChange(pagination, filters, sorter) {
       const pager = { ...this.pagination };
       pager.current = pagination.current;
@@ -191,22 +236,7 @@ export default {
         ...filters
       });
     },
-    handleMenuClick({ key }) {
-      console.log(`Click on item ${key}`);
-      switch (key) {
-        case "1":
-          break;
-        case "2":
-          this.showDeleteModal = true;
-          console.log(`Click on item ${key}`);
-          break;
-        case "3":
-          break;
 
-        default:
-          break;
-      }
-    },
     handleBatchDelete() {
       if (this.selectedRowKeys.length === 0) {
         this.$message.info("请先选择您要操作的硬盘");

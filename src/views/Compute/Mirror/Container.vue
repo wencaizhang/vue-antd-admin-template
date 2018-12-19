@@ -150,10 +150,7 @@ export default {
       });
     },
     handleTabChange(v) {
-      console.log("==========");
-      console.log(v);
       this.tabKey = v;
-      console.log("==========");
     },
     fetch(params = {}) {
       this.loading = true;
