@@ -5,6 +5,7 @@
       @cancel="handleCancel"
       @ok="handleCreate"
       :visible="visible"
+      :confirmLoading="confirmLoading"
       title="删除硬盘"
       okText="删除"
       okType="danger"

@@ -6,7 +6,7 @@
       :bodyStyle="bodyStyle"
       :visible="visible"
       :confirmLoading="confirmLoading"
-      title="创建硬盘"
+      title="基于快照创建新硬盘"
       okText="保存"
     >
       <a-form :form="form">
@@ -40,56 +40,20 @@
           />
         </a-form-item>
         <a-form-item
-          label="数量："
+          label="快照来源："
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
-          <a-input-number
-            :min="1"
-            v-decorator="[
-              'num',
-              {
-                rules: [{ required: true, message: '请输入数量' }]}
-            ]"
-          />
-        </a-form-item>
-        <a-form-item
-          label="硬盘来源："
-          :labelCol="formItemLayout.labelCol"
-          :wrapperCol="formItemLayout.wrapperCol"
-        >
-          <a-select
-            @select="handleSelect"
+          <a-input
+            :disabled="true"
             v-decorator="[
               'source',
               {
-                rules: [{ required: true, message: '请选择硬盘来源' }]}
-            ]"
-          >
-            <a-select-option
-              v-for="item in sourceOptions"
-              :key="item.id"
-              :value="item.value"
-            >{{item.text}}</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item
-          v-if="source && source != 0"
-          :label="formItemData.label"
-          :labelCol="formItemLayout.labelCol"
-          :wrapperCol="formItemLayout.wrapperCol"
-        >
-          <!-- 此 item 根据硬盘来源进行变化 -->
-          <a-select
-            v-decorator="[
-              formItemData.id,
-              {
-                initialValue: formItemData.option[0]
+                initialValue: 'db3-snap-201811020800(100GB',
               }
             ]"
-          >
-            <a-select-option v-for="item in formItemData.option" :key="item" :value="item">{{item}}</a-select-option>
-          </a-select>
+            placeholder="请输入名称"
+          />
         </a-form-item>
         <a-form-item
           label="类型："
@@ -103,7 +67,7 @@
                 rules: [{ required: true, message: '请选择类型' }]}
             ]"
           >
-            <a-radio value="普通">普通</a-radio>
+            <!-- <a-radio value="普通">普通</a-radio> -->
             <a-radio value="SSD">SSD</a-radio>
           </a-radio-group>
         </a-form-item>
@@ -113,7 +77,7 @@
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-input-number
-            :min="1"
+            :min="100"
             :formatter="value => value ? `${value} GB` : '' "
             :parser="value => value.replace(' GB', '')"
             v-decorator="[
@@ -146,7 +110,7 @@
         </a-form-item>
       </a-form>
       <a-row>
-        <a-col :span="12" :offset="8">配置费用： ￥10.00</a-col>
+        <a-col :span="12" :offset="8">配置费用： ￥120.00</a-col>
       </a-row>
     </a-modal>
   </div>
@@ -158,66 +122,10 @@ export default {
   mixins: [formModalMixins],
   data() {
     return {
-      name: "create",
-      source: "",
-      sourceOptions: [
-        {
-          value: 0,
-          text: "空白硬盘",
-          id: "blank",
-          option: ["web1-2018.10.11", "web1-2012.13.11"]
-        },
-        {
-          value: 1,
-          text: "快照",
-          id: "snapshoot",
-          option: ["web1-2018.10.11", "web1-2012.13.11"]
-        },
-        {
-          value: 2,
-          text: "备份",
-          id: "backup",
-          option: ["db3-2018.11.10", "db3-2018.11.11"]
-        },
-        {
-          value: 3,
-          text: "硬盘",
-          id: "disk",
-          option: ["db3", "web1", "centos7.4"]
-        },
-        {
-          value: 4,
-          text: "镜像",
-          id: "mirror",
-          option: [
-            "ubunt14.04",
-            "ubunt16.04",
-            "ubunt18.04",
-            "centos6.8",
-            "centos7.5"
-          ]
-        }
-      ]
+      name: "create"
     };
   },
-  computed: {
-    formItemData() {
-      const key = Number.parseInt(this.source);
-      const item = this.sourceOptions[key];
-      const data = {
-        id: item.id,
-        validateStatus: "success",
-        help: `请选择${item.text}`,
-        label: `选择${item.text}`,
-        option: item.option
-      };
-      return data;
-    }
-  },
-  methods: {
-    handleSelect(v) {
-      this.source = v;
-    }
-  }
+
+  methods: {}
 };
 </script>

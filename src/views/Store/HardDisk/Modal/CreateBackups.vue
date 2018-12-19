@@ -1,7 +1,14 @@
 
 <template>
   <div>
-    <a-modal @cancel="handleCancel" @ok="handleCreate" :visible="visible" title="创建硬盘备份" okText="提交">
+    <a-modal
+      @cancel="handleCancel"
+      @ok="handleCreate"
+      :visible="visible"
+      :confirmLoading="confirmLoading"
+      title="创建硬盘备份"
+      okText="提交"
+    >
       <a-form :form="form">
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="备份名称：">
           <a-input
@@ -25,13 +32,10 @@ export default {
   mixins: [formModalMixins],
   data() {
     return {
-      name: "createBackups",
-
+      name: "createBackups"
     };
   },
 
-  methods: {
-
-  }
+  methods: {}
 };
 </script>

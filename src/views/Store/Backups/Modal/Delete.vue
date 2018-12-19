@@ -6,12 +6,12 @@
       @ok="handleCreate"
       :visible="visible"
       :confirmLoading="confirmLoading"
-      title="卸载硬盘"
-      okText="卸载"
+      title="删除硬盘快照"
+      okText="删除"
       okType="danger"
     >
-      <a-alert message="注意：卸载硬盘请确保硬盘挂载到的主机已在操作系统卸载挂载。" type="warning" showIcon/>
-      <p style="margin-top: 10px; text-align: center;">是否确定要卸载主机host-db3挂载的硬盘db3?</p>
+      <a-alert message="注意：删除硬盘后数据不可恢复！" type="warning" showIcon/>
+      <p style="margin-top: 10px; text-align: center;">是否删除硬盘快照web1?</p>
     </a-modal>
   </div>
 </template>
@@ -21,14 +21,14 @@ export default {
   mixins: [baseModalMixins],
   data() {
     return {
-      name: "uninstall"
+      name: "delete"
     };
   },
 
   methods: {
-    handleCreate() {
-      this.handleCancel();
-    }
+    // handleCreate() {
+    //   this.handleCancel();
+    // }
   }
 };
 </script>

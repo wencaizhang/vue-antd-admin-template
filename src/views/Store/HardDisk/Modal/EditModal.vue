@@ -1,7 +1,14 @@
 
 <template>
   <div>
-    <a-modal @cancel="handleCancel" @ok="handleCreate" :visible="visible" title="编辑硬盘" okText="提交">
+    <a-modal
+      @cancel="handleCancel"
+      @ok="handleCreate"
+      :visible="visible"
+      :confirmLoading="confirmLoading"
+      title="编辑硬盘"
+      okText="提交"
+    >
       <a-form :form="form">
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="名称：">
           <a-input
@@ -45,12 +52,10 @@ export default {
   mixins: [formModalMixins],
   data() {
     return {
-      name: "edit",
+      name: "edit"
     };
   },
 
-  methods: {
-
-  }
+  methods: {}
 };
 </script>

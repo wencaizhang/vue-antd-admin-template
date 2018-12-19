@@ -5,6 +5,7 @@
       @cancel="handleCancel"
       @ok="handleCreate"
       :visible="visible"
+      :confirmLoading="confirmLoading"
       title="挂载硬盘到主机"
       okText="提交"
     >
