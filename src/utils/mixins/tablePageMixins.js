@@ -81,8 +81,8 @@ export default {
     handleViewDetail(record) {
       this.$store.commit(`${this.id}/setHandleRowData`, record);
       this.$router.push({
-        name: "diskInstance",
-        params: { id: record.id.value || "abcdef" }
+        name: `${this.id}-instance`,
+        params: { id: record.id }
       });
     },
     handleSingleMenuClick(record, { key }) {

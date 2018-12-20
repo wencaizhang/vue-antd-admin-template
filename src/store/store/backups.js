@@ -39,12 +39,12 @@ export default {
       {
         visible: false,
         id: "recover",
-        text: "恢复备份"
+        name: "恢复备份"
       },
       {
         visible: false,
         id: "delete",
-        text: "删除硬盘备份"
+        name: "删除硬盘备份"
       }
     ]
   },

@@ -40,22 +40,22 @@ export default {
       {
         id: "create",
         visible: false,
-        text: "创建硬盘"
+        name: "创建硬盘"
       },
       {
         id: "edit",
         visible: false,
-        text: "编辑硬盘快照"
+        name: "编辑硬盘快照"
       },
       {
         id: "delete",
         visible: false,
-        text: "删除硬盘快照"
+        name: "删除硬盘快照"
       },
       {
         id: "batchDelete",
         visible: false,
-        text: "批量删除",
+        name: "批量删除",
         menu: false,
       },
     ]
