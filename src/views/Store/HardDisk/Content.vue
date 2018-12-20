@@ -29,7 +29,7 @@
       <div slot="message">
         已选择&nbsp;
         <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>&nbsp;&nbsp;项
-        <a style="margin-left: 24px" @click="onClearSelected">清空</a>
+        <a style="margin-left: 24px" @click="handleClearSelected">清空</a>
       </div>
     </a-alert>
     <a-table
@@ -47,7 +47,7 @@
       <template slot="operation" slot-scope="text, record">
         <a-dropdown style="margin-right: 10px;">
           <a-menu slot="overlay" @click="handleSingleMenuClick(record, $event)">
-            <a-menu-item v-for="(item, index) in singleOperations" :key="index">{{ item.text }}</a-menu-item>
+            <a-menu-item v-for="(item, index) in singleOperations" :key="index" v-if="item.menu !== false">{{ item.name }}</a-menu-item>
           </a-menu>
           <a-button style="margin-left: 8px">操作
             <a-icon type="down"/>
@@ -56,16 +56,16 @@
       </template>
     </a-table>
 
-    <CreateModal/>
-    <EditModal/>
-    <Uninstall/>
-    <Dilatation/>
-    <Mount/>
-    <CreateSnapshoot/>
-    <CreateBackups/>
-    <Upload/>
-    <Delete/>
-    <ChangeDiskType/>
+    <CreateModal :module="id"/>
+    <EditModal :module="id"/>
+    <Uninstall :module="id"/>
+    <Dilatation :module="id"/>
+    <Mount :module="id"/>
+    <CreateSnapshoot :module="id"/>
+    <CreateBackups :module="id"/>
+    <Upload :module="id"/>
+    <Delete :module="id"/>
+    <ChangeDiskType :module="id"/>
   </div>
 </template>
 
@@ -82,34 +82,7 @@ import Upload from "./Modal/Upload";
 import ChangeDiskType from "./Modal/ChangeDiskType";
 
 import tablePageMixins from "@/utils/mixins/tablePageMixins";
-const columns = [
-  {
-    title: "ID",
-    dataIndex: "phone"
-  },
-  {
-    title: "名称",
-    dataIndex: "name",
-    scopedSlots: { customRender: "name" }
-  },
-  {
-    title: "状态",
-    dataIndex: "id.name"
-  },
-  {
-    title: "外部网络",
-    dataIndex: "id"
-  },
-  {
-    title: "可用域",
-    dataIndex: "name.last"
-  },
-  {
-    title: "操作",
-    dataIndex: "operation",
-    scopedSlots: { customRender: "operation" }
-  }
-];
+
 
 export default {
   mixins: [tablePageMixins],
@@ -132,134 +105,13 @@ export default {
   },
   data() {
     return {
-      name: "disk",
-      columns,
-      // 状态为可用，则全部显示，状态为使用中，则显示 visible: true 的操作选项
-      singleOperations: [
-        { modalName: "edit", visible: true, text: "修改" },
-        {
-          modalName: "uninstall",
-          visible: true,
-          text: "卸载硬盘"
-        },
-        {
-          modalName: "dilatation",
-          visible: false,
-          text: "扩容"
-        },
-        {
-          modalName: "mount",
-          visible: false,
-          text: "加载硬盘到主机"
-        },
-        {
-          modalName: "createSnapshoot",
-          visible: true,
-          text: "创建快照"
-        },
-        {
-          modalName: "createBackups",
-          visible: false,
-          text: "创建备份"
-        },
-        {
-          modalName: "changeDiskType",
-          visible: false,
-          text: "修改硬盘类型"
-        },
-        {
-          modalName: "changeDiskType",
-          visible: false,
-          text: "克隆硬盘"
-        },
-        {
-          modalName: "upload",
-          visible: true,
-          text: "上传镜像"
-        },
-        {
-          modalName: "delete",
-          visible: false,
-          text: "删除硬盘"
-        }
-      ]
+      id: "disk",
+      name: "硬盘",
     };
   },
   computed: {},
   methods: {
-    handleCreate() {
-      this.$store.commit(`${this.name}/toggleModalVisible`, "create");
-    },
-    handleViewDetail(record) {
-      this.$store.commit(`${this.name}/setHandleRowData`, record);
-      this.$router.push({
-        name: "diskInstance",
-        params: { id: record.id.value || "abcdef" }
-      });
-    },
 
-    handleBatchDelete() {
-      if (this.selectedRowKeys.length === 0) {
-        this.$message.info("请先选择您要操作的硬盘");
-        return;
-      }
-
-      const vm = this;
-      const h = this.$createElement;
-      const vnode = h(
-        "ul",
-        this.selectedRowKeys.map(item => {
-          return h("li", item);
-        })
-      );
-
-      // 批量删除
-      this.$confirm({
-        title: "您已经选择了下列硬盘，即将进行删除，请确认你的操作。",
-        content: vnode,
-        iconType: "warning",
-        okText: "删除",
-        okType: "danger",
-        // content: 'When clicked the OK button, this dialog will be closed after 1 second',
-        onOk() {
-          return new Promise((resolve, reject) => {
-            setTimeout(resolve, 1000);
-          })
-            .then(() => {
-              const indexs = vm.selectedRowKeys.map(key => {
-                return vm.data.findIndex(item => item.cell == key);
-              });
-              vm._deleteData(indexs);
-            })
-            .catch(() => console.log("Oops errors!"));
-        },
-        onCancel() {}
-      });
-    },
-
-    // 删除弹框
-    _deleteData(indexs = []) {
-      if (!indexs.length) return;
-      // 数组删除一个元素之后，索引会发生变化。所以要对删除目标的索引进行处理。
-      const parseIndexs = indexs.map((item, index) => item - index);
-      console.log(parseIndexs);
-      const keys = parseIndexs.map(index => {
-        const key = this.data[index].cell;
-        this.data.splice(index, 1);
-        return key;
-      });
-      this.$message.success("删除成功！");
-      this._updateSelectedRowKeys(keys);
-    },
-    _updateSelectedRowKeys(keys) {
-      // 删除后需要更新 selectedRowKeys
-      keys.forEach(key => {
-        let index = this.selectedRowKeys.findIndex(item => item === key);
-        if (index !== -1) {
-          this.selectedRowKeys.splice(index, 1);
-        }
-      });
-    }
   }
 };
 </script>

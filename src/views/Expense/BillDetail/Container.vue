@@ -34,13 +34,13 @@
           <div slot="message">
             已选择&nbsp;
             <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>&nbsp;&nbsp;项
-            <a style="margin-left: 24px" @click="onClearSelected">清空</a>
+            <a style="margin-left: 24px" @click="handleClearSelected">清空</a>
           </div>
         </a-alert>
         <a-table
           :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
           :columns="columns"
-          :rowKey="record => record.login.uuid"
+          :rowKey="record => record.id"
           :dataSource="data"
           :pagination="pagination"
           :loading="loading"
@@ -81,7 +81,7 @@ const columns = [
   },
   {
     title: "状态",
-    dataIndex: "id.name"
+    dataIndex: "id"
   },
   {
     title: "外部网络",
@@ -185,7 +185,7 @@ export default {
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys;
     },
-    onClearSelected() {
+    handleClearSelected() {
       this.selectedRowKeys = [];
     },
 

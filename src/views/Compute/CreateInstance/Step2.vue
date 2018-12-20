@@ -14,7 +14,7 @@
     <a-table
       :rowSelection="{selectedRowKeys: selectedNetworkRowKeys, onChange: onNetworkSelectChange}"
       :columns="columns"
-      :rowKey="record => record.login.uuid"
+      :rowKey="record => record.id"
       :dataSource="data"
       :pagination="pagination"
       :loading="loading"
@@ -37,7 +37,7 @@ const columns = [
   },
   {
     title: "类型",
-    dataIndex: "id.name"
+    dataIndex: "id"
   }
 ];
 export default {

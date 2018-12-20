@@ -1,18 +1,66 @@
-import { toggleModalVisible, setHandleRowData } from "../common";
+
+const columns = [
+  {
+    title: "名称",
+    dataIndex: "name",
+    scopedSlots: { customRender: "name" }
+  },
+  {
+    title: "描述",
+    dataIndex: "phone"
+  },
+
+  {
+    title: "容量(GB)",
+    dataIndex: "size"
+  },
+  {
+    title: "状态",
+    dataIndex: "id"
+  },
+  {
+    title: "卷名称",
+    dataIndex: "name.last"
+  },
+  {
+    title: "操作",
+    dataIndex: "operation",
+    scopedSlots: { customRender: "operation" }
+  }
+];
+
 export default {
   namespaced: true,
   state: {
-    modalVisible: {
-      create: false,
-      edit: false,
-      delete: false,
-      batchDelete: false,
-    },
-    handleRowData: {}
+
+    handleRowData: {},
+    columns,
+
+    singleOperations: [
+      {
+        id: "create",
+        visible: false,
+        text: "创建硬盘"
+      },
+      {
+        id: "edit",
+        visible: false,
+        text: "编辑硬盘快照"
+      },
+      {
+        id: "delete",
+        visible: false,
+        text: "删除硬盘快照"
+      },
+      {
+        id: "batchDelete",
+        visible: false,
+        text: "批量删除",
+        menu: false,
+      },
+    ]
   },
   mutations: {
-    toggleModalVisible,
-    setHandleRowData
   },
   actions: {},
   getters: {}

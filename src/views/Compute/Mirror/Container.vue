@@ -33,13 +33,13 @@
           <div slot="message">
             已选择&nbsp;
             <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>&nbsp;&nbsp;项
-            <a style="margin-left: 24px" @click="onClearSelected">清空</a>
+            <a style="margin-left: 24px" @click="handleClearSelected">清空</a>
           </div>
         </a-alert>
         <a-table
           :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
           :columns="columns"
-          :rowKey="record => record.login.uuid"
+          :rowKey="record => record.id"
           :dataSource="data"
           :pagination="pagination"
           :loading="loading"
@@ -93,7 +93,7 @@ const columns = [
   },
   {
     title: "容量（G)",
-    dataIndex: "id.name"
+    dataIndex: "id"
   },
   {
     title: "平台",
@@ -102,7 +102,7 @@ const columns = [
 ];
 
 export default {
-  mixins    : [tablePageMixins],
+  mixins: [tablePageMixins],
   components: {
     CreateModal,
     EditModal,
@@ -112,6 +112,8 @@ export default {
 
   data() {
     return {
+      id: "mirror",
+      name: "镜像",
       tabKey: 1,
       obj: {
         名称: "aaa1231313aaa",
@@ -127,7 +129,6 @@ export default {
   },
 
   methods: {
-
     handleTabChange(v) {
       this.tabKey = v;
     },

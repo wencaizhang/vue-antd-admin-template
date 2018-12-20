@@ -118,7 +118,7 @@ export const asyncRouterMap = [
                 name: "diskInstance",
                 hidden: true,
                 component: () =>
-                  import(/* webpackChunkName: "store" */ "@/views/Store/HardDisk/Instance"),
+                  import(/* webpackChunkName: "store" */ "@/views/Store/HardDisk/Detail"),
                 meta: { title: "硬盘", permission: ["dashboard"] }
               }
             ]
@@ -129,14 +129,34 @@ export const asyncRouterMap = [
             name: "snapshoot",
             component: () =>
               import(/* webpackChunkName: "store" */ "@/views/Store/Snapshoot/Container"),
-            meta: { title: "快照", permission: ["dashboard"] }
+            meta: { title: "快照", permission: ["dashboard"] },
+            children: [
+              {
+                path: ":id",
+                name: "shoot",
+                hidden: true,
+                component: () =>
+                  import(/* webpackChunkName: "store" */ "@/views/Store/Snapshoot/Detail"),
+                meta: { title: "快照", permission: ["dashboard"] }
+              }
+            ]
           },
           {
             path: "backups",
             name: "backups",
             component: () =>
               import(/* webpackChunkName: "store" */ "@/views/Store/Backups/Container"),
-            meta: { title: "备份", permission: ["dashboard"] }
+            meta: { title: "备份", permission: ["dashboard"] },
+            children: [
+              {
+                path: ":id",
+                name: "backup",
+                hidden: true,
+                component: () =>
+                  import(/* webpackChunkName: "store" */ "@/views/Store/Backups/Detail"),
+                meta: { title: "备份", permission: ["dashboard"] }
+              }
+            ]
           }
         ]
       },

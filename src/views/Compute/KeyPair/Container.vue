@@ -31,7 +31,7 @@
           <div slot="message">
             已选择&nbsp;
             <a style="font-weight: 600">{{ selectedRowKeys.length }}</a>&nbsp;&nbsp;项
-            <a style="margin-left: 24px" @click="onClearSelected">清空</a>
+            <a style="margin-left: 24px" @click="handleClearSelected">清空</a>
           </div>
         </a-alert>
         <a-table
@@ -91,7 +91,7 @@ const columns = [
   },
   {
     title: "加密方法",
-    dataIndex: "id.name"
+    dataIndex: "id"
   },
   {
     title: "所属项目",
@@ -117,6 +117,8 @@ export default {
 
   data() {
     return {
+      id: "keypair",
+      name: "密钥对",
       tabKey: 1,
       confirmLoading: false,
       showTagModal: false,
@@ -139,40 +141,6 @@ export default {
     }
   },
   methods: {
-    handleBatchDelete() {
-      const vm = this;
-      const h = this.$createElement;
-      const vnode = h(
-        "ul",
-        this.selectedRowKeys.map(item => {
-          return h("li", item);
-        })
-      );
-
-      // 批量删除
-      this.$confirm({
-        title:
-          "您已经选择了下列密钥，删除前请确认你已经备份该秘钥，或者确定已不再使用该秘钥。",
-        content: vnode,
-        iconType: "warning",
-        okText: "删除",
-        okType: "danger",
-        // content: 'When clicked the OK button, this dialog will be closed after 1 second',
-        onOk() {
-          return new Promise((resolve, reject) => {
-            setTimeout(resolve, 1000);
-          })
-            .then(() => {
-              const indexs = vm.selectedRowKeys.map(key => {
-                return vm.data.findIndex(item => item.cell == key);
-              });
-              vm._deleteData(indexs);
-            })
-            .catch(() => console.log("Oops errors!"));
-        },
-        onCancel() {}
-      });
-    },
     handleMenuClick({ key }) {
       // 批量操作
       if (this.selectedRowKeys.length === 0) {
