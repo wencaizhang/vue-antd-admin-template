@@ -115,7 +115,7 @@ export const asyncRouterMap = [
             children: [
               {
                 path: ":id",
-                name: "diskInstance",
+                name: "disk-instance",
                 hidden: true,
                 component: () =>
                   import(/* webpackChunkName: "store" */ "@/views/Store/HardDisk/Detail"),
@@ -133,7 +133,7 @@ export const asyncRouterMap = [
             children: [
               {
                 path: ":id",
-                name: "shoot",
+                name: "snapshoot-instance",
                 hidden: true,
                 component: () =>
                   import(/* webpackChunkName: "store" */ "@/views/Store/Snapshoot/Detail"),
@@ -150,7 +150,7 @@ export const asyncRouterMap = [
             children: [
               {
                 path: ":id",
-                name: "backup",
+                name: "backups-instance",
                 hidden: true,
                 component: () =>
                   import(/* webpackChunkName: "store" */ "@/views/Store/Backups/Detail"),
