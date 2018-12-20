@@ -75,7 +75,7 @@
           bordered
           :rowSelection="{selectedRowKeys: selectedDiskRowKeys, onChange: onDiskSelectChange}"
           :columns="columns"
-          :rowKey="record => record.login.uuid"
+          :rowKey="record => record.id"
           :dataSource="data"
           :pagination="pagination"
           :loading="loading"
@@ -141,7 +141,7 @@ const columns = [
   },
   {
     title: "类型",
-    dataIndex: "id.name"
+    dataIndex: "id"
   },
   {
     title: "状态",

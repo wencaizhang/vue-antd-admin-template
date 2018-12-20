@@ -51,7 +51,7 @@
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
               <a-menu slot="overlay" @click="handleSingleMenuClick(record, $event)">
-                <a-menu-item v-for="(item, index) in singleOperations" :key="index">{{ item.text }}</a-menu-item>
+                <a-menu-item v-for="(item, index) in singleOperations" :key="index" v-if="item.menu !== false">{{ item.name }}</a-menu-item>
               </a-menu>
               <a-button style="margin-left: 8px">操作
                 <a-icon type="down"/>
@@ -145,7 +145,7 @@ const columns = [
   },
   {
     title: "映像",
-    dataIndex: "id.name"
+    dataIndex: "id"
   },
   {
     title: "规格",
@@ -175,7 +175,7 @@ const columns = [
 ];
 
 export default {
-  mixins    : [tablePageMixins],
+  mixins: [tablePageMixins],
   components: {
     PageLayout,
     CreateSnapshootModal,
@@ -188,20 +188,12 @@ export default {
 
   data() {
     return {
-
+      id: "instance",
+      name: "实例",
       columns,
       selectedRowData: null, // 当行操作
       batchOperations: [{ text: "删除" }, { text: "重启" }, { text: "软重启" }],
-      singleOperations: [
-        { showModal: false, text: "创建快照" },
-        { showModal: false, text: "绑定公网IP" },
-        { showModal: false, text: "解绑公网IP" },
-        { showModal: false, text: "进入控制台" },
-        { showModal: false, text: "重建云主机" },
-        { showModal: false, text: "编辑安全组" },
-        { showModal: false, text: "删除云主机" },
-        { showModal: false, text: "查看主机状况" }
-      ],
+      
       showAllotIPModal: false,
       selectedOperationKey: 0
     };
@@ -228,39 +220,7 @@ export default {
     handleCreate() {
       this.$router.push({ name: "CreateInstance" });
     },
-    handleBatchDelete() {
-      const vm = this;
-      const h = this.$createElement;
-      const vnode = h(
-        "ul",
-        this.selectedRowKeys.map(item => {
-          return h("li", item);
-        })
-      );
 
-      // 批量删除
-      this.$confirm({
-        title: "您已经选择了下列云主机，即将进行删除，请确认你的操作。",
-        content: vnode,
-        iconType: "warning",
-        okText: "删除",
-        okType: "danger",
-        // content: 'When clicked the OK button, this dialog will be closed after 1 second',
-        onOk() {
-          return new Promise((resolve, reject) => {
-            setTimeout(resolve, 1000);
-          })
-            .then(() => {
-              const indexs = vm.selectedRowKeys.map(key => {
-                return vm.data.findIndex(item => item.cell == key);
-              });
-              vm._deleteData(indexs);
-            })
-            .catch(() => console.log("Oops errors!"));
-        },
-        onCancel() {}
-      });
-    },
     handleBatchRestart() {
       // 批量重启
     },
@@ -350,7 +310,7 @@ export default {
           this.selectedRowData = record;
           break;
       }
-    },
+    }
   }
 };
 </script>

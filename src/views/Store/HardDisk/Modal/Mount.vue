@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-import { baseModalMixins } from "./modalMixin";
+import { baseModalMixins } from "@/utils/mixins/modalMixin";
 export default {
   mixins: [baseModalMixins],
   data() {

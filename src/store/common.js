@@ -1,15 +1,27 @@
-export const toggleModalVisible = (state, name = "") => {
-  let visible;
-  if (name) {
-    visible = state.modalVisible[name];
+export default {
+  namespaced: true,
+  mutations: {
+    toggleModalVisible: (state, id = "") => {
+      let visible;
+      let item;
+      if (id) {
+        item = state.singleOperations.find(item => item.id === id);
+        if (!item) {
+          return false;
+        }
+        visible = item.visible;
+      }
+      state.singleOperations.forEach(item => (item.visible = false));
+      item.visible = !visible;
+    },
+    setHandleRowData: (state, record) => {
+      Object.assign(state.handleRowData, record);
+    }
+  },
+  actions: {},
+  getters: {
+    getVisibleById: state => id => {
+      return state.singleOperations.find(item => item.id === id).visible;
+    }
   }
-  for (let prop in state.modalVisible) {
-    state.modalVisible[prop] = false;
-  }
-  if (name) {
-    state.modalVisible[name] = !visible;
-  }
-};
-export const setHandleRowData = (state, record) => {
-  Object.assign(state.handleRowData, record);
 };

@@ -1,7 +1,10 @@
+import common from "../common";
+
 import disk from "./disk";
 import snapshoot from "./snapshoot";
 import backups from "./backups";
-export default {
+
+const store = {
   state: {},
   mutations: {},
   actions: {},
@@ -13,3 +16,9 @@ export default {
     backups
   }
 };
+
+for (let prop in store.modules) {
+  Object.assign(store.modules[prop].mutations, common.mutations);
+  Object.assign(store.modules[prop].getters, common.getters);
+}
+export default store

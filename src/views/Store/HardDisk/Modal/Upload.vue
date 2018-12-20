@@ -38,7 +38,7 @@
   </div>
 </template>
 <script>
-import { formModalMixins } from "./modalMixin";
+import { formModalMixins } from "@/utils/mixins/modalMixin";
 export default {
   mixins: [formModalMixins],
   data() {
