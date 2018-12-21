@@ -9,12 +9,25 @@
           <a-row type="flex" justify="space-between">
             <a-col>
               <a-row type="flex" justify="space-between">
-                <create-modal v-on:showDownload="showDownloadModal=true;"/>
-                <import-modal v-bind:obj="obj"/>
+                <a-button
+                  type="primary"
+                  style="margin-right: 10px;"
+                  icon="plus"
+                  @click="handleShowModal('create')"
+                >创建</a-button>
+                <a-button
+                  type="primary"
+                  style="margin-right: 10px;"
+                  icon="upload"
+                  @click="handleShowModal('import')"
+                >导入密钥对</a-button>
                 <a-dropdown>
                   <a-menu slot="overlay" @click="handleMenuClick">
-                    <a-menu-item key="1">删除</a-menu-item>
-                    <a-menu-item key="2">绑定标签</a-menu-item>
+                    <a-menu-item
+                      v-for="item in singleOperations"
+                      v-if="item.type === 'batch'"
+                      :key="item.id"
+                    >{{item.name}}</a-menu-item>
                   </a-menu>
                   <a-button type="primary" style="margin-left: 8px">批量操作
                     <a-icon type="down"/>
@@ -46,8 +59,12 @@
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
               <a-menu slot="overlay" @click="handleSingleMenuClick(record, $event)">
-                <a-menu-item key="1">修改</a-menu-item>
-                <a-menu-item key="2" :disabled="record | downloadable">下载</a-menu-item>
+                <a-menu-item
+                  v-for="item in singleOperations"
+                  v-if="item.type === 'single'"
+                  :disabled="record | downloadable(item.id)"
+                  :key="item.id"
+                >{{item.name}}</a-menu-item>
               </a-menu>
               <a-button style="margin-left: 8px">操作
                 <a-icon type="down"/>
@@ -57,87 +74,55 @@
         </a-table>
       </div>
     </PageLayout>
-    <a-modal
-      title="下载密钥对"
-      okText="下载"
-      :visible="showDownloadModal"
-      :confirmLoading="confirmLoading"
-      @ok="handleDownloadModalOk"
-      @cancel="showDownloadModal = false;"
-    >
-      <p>通过点击“下载”按钮，可以获取私钥，此下载链接将保留5分钟。</p>
-    </a-modal>
-    <tag-modal :visible="showTagModal" v-on:cancel="showTagModal = false;"/>
-    <edit-modal :visible="showEditModal" v-on:cancel="showEditModal = false;"/>
+
+    <CreateModal :module="id"/>
+    <ImportModal :module="id"/>
+    <tag-modal :module="id"/>
+    <edit-modal :module="id"/>
+    <Download :module="id"/>
   </div>
 </template>
 
 <script>
-import CreateModal from "./CreateModal";
-import EditModal from "./EditModal";
-import TagModal from "./TagModal";
-import ImportModal from "./ImportModal";
+import CreateModal from "./Modal/CreateModal";
+import TagModal from "./Modal/TagModal";
+import ImportModal from "./Modal/ImportModal";
+import EditModal from "./Modal/EditModal";
+import Download from "./Modal/Download";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 
 import tablePageMixins from "@/utils/mixins/tablePageMixins";
-const columns = [
-  {
-    title: "名称",
-    dataIndex: "name.first"
-  },
-  {
-    title: "创建时间",
-    dataIndex: "phone"
-  },
-  {
-    title: "加密方法",
-    dataIndex: "id"
-  },
-  {
-    title: "所属项目",
-    dataIndex: "id.value"
-  },
-  {
-    title: "操作",
-    dataIndex: "operation",
-    scopedSlots: { customRender: "operation" }
-  }
-];
-
 
 export default {
-  mixins    : [tablePageMixins],
+  mixins: [tablePageMixins],
   components: {
     CreateModal,
-    EditModal,
     TagModal,
     ImportModal,
+    EditModal,
+    Download,
     PageLayout
   },
 
   data() {
     return {
+      module: "compute",
       id: "keypair",
       name: "密钥对",
-      tabKey: 1,
       confirmLoading: false,
-      showTagModal: false,
-      showEditModal: false,
-      showDownloadModal: false,
       obj: {
         名称: "aaa1231313aaa",
         描述: "bbbb",
         最低内存: "dddddd",
         最小磁盘: "ccccc",
         镜像格式: "Yiminghe"
-      },
-      columns,
+      }
     };
   },
-
+  computed: {},
   filters: {
-    downloadable(record) {
-      return Math.random() > 0.5;
+    downloadable(record, key) {
+      if (key === "download") return true;
     }
   },
   methods: {
@@ -147,48 +132,8 @@ export default {
         this.$message.info("请先选择您要操作的实例");
         return;
       }
-      switch (key) {
-        case "1":
-          // 删除
-          this.handleBatchDelete();
-          break;
-        case "2":
-          // 打标签
-          this.showTagModal = true;
-          break;
-
-        default:
-          break;
-      }
-    },
-
-
-    handleEdit(record) {
-      console.log(record);
-      this.showEditModal = true;
-    },
-    handleDownload(record) {
-      console.log(record);
-      this.showDownloadModal = true;
-    },
-    handleDownloadModalOk() {
-      this.showDownloadModal = false;
-    },
-    handleSingleMenuClick(record, { key }) {
-      console.log(record, key);
-      switch (key) {
-        case "1":
-          this.showEditModal = true;
-          break;
-        case "2":
-          this.showDownloadModal = true;
-          break;
-
-        default:
-          break;
-      }
-    },
-
+      this.$store.commit(`${this.id}/toggleModalVisible`, key);
+    }
   }
 };
 </script>

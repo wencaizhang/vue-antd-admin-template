@@ -23,8 +23,18 @@
             </a-col>
             <a-col>
               <a-row type="flex" justify="space-between">
-                <edit-modal v-bind:obj="obj"/>
-                <create-modal/>
+                <a-button
+                  type="primary"
+                  style="margin-right: 10px;"
+                  icon="plus"
+                  @click="handleShowModal('create')"
+                >创建镜像</a-button>
+                <a-button
+                  type="primary"
+                  style="margin-right: 10px;"
+                  icon="edit"
+                  @click="handleShowModal('edit')"
+                >编辑镜像</a-button>
               </a-row>
             </a-col>
           </a-row>
@@ -46,60 +56,24 @@
           @change="handleTableChange"
         >
           <template slot="operation" slot-scope="text, record">
-            <span title="点击查看镜像属性" @click="handleViewDetail(record)">{{text}}</span>
+            <a title="点击查看镜像属性" @click="handleViewDetail(record)">{{text}}</a>
           </template>
         </a-table>
       </div>
-
-      <detail-modal
-        :visible="showDetailModal"
-        :data="selectedRowData"
-        v-on:cancel="showDetailModal = false"
-      />
     </PageLayout>
+    <CreateModal :module="id"/>
+    <EditModal :module="id"/>
+    <DetailModal :module="id"/>
   </div>
 </template>
 
 <script>
-import CreateModal from "./CreateModal";
-import EditModal from "./EditModal";
-import DetailModal from "./DetailModal";
+import CreateModal from "./Modal/CreateModal";
+import EditModal from "./Modal/EditModal";
+import DetailModal from "./Modal/DetailModal";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 
 import tablePageMixins from "@/utils/mixins/tablePageMixins";
-const columns = [
-  {
-    title: "ID",
-    dataIndex: "cell",
-    scopedSlots: { customRender: "operation" }
-  },
-  {
-    title: "名称",
-    dataIndex: "name.first"
-  },
-  {
-    title: "状态",
-    dataIndex: "phone",
-    filters: [
-      { text: "状态", value: "状态" },
-      { text: "等待中", value: "等待中" },
-      { text: "运行中", value: "运行中" },
-      { text: "已暂停", value: "已暂停" },
-      { text: "已关闭", value: "已关闭" },
-      { text: "已删除", value: "已删除" },
-      { text: "重启中", value: "重启中" }
-    ],
-    filterMultiple: false
-  },
-  {
-    title: "容量（G)",
-    dataIndex: "id"
-  },
-  {
-    title: "平台",
-    dataIndex: "id.value"
-  }
-];
 
 export default {
   mixins: [tablePageMixins],
@@ -112,18 +86,11 @@ export default {
 
   data() {
     return {
+      module: "compute",
       id: "mirror",
       name: "镜像",
       tabKey: 1,
-      obj: {
-        名称: "aaa1231313aaa",
-        描述: "bbbb",
-        minMomery: "22",
-        minDisk: "42",
-        镜像格式: "Yiminghe"
-      },
-      columns,
-      showDetailModal: false,
+
       selectedRowData: {}
     };
   },
@@ -135,7 +102,7 @@ export default {
     handleViewDetail(record) {
       console.log(record);
       Object.assign(this.selectedRowData, record);
-      this.showDetailModal = true;
+      this.$store.commit(`${this.id}/toggleModalVisible`, 'detail');
     }
   }
 };

@@ -71,6 +71,7 @@ export default {
 
   data() {
     return {
+      module: "store",
       id: "backups",
       name: "硬盘备份",
       confirmLoading: false

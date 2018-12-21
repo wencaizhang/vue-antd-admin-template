@@ -78,8 +78,8 @@
         >
           <a-input-number
             :min="100"
-            :formatter="value => value ? `${value} GB` : '' "
-            :parser="value => value.replace(' GB', '')"
+            :formatter="value => formatter('G', value)"
+            :parser="value => parser(value)"
             v-decorator="[
               'size',
               {

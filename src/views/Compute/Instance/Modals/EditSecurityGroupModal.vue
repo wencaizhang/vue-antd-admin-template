@@ -2,11 +2,10 @@
   <a-modal
     title="编辑云主机安全组"
     okText="确定"
+    @cancel="handleCancel"
+    @ok="handleCreate"
     :visible="visible"
-    :bodyStyle="{ 'max-height': '500px', overflow: 'auto' }"
     :confirmLoading="confirmLoading"
-    @cancel="$emit('cancel')"
-    @ok="$emit('create')"
   >
     <a-transfer
       :dataSource="mockData"
@@ -21,8 +20,10 @@
   </a-modal>
 </template>
 <script>
+import { formModalMixins } from "@/utils/mixins/modalMixin";
 export default {
-  props: ["record", "visible"],
+  mixins: [formModalMixins],
+  props: ["record"],
   data() {
     const mockData = [];
     for (let i = 0; i < 20; i++) {
@@ -38,6 +39,7 @@ export default {
       .filter(item => +item.key % 3 > 1)
       .map(item => item.key);
     return {
+      name: "editSafetyGroup",
       mockData,
       targetKeys,
       selectedKeys: ["1", "4"],
@@ -61,30 +63,6 @@ export default {
     handleScroll(direction, e) {
       console.log("direction:", direction);
       console.log("target:", e.target);
-    },
-
-    handleCancel() {
-      this.$emit("cancel");
-    },
-    handleCreate() {
-      const form = this.formRef.form;
-      form.validateFields((err, values) => {
-        if (err) {
-          return;
-        }
-        console.log("Received values of form: ", values);
-        this.submit(values);
-      });
-    },
-    submit(values) {
-      const form = this.formRef.form;
-      this.confirmLoading = true;
-      setTimeout(() => {
-        // 提交数据成功之后
-        this.confirmLoading = false;
-        form.resetFields();
-        this.$emit("success");
-      }, 2000);
     }
   }
 };

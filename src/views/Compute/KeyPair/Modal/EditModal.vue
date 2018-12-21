@@ -6,30 +6,33 @@
       @ok="handleCreate"
       :visible="visible"
       :confirmLoading="confirmLoading"
-      title="上传硬盘到镜像"
+      title="修改秘钥属性"
       okText="提交"
     >
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="硬盘名称：">
+        <a-form-item
+          label="秘钥名称："
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
           <a-input
-            :disabled="true"
             v-decorator="[
               'name',
               {
-                initialValue: 'web1',
-                rules: [{ required: true, message: '请输入硬盘名称' }]
-              }
+                rules: [{ required: true, message: '请输入秘钥名称!' }]}
             ]"
-            placeholder="请输入硬盘名称"
           />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="镜像名称：">
-          <a-input
-            placeholder="请输入镜像名称"
+        <a-form-item
+          label="描述："
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
+          <a-textarea
             v-decorator="[
               'desc',
               {
-                rules: [{ required: true, message: '请输入镜像名称' }]}
+                rules: [{ required: true, message: '请输入描述!' }]}
             ]"
           />
         </a-form-item>
@@ -43,7 +46,7 @@ export default {
   mixins: [formModalMixins],
   data() {
     return {
-      name: "upload"
+      name: "edit"
     };
   },
 

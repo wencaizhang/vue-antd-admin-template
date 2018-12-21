@@ -3,10 +3,9 @@
     title="云主机/bkv4 概况"
     okText="确定"
     :visible="visible"
-    :bodyStyle="{ 'max-height': '500px', overflow: 'auto' }"
     :confirmLoading="confirmLoading"
-    @cancel="$emit('cancel')"
-    @ok="$emit('cancel')"
+    @cancel="handleCancel"
+    @ok="handleCreate"
   >
     <a-table :columns="columns" :dataSource="data" bordered>
       <template slot="name" slot-scope="text">
@@ -82,8 +81,10 @@ const data = [
     address: "Dublin No. 2 Lake Park"
   }
 ];
+import { formModalMixins } from "@/utils/mixins/modalMixin";
 export default {
-  props: ["record", "visible"],
+  mixins: [formModalMixins],
+  props: ["record"],
   data() {
     const columns = [
       {
@@ -105,7 +106,7 @@ export default {
         title: "Age",
         dataIndex: "age",
         customRender: renderContent
-      },
+      }
       // {
       //   title: "Home phone",
       //   colSpan: 2,
@@ -141,36 +142,13 @@ export default {
       // }
     ];
     return {
+      name: "hostDetail",
       data,
       columns,
       confirmLoading: false
     };
   },
-  methods: {
-    handleCancel() {
-      this.$emit("cancel");
-    },
-    handleCreate() {
-      const form = this.formRef.form;
-      form.validateFields((err, values) => {
-        if (err) {
-          return;
-        }
-        console.log("Received values of form: ", values);
-        this.submit(values);
-      });
-    },
-    submit(values) {
-      const form = this.formRef.form;
-      this.confirmLoading = true;
-      setTimeout(() => {
-        // 提交数据成功之后
-        this.confirmLoading = false;
-        form.resetFields();
-        this.$emit("success");
-      }, 2000);
-    }
-  }
+  methods: {}
 };
 </script>
 

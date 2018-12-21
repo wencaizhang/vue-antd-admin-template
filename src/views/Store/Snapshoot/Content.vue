@@ -73,6 +73,7 @@ export default {
 
   data() {
     return {
+      module: "store",
       id: "snapshoot",
       name: "快照",
       confirmLoading: false,

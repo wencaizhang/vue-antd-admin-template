@@ -1,174 +1,94 @@
-<script>
-import { Form } from "ant-design-vue";
-const CollectionCreateForm = Form.create()({
-  props: ["visible", "minBandwidth", "confirmLoading"],
-  render() {
-    console.log("render");
-    const { visible, form, minBandwidth, confirmLoading } = this;
-    const { getFieldDecorator } = form;
 
-    const onInputChange = v => {
-      console.log(v);
-      this.$emit("updateMinBandwidth", v);
-      form.setFieldsValue({ minBandwidth: v });
-      console.log("minBandwidth", minBandwidth);
-    };
-    const onSliderChange = v => {
-      console.log(v);
-      this.$emit("updateMinBandwidth", v);
-      console.log("minBandwidth", minBandwidth);
-    };
-
-    return (
-      <a-modal
-        visible={visible}
-        title="分配公网IP"
-        okText={confirmLoading ? "分配中" : "分配"}
-        bodyStyle={{ "max-height": "500px", overflow: "auto" }}
-        confirmLoading={confirmLoading}
-        onCancel={() => {
-          this.$emit("cancel");
-        }}
-        onOk={() => {
-          this.$emit("create");
-        }}
-      >
-        <a-alert
-          message="说明：从指定的公网IP池中分配一个地址"
-          type="info"
-          style="margin-bottom: 10px;"
-          showIcon
-        />
-        <a-form>
-          <a-form-item
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 14 }}
-            label="资源池："
+<template>
+  <div>
+    <a-modal
+      @cancel="handleCancel"
+      @ok="handleCreate"
+      :visible="visible"
+      :confirmLoading="confirmLoading"
+      title="分配公网IP"
+      okText="确定"
+    >
+      <a-alert message="说明：从指定的公网IP池中分配一个地址" type="info" style="margin-bottom: 10px;" showIcon/>
+      <a-form :form="form">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="资源池：">
+          <a-select
+            placeholder="请选择资源池！"
+            v-decorator="[
+              '资源池',
+              {
+                initialValue: 'external_net',
+                rules: [{ required: true, message: '请选择资源池！' }]
+              }
+            ]"
           >
-            {getFieldDecorator("资源池", {
-              rules: [
-                {
-                  required: true,
-                  message: "请选择资源池！"
-                }
-              ],
-              initialValue: "external_net"
-            })(
-              <a-select placeholder="请选择资源池">
-                <a-select-option value="external_net">
-                  external_net
-                </a-select-option>
-                <a-select-option value="external_IPV6">
-                  external_IPV6
-                </a-select-option>
-              </a-select>
-            )}
-          </a-form-item>
-          <a-form-item
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 14 }}
-            label="描述："
-          >
-            {getFieldDecorator("描述", {
-              rules: [
-                {
-                  required: true,
-                  message: "请填写描述!"
-                }
-              ]
-            })(<a-textarea placeholder="描述" />)}
-          </a-form-item>
-          <div class="form-item-container">
-            <a-form-item
-              labelCol={{ span: 8 }}
-              wrapperCol={{ span: 14 }}
-              label="带宽(Mbps)："
-            >
-              {getFieldDecorator("minBandwidth", {
-                rules: [
-                  {
-                    required: true,
-                    message: "请填写带宽!"
-                  }
-                ]
-              })(
-                <a-slider
-                  min={1}
-                  max={50}
-                  tipFormatter={v => `${v}Mb`}
-                  onChange={onSliderChange}
-                />
-              )}
-            </a-form-item>
+            <a-select-option value="external_net">external_net</a-select-option>
+            <a-select-option value="external_IPV6">external_IPV6</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="描述：">
+          <a-textarea
+            placeholder="请填写描述"
+            v-decorator="[
+              'desc',
+              {
+                rules: [{ required: true, message: '请填写描述' }]
+              }
+            ]"
+          />
+        </a-form-item>
 
-            <a-input-number
-              class="input-number"
-              min={1}
-              max={50}
-              onChange={onInputChange}
-              value={minBandwidth}
-              formatter={value => (value ? `${value} Mb` : "")}
-              parser={value => value.replace(" Mb", "")}
+        <div class="form-item-container">
+          <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="带宽(Mbps)：">
+            <a-slider
+              v-decorator="[
+              'bandwidth',
+              {
+                rules: [{ required: true, message: '请填写带宽' }]
+              }
+            ]"
+              :min="1"
+              :max="50"
+              :tipFormatter="v => `${v}Mb`"
+              @change="onSliderChange"
             />
-          </div>
-        </a-form>
-      </a-modal>
-    );
-  }
-});
+          </a-form-item>
 
+          <a-input-number
+            class="input-number"
+            @change="onInputChange"
+            :min="1"
+            :max="50"
+            :value="bandwidth"
+            :formatter="value => formatter('Mb', value)"
+            :parser="value => parser(value)"
+          />
+        </div>
+      </a-form>
+    </a-modal>
+  </div>
+</template>
+<script>
+import { formModalMixins } from "@/utils/mixins/modalMixin";
 export default {
-  props: ["record", "visible"],
+  mixins: [formModalMixins],
   data() {
     return {
-      confirmLoading: false,
-      minBandwidth: 1,
+      name: "allotIP",
+      bandwidth: "1"
     };
   },
-  methods: {
-    handleCancel() {
-      this.$emit("cancel");
-    },
-    handleCreate() {
-      const form = this.formRef.form;
-      form.validateFields((err, values) => {
-        if (err) {
-          return;
-        }
 
-        console.log("Received values of form: ", values);
-        this.submit(values);
+  methods: {
+    onInputChange(v) {
+      Object.assign(this, { bandwidth: v });
+      this.form.setFieldsValue({
+        bandwidth: v
       });
     },
-    submit(values) {
-      const form = this.formRef.form;
-      this.confirmLoading = true;
-      setTimeout(() => {
-        // 提交数据成功之后
-        this.confirmLoading = false;
-        form.resetFields();
-        this.$emit("success");
-      }, 2000);
-    },
-    saveFormRef(formRef) {
-      this.formRef = formRef;
+    onSliderChange(v) {
+      Object.assign(this, { bandwidth: v });
     }
-  },
-
-  render() {
-    return (
-      <div>
-        <CollectionCreateForm
-          wrappedComponentRef={this.saveFormRef}
-          visible={this.visible}
-          minBandwidth={this.minBandwidth}
-          confirmLoading={this.confirmLoading}
-          onCancel={this.handleCancel}
-          onCreate={this.handleCreate}
-          onUpdateMinBandwidth={v => (this.minBandwidth = v)}
-        />
-      </div>
-    );
   }
 };
 </script>
