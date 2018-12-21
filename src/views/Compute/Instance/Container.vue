@@ -13,8 +13,12 @@
             disabled
           >关机</a-button>
           <a-dropdown style="margin-right: 10px;">
-            <a-menu slot="overlay" @click="handleBatchMenuClick">
-              <a-menu-item v-for="(item, index) in batchOperations" :key="index">{{ item.text }}</a-menu-item>
+            <a-menu slot="overlay" @click="handleMenuClick">
+              <a-menu-item
+                v-for="item in singleOperations"
+                v-if="item.type === 'batch'"
+                :key="item.id"
+              >{{item.name}}</a-menu-item>
             </a-menu>
             <a-button style="margin-left: 8px">批量操作
               <a-icon type="down"/>
@@ -51,7 +55,11 @@
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
               <a-menu slot="overlay" @click="handleSingleMenuClick(record, $event)">
-                <a-menu-item v-for="(item, index) in singleOperations" :key="index" v-if="item.menu !== false">{{ item.name }}</a-menu-item>
+                <a-menu-item
+                  v-for="item in singleOperations"
+                  v-if="item.type === 'single'"
+                  :key="item.id"
+                >{{ item.name }}</a-menu-item>
               </a-menu>
               <a-button style="margin-left: 8px">操作
                 <a-icon type="down"/>
@@ -60,43 +68,15 @@
           </template>
         </a-table>
       </div>
-      <create-snapshoot-modal
-        :visible="singleOperations[0].showModal"
-        :data="selectedRowData"
-        v-on:cancel="singleOperations[0].showModal = false"
-        v-on:success="update"
-      />
-      <bind-IP-modal
-        :visible="singleOperations[1].showModal"
-        :data="selectedRowData"
-        v-on:cancel="singleOperations[1].showModal = false"
-        v-on:success="update"
-        v-on:allotIP="singleOperations[1].showModal = false; showAllotIPModal=true;"
-      />
-      <allot-IP-modal
-        :visible="showAllotIPModal"
-        :data="selectedRowData"
-        v-on:cancel="showAllotIPModal = false"
-        v-on:success="update"
-      />
-      <rebuild-cloud-host-modal
-        :visible="singleOperations[4].showModal"
-        :data="selectedRowData"
-        v-on:cancel="singleOperations[4].showModal = false"
-        v-on:success="update"
-      />
-      <edit-security-group-modal
-        :visible="singleOperations[5].showModal"
-        :data="selectedRowData"
-        v-on:cancel="singleOperations[5].showModal = false"
-        v-on:success="update"
-      />
-      <overview-modal
-        :visible="singleOperations[7].showModal"
-        :data="selectedRowData"
-        v-on:cancel="singleOperations[7].showModal = false"
-        v-on:success="update"
-      />
+
+      <create-snapshoot-modal :module="id"/>
+      <bind-IP-modal :module="id" v-on:allotIP="handleAllotIP"/>
+      <UnbindIP :module="id"/>
+      <Delete :module="id"/>
+      <allot-IP-modal :module="id"/>
+      <rebuild-cloud-host-modal :module="id"/>
+      <edit-security-group-modal :module="id"/>
+      <overview-modal :module="id"/>
     </page-layout>
   </div>
 </template>
@@ -106,73 +86,14 @@ import PageLayout from "@/components/Layout/PageLayout.vue";
 
 import CreateSnapshootModal from "./Modals/CreateSnapshootModal";
 import BindIPModal from "./Modals/BindIPModal";
+import UnbindIP from "./Modals/UnbindIP";
+import Delete from "./Modals/Delete";
 import AllotIPModal from "./Modals/AllotIPModal";
 import RebuildCloudHostModal from "./Modals/RebuildCloudHostModal";
 import EditSecurityGroupModal from "./Modals/EditSecurityGroupModal";
 import OverviewModal from "./Modals/OverviewModal";
 
 import tablePageMixins from "@/utils/mixins/tablePageMixins";
-const columns = [
-  {
-    title: "ID",
-    dataIndex: "cell"
-  },
-  {
-    title: "名称",
-    dataIndex: "name.first"
-  },
-  {
-    title: "状态",
-    dataIndex: "phone",
-    filters: [
-      { text: "等待中", value: "等待中" },
-      { text: "运行中", value: "运行中" },
-      { text: "已暂停", value: "已暂停" },
-      { text: "已关闭", value: "已关闭" },
-      { text: "已删除", value: "已删除" },
-      { text: "重启中", value: "重启中" }
-    ],
-    filterMultiple: false
-  },
-  {
-    title: "区域",
-    dataIndex: "dob.age",
-    filters: [
-      { text: "北京一区", value: "北京一区" },
-      { text: "北京二区", value: "北京二区" }
-    ],
-    filterMultiple: false
-  },
-  {
-    title: "映像",
-    dataIndex: "id"
-  },
-  {
-    title: "规格",
-    dataIndex: "id.value"
-  },
-  {
-    title: "网络",
-    dataIndex: "login.password"
-  },
-  {
-    title: "公网IP",
-    dataIndex: "name.title"
-  },
-  {
-    title: "安全组",
-    dataIndex: "gender"
-  },
-  {
-    title: "创建时间",
-    dataIndex: "email"
-  },
-  {
-    title: "操作",
-    dataIndex: "operation",
-    scopedSlots: { customRender: "operation" }
-  }
-];
 
 export default {
   mixins: [tablePageMixins],
@@ -180,6 +101,8 @@ export default {
     PageLayout,
     CreateSnapshootModal,
     BindIPModal,
+    UnbindIP,
+    Delete,
     AllotIPModal,
     RebuildCloudHostModal,
     EditSecurityGroupModal,
@@ -188,24 +111,16 @@ export default {
 
   data() {
     return {
+      module: "compute",
       id: "instance",
       name: "实例",
-      columns,
       selectedRowData: null, // 当行操作
-      batchOperations: [{ text: "删除" }, { text: "重启" }, { text: "软重启" }],
-      
       showAllotIPModal: false,
       selectedOperationKey: 0
     };
   },
 
   methods: {
-    update() {
-      console.log("update");
-      this.singleOperations[this.selectedOperationKey].showModal = false;
-      this.showAllotIPModal = false;
-      this.openNotification();
-    },
     openNotification() {
       this.$notification.open({
         message: "提醒",
@@ -220,96 +135,9 @@ export default {
     handleCreate() {
       this.$router.push({ name: "CreateInstance" });
     },
-
-    handleBatchRestart() {
-      // 批量重启
-    },
-    handleBatchSoftReset() {
-      // 批量软重启
-    },
-    handleDeleteCloudHost(record) {
-      const vm = this;
-      this.$confirm({
-        title: `您已经选择了云主机“${
-          record.name.first
-        }”，即将删除此云主机，请确认你的操作。`,
-        iconType: "warning",
-        okText: "删除",
-        okType: "danger",
-        onOk() {
-          return new Promise((resolve, reject) => {
-            setTimeout(resolve, 1000);
-          })
-            .then(() => {
-              let index = vm.data.indexOf(record);
-              vm._deleteData([index]);
-            })
-            .catch(() => console.log("Oops errors!"));
-        },
-        onCancel() {}
-      });
-    },
-    handleUnBindIP(record) {
-      this.$confirm({
-        title:
-          "您已经选择了云主机“${record.name.first}”，其绑定的公网IP将被解绑，请确认你的操作。",
-        iconType: "warning",
-        okText: "解绑",
-        okType: "danger",
-        onOk() {
-          return new Promise((resolve, reject) => {
-            setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-          }).catch(() => console.log("Oops errors!"));
-        },
-        onCancel() {}
-      });
-    },
-    handleBatchMenuClick({ key }) {
-      // 批量操作
-      if (this.selectedRowKeys.length === 0) {
-        this.$message.info("请先选择您要操作的实例");
-        return;
-      }
-      switch (key) {
-        case 0:
-          // 删除
-          this.handleBatchDelete();
-          break;
-        case 1:
-          // 重启
-          this.handleBatchRestart();
-          break;
-        case 2:
-          // 软重启
-          this.handleBatchSoftReset();
-          break;
-
-        default:
-          break;
-      }
-    },
-    handleSingleMenuClick(record, { key }) {
-      // 针对单项数据操作
-      switch (key) {
-        case 2:
-          // 解绑IP
-          this.handleUnBindIP(record);
-          break;
-        case 3:
-          // 进入控制台
-
-          break;
-        case 6:
-          // 删除云主机
-          this.handleDeleteCloudHost(record);
-          break;
-
-        default:
-          this.selectedOperationKey = key;
-          this.singleOperations[key].showModal = true;
-          this.selectedRowData = record;
-          break;
-      }
+    handleAllotIP () {
+      console.log('allotIP')
+      this.$store.commit(`${this.id}/toggleModalVisible`, 'allotIP');
     }
   }
 };

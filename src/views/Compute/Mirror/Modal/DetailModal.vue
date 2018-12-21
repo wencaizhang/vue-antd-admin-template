@@ -1,20 +1,18 @@
 <template>
   <a-modal
+    @cancel="handleCancel"
+    @ok="handleCreate"
+    :visible="visible"
+    :confirmLoading="confirmLoading"
     title="基本属性"
     okText="确定"
-    :visible="visible"
-    :bodyStyle="{ 'max-height': '500px', overflow: 'auto' }"
-    :confirmLoading="confirmLoading"
-    @cancel="$emit('cancel')"
-    @ok="$emit('cancel')"
   >
-    <a-table :columns="columns" :dataSource="data" bordered>
-    </a-table>
+    <a-table :columns="columns" :dataSource="data" bordered></a-table>
   </a-modal>
 </template>
 <script>
-// In the fifth row, other columns are merged into first column
-// by setting it's colSpan to be 0
+import { baseModalMixins } from "@/utils/mixins/modalMixin";
+
 const renderContent = (value, row, index) => {
   const obj = {
     children: value,
@@ -30,31 +28,31 @@ const data = [
   {
     key: "1",
     name: "John Brown",
-    age: 32,
+    age: 32
   },
   {
     key: "2",
     name: "Jim Green",
-    age: 42,
+    age: 42
   },
   {
     key: "3",
     name: "Joe Black",
-    age: 32,
+    age: 32
   },
   {
     key: "4",
     name: "Jim Red",
-    age: 18,
+    age: 18
   },
   {
     key: "5",
     name: "Jake White",
-    age: 18,
+    age: 18
   }
 ];
 export default {
-  props: ["record", "visible"],
+  mixins: [baseModalMixins],
   data() {
     const columns = [
       {
@@ -76,39 +74,16 @@ export default {
         title: "Age",
         dataIndex: "age",
         customRender: renderContent
-      },
+      }
     ];
     return {
+      name: "detail",
       data,
       columns,
       confirmLoading: false
     };
   },
-  methods: {
-    handleCancel() {
-      this.$emit("cancel");
-    },
-    handleCreate() {
-      const form = this.formRef.form;
-      form.validateFields((err, values) => {
-        if (err) {
-          return;
-        }
-        console.log("Received values of form: ", values);
-        this.submit(values);
-      });
-    },
-    submit(values) {
-      const form = this.formRef.form;
-      this.confirmLoading = true;
-      setTimeout(() => {
-        // 提交数据成功之后
-        this.confirmLoading = false;
-        form.resetFields();
-        this.$emit("success");
-      }, 2000);
-    }
-  }
+  methods: {}
 };
 </script>
 

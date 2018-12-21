@@ -8,8 +8,7 @@ export default {
       pagination: {
         showSizeChanger: true
       },
-      // url: "/api",
-      url: "https://www.easy-mock.com/mock/5bcef2cec8d32e559a452810/example/demo",
+      url: "demo",
       data: [],
       loading: false,
 
@@ -23,10 +22,10 @@ export default {
       return `已选择 ${len} 项`;
     },
     columns() {
-      return this.$store.state.store[this.id].columns;
+      return this.$store.state[this.module][this.id].columns;
     },
     singleOperations() {
-      return this.$store.state.store[this.id].singleOperations;
+      return this.$store.state[this.module][this.id].singleOperations;
     }
   },
   methods: {
@@ -51,10 +50,10 @@ export default {
       let url = this.url;
       this.$http
         .get(url, {
-          params: {
-            results: 10,
-            ...params
-          }
+          // params: {
+          //   results: 10,
+          //   ...params
+          // }
         })
         .then(data => {
           const pagination = { ...this.pagination };
@@ -72,7 +71,6 @@ export default {
     },
 
     onSearch(value) {
-      console.log(value);
       this.fetch();
     },
     handleCreate() {
@@ -85,16 +83,20 @@ export default {
         params: { id: record.id }
       });
     },
+
+    handleShowModal(key) {
+      this.$store.commit(`${this.id}/toggleModalVisible`, key);
+    },
     handleSingleMenuClick(record, { key }) {
-      const id = this.singleOperations[key].id;
-      this.$store.commit(`${this.id}/toggleModalVisible`, id);
+      console.log('handleSingleMenuClick')
+      this.$store.commit(`${this.id}/toggleModalVisible`, key);
     },
     handleBatchDelete() {
       if (this.selectedRowKeys.length === 0) {
         this.$message.info(`请先选择您要操作的${this.name}`);
         return;
       }
-      this.showBatchDeleteModal();
+      this._showBatchDeleteModal();
     },
     _showBatchDeleteModal() {
       const vm = this;

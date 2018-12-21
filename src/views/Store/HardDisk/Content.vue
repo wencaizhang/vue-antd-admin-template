@@ -105,6 +105,7 @@ export default {
   },
   data() {
     return {
+      module: "store",
       id: "disk",
       name: "硬盘",
     };

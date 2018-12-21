@@ -13,6 +13,7 @@ export default {
       }
       state.singleOperations.forEach(item => (item.visible = false));
       item.visible = !visible;
+      console.log('toggleModalVisible', item)
     },
     setHandleRowData: (state, record) => {
       Object.assign(state.handleRowData, record);

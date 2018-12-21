@@ -36,15 +36,15 @@ module.exports = {
     }
   },
   devServer: {
-    // proxy: {
-      // '/api': {
-      //   target: '',
-      //   ws: false,
-      //   changeOrigin: true,
-      //   pathRewrite: {
-      //     'api': ''
-      //   }
-      // },
-    // }
+    proxy: {
+      'demo': {
+        target: 'https://www.easy-mock.com/mock/5bcef2cec8d32e559a452810/example/demo',
+        ws: false,
+        changeOrigin: true,
+        pathRewrite: {
+          'demo': ''
+        }
+      },
+    }
   }
 }
