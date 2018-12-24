@@ -5,13 +5,13 @@ export default {
       let visible;
       let item;
       if (id) {
-        item = state.singleOperations.find(item => item.id === id);
+        item = state.menuOptions.find(item => item.id === id);
         if (!item) {
           return false;
         }
         visible = item.visible;
       }
-      state.singleOperations.forEach(item => (item.visible = false));
+      state.menuOptions.forEach(item => (item.visible = false));
       item.visible = !visible;
       console.log('toggleModalVisible', item)
     },
@@ -22,7 +22,7 @@ export default {
   actions: {},
   getters: {
     getVisibleById: state => id => {
-      return state.singleOperations.find(item => item.id === id).visible;
+      return state.menuOptions.find(item => item.id === id).visible;
     }
   }
 };

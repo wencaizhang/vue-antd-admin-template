@@ -35,7 +35,7 @@ export default {
 
     handleRowData: {},
     columns,
-    singleOperations: [
+    menuOptions: [
       {
         visible: false,
         id: "recover",

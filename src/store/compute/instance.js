@@ -64,7 +64,7 @@ export default {
   state: {
     handleRowData: {},
     columns,
-    singleOperations: [
+    menuOptions: [
       { visible: false, type: 'none', name: "启动", id: "start" },
       { visible: false, type: 'none', name: "关机", id: "shutdown" },
 

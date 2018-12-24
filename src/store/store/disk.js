@@ -47,7 +47,7 @@ export default {
     columns,
     // 根据状态显示不同的操作选项
     // 状态为可用，则全部显示，状态为使用中，则显示 visible: true 的操作选项
-    singleOperations: [
+    menuOptions: [
       { id: "create", visible: false, name: "新建", menu: false },
       { id: "edit", visible: false, name: "修改" },
       {

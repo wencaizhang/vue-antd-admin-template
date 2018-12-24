@@ -35,7 +35,7 @@
     <a-table
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       :columns="columns"
-      :rowKey="record => record.cell"
+      :rowKey="record => record.id"
       :dataSource="data"
       :pagination="pagination"
       :loading="loading"
@@ -46,9 +46,9 @@
       </template>
       <template slot="operation" slot-scope="text, record">
         <a-dropdown style="margin-right: 10px;">
-          <a-menu slot="overlay" @click="handleSingleMenuClick(record, $event)">
+          <a-menu slot="overlay" @click="handleMenuClick($event, record)">
             <a-menu-item
-              v-for="item in singleOperations"
+              v-for="item in menuOptions"
               :key="item.id"
               v-if="item.menu !== false"
             >{{ item.name }}</a-menu-item>
