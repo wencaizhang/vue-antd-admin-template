@@ -27,13 +27,13 @@
                   type="primary"
                   style="margin-right: 10px;"
                   icon="plus"
-                  @click="handleShowModal('create')"
+                  @click="handleMenuClick('create')"
                 >创建镜像</a-button>
                 <a-button
                   type="primary"
                   style="margin-right: 10px;"
                   icon="edit"
-                  @click="handleShowModal('edit')"
+                  @click="handleMenuClick('edit')"
                 >编辑镜像</a-button>
               </a-row>
             </a-col>
@@ -102,7 +102,7 @@ export default {
     handleViewDetail(record) {
       console.log(record);
       Object.assign(this.selectedRowData, record);
-      this.$store.commit(`${this.id}/toggleModalVisible`, 'detail');
+      this.handleMenuClick('detail');
     }
   }
 };

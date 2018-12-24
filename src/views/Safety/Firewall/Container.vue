@@ -12,7 +12,7 @@
                 <create-modal/>
                 <import-modal v-bind:obj="obj"/>
                 <a-dropdown>
-                  <a-menu slot="overlay" @click="handleMenuClick">
+                  <a-menu slot="overlay" @click="handleMenuClick($event.key)">
                     <a-menu-item key="1">修改</a-menu-item>
                     <a-menu-item key="2">删除</a-menu-item>
                     <a-menu-item key="3">绑定标签</a-menu-item>

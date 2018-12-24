@@ -13,16 +13,16 @@
                   type="primary"
                   style="margin-right: 10px;"
                   icon="plus"
-                  @click="handleShowModal('create')"
+                  @click="handleMenuClick('create')"
                 >创建</a-button>
                 <a-button
                   type="primary"
                   style="margin-right: 10px;"
                   icon="upload"
-                  @click="handleShowModal('import')"
+                  @click="handleMenuClick('import')"
                 >导入密钥对</a-button>
                 <a-dropdown>
-                  <a-menu slot="overlay" @click="handleMenuClick">
+                  <a-menu slot="overlay" @click="handleMenuClick($event.key)">
                     <a-menu-item
                       v-for="item in menuOptions"
                       v-if="item.type === 'batch'"
@@ -58,7 +58,7 @@
         >
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
-              <a-menu slot="overlay" @click="handleMenuClick($event, record)">
+              <a-menu slot="overlay" @click="handleMenuClick($event.key, record)">
                 <a-menu-item
                   v-for="item in menuOptions"
                   v-if="item.type === 'single'"
@@ -109,14 +109,6 @@ export default {
       module: "compute",
       id: "keypair",
       name: "密钥对",
-      confirmLoading: false,
-      obj: {
-        名称: "aaa1231313aaa",
-        描述: "bbbb",
-        最低内存: "dddddd",
-        最小磁盘: "ccccc",
-        镜像格式: "Yiminghe"
-      }
     };
   },
   computed: {},
@@ -126,14 +118,7 @@ export default {
     }
   },
   methods: {
-    handleMenuClick({ key }) {
-      // 批量操作
-      if (this.selectedRowKeys.length === 0) {
-        this.$message.info("请先选择您要操作的实例");
-        return;
-      }
-      this.$store.commit(`${this.id}/toggleModalVisible`, key);
-    }
+
   }
 };
 </script>

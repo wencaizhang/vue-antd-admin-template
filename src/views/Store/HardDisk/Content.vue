@@ -9,7 +9,7 @@
               type="primary"
               style="margin-right: 10px;"
               icon="plus"
-              @click="handleCreate"
+              @click="handleMenuClick('create')"
             >创建</a-button>
             <a-button type="danger" @click="handleBatchDelete" style="margin-right: 10px;">删除</a-button>
             <a-input-search
@@ -46,7 +46,7 @@
       </template>
       <template slot="operation" slot-scope="text, record">
         <a-dropdown style="margin-right: 10px;">
-          <a-menu slot="overlay" @click="handleMenuClick($event, record)">
+          <a-menu slot="overlay" @click="handleMenuClick($event.key, record)">
             <a-menu-item
               v-for="item in menuOptions"
               :key="item.id"

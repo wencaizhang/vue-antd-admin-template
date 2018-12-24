@@ -76,7 +76,7 @@ export default {
     },
     fetch(params = {}) {
       this.loading = true;
-      let url = "https://randomuser.me/api";
+      let url = "demo";
       this.$http
         .get(url, {
           params: {

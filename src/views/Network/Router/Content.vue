@@ -9,10 +9,10 @@
               type="primary"
               style="margin-right: 10px;"
               icon="plus"
-              @click="handleCreate"
+              @click="handleMenuClick('create')"
             >创建</a-button>
             <a-dropdown style="margin-right: 10px;">
-              <a-menu slot="overlay" @click="handleMenuClick">
+              <a-menu slot="overlay" @click="handleMenuClick($event.key)">
                 <a-menu-item
                   v-for="item in menuOptions"
                   v-if="item.type === 'batch'"
@@ -57,7 +57,7 @@
       </template>
       <template slot="operation" slot-scope="text, record">
         <a-dropdown style="margin-right: 10px;">
-          <a-menu slot="overlay" @click="handleMenuClick($event, record)">
+          <a-menu slot="overlay" @click="handleMenuClick($event.key, record)">
             <a-menu-item
               v-for="item in menuOptions"
               :key="item.id"

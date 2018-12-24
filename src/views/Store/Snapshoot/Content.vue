@@ -40,7 +40,7 @@
       </template>
       <template slot="operation" slot-scope="text, record">
         <a-dropdown style="margin-right: 10px;">
-          <a-menu slot="overlay" @click="handleMenuClick($event, record)">
+          <a-menu slot="overlay" @click="handleMenuClick($event.key, record)">
             <a-menu-item
               v-for="item in menuOptions"
               :key="item.id"
@@ -81,7 +81,6 @@ export default {
       id: "snapshoot",
       name: "快照",
       confirmLoading: false,
-      showDeleteModal: false
     };
   },
   computed: {},
