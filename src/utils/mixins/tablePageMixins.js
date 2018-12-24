@@ -24,8 +24,8 @@ export default {
     columns() {
       return this.$store.state[this.module][this.id].columns;
     },
-    singleOperations() {
-      return this.$store.state[this.module][this.id].singleOperations;
+    menuOptions() {
+      return this.$store.state[this.module][this.id].menuOptions;
     }
   },
   methods: {
@@ -87,8 +87,8 @@ export default {
     handleShowModal(key) {
       this.$store.commit(`${this.id}/toggleModalVisible`, key);
     },
-    handleSingleMenuClick(record, { key }) {
-      console.log('handleSingleMenuClick')
+    handleMenuClick({ key }, record ) {
+      console.log('handleMenuClick')
       this.$store.commit(`${this.id}/toggleModalVisible`, key);
     },
     handleBatchDelete() {

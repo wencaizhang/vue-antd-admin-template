@@ -24,7 +24,7 @@
                 <a-dropdown>
                   <a-menu slot="overlay" @click="handleMenuClick">
                     <a-menu-item
-                      v-for="item in singleOperations"
+                      v-for="item in menuOptions"
                       v-if="item.type === 'batch'"
                       :key="item.id"
                     >{{item.name}}</a-menu-item>
@@ -50,7 +50,7 @@
         <a-table
           :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
           :columns="columns"
-          :rowKey="record => record.cell"
+          :rowKey="record => record.id"
           :dataSource="data"
           :pagination="pagination"
           :loading="loading"
@@ -58,9 +58,9 @@
         >
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
-              <a-menu slot="overlay" @click="handleSingleMenuClick(record, $event)">
+              <a-menu slot="overlay" @click="handleMenuClick($event, record)">
                 <a-menu-item
-                  v-for="item in singleOperations"
+                  v-for="item in menuOptions"
                   v-if="item.type === 'single'"
                   :disabled="record | downloadable(item.id)"
                   :key="item.id"

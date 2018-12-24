@@ -15,7 +15,7 @@
           <a-dropdown style="margin-right: 10px;">
             <a-menu slot="overlay" @click="handleMenuClick">
               <a-menu-item
-                v-for="item in singleOperations"
+                v-for="item in menuOptions"
                 v-if="item.type === 'batch'"
                 :key="item.id"
               >{{item.name}}</a-menu-item>
@@ -45,7 +45,7 @@
         <a-table
           :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
           :columns="columns"
-          :rowKey="record => record.cell"
+          :rowKey="record => record.id"
           :dataSource="data"
           :pagination="pagination"
           :loading="loading"
@@ -54,9 +54,9 @@
           <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
-              <a-menu slot="overlay" @click="handleSingleMenuClick(record, $event)">
+              <a-menu slot="overlay" @click="handleMenuClick($event, record)">
                 <a-menu-item
-                  v-for="item in singleOperations"
+                  v-for="item in menuOptions"
                   v-if="item.type === 'single'"
                   :key="item.id"
                 >{{ item.name }}</a-menu-item>
@@ -127,10 +127,6 @@ export default {
         description: "操作成功，数据已更新",
         icon: <a-icon type="check-circle" style="color: #52c41a" />
       });
-    },
-    handleMenuClick(e) {
-      let key = e.key;
-      console.log(this.operations[key]);
     },
     handleCreate() {
       this.$router.push({ name: "CreateInstance" });

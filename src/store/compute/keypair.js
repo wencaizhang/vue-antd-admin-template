@@ -26,7 +26,7 @@ export default {
   state: {
     handleRowData: {},
     columns,
-    singleOperations: [
+    menuOptions: [
       {
         visible: false,
         id: "create",

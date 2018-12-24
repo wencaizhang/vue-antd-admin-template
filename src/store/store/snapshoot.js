@@ -36,7 +36,7 @@ export default {
     handleRowData: {},
     columns,
 
-    singleOperations: [
+    menuOptions: [
       {
         id: "create",
         visible: false,
