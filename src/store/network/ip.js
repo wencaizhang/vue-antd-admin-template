@@ -1,10 +1,10 @@
 const columns = [
   {
-    title: "ID",
+    title: "IP",
     dataIndex: "id"
   },
   {
-    title: "名称",
+    title: "描述",
     dataIndex: "name.first"
   },
   {
@@ -21,11 +21,15 @@ const columns = [
     filterMultiple: false
   },
   {
-    title: "外部网络",
+    title: "已映射固定IP",
     dataIndex: ""
   },
   {
-    title: "可用域",
+    title: "资源池",
+    dataIndex: ""
+  },
+  {
+    title: "带宽上限(Mbps)",
     dataIndex: ""
   },
 ];

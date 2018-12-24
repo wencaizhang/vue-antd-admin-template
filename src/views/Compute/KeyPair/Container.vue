@@ -84,10 +84,10 @@
 </template>
 
 <script>
-import CreateModal from "./Modal/CreateModal";
-import TagModal from "./Modal/TagModal";
-import ImportModal from "./Modal/ImportModal";
-import EditModal from "./Modal/EditModal";
+import CreateModal from "./Modal/Create";
+import TagModal from "./Modal/Tag";
+import ImportModal from "./Modal/Import";
+import EditModal from "./Modal/Edit";
 import Download from "./Modal/Download";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 
