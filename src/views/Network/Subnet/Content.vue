@@ -79,7 +79,7 @@
 
 <script>
 import CreateModal from "./Modal/Create";
-import EditModal from "./Modal/EditModal";
+import EditModal from "./Modal/Edit";
 import DeleteModal from "./Modal/Delete";
 
 import tablePageMixins from "@/utils/mixins/tablePageMixins";

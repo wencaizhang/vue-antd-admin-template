@@ -68,9 +68,9 @@
 </template>
 
 <script>
-import CreateModal from "./Modal/CreateModal";
-import EditModal from "./Modal/EditModal";
-import DetailModal from "./Modal/DetailModal";
+import CreateModal from "./Modal/Create";
+import EditModal from "./Modal/Edit";
+import DetailModal from "./Modal/Detail";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 
 import tablePageMixins from "@/utils/mixins/tablePageMixins";

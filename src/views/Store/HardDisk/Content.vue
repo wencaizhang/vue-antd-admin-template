@@ -75,15 +75,15 @@
 </template>
 
 <script>
-import CreateModal from "./Modal/CreateModal";
-import EditModal from "./Modal/EditModal";
+import CreateModal from "./Modal/Create";
+import EditModal from "./Modal/Edit";
 import Uninstall from "./Modal/Uninstall";
 import Dilatation from "./Modal/Dilatation";
 import Mount from "./Modal/Mount";
 import CreateSnapshoot from "./Modal/CreateSnapshoot";
 import CreateBackups from "./Modal/CreateBackups";
 import Delete from "./Modal/Delete";
-import CloneModal from "./Modal/CloneModal";
+import CloneModal from "./Modal/Clone";
 import Upload from "./Modal/Upload";
 import ChangeDiskType from "./Modal/ChangeDiskType";
 

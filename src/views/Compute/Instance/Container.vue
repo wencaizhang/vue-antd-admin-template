@@ -84,14 +84,14 @@
 <script>
 import PageLayout from "@/components/Layout/PageLayout.vue";
 
-import CreateSnapshootModal from "./Modals/CreateSnapshootModal";
-import BindIPModal from "./Modals/BindIPModal";
+import CreateSnapshootModal from "./Modals/CreateSnapshoot";
+import BindIPModal from "./Modals/BindIP";
 import UnbindIP from "./Modals/UnbindIP";
 import Delete from "./Modals/Delete";
-import AllotIPModal from "./Modals/AllotIPModal";
-import RebuildCloudHostModal from "./Modals/RebuildCloudHostModal";
-import EditSecurityGroupModal from "./Modals/EditSecurityGroupModal";
-import OverviewModal from "./Modals/OverviewModal";
+import AllotIPModal from "./Modals/AllotIP";
+import RebuildCloudHostModal from "./Modals/RebuildCloudHost";
+import EditSecurityGroupModal from "./Modals/EditSafetyGroup";
+import OverviewModal from "./Modals/Overview";
 
 import tablePageMixins from "@/utils/mixins/tablePageMixins";
 
