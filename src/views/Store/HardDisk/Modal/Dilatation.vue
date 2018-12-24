@@ -46,9 +46,9 @@
   </div>
 </template>
 <script>
-import { formModalMixins } from "@/utils/mixins/modalMixin";
+import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
 export default {
-  mixins: [formModalMixins],
+  mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
       name: "dilatation"

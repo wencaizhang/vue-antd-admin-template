@@ -81,9 +81,9 @@ const data = [
     address: "Dublin No. 2 Lake Park"
   }
 ];
-import { formModalMixins } from "@/utils/mixins/modalMixin";
+import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
 export default {
-  mixins: [formModalMixins],
+  mixins: [baseModalMixins, formModalMixins],
   props: ["record"],
   data() {
     const columns = [

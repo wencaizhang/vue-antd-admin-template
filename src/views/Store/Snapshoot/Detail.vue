@@ -7,8 +7,16 @@
       <div class="content">
         <ul class="detail-container">
           <li v-for="item in data" :key="item.key">
-            <span class="key">{{item.name}}</span>
-            <span class="value">{{item.value}}</span>
+            <template v-if="item.key === 'disk'">
+              <span class="key">{{item.name}}</span>
+              <span class="value">
+                <router-link :to="{name: `disk-instance`, params: { id: item.value }}">{{item.value}}</router-link>
+              </span>
+            </template>
+            <template v-else>
+              <span class="key">{{item.name}}</span>
+              <span class="value">{{item.value}}</span>
+            </template>
           </li>
         </ul>
       </div>
@@ -26,13 +34,12 @@ export default {
     return {
       data: [
         { name: "名称", key: "名称", value: "db3" },
+        { name: "硬盘名称", key: "disk", value: "硬盘名称db3" },
         { name: "状态", key: "状态", value: "使用中" },
         { name: "容量", key: "容量", value: "100 GB" },
         { name: "类型", key: "类型", value: "SSD" },
-        { name: "月费用", key: "月费用", value: "￥120" },
-        { name: "可启动", key: "可启动", value: "否" },
+        { name: "日费用", key: "日费用", value: "￥120" },
         { name: "创建时间", key: "创建时间", value: "2018年1月1日 02:15" },
-        { name: "挂载的主机", key: "挂载的主机", value: "host-db3 /dev/vdb" }
       ],
       loading: false,
       busy: false,
