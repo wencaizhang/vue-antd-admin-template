@@ -41,7 +41,11 @@
       <template slot="operation" slot-scope="text, record">
         <a-dropdown style="margin-right: 10px;">
           <a-menu slot="overlay" @click="handleSingleMenuClick(record, $event)">
-            <a-menu-item v-for="(item, index) in singleOperations" :key="index" v-if="item.menu !== false">{{ item.name }}</a-menu-item>
+            <a-menu-item
+              v-for="item in singleOperations"
+              :key="item.id"
+              v-if="item.menu !== false"
+            >{{ item.name }}</a-menu-item>
           </a-menu>
           <a-button style="margin-left: 8px">操作
             <a-icon type="down"/>

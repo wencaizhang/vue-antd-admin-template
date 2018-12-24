@@ -29,6 +29,11 @@ export const baseModalMixins = {
       }, 1000);
     },
     formatter(postfix, value) {
+      // let v = parseInt(value);
+      // if (isNaN(v)); {
+      //   console.log('value', '---', v, '---', v==='')
+      //   return '';
+      // }
       return parseInt(value) + " " + postfix;
     },
     parser(value) {
@@ -41,30 +46,15 @@ export const formModalMixins = {
   props: ["module"],
   data() {
     return {
-      bodyStyle: { "max-height": "400px", overflow: "auto" },
       formItemLayout: {
         labelCol: { span: 8 },
         wrapperCol: { span: 14 }
       },
-      radioStyle: {
-        display: "block",
-        height: "30px",
-        lineHeight: "30px"
-      },
-      form: this.$form.createForm(this),
-      confirmLoading: false
+      form: this.$form.createForm(this)
     };
   },
-  computed: {
-    visible() {
-      const visible = this.$store.getters[`${this.module}/getVisibleById`](this.name);
-      return visible;
-    }
-  },
+
   methods: {
-    handleCancel() {
-      this.$store.commit(`${this.module}/toggleModalVisible`, this.name);
-    },
     handleCreate() {
       this.form.validateFields((err, values) => {
         if (err) {

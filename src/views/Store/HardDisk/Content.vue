@@ -47,7 +47,11 @@
       <template slot="operation" slot-scope="text, record">
         <a-dropdown style="margin-right: 10px;">
           <a-menu slot="overlay" @click="handleSingleMenuClick(record, $event)">
-            <a-menu-item v-for="(item, index) in singleOperations" :key="index" v-if="item.menu !== false">{{ item.name }}</a-menu-item>
+            <a-menu-item
+              v-for="item in singleOperations"
+              :key="item.id"
+              v-if="item.menu !== false"
+            >{{ item.name }}</a-menu-item>
           </a-menu>
           <a-button style="margin-left: 8px">操作
             <a-icon type="down"/>
@@ -63,6 +67,7 @@
     <Mount :module="id"/>
     <CreateSnapshoot :module="id"/>
     <CreateBackups :module="id"/>
+    <CloneModal :module="id"/>
     <Upload :module="id"/>
     <Delete :module="id"/>
     <ChangeDiskType :module="id"/>
@@ -78,11 +83,11 @@ import Mount from "./Modal/Mount";
 import CreateSnapshoot from "./Modal/CreateSnapshoot";
 import CreateBackups from "./Modal/CreateBackups";
 import Delete from "./Modal/Delete";
+import CloneModal from "./Modal/CloneModal";
 import Upload from "./Modal/Upload";
 import ChangeDiskType from "./Modal/ChangeDiskType";
 
 import tablePageMixins from "@/utils/mixins/tablePageMixins";
-
 
 export default {
   mixins: [tablePageMixins],
@@ -95,6 +100,7 @@ export default {
     CreateSnapshoot,
     CreateBackups,
     Delete,
+    CloneModal,
     Upload,
     ChangeDiskType
   },
@@ -107,13 +113,11 @@ export default {
     return {
       module: "store",
       id: "disk",
-      name: "硬盘",
+      name: "硬盘"
     };
   },
   computed: {},
-  methods: {
-
-  }
+  methods: {}
 };
 </script>
 
