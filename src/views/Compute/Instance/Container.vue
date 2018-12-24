@@ -3,7 +3,9 @@
     <page-layout>
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">
-          <a-button type="primary" style="margin-right: 10px;" icon="plus" @click="handleCreate">新建</a-button>
+          <a-button type="primary" style="margin-right: 10px;" icon="plus">
+            <router-link :to="{ name: 'CreateInstance' }" style="color: inherit; margin-left: 8px;">新建</router-link>
+          </a-button>
           <a-button type="primary" style="margin-right: 10px;" icon="play-circle" disabled>启动</a-button>
           <a-button
             type="primary"
@@ -13,7 +15,7 @@
             disabled
           >关机</a-button>
           <a-dropdown style="margin-right: 10px;">
-            <a-menu slot="overlay" @click="handleMenuClick">
+            <a-menu slot="overlay" @click="handleMenuClick($event.key)">
               <a-menu-item
                 v-for="item in menuOptions"
                 v-if="item.type === 'batch'"
@@ -54,7 +56,7 @@
           <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
-              <a-menu slot="overlay" @click="handleMenuClick($event, record)">
+              <a-menu slot="overlay" @click="handleMenuClick($event.key, record)">
                 <a-menu-item
                   v-for="item in menuOptions"
                   v-if="item.type === 'single'"
@@ -70,7 +72,7 @@
       </div>
 
       <create-snapshoot-modal :module="id"/>
-      <bind-IP-modal :module="id" v-on:allotIP="handleAllotIP"/>
+      <bind-IP-modal :module="id"/>
       <UnbindIP :module="id"/>
       <Delete :module="id"/>
       <allot-IP-modal :module="id"/>
@@ -127,13 +129,6 @@ export default {
         description: "操作成功，数据已更新",
         icon: <a-icon type="check-circle" style="color: #52c41a" />
       });
-    },
-    handleCreate() {
-      this.$router.push({ name: "CreateInstance" });
-    },
-    handleAllotIP () {
-      console.log('allotIP')
-      this.$store.commit(`${this.id}/toggleModalVisible`, 'allotIP');
     }
   }
 };

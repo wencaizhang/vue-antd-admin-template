@@ -61,7 +61,6 @@ export default {
     PageLayout,
     Chart,
   },
-  computed: {},
   created() {
     setTimeout(() => {
       this.loading = false;

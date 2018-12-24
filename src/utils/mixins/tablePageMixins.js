@@ -73,9 +73,6 @@ export default {
     onSearch(value) {
       this.fetch();
     },
-    handleCreate() {
-      this.$store.commit(`${this.id}/toggleModalVisible`, "create");
-    },
     handleViewDetail(record) {
       this.$store.commit(`${this.id}/setHandleRowData`, record);
       this.$router.push({
@@ -84,11 +81,13 @@ export default {
       });
     },
 
-    handleShowModal(key) {
-      this.$store.commit(`${this.id}/toggleModalVisible`, key);
-    },
-    handleMenuClick({ key }, record ) {
+    handleMenuClick(key, record) {
       console.log('handleMenuClick')
+      // 批量操作
+      // if (this.selectedRowKeys.length === 0) {
+      //   this.$message.info("请先选择您要操作的实例");
+      //   return;
+      // }
       this.$store.commit(`${this.id}/toggleModalVisible`, key);
     },
     handleBatchDelete() {
