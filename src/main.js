@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import Vue from 'vue';
 import Storage from 'vue-ls';
 import Antd from 'ant-design-vue';
