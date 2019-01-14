@@ -1,3 +1,6 @@
 .com-unselect {
   user-select: none;
 }
+.christmas.ant-btn-primary:before {
+  display: none;
+}
