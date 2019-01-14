@@ -22,7 +22,7 @@ node {
         if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
             sh "ansible ciserver -a \"kubectl set image deploy/ur-cmp-front ur-cmp-front=hub.urplus.cn/ur-cmp/ur-cmp-front:${params.VERSION} -n ur-cmp\""
 
-            mail bcc: '', body: "友普云管平台前端已部署\n持续集成环境，地址：http://ci.cecpark.net/cmp\n\n代码标签：${params.GIT_TAG}\n更新内容：\n${params.RELEASE_NOTE}\n\n注意ci.cecpark.net为自定义的主机名，在办公环境内DNS配置，需添加192.168.140.1到本机DNS服务器配置。\n----------\n本邮件为自动发送\nBy Jenkins", cc: '', from: 'jenkins@urplus.cn', replyTo: '', subject: "【CMP】前端持续集成环境已更新${params.VERSION}", to: 'ceur_all@urplus.cn'
+            mail bcc: '', body: "友普云管平台前端已部署\n持续集成环境，地址：http://ci.cmp.cecpark.net/cmp\n\n代码标签：${params.GIT_TAG}\n更新内容：\n${params.RELEASE_NOTE}\n\n注意ci.cmp.cecpark.net为自定义的主机名，在办公环境内DNS配置，需添加192.168.140.1到本机DNS服务器配置。\n----------\n本邮件为自动发送\nBy Jenkins", cc: '', from: 'jenkins@urplus.cn', replyTo: '', subject: "【CMP】前端持续集成环境已更新${params.VERSION}", to: 'ceur_all@urplus.cn'
         }
     }
 }
