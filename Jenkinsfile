@@ -7,7 +7,7 @@ node {
     stage('UR_CMP_Front_Build') {
         checkout([$class: 'GitSCM', branches: [[name: "refs/tags/${params.GIT_TAG}"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'e39355c3-e173-405e-bc36-97382d427b76', url: 'git@192.168.140.131:ur-cmp/ur-cmp-front.git']]])
 
-        dir ('ur-cmp-front') {
+        dir ('.') {
             def customImage = docker.build("ur-cmp/ur-cmp-front:${params.VERSION}")
 
             docker.withRegistry('https://hub.urplus.cn/', 'docker-registry') {
