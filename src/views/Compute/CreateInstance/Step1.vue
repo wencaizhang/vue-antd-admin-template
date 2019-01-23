@@ -177,12 +177,8 @@ export default {
   methods: {
     handleSubmit() {
       this.form.validateFields((err, values) => {
+        console.log(values);
         if (!err) {
-          // 硬盘需要单独处理
-          if (!this.selectedDiskRowKeys.length) {
-            this.$message.warn("请至少选择一个硬盘");
-            return false;
-          }
           this.$emit("next", {
             step2: Object.assign({}, values, {
               selectedDiskRowKeys: this.selectedDiskRowKeys

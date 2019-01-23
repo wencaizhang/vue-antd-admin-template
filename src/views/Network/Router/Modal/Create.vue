@@ -13,7 +13,7 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="主机名称："
+          label="路由器名称："
         >
           <a-input
             v-decorator="[
@@ -34,7 +34,9 @@
             v-decorator="[
               'type',
               {
-                rules: [{ required: true, message: '请选择外部网络' }]}
+                rules: [{ required: true, message: '请选择外部网络' }],
+                initialValue: '0'
+              }
             ]"
           >
             <a-radio value="0">external</a-radio>
@@ -43,11 +45,19 @@
         <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
           <a-checkbox v-decorator="[
               'admin',
+              {
+                valuePropName: 'checked',
+                initialValue: true,
+              }
             ]">启用管理员状态</a-checkbox>
         </a-form-item>
         <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
           <a-checkbox v-decorator="[
               'snat',
+              {
+                valuePropName: 'checked',
+                initialValue: true,
+              }
             ]">启动SNAT</a-checkbox>
         </a-form-item>
       </a-form>
