@@ -6,12 +6,12 @@
       @ok="handleCreate"
       :visible="visible"
       :confirmLoading="confirmLoading"
-      title="删除硬盘"
+      title="删除路由器"
       okText="删除"
       okType="danger"
     >
-      <a-alert message="注意：删除硬盘后数据不可恢复！" type="warning" showIcon/>
-      <p style="margin-top: 10px; text-align: center;">是否删除硬盘web1?</p>
+      <a-alert message="注意：删除路由器后数据不可恢复！" type="warning" showIcon/>
+      <p style="margin-top: 10px; text-align: center;">是否删除路由器web1?</p>
     </a-modal>
   </div>
 </template>

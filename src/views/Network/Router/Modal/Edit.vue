@@ -6,7 +6,7 @@
       @ok="handleCreate"
       :visible="visible"
       :confirmLoading="confirmLoading"
-      title="编辑硬盘"
+      title="编辑路由器"
       okText="提交"
     >
       <a-form :form="form">

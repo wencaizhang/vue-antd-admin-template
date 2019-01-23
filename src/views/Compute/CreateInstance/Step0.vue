@@ -6,7 +6,10 @@
           buttonStyle="solid"
           v-decorator="[
             'supporter',
-            {rules: [{ required: true, message: '请选择一个映像提供方!' }]}
+            {
+              rules: [{ required: true, message: '请选择一个映像提供方!' }],
+              initialValue: 'large'
+            }
           ]"
         >
           <a-radio-button value="large">系统</a-radio-button>

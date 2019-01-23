@@ -3,8 +3,8 @@
     <page-layout>
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">
-          <a-button type="primary" style="margin-right: 10px;" icon="plus">
-            <router-link :to="{ name: 'CreateInstance' }" style="color: inherit; margin-left: 8px;">新建</router-link>
+          <a-button @click="$router.push({name: 'CreateInstance'})" type="primary" style="margin-right: 10px;" icon="plus">
+            新建
           </a-button>
           <a-button type="primary" style="margin-right: 10px;" icon="play-circle" disabled>启动</a-button>
           <a-button
@@ -18,7 +18,7 @@
             <a-menu slot="overlay" @click="handleMenuClick($event.key)">
               <a-menu-item
                 v-for="item in menuOptions"
-                v-if="item.type === 'batch'"
+                v-show="item.type === 'batch'"
                 :key="item.id"
               >{{item.name}}</a-menu-item>
             </a-menu>
@@ -59,7 +59,7 @@
               <a-menu slot="overlay" @click="handleMenuClick($event.key, record)">
                 <a-menu-item
                   v-for="item in menuOptions"
-                  v-if="item.type === 'single'"
+                  v-show="item.type === 'single'"
                   :key="item.id"
                 >{{ item.name }}</a-menu-item>
               </a-menu>
