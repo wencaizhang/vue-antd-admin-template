@@ -39,8 +39,7 @@
         </a-form-item>
       </a-form>
       <a-row>
-        <a-col span="{8}"/>
-        <a-col span="{14}">
+        <a-col :offset="8">
           <a-popover title="说明：">
             <template slot="content">
               <p>密钥对是用来登录您创建的云主机的式。为密钥对取一个方便您自己辨别的名字，然后在下方提供的空间内粘贴您的SSH公钥。</p>
@@ -58,7 +57,7 @@
               </p>
             </template>
 
-            <span>了解更多
+            <span class="more">了解更多
               <a-icon style="margin-left: 5px;" type="question-circle-o"/>
             </span>
           </a-popover>
@@ -80,3 +79,12 @@ export default {
   methods: {}
 };
 </script>
+
+<style scoped>
+.more {
+  cursor: help;
+}
+.more:hover {
+  color: #40a9ff;
+}
+</style>

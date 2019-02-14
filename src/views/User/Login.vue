@@ -2,9 +2,9 @@
   <div class="container">
     <div class="top">
       <div class="header">
-        <a href="/" class="logo">VUE Admin</a>
+        <!-- <a href="/" class="logo">友普云自服务</a> -->
       </div>
-      <div class="desc">Ant Design 是西湖区最具影响力的 Web 设计规范</div>
+      <div class="desc">友普云自服务</div>
     </div>
     <div class="main">
       <a-form
@@ -62,7 +62,6 @@
 
         <div style="display: flex; justify-content: space-between; ">
           <a-checkbox class="com-unselect" v-model="formLogin.rememberMe">自动登陆</a-checkbox>
-          <router-link :to="{ name: 'recover', params: { user: 'aaa'} }" class="forge-password">忘记密码</router-link>
         </div>
 
         <a-form-item style="margin-top:24px">
@@ -78,7 +77,7 @@
         </a-form-item>
 
         <div class="user-login-other">
-          <div>
+          <!-- <div>
             <span>其他登陆方式</span>
             <a>
               <a-icon class="item-icon" type="alipay-circle"></a-icon>
@@ -89,8 +88,8 @@
             <a>
               <a-icon class="item-icon" type="weibo-circle"></a-icon>
             </a>
-          </div>
-
+          </div> -->
+          <router-link :to="{ name: 'recover', params: { user: 'aaa'} }" class="forge-password">忘记密码</router-link>
           <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
         </div>
       </a-form>
@@ -100,6 +99,7 @@
 
 <script>
 import api from "@/api";
+import Vue from 'vue';
 import { mapActions } from "vuex";
 import { timeFix } from "@/utils/util";
 

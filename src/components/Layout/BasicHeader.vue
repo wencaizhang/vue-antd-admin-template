@@ -37,7 +37,7 @@ export default {
 .layout-header {
   padding: 0;
 }
-.header {
+.layout-header .header {
   display: flex;
   justify-content: space-between;
   height: 64px;
