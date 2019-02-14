@@ -15,7 +15,7 @@
               <a-menu slot="overlay" @click="handleMenuClick($event.key)">
                 <a-menu-item
                   v-for="item in menuOptions"
-                  v-if="item.type === 'batch'"
+                  v-show="item.type === 'batch'"
                   :key="item.id"
                 >{{item.name}}</a-menu-item>
               </a-menu>
@@ -52,16 +52,16 @@
       :loading="loading"
       @change="handleTableChange"
     >
-      <template slot="name" slot-scope="name, record">
+      <template slot="name" slot-scope="name,record">
         <a href="javascript:;" @click="handleViewDetail(record)">{{name.first}} {{name.last}}</a>
       </template>
-      <template slot="operation" slot-scope="text, record">
+      <template slot="operation" slot-scope="record">
         <a-dropdown style="margin-right: 10px;">
           <a-menu slot="overlay" @click="handleMenuClick($event.key, record)">
             <a-menu-item
               v-for="item in menuOptions"
               :key="item.id"
-              v-if="item.menu !== false"
+              v-show="item.menu !== false"
             >{{ item.name }}</a-menu-item>
           </a-menu>
           <a-button style="margin-left: 8px">操作

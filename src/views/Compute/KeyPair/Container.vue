@@ -25,7 +25,7 @@
                   <a-menu slot="overlay" @click="handleMenuClick($event.key)">
                     <a-menu-item
                       v-for="item in menuOptions"
-                      v-if="item.type === 'batch'"
+                      v-show="item.type === 'batch'"
                       :key="item.id"
                     >{{item.name}}</a-menu-item>
                   </a-menu>
@@ -56,12 +56,12 @@
           :loading="loading"
           @change="handleTableChange"
         >
-          <template slot="operation" slot-scope="text, record">
+          <template slot="operation" slot-scope="record">
             <a-dropdown style="margin-right: 10px;">
               <a-menu slot="overlay" @click="handleMenuClick($event.key, record)">
                 <a-menu-item
                   v-for="item in menuOptions"
-                  v-if="item.type === 'single'"
+                  v-show="item.type === 'single'"
                   :disabled="record | downloadable(item.id)"
                   :key="item.id"
                 >{{item.name}}</a-menu-item>
