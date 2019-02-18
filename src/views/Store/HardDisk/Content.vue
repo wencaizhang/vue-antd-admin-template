@@ -41,8 +41,8 @@
       :loading="loading"
       @change="handleTableChange"
     >
-      <template slot="name" slot-scope="name, record">
-        <a href="javascript:;" @click="handleViewDetail(record)">{{name.first}} {{name.last}}</a>
+      <template slot="name" slot-scope="text, record">
+        <a href="javascript:;" @click="handleViewDetail(record)">{{text.first}} {{text.last}}</a>
       </template>
       <template slot="operation" slot-scope="text, record">
         <a-dropdown style="margin-right: 10px;">

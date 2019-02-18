@@ -56,7 +56,7 @@
           :loading="loading"
           @change="handleTableChange"
         >
-          <template slot="operation" slot-scope="record">
+          <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
               <a-menu slot="overlay" @click="handleMenuClick($event.key, record)">
                 <a-menu-item
@@ -123,7 +123,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .ant-tabs-bar {
   margin: 0;
 }
