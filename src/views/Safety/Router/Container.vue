@@ -46,7 +46,7 @@
           :loading="loading"
           @change="handleTableChange"
         >
-          <template slot="name" slot-scope="name">{{name.first}} {{name.last}}</template>
+          <template slot="name" slot-scope="text">{{text.first}} {{text.last}}</template>
         </a-table>
       </div>
     </PageLayout>
@@ -147,16 +147,16 @@ export default {
       console.log(`Click on item ${key}`);
       switch (key) {
         case '1':
-          
+
           break;
         case '2':
           this.showDeleteModal = true;
       console.log(`Click on item ${key}`);
           break;
         case '3':
-          
+
           break;
-      
+
         default:
           break;
       }

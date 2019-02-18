@@ -61,6 +61,9 @@ export default {
           this.loading = false;
           this.data = data.results;
           this.pagination = pagination;
+        })
+        .catch( err => {
+          this.loading = false;
         });
     },
     onSelectChange(selectedRowKeys) {
@@ -82,6 +85,7 @@ export default {
     },
 
     handleMenuClick(key, record) {
+      console.log(record)
       console.log('handleMenuClick')
       // 批量操作
       // if (this.selectedRowKeys.length === 0) {
