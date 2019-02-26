@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import VueWechatTitle from 'vue-wechat-title'
 
-
+Vue.use(VueWechatTitle)
+Vue.use(Router);
 
 import { arr, constantRouterMap, asyncRouterMap } from "./config";
-
-Vue.use(Router);
 
 export default new Router({
   // mode: 'history',
