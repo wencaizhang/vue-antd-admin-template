@@ -8,7 +8,7 @@ export default {
       pagination: {
         showSizeChanger: true
       },
-      url: "demo",
+      url: "/api/demo",
       data: [],
       loading: false,
 

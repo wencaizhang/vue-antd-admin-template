@@ -12,6 +12,8 @@ import App from './App.vue';
 import config from '@/settings'
 import '@/permission' // 权限控制
 
+require('./mock/index.js')
+
 Vue.prototype.$http = axios;
 
 Vue.use(Storage, config.storageOptions)
