@@ -1,7 +1,7 @@
 <template>
   <a-locale-provider :locale="locale">
     <div id="app">
-      <router-view v-wechat-title='$route.meta.title'/>
+      <router-view v-wechat-title='"运管平台 - " + $route.meta.title'/>
     </div>
   </a-locale-provider>
 </template>
