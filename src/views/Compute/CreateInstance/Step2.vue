@@ -76,13 +76,13 @@ export default {
     },
     fetch(params = {}) {
       this.loading = true;
-      let url = "demo";
+      let url = "/api/demo";
       this.$http
         .get(url, {
-          params: {
-            results: 10,
-            ...params
-          }
+          // params: {
+          //   results: 10,
+          //   ...params
+          // }
         })
         .then(data => {
           const pagination = { ...this.pagination };

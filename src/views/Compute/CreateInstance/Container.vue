@@ -90,7 +90,7 @@ export default {
   border-radius: 6px;
   background-color: #fafafa;
   min-height: 200px;
-  text-align: center;
+  /* text-align: center; */
   padding-top: 20px;
 }
 
