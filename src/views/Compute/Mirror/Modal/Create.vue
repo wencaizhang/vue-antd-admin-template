@@ -33,7 +33,7 @@
             v-decorator="[
               'desc',
               {
-                rules: [{ required: true, message: '请输入描述' }]}
+                rules: [{ message: '请输入描述' }]}
             ]"
           />
         </a-form-item>
@@ -43,7 +43,7 @@
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-select
-            @change="handleSelectSource(value)"
+            @change="handleSelectSource"
             placeholder="请选择镜像源"
             v-decorator="[
               'desc',
@@ -118,7 +118,7 @@
         >
           <a-input
             v-decorator="[
-              'name',
+              'framework',
               {
                 rules: [{ required: true, message: '请填写架构!' }]}
             ]"
@@ -158,7 +158,9 @@
             ]"
           />
         </a-form-item>
-        <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
+        <a-form-item
+          v-show="sourceType == 1"
+         :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
           <a-checkbox checked v-decorator="[
               'copy',
             ]">数据复刻</a-checkbox>

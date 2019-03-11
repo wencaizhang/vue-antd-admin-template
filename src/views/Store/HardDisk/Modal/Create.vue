@@ -35,7 +35,7 @@
             v-decorator="[
               'desc',
               {
-                rules: [{ required: true, message: '请输入描述' }]}
+                rules: [{ message: '请输入描述' }]}
             ]"
           />
         </a-form-item>

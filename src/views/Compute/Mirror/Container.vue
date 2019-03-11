@@ -23,18 +23,13 @@
             </a-col>
             <a-col>
               <a-row type="flex" justify="space-between">
+                <a-button icon="sync" @click="handleRefresh" style="margin-right: 10px;" title="刷新"></a-button>
                 <a-button
                   type="primary"
                   style="margin-right: 10px;"
                   icon="plus"
                   @click="handleMenuClick('create')"
                 >创建镜像</a-button>
-                <a-button
-                  type="primary"
-                  style="margin-right: 10px;"
-                  icon="edit"
-                  @click="handleMenuClick('edit')"
-                >编辑镜像</a-button>
               </a-row>
             </a-col>
           </a-row>
@@ -57,6 +52,14 @@
         >
           <template slot="operation" slot-scope="text, record">
             <a title="点击查看镜像属性" @click="handleViewDetail(record)">{{text}}</a>
+          </template>
+          <template slot="edit" slot-scope="text, record">
+            <a-button
+              type="primary"
+              style="margin-right: 10px;"
+              icon="edit"
+              @click="handleMenuClick('edit')"
+            >编辑镜像</a-button>
           </template>
         </a-table>
       </div>

@@ -93,7 +93,7 @@ export const asyncRouterMap = [
             name: "key-pair",
             component: () =>
               import(/* webpackChunkName: "compute" */ "@/views/Compute/KeyPair/Container"),
-            meta: { title: "SSH密钥对", permission: ["dashboard"] }
+            meta: { title: "密钥对", permission: ["dashboard"] }
           }
         ]
       },
@@ -180,7 +180,7 @@ export const asyncRouterMap = [
             name: "subnet",
             component: () =>
               import(/* webpackChunkName: "network" */ "@/views/Network/Subnet/Container"),
-            meta: { title: "子网", permission: ["dashboard"] }
+            meta: { title: "网络", permission: ["dashboard"] }
           },
           {
             path: "ip",
@@ -192,62 +192,62 @@ export const asyncRouterMap = [
         ]
       },
 
-      // 安全
-      {
-        path: "safety",
-        name: "safety",
-        component: RouteView,
-        redirect: "safety/firewall",
-        meta: { title: "安全", icon: "safety-certificate", permission: ["dashboard"] },
-        children: [
-          {
-            path: "firewall",
-            name: "firewall",
-            component: () =>
-              import(/* webpackChunkName: "expense" */ "@/views/Safety/Firewall/Container"),
-            meta: { title: "防火墙", permission: ["dashboard"] }
-          }
-        ]
-      },
+      // // 安全
+      // {
+      //   path: "safety",
+      //   name: "safety",
+      //   component: RouteView,
+      //   redirect: "safety/firewall",
+      //   meta: { title: "安全", icon: "safety-certificate", permission: ["dashboard"] },
+      //   children: [
+      //     {
+      //       path: "firewall",
+      //       name: "firewall",
+      //       component: () =>
+      //         import(/* webpackChunkName: "expense" */ "@/views/Safety/Firewall/Container"),
+      //       meta: { title: "防火墙", permission: ["dashboard"] }
+      //     }
+      //   ]
+      // },
 
-      // 费用
-      {
-        path: "expense",
-        name: "expense",
-        component: RouteView,
-        redirect: "expense/overview",
-        meta: { title: "费用", icon: "pay-circle", permission: ["dashboard"] },
-        children: [
-          {
-            path: "overview",
-            name: "overview",
-            component: () =>
-              import(/* webpackChunkName: "expense" */ "@/views/Expense/Overview/Container"),
-            meta: { title: "费用概览", permission: ["dashboard"] }
-          },
-          {
-            path: "record",
-            name: "record",
-            component: () =>
-              import(/* webpackChunkName: "expense" */ "@/views/Expense/Record/Container"),
-            meta: { title: "充值记录", permission: ["dashboard"] }
-          },
-          {
-            path: "order",
-            name: "order",
-            component: () =>
-              import(/* webpackChunkName: "expense" */ "@/views/Expense/Order/Container"),
-            meta: { title: "消费订单", permission: ["dashboard"] }
-          },
-          {
-            path: "bill-detail",
-            name: "bill-detail",
-            component: () =>
-              import(/* webpackChunkName: "expense" */ "@/views/Expense/BillDetail/Container"),
-            meta: { title: "账单明细", permission: ["dashboard"] }
-          }
-        ]
-      }
+      // // 费用
+      // {
+      //   path: "expense",
+      //   name: "expense",
+      //   component: RouteView,
+      //   redirect: "expense/overview",
+      //   meta: { title: "费用", icon: "pay-circle", permission: ["dashboard"] },
+      //   children: [
+      //     {
+      //       path: "overview",
+      //       name: "overview",
+      //       component: () =>
+      //         import(/* webpackChunkName: "expense" */ "@/views/Expense/Overview/Container"),
+      //       meta: { title: "费用概览", permission: ["dashboard"] }
+      //     },
+      //     {
+      //       path: "record",
+      //       name: "record",
+      //       component: () =>
+      //         import(/* webpackChunkName: "expense" */ "@/views/Expense/Record/Container"),
+      //       meta: { title: "充值记录", permission: ["dashboard"] }
+      //     },
+      //     {
+      //       path: "order",
+      //       name: "order",
+      //       component: () =>
+      //         import(/* webpackChunkName: "expense" */ "@/views/Expense/Order/Container"),
+      //       meta: { title: "消费订单", permission: ["dashboard"] }
+      //     },
+      //     {
+      //       path: "bill-detail",
+      //       name: "bill-detail",
+      //       component: () =>
+      //         import(/* webpackChunkName: "expense" */ "@/views/Expense/BillDetail/Container"),
+      //       meta: { title: "账单明细", permission: ["dashboard"] }
+      //     }
+      //   ]
+      // }
     ]
   },
   {
