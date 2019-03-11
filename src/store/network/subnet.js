@@ -23,6 +23,10 @@ const columns = [
     title: "可用域",
     dataIndex: ""
   },
+  {
+    title: "操作",
+    scopedSlots: { customRender: "operation" }
+  },
 ];
 export default {
   namespaced: true,
@@ -32,7 +36,7 @@ export default {
     menuOptions: [
       { visible: false, type: 'none', name: "创建", id: "create" },
 
-      { visible: false, type: 'batch', name: "编辑网络", id: "edit" },
+      { visible: false, type: 'single', name: "编辑网络", id: "edit" },
       { visible: false, type: 'batch', name: "删除网络", id: "delete" },
     ]
   },

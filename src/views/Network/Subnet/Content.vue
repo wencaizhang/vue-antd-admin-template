@@ -55,19 +55,25 @@
       <template slot="name" slot-scope="text,record">
         <a href="javascript:;" @click="handleViewDetail(record)">{{text.first}} {{text.last}}</a>
       </template>
-      <template slot="operation" slot-scope="text,record">
-        <a-dropdown style="margin-right: 10px;">
+      <template slot="operation" slot-scope="text, record">
+        <a-button
+          type="primary"
+          style="margin-right: 10px;"
+          icon="edit"
+          @click="handleMenuClick('edit')"
+        >编辑</a-button>
+        <!-- <a-dropdown style="margin-right: 10px;">
           <a-menu slot="overlay" @click="handleMenuClick($event.key, record)">
             <a-menu-item
               v-for="item in menuOptions"
               :key="item.id"
-              v-show="item.menu !== false"
+              v-show="item.type === 'single'"
             >{{ item.name }}</a-menu-item>
           </a-menu>
           <a-button style="margin-left: 8px">操作
             <a-icon type="down"/>
           </a-button>
-        </a-dropdown>
+        </a-dropdown> -->
       </template>
     </a-table>
 

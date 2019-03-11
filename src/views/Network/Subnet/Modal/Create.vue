@@ -91,21 +91,21 @@
         >
           <a-input
             v-decorator="[
-            'ip',
-            {rules: [{ required: true, message: '请填写网络名称!' }]}
+            'gatewayIp',
+            {rules: [{ required: true, message: '请填写网关IP!' }]}
           ]"
             style="width: 250px"
-            placeholder="网络名称"
+            placeholder="网关IP"
           />
         </a-form-item>
         <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
           <a-checkbox v-decorator="[
-              'admin',
+              'disableGateway',
             ]">禁用网关</a-checkbox>
         </a-form-item>
         <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
           <a-checkbox v-decorator="[
-              'share',
+              'activeDHCP',
             ]">激活DHCP</a-checkbox>
         </a-form-item>
       </a-form>
@@ -195,8 +195,7 @@ export default {
     },
 
     handlePrevStep () {
-      const result = this._handleValidate();
-      if (result && this.currStep > 0) {
+      if (this.currStep > 0) {
         this.currStep--
       }
     },

@@ -29,7 +29,11 @@ const columns = [
   {
     title: "平台",
     dataIndex: "regexp"
-  }
+  },
+  {
+    title: "操作",
+    scopedSlots: { customRender: "edit" }
+  },
 ];
 export default {
   namespaced: true,

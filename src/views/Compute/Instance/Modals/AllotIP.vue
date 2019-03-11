@@ -32,7 +32,7 @@
             v-decorator="[
               'desc',
               {
-                rules: [{ required: true, message: '请填写描述' }]
+                rules: [{ message: '请填写描述' }]
               }
             ]"
           />

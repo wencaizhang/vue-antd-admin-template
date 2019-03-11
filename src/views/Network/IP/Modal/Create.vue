@@ -33,7 +33,7 @@
           <a-textarea
             v-decorator="[
             'hostName',
-            {rules: [{ required: true, message: '请填写描述!' }]}
+            {rules: [{ message: '请填写描述!' }]}
           ]"
             placeholder="描述"
           />
