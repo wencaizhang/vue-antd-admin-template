@@ -43,6 +43,7 @@ export default {
 
       { visible: false, type: 'batch', name: "删除", id: "delete" },
       { visible: false, type: 'batch', name: "设置网关", id: "gateway" },
+      { visible: false, type: 'batch', name: "清除网关", id: "clearGateway" },
       { visible: false, type: 'single', name: "修改", id: "edit" },
     ]
   },

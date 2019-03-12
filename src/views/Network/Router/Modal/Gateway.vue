@@ -10,7 +10,21 @@
       okText="确定"
     >
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="名称：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="外部网络：">
+          <a-select
+            v-decorator="[
+              'net',
+              {
+                initialValue: 'ext_ipv4',
+                rules: [{ required: true, message: '请输入名称' }]
+              }
+            ]"
+          >
+            <a-select-option value="ext_ipv4">ext_ipv4</a-select-option>
+            <a-select-option value="ext_ipv6">ext_ipv6</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="路由名称：">
           <a-input
             v-decorator="[
               'name',
@@ -22,25 +36,17 @@
             placeholder="请输入名称"
           />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="描述：">
-          <a-textarea
-            placeholder="请输入描述"
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="路由ID：">
+          <a-input
             v-decorator="[
-              'desc',
+              'id',
               {
-                rules: [{ message: '请输入描述' }]}
+                initialValue: 'wexxxb1',
+                rules: [{ required: true, message: '请输入ID' }]
+              }
             ]"
+            placeholder="请输入ID"
           />
-        </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14,offset:8 }" label>
-          <a-checkbox v-decorator="[
-          'on',
-          ]">可启动
-            <a-tooltip>
-              <template slot="title">“可启动”标记标明此硬盘可以被用来创建主机。</template>
-              <a-icon type="info-circle"/>
-            </a-tooltip>
-          </a-checkbox>
         </a-form-item>
       </a-form>
     </a-modal>
