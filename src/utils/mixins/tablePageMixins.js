@@ -85,8 +85,6 @@ export default {
     },
 
     handleMenuClick(key, record) {
-      console.log(record)
-      console.log('handleMenuClick')
       // 批量操作
       // if (this.selectedRowKeys.length === 0) {
       //   this.$message.info("请先选择您要操作的实例");

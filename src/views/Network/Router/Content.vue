@@ -79,6 +79,7 @@
 
     <CreateModal :module="id"/>
     <EditModal :module="id"/>
+    <ClearModal :module="id"/>
     <DeleteModal :module="id"/>
     <Gateway :module="id"/>
   </div>
@@ -87,6 +88,7 @@
 <script>
 import CreateModal from "./Modal/Create";
 import EditModal from "./Modal/Edit";
+import ClearModal from "./Modal/Clear";
 import DeleteModal from "./Modal/Delete";
 import Gateway from "./Modal/Gateway";
 
@@ -97,6 +99,7 @@ export default {
   components: {
     CreateModal,
     EditModal,
+    ClearModal,
     DeleteModal,
     Gateway
   },
