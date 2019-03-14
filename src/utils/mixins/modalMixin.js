@@ -1,7 +1,7 @@
 export const baseModalMixins = {
-  props: ["module"],
   data() {
     return {
+      module: '',
       bodyStyle: { "max-height": "400px", overflow: "auto" },
       radioStyle: {
         display: "block",
@@ -13,13 +13,14 @@ export const baseModalMixins = {
   },
   computed: {
     visible() {
-      const visible = this.$store.getters[`${this.module}/getVisibleById`](this.name);
+      console.log(this.$parent.id, this.name)
+      const visible = this.$store.getters[`${this.$parent.id}/getVisibleById`](this.name);
       return visible;
     }
   },
   methods: {
     handleCancel() {
-      this.$store.commit(`${this.module}/toggleModalVisible`, this.name);
+      this.$store.commit(`${this.$parent.id}/toggleModalVisible`, this.name);
     },
     handleCreate() {
       this.confirmLoading = true;
@@ -43,7 +44,6 @@ export const baseModalMixins = {
 };
 
 export const formModalMixins = {
-  props: ["module"],
   data() {
     return {
       formItemLayout: {

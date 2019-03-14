@@ -27,43 +27,12 @@ export default {
     handleRowData: {},
     columns,
     menuOptions: [
-      {
-        visible: false,
-        id: "create",
-        name: "创建",
-        type: 'none',
-      },
-      {
-        visible: false,
-        id: "import",
-        name: "导入",
-        type: 'none',
-      },
-      {
-        visible: false,
-        id: "batchDeleta",
-        name: "删除",
-        type: 'batch',
-      },
-      {
-        visible: false,
-        id: "bindTags",
-        name: "绑定标签",
-        type: 'batch',
-      },
-      {
-        visible: false,
-        id: "edit",
-        name: "修改",
-        type: 'single',
-      },
-      {
-        visible: false,
-        id: "download",
-        name: "下载",
-        type: 'single',
-      },
-
+      { visible: false, type: 'none',   id: "create",      name: "创建", },
+      { visible: false, type: 'none',   id: "import",      name: "导入", },
+      { visible: false, type: 'batch',  id: "batchDeleta", name: "删除", },
+      { visible: false, type: 'batch',  id: "bindTags",    name: "绑定标签", },
+      { visible: false, type: 'single', id: "edit",        name: "修改", },
+      { visible: false, type: 'single', id: "download",    name: "下载", },
     ],
   },
   mutations: {

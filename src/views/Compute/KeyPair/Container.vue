@@ -76,11 +76,11 @@
       </div>
     </PageLayout>
 
-    <CreateModal :module="id"/>
-    <ImportModal :module="id"/>
-    <tag-modal :module="id"/>
-    <edit-modal :module="id"/>
-    <Download :module="id"/>
+    <CreateModal />
+    <ImportModal />
+    <tag-modal />
+    <edit-modal />
+    <Download />
   </div>
 </template>
 

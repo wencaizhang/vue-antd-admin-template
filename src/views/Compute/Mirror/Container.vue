@@ -64,9 +64,9 @@
         </a-table>
       </div>
     </PageLayout>
-    <CreateModal :module="id"/>
-    <EditModal :module="id"/>
-    <DetailModal :module="id"/>
+    <CreateModal />
+    <EditModal />
+    <DetailModal />
   </div>
 </template>
 

@@ -77,9 +77,9 @@
       </template>
     </a-table>
 
-    <CreateModal :module="id"/>
-    <EditModal :module="id"/>
-    <DeleteModal :module="id"/>
+    <CreateModal />
+    <EditModal />
+    <DeleteModal />
   </div>
 </template>
 

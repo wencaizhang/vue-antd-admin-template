@@ -77,10 +77,10 @@
       </template>
     </a-table>
 
-    <CreateModal :module="id"/>
-    <BindIP :module="id"/>
-    <FreeIP :module="id"/>
-    <UnbindIP :module="id"/>
+    <CreateModal />
+    <BindIP />
+    <FreeIP />
+    <UnbindIP />
   </div>
 </template>
 

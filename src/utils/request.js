@@ -1,47 +1,73 @@
-import Vue from 'vue'
-import axios from 'axios'
-import store from '@/store'
-import notification from 'ant-design-vue/es/notification'
-import { ACCESS_TOKEN } from "@/store/mutation-types"
+import Vue from "vue";
+import axios from "axios";
+import store from "@/store";
+import notification from "ant-design-vue/es/notification";
+import { ACCESS_TOKEN } from "@/store/mutation-types";
 
+const baseURL = "/cmp/v1"
 // 创建 axios 实例
 const service = axios.create({
-  // baseURL: '/api', // api base_url
+  // baseURL: "/cmp/v1/",
   timeout: 6000 // 请求超时时间
-})
+});
 
-const errHandle = (error) => {
+const errHandle = error => {
   if (error.response) {
     switch (error.status) {
       case 403:
-        notification.error({ message: '拒绝访问', description: '无权限，拒绝访问' })
+        notification.error({ message: "拒绝访问", description: "无权限，拒绝访问" });
         break;
       case 401:
-        notification.error({ message: '未授权', description: '授权验证失败' })
-        store.dispatch('Logout').then(() => {
-          location.reload()
-        })
+        notification.error({ message: "未授权", description: "授权验证失败" });
+        store.dispatch("Logout").then(() => {
+          location.reload();
+        });
         break;
       default:
-        notification.error({ message: 'Error', description: '请求出错，请重试' })
+        notification.error({ message: "Error", description: "请求出错，请重试" });
         break;
     }
   }
-  return Promise.reject(error)
+  return Promise.reject(error);
 };
 
 // request 拦截器
 service.interceptors.request.use(config => {
-  const token = Vue.ls.get(ACCESS_TOKEN)
+  const token = Vue.ls.get(ACCESS_TOKEN);
   if (token) {
-    config.headers['Access-Token'] = token // 让每个请求携带自定义 token 请根据实际情况自行修改
+    config.headers["Access-Token"] = token; // 让每个请求携带自定义 token 请根据实际情况自行修改
   }
-  return config
-}, errHandle)
+  return config;
+}, errHandle);
 
 // response 拦截器
-service.interceptors.response.use((response) => {
-  return response.data
-}, errHandle)
+service.interceptors.response.use(response => {
+  return response.data;
+}, errHandle);
 
-export default service;
+/**
+ * get方法，对应get请求
+ * @param {String} url [请求的url地址]
+ * @param {Object} payload [请求时携带的参数]
+ */
+export function GET(url, payload) {
+  return service.get(baseURL + url, {
+    params: payload
+  });
+}
+/**
+ * post方法，对应post请求
+ * @param {String} url [请求的url地址]
+ * @param {Object} payload [请求时携带的参数]
+ */
+export function POST(url, payload) {
+  return service.post(baseURL + url, payload);
+}
+/**
+ * delete方法，对应delete请求
+ * @param {String} url [请求的url地址]
+ * @param {Object} payload [请求时携带的参数]
+ */
+export function DELETE(url, payload) {
+  return service.delete(baseURL + url, payload);
+}

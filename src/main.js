@@ -7,12 +7,13 @@ import 'ant-design-vue/dist/antd.css';
 import './assets/styles.css';
 import router from './router';
 import store from './store';
-import axios from '@/utils/request'
+import axios from 'axios'
 import App from './App.vue';
 import config from '@/settings'
 import '@/permission' // 权限控制
 
-require('./mock/index.js')
+// 只在开发模式下引入 mock.js，打包部署不引入 mock.js
+process.env.NODE_ENV === 'production' || require('./mock/index.js');
 
 Vue.prototype.$http = axios;
 

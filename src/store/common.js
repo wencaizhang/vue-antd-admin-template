@@ -2,18 +2,13 @@ export default {
   namespaced: true,
   mutations: {
     toggleModalVisible: (state, id = "") => {
-      let visible;
-      let item;
-      if (id) {
-        item = state.menuOptions.find(item => item.id === id);
-        if (!item) {
-          return false;
+      state.menuOptions.forEach(item => {
+        if(item.id === id) {
+          item.visible = !item.visible;
+        } else {
+          item.visible = false;
         }
-        visible = item.visible;
-      }
-      state.menuOptions.forEach(item => (item.visible = false));
-      item.visible = !visible;
-      console.log('toggleModalVisible', item)
+      });
     },
     setHandleRowData: (state, record) => {
       Object.assign(state.handleRowData, record);
