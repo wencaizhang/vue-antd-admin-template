@@ -54,9 +54,9 @@
       </template>
     </a-table>
 
-    <RecoverModal :module="id"/>
-    <!-- <Recover2Modal :module="id"/> -->
-    <DeleteModal :module="id"/>
+    <RecoverModal />
+    <!-- <Recover2Modal /> -->
+    <DeleteModal />
   </div>
 </template>
 

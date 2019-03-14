@@ -60,17 +60,17 @@
       </template>
     </a-table>
 
-    <CreateModal :module="id"/>
-    <EditModal :module="id"/>
-    <Uninstall :module="id"/>
-    <Dilatation :module="id"/>
-    <Mount :module="id"/>
-    <CreateSnapshoot :module="id"/>
-    <CreateBackups :module="id"/>
-    <CloneModal :module="id"/>
-    <Upload :module="id"/>
-    <Delete :module="id"/>
-    <ChangeDiskType :module="id"/>
+    <CreateModal />
+    <EditModal />
+    <Uninstall />
+    <Dilatation />
+    <Mount />
+    <CreateSnapshoot />
+    <CreateBackups />
+    <CloneModal />
+    <Upload />
+    <Delete />
+    <ChangeDiskType />
   </div>
 </template>
 

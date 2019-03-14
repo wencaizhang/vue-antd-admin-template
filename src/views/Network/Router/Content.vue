@@ -77,11 +77,11 @@
       </template>
     </a-table>
 
-    <CreateModal :module="id"/>
-    <EditModal :module="id"/>
-    <ClearModal :module="id"/>
-    <DeleteModal :module="id"/>
-    <Gateway :module="id"/>
+    <CreateModal />
+    <EditModal />
+    <ClearModal />
+    <DeleteModal />
+    <Gateway />
   </div>
 </template>
 

@@ -72,15 +72,15 @@
         </a-table>
       </div>
 
-      <create-snapshoot-modal :module="id"/>
-      <bind-IP-modal :module="id"/>
-      <UnbindIP :module="id"/>
-      <Delete :module="id"/>
-      <allot-IP-modal :module="id"/>
-      <rebuild-cloud-host-modal :module="id"/>
-      <edit-security-group-modal :module="id"/>
-      <overview-modal :module="id"/>
     </page-layout>
+    <create-snapshoot-modal />
+    <bind-IP-modal />
+    <UnbindIP />
+    <Delete />
+    <allot-IP-modal />
+    <rebuild-cloud-host-modal />
+    <edit-security-group-modal />
+    <overview-modal />
   </div>
 </template>
 
@@ -97,6 +97,8 @@ import EditSecurityGroupModal from "./Modals/EditSafetyGroup";
 import OverviewModal from "./Modals/Overview";
 
 import tablePageMixins from "@/utils/mixins/tablePageMixins";
+
+import { getinstanceList } from "@/api/compute/instance";
 
 export default {
   mixins: [tablePageMixins],
@@ -124,6 +126,14 @@ export default {
   },
 
   methods: {
+    async fetch () {
+      try {
+        const resp = await getinstanceList();
+        console.log('resp', resp)
+      } catch (error) {
+
+      }
+    },
     openNotification() {
       this.$notification.open({
         message: "提醒",
