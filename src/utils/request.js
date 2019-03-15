@@ -4,10 +4,9 @@ import store from "@/store";
 import notification from "ant-design-vue/es/notification";
 import { ACCESS_TOKEN } from "@/store/mutation-types";
 
-const baseURL = "/cmp/v1"
 // 创建 axios 实例
 const service = axios.create({
-  // baseURL: "/cmp/v1/",
+  baseURL: "/cmp/v1",
   timeout: 6000 // 请求超时时间
 });
 
@@ -51,7 +50,7 @@ service.interceptors.response.use(response => {
  * @param {Object} payload [请求时携带的参数]
  */
 export function GET(url, payload) {
-  return service.get(baseURL + url, {
+  return service.get(url, {
     params: payload
   });
 }
@@ -61,7 +60,7 @@ export function GET(url, payload) {
  * @param {Object} payload [请求时携带的参数]
  */
 export function POST(url, payload) {
-  return service.post(baseURL + url, payload);
+  return service.post(url, payload);
 }
 /**
  * delete方法，对应delete请求
@@ -69,5 +68,5 @@ export function POST(url, payload) {
  * @param {Object} payload [请求时携带的参数]
  */
 export function DELETE(url, payload) {
-  return service.delete(baseURL + url, payload);
+  return service.delete(url, payload);
 }

@@ -7,77 +7,36 @@
       <div class="desc">友普云自服务</div>
     </div>
     <div class="main">
-      <a-form
-        class="user-layout-login"
-        ref="formLogin"
-        :autoFormCreate="(form)=>{this.form = form}"
-        id="formLogin"
+      <UsernameForm ref="UsernameForm"/>
+      <!-- <a-tabs
+        :activeKey="customActiveKey"
+        :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
+        @change="key => customActiveKey = key"
       >
-        <a-tabs
-          :activeKey="customActiveKey"
-          :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
-          @change="handleTabClick"
-        >
-          <a-tab-pane key="tab1" tab="账号密码登陆">
-            <a-form-item fieldDecoratorId="username" :fieldDecoratorOptions="validate4Username">
-              <a-input size="large" type="text" autocomplete="false" placeholder="帐户名或邮箱地址 / admin">
-                <a-icon slot="prefix" type="user" class="icon"/>
-              </a-input>
-            </a-form-item>
+        <a-tab-pane key="UsernameForm" tab="账号密码登陆">
+          <UsernameForm ref="UsernameForm"/>
+        </a-tab-pane>
+        <a-tab-pane key="PhoneForm" tab="手机号登陆">
+          <PhoneForm ref="PhoneForm"/>
+        </a-tab-pane>
+      </a-tabs> -->
 
-            <a-form-item fieldDecoratorId="password" :fieldDecoratorOptions="validate4Password">
-              <a-input size="large" type="password" autocomplete="false" placeholder="密码 / admin">
-                <a-icon slot="prefix" type="lock" class="icon"/>
-              </a-input>
-            </a-form-item>
-          </a-tab-pane>
+      <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+        <a-checkbox class="com-unselect" v-model="formLogin.rememberMe">自动登陆</a-checkbox>
+      </div>
+      <a-button
+        size="large"
+        type="primary"
+        htmlType="submit"
+        class="login-button"
+        style="width: 100%;"
+        :loading="loginBtn"
+        :disabled="loginBtn"
+        @click.stop.prevent="handleSubmit"
+      >确定</a-button>
 
-          <a-tab-pane key="tab2" tab="手机号登陆">
-            <a-form-item fieldDecoratorId="mobile" :fieldDecoratorOptions="validate4Mobile">
-              <a-input size="large" type="text" placeholder="手机号">
-                <a-icon slot="prefix" type="mobile" class="icon"/>
-              </a-input>
-            </a-form-item>
-
-            <a-row :gutter="16">
-              <a-col class="gutter-row" :span="16">
-                <a-form-item fieldDecoratorId="captcha" :fieldDecoratorOptions="validate4Captcha">
-                  <a-input size="large" type="text" placeholder="验证码">
-                    <a-icon slot="prefix" type="mail" class="icon"/>
-                  </a-input>
-                </a-form-item>
-              </a-col>
-              <a-col class="gutter-row" :span="8">
-                <a-button
-                  class="getCaptcha"
-                  tabindex="-1"
-                  :disabled="state.smsSendBtn"
-                  @click.stop.prevent="getCaptcha"
-                  v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"
-                ></a-button>
-              </a-col>
-            </a-row>
-          </a-tab-pane>
-        </a-tabs>
-
-        <div style="display: flex; justify-content: space-between; ">
-          <a-checkbox class="com-unselect" v-model="formLogin.rememberMe">自动登陆</a-checkbox>
-        </div>
-
-        <a-form-item style="margin-top:24px">
-          <a-button
-            size="large"
-            type="primary"
-            htmlType="submit"
-            class="login-button"
-            :loading="loginBtn"
-            :disabled="loginBtn"
-            @click.stop.prevent="handleSubmit"
-          >确定</a-button>
-        </a-form-item>
-
-        <div class="user-login-other">
-          <!-- <div>
+      <div class="user-login-other">
+        <!-- <div>
             <span>其他登陆方式</span>
             <a>
               <a-icon class="item-icon" type="alipay-circle"></a-icon>
@@ -88,45 +47,44 @@
             <a>
               <a-icon class="item-icon" type="weibo-circle"></a-icon>
             </a>
-          </div> -->
-          <router-link :to="{ name: 'recover', params: { user: 'aaa'} }" class="forge-password">忘记密码</router-link>
-          <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
-        </div>
-      </a-form>
+        </div>-->
+        <!-- <router-link :to="{ name: 'recover', params: { user: 'aaa'} }" class="forge-password">忘记密码</router-link>
+        <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>-->
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import api from "@/api";
-import Vue from 'vue';
+import Vue from "vue";
+
+import PhoneForm from "./Login/PhoneForm";
+import UsernameForm from "./Login/UsernameForm";
+
 import { mapActions } from "vuex";
 import { timeFix } from "@/utils/util";
 
+import { login } from "@/api/user";
+
 export default {
-  components: {},
+  components: {
+    UsernameForm,
+    PhoneForm
+  },
   data() {
     return {
-      customActiveKey: "tab1",
+      customActiveKey: "UsernameForm",
       loginBtn: false,
       // login type: 0 email, 1 username, 2 telephone
       loginType: 0,
-      form: null,
-      state: {
-        time: 60,
-        smsSendBtn: false
-      },
+
       formLogin: {
-        username: "",
-        password: "",
-        captcha: "",
-        mobile: "",
         rememberMe: true
       }
     };
   },
   created() {
-    Vue.ls.set('test', 'I am a test string')
+    Vue.ls.set("test", "I am a test string");
   },
   computed: {
     validate4Username() {
@@ -176,114 +134,44 @@ export default {
       }
       callback();
     },
-    handleTabClick(key) {
-      this.customActiveKey = key;
-      // this.form.resetFields();  // 重置表单
-    },
-    handleSubmit() {
-      let that = this;
-      let flag = false;
 
-      const loginParams = {
-        remember_me: that.formLogin.rememberMe
-      };
+    async handleSubmit() {
 
-      // 使用账户密码登陆
-      if (that.customActiveKey === "tab1") {
-        that.form.validateFields(
-          ["username", "password"],
-          { force: true },
-          (err, values) => {
-            if (!err) {
-              return false;
-            }
-            flag = true;
-            let type = !that.loginType ? "email" : "username";
-            loginParams[type] = values.username;
-            loginParams.password = values.password;
-          }
-        );
-        // 使用手机号登陆
-      } else {
-        that.form.validateFields(
-          ["mobile", "captcha"],
-          { force: true },
-          (err, values) => {
-            if (!err) {
-              return false;
-            }
-            flag = true;
-            Object.assign(loginParams, values);
-          }
-        );
+      try {
+        const payload = await this.$refs[this.customActiveKey].handleSubmit();
+        this.doLogin(payload);
+      } catch (err) {
+
       }
-
-      if (!flag) return;
-
-      that.loginBtn = true;
-      that.doLogin(loginParams);
+      // const loginParams = {
+      //   remember_me: that.formLogin.rememberMe
+      // };
     },
     async doLogin(payload) {
+      this.loginBtn = true;
       try {
-        const resp = await this.Login(payload);
-        this.loginSuccess();
+        const resp = await login(payload);
+        this.loginSuccess(resp);
       } catch (err) {
-        this.requestFailed(err);
+        // this.requestFailed(err);
       }
     },
-    async getCaptcha(e) {
-      let that = this;
-
-      this.form.validateFields(["mobile"], { force: true }, async err => {
-        if (!err) {
-          this.state.smsSendBtn = true;
-
-          let interval = window.setInterval(() => {
-            if (that.state.time-- <= 0) {
-              that.state.time = 60;
-              that.state.smsSendBtn = false;
-              window.clearInterval(interval);
-            }
-          }, 1000);
-
-          const message = this.$message.loading("验证码发送中..", 0);
-          try {
-            const resp = await this.$http.post(api.SendSms, {
-              mobile: that.formLogin.mobile
-            });
-            setTimeout(message, 2500);
-            this.$notification["success"]({
-              message: "提示",
-              description:
-                "验证码获取成功，您的验证码为：" + resp.result.captcha,
-              duration: 8
-            });
-          } catch (err) {
-            console.log(err)
-            setTimeout(message, 1);
-            clearInterval(interval);
-            that.state.time = 60;
-            that.state.smsSendBtn = false;
-            this.requestFailed(err);
-          }
-        }
-      });
-    },
-    loginSuccess() {
+    loginSuccess(resp) {
+      console.log(resp);
       this.loginBtn = false;
       this.$router.push({ name: "dashboard" });
       this.$message.success(timeFix() + "，欢迎回来", 3);
     },
-    requestFailed(err) {
-      this.$notification["error"]({
-        message: "错误",
-        description:
-          ((err.response || {}).data || {}).message ||
-          "请求出现错误，请稍后再试",
-        duration: 4
-      });
-      this.loginBtn = false;
-    }
+    // requestFailed(err) {
+    //   this.$notification["error"]({
+    //     message: err.desc || "错误",
+    //     description:
+    //       ((err.desc || {}).data || {}).message ||
+    //       "请求出现错误，请稍后再试",
+    //     duration: 4
+    //   });
+    //   this.loginBtn = false;
+    // }
   }
 };
 </script>
