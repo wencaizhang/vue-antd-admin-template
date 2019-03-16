@@ -8,28 +8,30 @@ import { ACCESS_TOKEN } from "@/store/mutation-types"
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
 // 免登录白名单
-const whiteList = ['/user/login',]
+const whiteList = ['login',]
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
+  // 未登录
+  if (!Vue.ls.get(ACCESS_TOKEN)) {
+    if (whiteList.includes(to.name)) {
+      console.log('next')
+      next()
+    } else {
+      next({ name: 'login' })
+      NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
+    }
+    return false;
+  }
 
-  // // 未登录
-  // if (!Vue.ls.get(ACCESS_TOKEN)) {
-  //   if (whiteList.includes(to.path)) {
-  //     next()
-  //   } else {
-  //     next('/user/login')
-  //     NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
-  //   }
-  //   return false;
-  // }
+  // 已经登录，且目标路径是登录页，重定向到首页
+  if (to.name === 'login') {
+    next({ name: 'dashboard' })
+    NProgress.done()
+    return false;
+  }
 
-  // // 已经登录，且目标路径是登录页，重定向到首页
-  // if (to.path === '/user/login') {
-  //   next({ path: '/home' })
-  //   NProgress.done()
-  //   return false;
-  // }
+  
 
   // 已经登录，重新获取用户信息
   // if (store.getters.roles.length === 0) {

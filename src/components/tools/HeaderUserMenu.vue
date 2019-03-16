@@ -38,6 +38,10 @@
 </template>
 
 <script>
+
+import Vue from "vue";
+import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
+
 export default {
   name: "",
   components: {},
@@ -49,7 +53,11 @@ export default {
     };
   },
   methods: {
-    handleLogout() {}
+    handleLogout() {
+      Vue.ls.remove(ACCESS_TOKEN)
+      Vue.ls.remove(PROJECT_ID)
+      this.$router.push({ name: 'login' })
+    }
   }
 };
 </script>

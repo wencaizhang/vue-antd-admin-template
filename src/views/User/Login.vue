@@ -65,6 +65,8 @@ import { mapActions } from "vuex";
 import { timeFix } from "@/utils/util";
 
 import { login } from "@/api/user";
+import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
+
 
 export default {
   components: {
@@ -83,9 +85,7 @@ export default {
       }
     };
   },
-  created() {
-    Vue.ls.set("test", "I am a test string");
-  },
+
   computed: {
     validate4Username() {
       console.log("this", this);
@@ -158,6 +158,9 @@ export default {
     },
     loginSuccess(resp) {
       console.log(resp);
+      Vue.ls.set(ACCESS_TOKEN, resp.tokenId);
+      Vue.ls.set(PROJECT_ID, resp.defalutProjectId);
+
       this.loginBtn = false;
       this.$router.push({ name: "dashboard" });
       this.$message.success(timeFix() + "，欢迎回来", 3);
