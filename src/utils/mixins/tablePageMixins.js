@@ -47,24 +47,6 @@ export default {
 
     fetch(params = {}) {
       this.loading = true;
-      let url = this.url;
-      this.$http
-        .get(url, {
-          // params: {
-          //   results: 10,
-          //   ...params
-          // }
-        })
-        .then(data => {
-          const pagination = { ...this.pagination };
-          pagination.total = 200;
-          this.loading = false;
-          this.data = data.results;
-          this.pagination = pagination;
-        })
-        .catch( err => {
-          this.loading = false;
-        });
     },
     onSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys;
