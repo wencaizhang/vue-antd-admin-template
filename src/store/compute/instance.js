@@ -5,11 +5,11 @@ const columns = [
   },
   {
     title: "名称",
-    dataIndex: "name.first"
+    dataIndex: "name"
   },
   {
     title: "状态",
-    dataIndex: "phone",
+    dataIndex: "status",
     filters: [
       { text: "等待中", value: "等待中" },
       { text: "运行中", value: "运行中" },
@@ -22,7 +22,7 @@ const columns = [
   },
   {
     title: "区域",
-    dataIndex: "dob.age",
+    dataIndex: "area",
     filters: [
       { text: "北京一区", value: "北京一区" },
       { text: "北京二区", value: "北京二区" }
@@ -31,27 +31,27 @@ const columns = [
   },
   {
     title: "映像",
-    dataIndex: ""
+    dataIndex: "image"
   },
   {
     title: "规格",
-    dataIndex: ""
+    dataIndex: "spec"
   },
   {
     title: "网络",
-    dataIndex: "login.password"
+    dataIndex: "netword"
   },
   {
     title: "公网IP",
-    dataIndex: "name.title"
+    dataIndex: "publicIP"
   },
   {
     title: "安全组",
-    dataIndex: "gender"
+    dataIndex: "securityGroup"
   },
   {
     title: "创建时间",
-    dataIndex: "email"
+    dataIndex: "createDate"
   },
   {
     title: "操作",

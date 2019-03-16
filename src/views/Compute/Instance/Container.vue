@@ -127,11 +127,16 @@ export default {
 
   methods: {
     async fetch () {
+      this.loading = true;
       try {
         const resp = await getinstanceList();
-        console.log('resp', resp)
+        this.loading = false;
+        this.data = resp.data;
+        const pagination = { ...this.pagination };
+        pagination.total = resp.totalPage;
+        this.pagination = pagination;
       } catch (error) {
-
+          this.loading = false;
       }
     },
     openNotification() {
