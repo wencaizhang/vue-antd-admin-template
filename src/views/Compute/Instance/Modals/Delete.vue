@@ -12,16 +12,18 @@
     >
       <p
         style="margin-top: 10px; text-align: center;"
-      >您已经选择了云主机“${record.name.first}”，其绑定的公网IP将被解绑，请确认你的操作。</p>
+      >您已经选择了云主机“{{ currRecord.name }}”，将被删除，请确认你的操作。</p>
     </a-modal>
   </div>
 </template>
 <script>
 import { baseModalMixins } from "@/utils/mixins/modalMixin";
+import { deleteInstance as fetchAPI } from '@/api/compute/instance';
 export default {
   mixins: [baseModalMixins],
   data() {
     return {
+      fetchAPI,
       name: "deleteCloudHost"
     };
   },

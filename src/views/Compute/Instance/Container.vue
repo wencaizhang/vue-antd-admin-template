@@ -77,7 +77,7 @@
     <bind-IP-modal />
     <UnbindIP />
     <Delete />
-    <allot-IP-modal />
+    <!-- <allot-IP-modal /> -->
     <rebuild-cloud-host-modal />
     <edit-security-group-modal />
     <overview-modal />
@@ -91,7 +91,7 @@ import CreateSnapshootModal from "./Modals/CreateSnapshoot";
 import BindIPModal from "./Modals/BindIP";
 import UnbindIP from "./Modals/UnbindIP";
 import Delete from "./Modals/Delete";
-import AllotIPModal from "./Modals/AllotIP";
+// import AllotIPModal from "./Modals/AllotIP";
 import RebuildCloudHostModal from "./Modals/RebuildCloudHost";
 import EditSecurityGroupModal from "./Modals/EditSafetyGroup";
 import OverviewModal from "./Modals/Overview";
@@ -108,7 +108,7 @@ export default {
     BindIPModal,
     UnbindIP,
     Delete,
-    AllotIPModal,
+    // AllotIPModal,
     RebuildCloudHostModal,
     EditSecurityGroupModal,
     OverviewModal

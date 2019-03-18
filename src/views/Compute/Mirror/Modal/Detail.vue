@@ -57,14 +57,12 @@ export default {
     return {
       name: "detail",
       columns,
-      data: [],
       show: false,
     };
   },
   methods: {
     onShow () {
       console.log(this.currRecord)
-      this.data = [ this.currRecord ]
       this.show = true;
     }
   }
