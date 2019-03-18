@@ -7,83 +7,66 @@
     title="基本属性"
     okText="确定"
   >
-    <a-table :columns="columns" :dataSource="data" bordered></a-table>
+    <ul v-if="show">
+      <li v-for="item in columns" :key="item.title">
+        {{ item.title }}：{{ currRecord[ item.dataIndex ] || '无'}}
+      </li>
+    </ul>
   </a-modal>
 </template>
 <script>
 import { baseModalMixins } from "@/utils/mixins/modalMixin";
 
-const renderContent = (value, row, index) => {
-  const obj = {
-    children: value,
-    attrs: {}
-  };
-  if (index === 4) {
-    obj.attrs.colSpan = 0;
-  }
-  return obj;
-};
-
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32
-  },
-  {
-    key: "4",
-    name: "Jim Red",
-    age: 18
-  },
-  {
-    key: "5",
-    name: "Jake White",
-    age: 18
-  }
-];
 export default {
   mixins: [baseModalMixins],
   data() {
     const columns = [
       {
-        title: "Name",
-        dataIndex: "name",
-        customRender: (text, row, index) => {
-          if (index < 4) {
-            return <a href="javascript:;">{text}</a>;
-          }
-          return {
-            children: <a href="javascript:;">{text}</a>,
-            attrs: {
-              colSpan: 5
-            }
-          };
-        }
+        title: "ID",
+        dataIndex: "id",
       },
       {
-        title: "Age",
-        dataIndex: "age",
-        customRender: renderContent
+        title: "名称",
+        dataIndex: "name",
+      },
+      {
+        title: "默认信息",
+        dataIndex: "",
+      },
+      {
+        title: "状态",
+        dataIndex: "status",
+      },
+      {
+        title: "系统盘",
+        dataIndex: "",
+      },
+      {
+        title: "使用属性",
+        dataIndex: "",
+      },
+      {
+        title: "平台",
+        dataIndex: "platform",
+      },
+      {
+        title: "持性支持",
+        dataIndex: "",
       }
     ];
     return {
       name: "detail",
-      data,
       columns,
-      confirmLoading: false
+      data: [],
+      show: false,
     };
   },
-  methods: {}
+  methods: {
+    onShow () {
+      console.log(this.currRecord)
+      this.data = [ this.currRecord ]
+      this.show = true;
+    }
+  }
 };
 </script>
-

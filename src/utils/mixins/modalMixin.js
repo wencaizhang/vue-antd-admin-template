@@ -8,26 +8,66 @@ export const baseModalMixins = {
         height: "30px",
         lineHeight: "30px"
       },
-      confirmLoading: false
+      confirmLoading: false,
+      formValues: {},
+      currRecord: {},
+      fetchAPI: () => {},
     };
   },
   computed: {
     visible() {
-      console.log(this.$parent.id, this.name)
       const visible = this.$store.getters[`${this.$parent.id}/getVisibleById`](this.name);
       return visible;
     }
   },
+  watch: {
+    visible (newVal, oldVal) {
+      if (newVal) {
+        this.currRecord = this.$parent.currRecord;
+        this.handleID();
+        this.onShow();
+      } else {
+        this.onHidden();
+      }
+    }
+  },
   methods: {
+    handleID () {
+      // 不同模块下调用 api 时需要传递不同的 id
+    },
+    onShow () {
+      // 自定义钩子函数～～
+      // 显示 modal 之后触发，参见 watch.visible
+    },
+    onHidden () {
+      // 自定义钩子函数～～
+      // 隐藏 modal 之后触发，参见 watch.visible
+      this.form && this.form.resetFields();
+    },
     handleCancel() {
       this.$store.commit(`${this.$parent.id}/toggleModalVisible`, this.name);
     },
     handleCreate() {
+      this.handleFetch();
+    },
+    async handleFetch() {
       this.confirmLoading = true;
-      setTimeout(() => {
+      try {
+        console.log('this.formValues', this.formValues)
+        const resp = await this.fetchAPI(this.formValues);
+        this.openNotification(resp.desc);
+      }
+      finally {
         this.confirmLoading = false;
-        this.handleCancel();
-      }, 1000);
+        // this.handleCancel();
+      }
+    },
+    openNotification(desc) {
+      this.$notification.open({
+        message: "提醒",
+        description: desc,
+        icon: <a-icon type="check-circle" style="color: #52c41a" />
+      });
     },
     formatter(postfix, value) {
       // let v = parseInt(value);
@@ -50,25 +90,19 @@ export const formModalMixins = {
         labelCol: { span: 8 },
         wrapperCol: { span: 14 }
       },
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
     };
   },
 
   methods: {
     handleCreate() {
+      const self = this;
       this.form.validateFields((err, values) => {
-        if (err) {
-          return;
+        if (!err) {
+          self.formValues = Object.assign({}, self.formValues, values);
+          self.handleFetch();
         }
-        console.log("Received values of form: ", values);
-
-        this.confirmLoading = true;
-        setTimeout(() => {
-          this.confirmLoading = false;
-          this.handleCancel();
-          this.form.resetFields();
-        }, 1000);
       });
-    }
+    },
   }
 };

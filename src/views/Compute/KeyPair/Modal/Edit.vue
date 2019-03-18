@@ -19,7 +19,9 @@
             v-decorator="[
               'name',
               {
-                rules: [{ required: true, message: '请输入秘钥名称!' }]}
+                initialValue: currRecord.name,
+                rules: [{ required: true, message: '请输入秘钥名称!' }]
+              }
             ]"
           />
         </a-form-item>
@@ -30,9 +32,11 @@
         >
           <a-textarea
             v-decorator="[
-              'desc',
+              'description',
               {
-                rules: [{ message: '请输入描述!' }]}
+                initialValue: currRecord.description,
+                rules: [{ message: '请输入描述!' }]
+              }
             ]"
           />
         </a-form-item>
@@ -42,10 +46,13 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import mixins from './mixins'
+import { editKeyPair as fetchAPI } from '@/api/compute/keypair';
 export default {
-  mixins: [baseModalMixins, formModalMixins],
+  mixins: [baseModalMixins, formModalMixins, mixins],
   data() {
     return {
+      fetchAPI,
       name: "edit"
     };
   },

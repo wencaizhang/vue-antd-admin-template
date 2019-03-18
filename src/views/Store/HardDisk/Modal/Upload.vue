@@ -27,7 +27,7 @@
           <a-input
             placeholder="请输入镜像名称"
             v-decorator="[
-              'desc',
+              'description',
               {
                 rules: [{ required: true, message: '请输入镜像名称' }]}
             ]"

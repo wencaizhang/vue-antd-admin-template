@@ -49,9 +49,9 @@
           </div>
         </a-alert>
         <a-table
-          :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+          :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onTableSelectChange}"
           :columns="columns"
-          :rowKey="record => record.id"
+          :rowKey="(record, index) => index + '-' + record.name"
           :dataSource="data"
           :pagination="pagination"
           :loading="loading"
@@ -76,37 +76,42 @@
       </div>
     </PageLayout>
 
-    <CreateModal />
-    <ImportModal />
+    <create-modal />
+    <import-modal />
     <tag-modal />
+    <delete-modal />
     <edit-modal />
-    <Download />
+    <download-modal />
   </div>
 </template>
 
 <script>
 import CreateModal from "./Modal/Create";
 import TagModal from "./Modal/Tag";
+import DeleteModal from "./Modal/Delete";
 import ImportModal from "./Modal/Import";
 import EditModal from "./Modal/Edit";
-import Download from "./Modal/Download";
+import DownloadModal from "./Modal/Download";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 
 import tablePageMixins from "@/utils/mixins/tablePageMixins";
 
+import { getKeyPairList as getList } from "@/api/compute/keypair";
 export default {
   mixins: [tablePageMixins],
   components: {
     CreateModal,
     TagModal,
+    DeleteModal,
     ImportModal,
     EditModal,
-    Download,
+    DownloadModal,
     PageLayout
   },
 
   data() {
     return {
+      getList,
       module: "compute",
       id: "keypair",
       name: "密钥对",

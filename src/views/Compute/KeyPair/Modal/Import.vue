@@ -19,7 +19,8 @@
             v-decorator="[
               'name',
               {
-                rules: [{ required: true, message: '请输入密钥对名称!' }]}
+                rules: [{ required: true, message: '请输入密钥对名称!' }]
+              }
             ]"
           />
         </a-form-item>
@@ -31,9 +32,10 @@
           <a-textarea
             placeholder="请在此粘贴您的SSH公钥"
             v-decorator="[
-              'desc',
+              'publicKey',
               {
-                rules: [{ required: true, message: '请在此粘贴您的SSH公钥!' }]}
+                rules: [{ required: true, message: '请在此粘贴您的SSH公钥!' }]
+              }
             ]"
           />
         </a-form-item>
@@ -68,10 +70,12 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import { importKeyPair as fetchAPI } from '@/api/compute/keypair';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       name: "import"
     };
   },

@@ -19,7 +19,8 @@
             v-decorator="[
               'name',
               {
-                rules: [{ required: true, message: '请输入名称!' }]}
+                rules: [{ required: true, message: '请输入名称!' }]
+              }
             ]"
           />
         </a-form-item>
@@ -30,9 +31,10 @@
         >
           <a-select
             v-decorator="[
-              'type',
+              'encryption',
               {
-                rules: [{ required: true, message: '请选择加密方式!' }]}
+                rules: [{ required: true, message: '请选择加密方式!' }]
+              }
             ]"
           >
             <a-select-option value="ssh-rsa">ssh-rsa</a-select-option>
@@ -45,10 +47,12 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import { createKeyPair as fetchAPI } from '@/api/compute/keypair';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       name: "create"
     };
   },

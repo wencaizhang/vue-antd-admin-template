@@ -3,24 +3,26 @@
     <a-form :form="form">
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="映像提供方：">
         <a-radio-group
+          @change="handleChange"
           buttonStyle="solid"
           v-decorator="[
-            'supporter',
+            'imageProvider',
             {
               rules: [{ required: true, message: '请选择一个映像提供方!' }],
-              initialValue: 'large'
+              initialValue: 'o'
             }
           ]"
         >
-          <a-radio-button value="large">系统</a-radio-button>
-          <a-radio-button value="default">自有</a-radio-button>
-          <a-radio-button value="small">共享</a-radio-button>
+          <a-radio-button value="o">系统</a-radio-button>
+          <a-radio-button value="1">自有</a-radio-button>
+          <a-radio-button value="2">共享</a-radio-button>
         </a-radio-group>
+        <!-- 映像提供方[0:系统 1:自有 2:共享] -->
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="选择操作系统：">
         <a-select
           v-decorator="[
-            'mirror',
+            'os',
             {rules: [{ required: true, message: '请选择一个操作系统!' }]}
           ]"
           placeholder="请选择"
@@ -36,27 +38,9 @@
   </div>
 </template>
 <script>
+import { getImageList } from "@/api/compute/images";
+
 const optionList = {
-  memory: [
-    { text: "1G", value: "1G" },
-    { text: "2G", value: "2G" },
-    { text: "4G", value: "4G" },
-    { text: "8G", value: "8G" },
-    { text: "12G", value: "12G" },
-    { text: "16G", value: "16G" },
-    { text: "32G", value: "32G" },
-    { text: "48G", value: "48G" },
-    { text: "64G", value: "64G" }
-  ],
-  cpu: [
-    { text: "1核", value: "1核" },
-    { text: "2核", value: "2核" },
-    { text: "4核", value: "4核" },
-    { text: "8核", value: "8核" },
-    { text: "12核", value: "12核" },
-    { text: "24核", value: "24核" },
-    { text: "32核", value: "32核" }
-  ],
   mirror: [
     { text: "Centos6.5_X86_64bit", value: "Centos6.5_X86_64bit" },
     { text: "Centos6.6_X86_64bit", value: "Centos6.6_X86_64bit" },
@@ -76,17 +60,35 @@ const optionList = {
     }
   ]
 };
-
+// 映像提供方[0:系统 1:自有 2:共享]
 export default {
   data() {
     return {
       form: this.$form.createForm(this),
       labelCol: { span: 8 },
       wrapperCol: { span: 12 },
+      imageProvider: '0',
       optionList
     };
   },
+  mounted () {
+    this.fetchImageList();
+  },
   methods: {
+    async fetchImageList () {
+      try {
+        const resp = await getImageList({
+          
+        })
+        console.log()
+      } catch (err) {
+
+      }
+    },
+    handleChange (e) {
+      this.imageProvider = e.target.value;
+      this.fetchImageList();
+    },
     handleSubmit() {
       this.form.validateFields((err, values) => {
         if (!err) {

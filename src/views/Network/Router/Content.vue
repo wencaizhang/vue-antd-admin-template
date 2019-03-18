@@ -44,7 +44,7 @@
       </div>
     </a-alert>
     <a-table
-      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+      :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onTableSelectChange}"
       :columns="columns"
       :rowKey="record => record.id"
       :dataSource="data"

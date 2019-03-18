@@ -31,7 +31,7 @@
           <a-textarea
             placeholder="请输入描述"
             v-decorator="[
-              'desc',
+              'description',
               {
                 rules: [{ message: '请输入描述' }]}
             ]"
@@ -46,7 +46,7 @@
             @change="handleSelectSource"
             placeholder="请选择镜像源"
             v-decorator="[
-              'desc',
+              'description',
               {
                 rules: [{ required: true, message: '请选择镜像源' }]}
             ]"

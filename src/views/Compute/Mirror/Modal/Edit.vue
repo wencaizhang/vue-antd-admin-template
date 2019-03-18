@@ -19,7 +19,9 @@
             v-decorator="[
               'name',
               {
-                rules: [{ required: true, message: '请输入名称!' }]}
+                initialValue: currRecord.name,
+                rules: [{ required: true, message: '请输入名称!' }] 
+              }
             ]"
           />
         </a-form-item>
@@ -30,9 +32,11 @@
         >
           <a-textarea
             v-decorator="[
-              'desc',
-              {
-                rules: [{ message: '请填写描述!' }]}
+              'description',
+              { 
+                initialValue: currRecord.description,
+                rules: [{ message: '请填写描述!' }]
+              }
             ]"
           />
         </a-form-item>
@@ -45,9 +49,11 @@
           <a-select
             placeholder="选择镜像格式"
             v-decorator="[
-              'type',
-              {
-                rules: [{ required: true, message: '请选择镜像格式!' }]}
+              'imageFormat',
+              { 
+                initialValue: currRecord.imageFormat,
+                rules: [{ required: true, message: '请选择镜像格式!' }]
+              }
             ]"
           >
             <a-select-option value="QCOW2-QEMU">QCOW2-QEMU</a-select-option>
@@ -69,9 +75,11 @@
             :formatter="value => formatter('G', value)"
             :parser="value => parser(value)"
             v-decorator="[
-              'minDisk',
-              {
-                rules: [{ required: true, message: '请填写最小磁盘!' }]}
+              'disk',
+              { 
+                initialValue: currRecord.capacity || 0,
+                rules: [{ required: true, message: '请填写最小磁盘!' }]
+              }
             ]"
           />
         </a-form-item>
@@ -86,16 +94,24 @@
             :formatter="value => formatter('G', value)"
             :parser="value => parser(value)"
             v-decorator="[
-              'minMemory',
-              {
-                rules: [{ required: true, message: '请填写最低内存!' }]}
+              'memory',
+              { 
+                initialValue: currRecord.memory || 0,
+                rules: [{ required: true, message: '请填写最低内存!' }]
+              }
             ]"
           />
         </a-form-item>
         <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
-          <a-checkbox v-decorator="[
-              'public',
-            ]">公有</a-checkbox>
+          <!-- 公有[0:否 1:是] 	integer($int32) -->
+          <a-checkbox
+            v-decorator="[
+              'isPublic',
+              { 
+                initialValue: currRecord.isPublic,
+              }
+            ]"
+          >公有</a-checkbox>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -104,19 +120,18 @@
 
 <script>
 import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import mixins from './mixins'
+import { editImage as fetchAPI } from '@/api/compute/images';
 export default {
-  mixins: [baseModalMixins, formModalMixins],
+  mixins: [baseModalMixins, formModalMixins, mixins],
   data() {
     return {
+      fetchAPI,
       name: "edit",
-      obj: {
-        名称: "aaa1231313aaa",
-        描述: "bbbb",
-        minMomery: "22",
-        minDisk: "42",
-        镜像格式: "Yiminghe"
-      }
     };
+  },
+  methods: {
+
   }
 };
 </script>

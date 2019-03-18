@@ -5,6 +5,7 @@ export default {
   data() {
     return {
       name: "选项",
+      instanceId: '',
       pagination: {
         showSizeChanger: true
       },
@@ -13,7 +14,7 @@ export default {
       loading: false,
 
       selectedRowKeys: [],
-      handleRowData: {}
+      currRecord: {}
     };
   },
   computed: {
@@ -32,6 +33,17 @@ export default {
     handleRefresh() {
       this.fetch();
     },
+    async fetch () {
+      this.loading = true;
+      try {
+        const resp = await this.getList(this.payload);
+        this.data = resp.data;
+        this.pagination.total = resp.totalPage;
+      } 
+      finally {
+        this.loading = false;
+      }
+    },
     handleTableChange(pagination, filters, sorter) {
       const pager = { ...this.pagination };
       pager.current = pagination.current;
@@ -45,10 +57,7 @@ export default {
       });
     },
 
-    fetch(params = {}) {
-      this.loading = true;
-    },
-    onSelectChange(selectedRowKeys) {
+    onTableSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys;
     },
     handleClearSelected() {
@@ -69,70 +78,14 @@ export default {
     handleMenuClick(key, record) {
       // 批量操作
       // if (this.selectedRowKeys.length === 0) {
-      //   this.$message.info("请先选择您要操作的实例");
+      //   this.$message.info("请先选择您要操作的数据");
       //   return;
       // }
+      this.currRecord = record;
+      this.handleShowModal(key);
+    },
+    handleShowModal (key) {
       this.$store.commit(`${this.id}/toggleModalVisible`, key);
-    },
-    handleBatchDelete() {
-      if (this.selectedRowKeys.length === 0) {
-        this.$message.info(`请先选择您要操作的${this.name}`);
-        return;
-      }
-      this._showBatchDeleteModal();
-    },
-    _showBatchDeleteModal() {
-      const vm = this;
-      const h = this.$createElement;
-      const vnode = h(
-        "ul",
-        this.selectedRowKeys.map(item => {
-          return h("li", item);
-        })
-      );
-
-      // 批量删除
-      this.$confirm({
-        title: `您已经选择了下列${this.name}，即将进行删除，请确认你的操作。`,
-        content: vnode,
-        iconType: "warning",
-        okText: "删除",
-        okType: "danger",
-        onOk() {
-          return new Promise((resolve, reject) => {
-            setTimeout(resolve, 1000);
-          })
-            .then(() => {
-              const indexs = vm.selectedRowKeys.map(key => {
-                return vm.data.findIndex(item => item.cell == key);
-              });
-              vm._deleteData(indexs);
-            })
-            .catch(() => console.log("Oops errors!"));
-        },
-        onCancel() {}
-      });
-    },
-    _deleteData(indexs = []) {
-      if (!indexs.length) return;
-      // 数组删除一个元素之后，索引会发生变化。所以要对删除目标的索引进行处理。
-      const parseIndexs = indexs.map((item, index) => item - index);
-      const keys = parseIndexs.map(index => {
-        const key = this.data[index].cell;
-        this.data.splice(index, 1);
-        return key;
-      });
-      this.$message.success("删除成功！");
-      this._updateSelectedRowKeys(keys);
-    },
-    _updateSelectedRowKeys(keys) {
-      // 删除后需要更新 selectedRowKeys
-      keys.forEach(key => {
-        let index = this.selectedRowKeys.findIndex(item => item === key);
-        if (index !== -1) {
-          this.selectedRowKeys.splice(index, 1);
-        }
-      });
     }
   }
 };

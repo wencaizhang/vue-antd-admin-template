@@ -26,7 +26,7 @@
           <a-textarea
             placeholder="请输入描述"
             v-decorator="[
-              'desc',
+              'description',
               {
                 rules: [{ message: '请输入描述' }]}
             ]"

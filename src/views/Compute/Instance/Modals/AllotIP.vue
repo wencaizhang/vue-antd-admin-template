@@ -30,7 +30,7 @@
           <a-textarea
             placeholder="请填写描述"
             v-decorator="[
-              'desc',
+              'description',
               {
                 rules: [{ message: '请填写描述' }]
               }
