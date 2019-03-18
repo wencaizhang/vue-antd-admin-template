@@ -21,6 +21,7 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import { editSecuritygroup as fetchAPI } from "@/api/compute/instance";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   props: ["record"],
@@ -39,6 +40,7 @@ export default {
       .filter(item => +item.key % 3 > 1)
       .map(item => item.key);
     return {
+      fetchAPI,
       name: "editSafetyGroup",
       mockData,
       targetKeys,

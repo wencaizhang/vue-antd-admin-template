@@ -72,7 +72,7 @@ export default {
       { visible: false, type: 'batch', name: "重启", id: "restart" },
       { visible: false, type: 'batch', name: "软重启", id: "softRestart" },
 
-      { visible: false, type: 'none', name: "分配公网IP", id: "allotIP" },
+      // { visible: false, type: 'none', name: "分配公网IP", id: "allotIP" },
       { visible: false, type: 'single', name: "创建快照", id: "createSnapshoot" },
       { visible: false, type: 'single', name: "绑定公网IP", id: "bindIP" },
       { visible: false, type: 'single', name: "解绑公网IP", id: "unbindIP" },

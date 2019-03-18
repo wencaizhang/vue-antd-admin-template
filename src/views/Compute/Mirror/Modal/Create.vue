@@ -176,10 +176,12 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import { createImage as fetchAPI } from '@/api/compute/images';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       name: "create",
       fileList: [],
       sourceType: 0,

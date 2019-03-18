@@ -33,12 +33,12 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
-import { createSnapshoot } from "@/api/compute/instance";
+import { createSnapshoot as fetchAPI } from "@/api/compute/instance";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
-      fetchAPI: createSnapshoot,
+      fetchAPI,
       name: "createSnapshoot"
     };
   },
