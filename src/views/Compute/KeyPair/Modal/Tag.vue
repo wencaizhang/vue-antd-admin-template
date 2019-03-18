@@ -17,9 +17,10 @@
         >
           <a-input
             v-decorator="[
-              'tagName',
+              'labelName',
               {
-                rules: [{ required: true, message: '请输入标签名!' }]}
+                rules: [{ required: true, message: '请输入标签名!' }]
+              }
             ]"
           />
         </a-form-item>
@@ -30,9 +31,10 @@
         >
           <a-textarea
             v-decorator="[
-              'desc',
+              'description',
               {
-                rules: [{ message: '请输入描述!' }]}
+                rules: [{ message: '请输入描述!' }]
+              }
             ]"
           />
         </a-form-item>
@@ -42,10 +44,12 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import { bindLabel as fetchAPI } from '@/api/compute/keypair';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       name: "bindTags"
     };
   },

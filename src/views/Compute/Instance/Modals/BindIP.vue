@@ -21,7 +21,7 @@
             class="container-----"
             placeholder="请选择一个IP地址"
             v-decorator="[
-              'name',
+              'ipAddress',
               {
                 initialValue: 'web1',
                 rules: [{ required: true, message: '请选择IP地址！' }]
@@ -43,7 +43,7 @@
           <a-select
             placeholder="请选择一个接口"
             v-decorator="[
-              '待绑定的IP接口',
+              'ipInterface',
               {
                 rules: [{ required: true, message: '请选择一个接口！' }]
               }
@@ -59,10 +59,12 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import { bindIP } from "@/api/compute/instance";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI: bindIP,
       name: "bindIP"
     };
   },

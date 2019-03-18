@@ -1,6 +1,7 @@
 import Vue from "vue";
 import axios from "axios";
 import store from "@/store";
+import router from '@/router';
 import notification from "ant-design-vue/es/notification";
 import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 
@@ -12,6 +13,8 @@ const service = axios.create({
 
 const errHandle = error => {
   if (error.response) {
+    const data = error.response.data;
+    const msg = data.desc || data.exception;
     switch (error.status) {
       case 403:
         notification.error({ message: "拒绝访问", description: "无权限，拒绝访问" });
@@ -23,7 +26,7 @@ const errHandle = error => {
         });
         break;
       default:
-        notification.error({ message: "Error", description: "请求出错，请重试" });
+        notification.error({ message: 'Error', description: msg });
         break;
     }
   }
@@ -37,6 +40,8 @@ service.interceptors.request.use(config => {
   if (token) {
     config.headers["tokenId"] = token; // 让每个请求携带自定义 token 请根据实际情况自行修改
     config.headers["projectId"] = projectId; // 让每个请求携带自定义 token 请根据实际情况自行修改
+  } else {
+    router.push({ name: 'login' })
   }
   return config;
 }, errHandle);

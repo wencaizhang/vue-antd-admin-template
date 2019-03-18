@@ -73,6 +73,13 @@ export default {
     UsernameForm,
     PhoneForm
   },
+  // created () {
+  //   this.$ls.set('test', JSON.stringify({ name: 'zwc', age: 18 }))
+  //   console.log(JSON.parse(this.$ls.get('test')))
+
+  //   this.$ls.set('list', [2,3,4])
+  //   console.log(this.$ls.get('list'))
+  // },
   data() {
     return {
       customActiveKey: "UsernameForm",
@@ -158,6 +165,7 @@ export default {
     },
     loginSuccess(resp) {
       console.log(resp);
+      // const expire = 1 * 60 * 60 * 1000;
       Vue.ls.set(ACCESS_TOKEN, resp.tokenId);
       Vue.ls.set(PROJECT_ID, resp.defalutProjectId);
 

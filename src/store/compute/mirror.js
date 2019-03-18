@@ -6,11 +6,11 @@ const columns = [
   },
   {
     title: "名称",
-    dataIndex: "name.first"
+    dataIndex: "name"
   },
   {
     title: "状态",
-    dataIndex: "phone",
+    dataIndex: "status",
     filters: [
       { text: "状态", value: "状态" },
       { text: "等待中", value: "等待中" },
@@ -24,11 +24,11 @@ const columns = [
   },
   {
     title: "容量（G)",
-    dataIndex: "size"
+    dataIndex: "capacity"
   },
   {
     title: "平台",
-    dataIndex: "regexp"
+    dataIndex: "platform"
   },
   {
     title: "操作",

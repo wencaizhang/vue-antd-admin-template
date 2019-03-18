@@ -46,7 +46,7 @@
           </div>
         </a-alert>
         <a-table
-          :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+          :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onTableSelectChange}"
           :columns="columns"
           :rowKey="record => record.id"
           :dataSource="data"
@@ -98,7 +98,7 @@ import OverviewModal from "./Modals/Overview";
 
 import tablePageMixins from "@/utils/mixins/tablePageMixins";
 
-import { getinstanceList } from "@/api/compute/instance";
+import { getinstanceList as getList } from "@/api/compute/instance";
 
 export default {
   mixins: [tablePageMixins],
@@ -116,6 +116,7 @@ export default {
 
   data() {
     return {
+      getList,
       module: "compute",
       id: "instance",
       name: "实例",
@@ -126,19 +127,6 @@ export default {
   },
 
   methods: {
-    async fetch () {
-      this.loading = true;
-      try {
-        const resp = await getinstanceList();
-        this.loading = false;
-        this.data = resp.data;
-        const pagination = { ...this.pagination };
-        pagination.total = resp.totalPage;
-        this.pagination = pagination;
-      } catch (error) {
-          this.loading = false;
-      }
-    },
     openNotification() {
       this.$notification.open({
         message: "提醒",
@@ -149,9 +137,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-ul {
-  padding-inline-start: 20px;
-}
-</style>

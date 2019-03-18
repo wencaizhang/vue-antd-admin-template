@@ -54,8 +54,11 @@ export default {
   },
   methods: {
     handleLogout() {
-      Vue.ls.remove(ACCESS_TOKEN)
-      Vue.ls.remove(PROJECT_ID)
+      // Vue.ls.remove(ACCESS_TOKEN)
+      // Vue.ls.remove(PROJECT_ID)
+
+      // or 
+      this.$ls.clear();
       this.$router.push({ name: 'login' })
     }
   }
