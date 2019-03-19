@@ -19,8 +19,9 @@
 <script>
 import { baseModalMixins } from "@/utils/mixins/modalMixin";
 import { deleteInstance as fetchAPI } from '@/api/compute/instance';
+import mixins from './mixins'
 export default {
-  mixins: [baseModalMixins],
+  mixins: [baseModalMixins, mixins],
   data() {
     return {
       fetchAPI,
