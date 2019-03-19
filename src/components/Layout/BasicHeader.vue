@@ -1,11 +1,14 @@
 <template>
   <a-layout-header class="layout-header">
     <div class="header">
-      <a-icon
-        class="trigger"
-        :type="collapsed ? 'menu-unfold' : 'menu-fold'"
-        @click="collapseHandle"
-      />
+      <div style="display: flex;">
+        <a-icon
+          class="trigger"
+          :type="collapsed ? 'menu-unfold' : 'menu-fold'"
+          @click="collapseHandle"
+        />
+        <Breadcrumb/>
+      </div>
       <header-user-menu/>
     </div>
   </a-layout-header>
@@ -13,10 +16,11 @@
 
 <script>
 import HeaderUserMenu from "../tools/HeaderUserMenu";
+import Breadcrumb from "@/components/tools/Breadcrumb";
 export default {
   name: "basic-header",
   components: {
-    HeaderUserMenu
+    HeaderUserMenu,Breadcrumb
   },
   computed: {},
   data() {
@@ -45,5 +49,12 @@ export default {
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
   border-bottom: 1px solid #f2f2f2;
+}
+
+
+/*  */
+.breadcrumb {
+  margin-bottom: 0px;
+  line-height: 64px;
 }
 </style>
