@@ -20,7 +20,8 @@ const errHandle = error => {
       case 404:
         break;
       case 403:
-        notification.error({ message: "拒绝访问", description: "无权限，拒绝访问" });
+        notification.error({ message: "Token 失效", description: "请重新登录" });
+        router.push({ name: 'login' })
         break;
       case 401:
         notification.error({ message: "未授权", description: "授权验证失败" });
