@@ -14,8 +14,7 @@
             <a-dropdown style="margin-right: 10px;">
               <a-menu slot="overlay" @click="handleMultiMenuClick($event.key)">
                 <a-menu-item
-                  v-for="item in menuOptions"
-                  v-show="item.type === 'batch'"
+                  v-for="item in multiMenuOptions"
                   :key="item.id"
                 >{{item.name}}</a-menu-item>
               </a-menu>
@@ -65,9 +64,8 @@
         <!-- <a-dropdown style="margin-right: 10px;">
           <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
             <a-menu-item
-              v-for="item in menuOptions"
+              v-for="item in singleMenuOptions"
               :key="item.id"
-              v-show="item.type === 'single'"
             >{{ item.name }}</a-menu-item>
           </a-menu>
           <a-button style="margin-left: 8px">操作

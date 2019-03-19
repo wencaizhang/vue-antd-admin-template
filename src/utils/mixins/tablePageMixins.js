@@ -5,7 +5,6 @@ export default {
   data() {
     return {
       name: "选项",
-      instanceId: '',
       pagination: {
         showSizeChanger: true
       },
@@ -27,13 +26,20 @@ export default {
     },
     menuOptions() {
       return this.$store.state[this.module][this.id].menuOptions;
-    }
+    },
+    multiMenuOptions () {
+      return this.menuOptions.filter(item => item.type === 'batch')
+    },
+    singleMenuOptions () {
+      return this.menuOptions.filter(item => item.type === 'single')
+    },
   },
   methods: {
     handleRefresh() {
       this.handleClearSelected();
       this.fetch();
     },
+
     async fetch () {
       this.loading = true;
       try {
@@ -45,6 +51,7 @@ export default {
         this.loading = false;
       }
     },
+
     handleTableChange(pagination, filters, sorter) {
       const pager = { ...this.pagination };
       pager.current = pagination.current;
@@ -61,6 +68,7 @@ export default {
     onTableSelectChange(selectedRowKeys) {
       this.selectedRowKeys = selectedRowKeys;
     },
+
     handleClearSelected() {
       this.selectedRowKeys = [];
     },
@@ -68,6 +76,7 @@ export default {
     onSearch(value) {
       this.fetch();
     },
+
     handleViewDetail(record) {
       this.$store.commit(`${this.id}/setHandleRowData`, record);
       this.$router.push({
@@ -84,11 +93,13 @@ export default {
       }
       this.handleShowModal(key);
     },
+
     handleSingleMenuClick(key, record) {
       // 单项操作
       this.currRecord = record;
       this.handleShowModal(key);
     },
+
     handleShowModal (key) {
       this.$store.commit(`${this.id}/toggleModalVisible`, key);
     }

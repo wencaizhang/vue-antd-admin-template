@@ -25,8 +25,7 @@
                 <a-dropdown>
                   <a-menu slot="overlay" @click="handleMultiMenuClick($event.key)">
                     <a-menu-item
-                      v-for="item in menuOptions"
-                      v-show="item.type === 'batch'"
+                      v-for="item in multiMenuOptions"
                       :key="item.id"
                     >{{item.name}}</a-menu-item>
                   </a-menu>
@@ -61,8 +60,7 @@
             <a-dropdown style="margin-right: 10px;">
               <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
                 <a-menu-item
-                  v-for="item in menuOptions"
-                  v-show="item.type === 'single'"
+                  v-for="item in singleMenuOptions"
                   :disabled="record | downloadable(item.id)"
                   :key="item.id"
                 >{{item.name}}</a-menu-item>
