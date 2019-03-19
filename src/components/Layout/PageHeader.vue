@@ -1,6 +1,6 @@
 <template>
   <section class="page-header">
-    <Breadcrumb/>
+    <!-- <Breadcrumb/> -->
     <div class="page-header-detail">
       <div class="title">
         <h1>{{title}}</h1>
@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import Breadcrumb from "@/components/tools/Breadcrumb";
+// import Breadcrumb from "@/components/tools/Breadcrumb";
 export default {
   name: "",
   components: {
-    Breadcrumb
+    // Breadcrumb
   },
   computed: {},
   created() {
