@@ -2,14 +2,10 @@
 <template>
   <div>
     <a-modal
-      @cancel="handleCancel"
-      @ok="handleCreate"
       :visible="visible"
       :confirmLoading="confirmLoading"
+      @cancel="handleCancel"
       title="删除密钥对"
-      okText="删除"
-      :cancelText="cancelText"
-      okType="danger"
     >
       <p
         style="margin-top: 10px; text-align: center;"
@@ -17,10 +13,20 @@
       <ul>
         <li v-for="item in list" :key="item.id">
           {{ item.id }}
-          <a-icon v-show="item.loading" type="loading" />
+          <a-icon v-show="item.status === 'pending' " type="loading" />
           <span >{{ item | desc }}</span>
         </li>
       </ul>
+      <template slot="footer">
+        <template v-if="!showMyFooter">
+          <a-button @click="handleCancel">取消</a-button>
+          <a-button @click="handleCreate" type="danger">删除</a-button>
+        </template>
+        <template v-else>
+          <a-button @click="handleClose">确定</a-button>
+        </template>
+      </template>
+
     </a-modal>
   </div>
 </template>
@@ -32,65 +38,78 @@ export default {
   data() {
     return {
       fetchAPI,
-      cancelText: '取消',
       name: "batchDeleta",
+      showMyFooter: false,
       list: [],
-      result: [],
+      listLength: 0,
     };
   },
   filters: {
     desc (item) {
-      const desc = item.resp ? item.resp.desc : (item.err || {}).desc;
-      console.log(desc);
+      const obj = {
+        // 空字符：未删除
+        pending: "删除中",
+        fulfilled: "已删除",
+        rejected: "删除失败",
+      }
+      return obj[ item.status ] || '';
     }
   },
   methods: {
     onShow () {
-      this.cancelText = '取消';
       this.list = this.$parent.selectedRowKeys.map(item => {
         return {
           id: item,
-          loading: false,
-          deleteResult: {},
+          status: '',
+          /**
+           * status 表示删除的状态（参考 Promise 的三种状态），有四个值
+           * 空字符：未删除
+           * pending: 删除中
+           * fulfilled: 删除成功
+           * rejected: 删除失败
+           */
         }
       });
+      this.listLength = this.list.length;
     },
     handleFetch() {
+      /**
+       * 遍历发送请求
+       * Promise.all 只要有一个失败就直接返回失败的结果，所以使用遍历
+       */
       if (!this.list.length) { return;}
       this.confirmLoading = true;
       this.list.forEach(item => {
-        item.loading = true;
-        this.delete(item);
+        this.handleDelete(item);
       })
     },
     handleFetchEnd () {
+      // 所有请求全部结束
       this.confirmLoading = false;
-      console.log(this.result);
-      this.cancelText = '确定';
+      this.showMyFooter = true;
       this.openNotification('操作完成');
     },
-    async delete (item) {
+    async handleDelete (item) {
       try {
+        item.status = 'pending';
         const payload = {secretKeyId: item.id}
         const resp = await this.fetchAPI(payload);
-        this.result.push({
-          ...payload,
-          resp,
-        })
+        item.status = 'fulfilled';
       }
       catch (err) {
-        this.result.push({
-          ...payload,
-          err,
-        })
+        item.status = 'rejected';
       }
       finally {
-        if (this.result.length === this.list.length) {
+        this.listLength = this.listLength - 1;
+        if (this.listLength === 0) {
           this.handleFetchEnd();
         }
-        item.loading = false;
       }
     },
+    handleClose () {
+      this.handleCancel();
+      this.handleRefreshParentTable();
+    }
   }
 };
 </script>
