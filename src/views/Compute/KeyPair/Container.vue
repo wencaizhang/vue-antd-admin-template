@@ -14,16 +14,16 @@
                   type="primary"
                   style="margin-right: 10px;"
                   icon="plus"
-                  @click="handleMenuClick('create')"
+                  @click="handleSingleMenuClick('create')"
                 >创建</a-button>
                 <a-button
                   type="primary"
                   style="margin-right: 10px;"
                   icon="upload"
-                  @click="handleMenuClick('import')"
+                  @click="handleSingleMenuClick('import')"
                 >导入密钥对</a-button>
                 <a-dropdown>
-                  <a-menu slot="overlay" @click="handleMenuClick($event.key)">
+                  <a-menu slot="overlay" @click="handleMultiMenuClick($event.key)">
                     <a-menu-item
                       v-for="item in menuOptions"
                       v-show="item.type === 'batch'"
@@ -51,7 +51,7 @@
         <a-table
           :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onTableSelectChange}"
           :columns="columns"
-          :rowKey="(record, index) => index + '-' + record.name"
+          :rowKey="record => record.name"
           :dataSource="data"
           :pagination="pagination"
           :loading="loading"
@@ -59,7 +59,7 @@
         >
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
-              <a-menu slot="overlay" @click="handleMenuClick($event.key, record)">
+              <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
                 <a-menu-item
                   v-for="item in menuOptions"
                   v-show="item.type === 'single'"
@@ -78,7 +78,8 @@
 
     <create-modal />
     <import-modal />
-    <tag-modal />
+    <!-- <tag-modal /> -->
+    <!-- TODO -->
     <delete-modal />
     <edit-modal />
     <download-modal />

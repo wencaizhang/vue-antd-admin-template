@@ -23,7 +23,6 @@ router.beforeEach((to, from, next) => {
     }
     return false;
   }
-
   // 已经登录，且目标路径是登录页，重定向到首页
   if (to.name === 'login') {
     next({ name: 'dashboard' })

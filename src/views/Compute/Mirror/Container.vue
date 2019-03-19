@@ -28,7 +28,7 @@
                   type="primary"
                   style="margin-right: 10px;"
                   icon="plus"
-                  @click="handleMenuClick('create')"
+                  @click="handleSingleMenuClick('create')"
                 >创建镜像</a-button>
               </a-row>
             </a-col>
@@ -51,14 +51,14 @@
           @change="handleTableChange"
         >
           <template slot="operation" slot-scope="text, record">
-            <a title="点击查看镜像属性" @click="handleMenuClick('detail', record)">{{text}}</a>
+            <a title="点击查看镜像属性" @click="handleSingleMenuClick('detail', record)">{{text}}</a>
           </template>
           <template slot="edit" slot-scope="text, record">
             <a-button
               type="primary"
               style="margin-right: 10px;"
               icon="edit"
-              @click="handleMenuClick('edit', record)"
+              @click="handleSingleMenuClick('edit', record)"
             >编辑</a-button>
           </template>
         </a-table>

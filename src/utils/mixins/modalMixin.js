@@ -55,19 +55,25 @@ export const baseModalMixins = {
       try {
         console.log('this.formValues', this.formValues)
         const resp = await this.fetchAPI(this.formValues);
+        this.handleCancel();
         this.openNotification(resp.desc);
+        this.handleRefreshParentTable();
       }
       finally {
         this.confirmLoading = false;
         // this.handleCancel();
       }
     },
+    handleRefreshParentTable () {
+      this.$parent.handleRefresh();
+    },
     openNotification(desc) {
-      this.$notification.open({
-        message: "提醒",
-        description: desc,
-        icon: <a-icon type="check-circle" style="color: #52c41a" />
-      });
+      this.$message.success(desc);
+      // this.$notification.open({
+      //   message: "提醒",
+      //   description: desc,
+      //   icon: <a-icon type="check-circle" style="color: #52c41a" />
+      // });
     },
     formatter(postfix, value) {
       // let v = parseInt(value);

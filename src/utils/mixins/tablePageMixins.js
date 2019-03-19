@@ -31,6 +31,7 @@ export default {
   },
   methods: {
     handleRefresh() {
+      this.handleClearSelected();
       this.fetch();
     },
     async fetch () {
@@ -75,12 +76,16 @@ export default {
       });
     },
 
-    handleMenuClick(key, record) {
+    handleMultiMenuClick (key) {
       // 批量操作
-      // if (this.selectedRowKeys.length === 0) {
-      //   this.$message.info("请先选择您要操作的数据");
-      //   return;
-      // }
+      if (this.selectedRowKeys.length === 0) {
+        this.$message.info("请先选择您要操作的数据");
+        return;
+      }
+      this.handleShowModal(key);
+    },
+    handleSingleMenuClick(key, record) {
+      // 单项操作
       this.currRecord = record;
       this.handleShowModal(key);
     },

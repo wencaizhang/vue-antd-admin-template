@@ -9,10 +9,10 @@
               type="primary"
               style="margin-right: 10px;"
               icon="plus"
-              @click="handleMenuClick('create')"
+              @click="handleSingleMenuClick('create')"
             >申请IP</a-button>
             <a-dropdown style="margin-right: 10px;">
-              <a-menu slot="overlay" @click="handleMenuClick($event.key)">
+              <a-menu slot="overlay" @click="handleMultiMenuClick($event.key)">
                 <a-menu-item
                   v-for="item in menuOptions"
                   v-show="item.type === 'batch'"
@@ -60,10 +60,10 @@
           type="primary"
           style="margin-right: 10px;"
           icon="edit"
-          @click="handleMenuClick('bind-ip')"
+          @click="handleSingleMenuClick('bind-ip')"
         >绑定IP</a-button>
         <!-- <a-dropdown style="margin-right: 10px;">
-          <a-menu slot="overlay" @click="handleMenuClick($event.key, record)">
+          <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
             <a-menu-item
               v-for="item in menuOptions"
               :key="item.id"
