@@ -1,7 +1,8 @@
 <template>
   <a-modal
+    class="detail-modal"
     @cancel="handleCancel"
-    @ok="handleCreate"
+    @ok="handleCancel"
     :visible="visible"
     :confirmLoading="confirmLoading"
     title="基本属性"
@@ -68,3 +69,10 @@ export default {
   }
 };
 </script>
+
+<style>
+.detail-modal .ant-modal-footer .ant-btn-default{
+  /* 隐藏取消按钮 */
+  display: none;
+}
+</style>

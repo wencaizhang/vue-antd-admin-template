@@ -33,6 +33,7 @@
             v-decorator="[
               'encryption',
               {
+                initialValue: 'ssh-rsa',
                 rules: [{ required: true, message: '请选择加密方式!' }]
               }
             ]"

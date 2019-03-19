@@ -16,7 +16,7 @@
             disabled
           >关机</a-button>
           <a-dropdown style="margin-right: 10px;">
-            <a-menu slot="overlay" @click="handleMenuClick($event.key)">
+            <a-menu slot="overlay" @click="handleMultiMenuClick($event.key)">
               <a-menu-item
                 v-for="item in menuOptions"
                 v-show="item.type === 'batch'"
@@ -57,7 +57,7 @@
           <template slot="name" slot-scope="text">{{text.first}} {{text.last}}</template>
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
-              <a-menu slot="overlay" @click="handleMenuClick($event.key, record)">
+              <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
                 <a-menu-item
                   v-for="item in menuOptions"
                   v-show="item.type === 'single'"

@@ -15,7 +15,10 @@ const errHandle = error => {
   if (error.response) {
     const data = error.response.data;
     const msg = data.desc || data.exception;
-    switch (error.status) {
+
+    switch (error.response.status) {
+      case 404:
+        break;
       case 403:
         notification.error({ message: "拒绝访问", description: "无权限，拒绝访问" });
         break;
@@ -75,5 +78,7 @@ export function POST(url, payload) {
  * @param {Object} payload [请求时携带的参数]
  */
 export function DELETE(url, payload) {
-  return service.delete(url, payload);
+  return service.delete(url, {
+    data: payload
+  });
 }
