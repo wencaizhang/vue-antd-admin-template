@@ -78,7 +78,7 @@ export default {
     async fetchImageList () {
       try {
         const resp = await getImageList({
-          
+          imageSource: this.imageProvider
         })
         console.log()
       } catch (err) {

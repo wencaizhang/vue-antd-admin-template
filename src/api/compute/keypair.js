@@ -17,3 +17,6 @@ export const editKeyPair    = payload => POST("compute/secretKey/modify", payloa
 
 // 绑定标签
 export const bindLabel      = payload => POST("compute/secretKey​/label/bind", payload);
+
+// 下载
+export const downloadKeyPair = payload => POST('/compute/secretKeydownload', payload);

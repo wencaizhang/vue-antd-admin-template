@@ -2,6 +2,7 @@ import Vue from "vue";
 import axios from "axios";
 import store from "@/store";
 import router from '@/router';
+import { clearToken } from '@/utils/util'
 import notification from "ant-design-vue/es/notification";
 import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 
@@ -11,6 +12,7 @@ const service = axios.create({
   timeout: 6000 // 请求超时时间
 });
 
+
 const errHandle = error => {
   if (error.response) {
     const data = error.response.data;
@@ -18,16 +20,12 @@ const errHandle = error => {
 
     switch (error.response.status) {
       case 404:
+      case 409:
         break;
       case 403:
         notification.error({ message: "Token 失效", description: "请重新登录" });
+        clearToken();
         router.push({ name: 'login' })
-        break;
-      case 401:
-        notification.error({ message: "未授权", description: "授权验证失败" });
-        store.dispatch("Logout").then(() => {
-          location.reload();
-        });
         break;
       default:
         notification.error({ message: 'Error', description: msg });
@@ -42,11 +40,31 @@ service.interceptors.request.use(config => {
   const token = Vue.ls.get(ACCESS_TOKEN);
   const projectId = Vue.ls.get(PROJECT_ID)
   if (token) {
+    // 每个请求添加自定义 headers 
     config.headers["tokenId"] = token; // 让每个请求携带自定义 token 请根据实际情况自行修改
     config.headers["projectId"] = projectId; // 让每个请求携带自定义 token 请根据实际情况自行修改
   } else {
     router.push({ name: 'login' })
   }
+  console.log('>>>>>>>>')
+  console.log(config)
+  console.log('>>>>>>>>')
+
+
+  /**
+   * 取消 axios 请求
+   */
+  
+  // const CancelToken = axios.CancelToken;
+  // const source = CancelToken.source();
+  
+  // source.throwIfRequested = source.token.throwIfRequested;
+  // source.promise.then = source.token.promise.then.bind(source.promise);
+  // source.promise.catch = source.token.promise.catch.bind(source.promise);
+
+  // Vue.prototype.source = source;
+  // config.cancelToken = source;
+
   return config;
 }, errHandle);
 

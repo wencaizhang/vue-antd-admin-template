@@ -106,6 +106,8 @@ export default {
       // 镜像类型[0:系统镜像 1:自有镜像 2:共享镜像]
       this.payload.imageSource = v;
       this.data = [];
+
+      // this.source.cancel('取消请求');
       this.fetch();
     },
   }

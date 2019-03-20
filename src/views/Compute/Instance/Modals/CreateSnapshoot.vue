@@ -34,12 +34,14 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
 import { createSnapshoot as fetchAPI } from "@/api/compute/instance";
+import mixins from './mixins'
 export default {
-  mixins: [baseModalMixins, formModalMixins],
+  mixins: [baseModalMixins, formModalMixins, mixins],
   data() {
     return {
       fetchAPI,
-      name: "createSnapshoot"
+      name: "createSnapshoot",
+      isRefreshParentTable: false,
     };
   },
 
