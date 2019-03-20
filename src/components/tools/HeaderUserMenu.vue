@@ -39,7 +39,7 @@
 
 <script>
 
-import Vue from "vue";
+import { clearToken } from '@/utils/util'
 import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 
 export default {
@@ -54,11 +54,7 @@ export default {
   },
   methods: {
     handleLogout() {
-      // Vue.ls.remove(ACCESS_TOKEN)
-      // Vue.ls.remove(PROJECT_ID)
-
-      // or 
-      this.$ls.clear();
+      clearToken();
       this.$router.push({ name: 'login' })
     }
   }

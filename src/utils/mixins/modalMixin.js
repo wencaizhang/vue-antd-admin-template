@@ -12,6 +12,7 @@ export const baseModalMixins = {
       formValues: {},
       currRecord: {},
       fetchAPI: () => {},
+      isRefreshParentTable: true, // 刷新父组件表格
     };
   },
   computed: {
@@ -56,19 +57,25 @@ export const baseModalMixins = {
         console.log('this.formValues', this.formValues)
         const resp = await this.fetchAPI(this.formValues);
         this.handleCancel();
-        this.openNotification(resp.desc);
+        this.openNotification(resp);
         this.handleRefreshParentTable();
+      }
+      catch (err) {
+        this.handleFetchFailed (err);
       }
       finally {
         this.confirmLoading = false;
         // this.handleCancel();
       }
     },
-    handleRefreshParentTable () {
-      this.$parent.handleRefresh();
+    handleFetchFailed (err) {
+      // 请求失败处理函数
     },
-    openNotification(desc) {
-      this.$message.success(desc);
+    handleRefreshParentTable () {
+      this.isRefreshParentTable ? this.$parent.handleRefresh() : '';
+    },
+    openNotification(resp) {
+      this.$message.success(resp.desc);
       // this.$notification.open({
       //   message: "提醒",
       //   description: desc,
