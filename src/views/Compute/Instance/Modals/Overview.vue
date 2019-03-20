@@ -8,7 +8,7 @@
     @cancel="handleCancel"
     @ok="handleCancel"
   >
-    <ul v-if="show">
+    <ul v-if="show" class="item-descr-list">
       <li v-for="item in columns" :key="item.title">
         <span class="item-descr-tit">{{ item.title }}</span> <span class="item-descr-txt">{{ currRecord[ item.dataIndex ] || '无'}}</span>
       </li>
@@ -121,6 +121,10 @@ export default {
 }
 li {
   list-style: none;
+}
+
+.item-descr-list li {
+  display: table-row;
 }
 .item-descr-tit {
   color: #888;

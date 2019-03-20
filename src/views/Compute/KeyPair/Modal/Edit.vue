@@ -17,15 +17,18 @@
         >
           <a-input
             v-decorator="[
-              'name',
+              'newSecretKeyName',
               {
                 initialValue: currRecord.name,
-                rules: [{ required: true, message: '请输入秘钥名称!' }]
+                rules: [
+                  { required: true, message: '请输入名称!' },
+                  { pattern: /^(\w|_)*$/, message: '请使用英文字母和下划线的组合!' },
+                ]
               }
             ]"
           />
         </a-form-item>
-        <a-form-item
+        <!-- <a-form-item
           label="描述："
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
@@ -39,7 +42,7 @@
               }
             ]"
           />
-        </a-form-item>
+        </a-form-item> -->
       </a-form>
     </a-modal>
   </div>
@@ -57,6 +60,14 @@ export default {
     };
   },
 
-  methods: {}
+  methods: {
+    onShow () {
+      const name = this.$parent.selectedRowKeys[0];
+      this.currRecord = this.$parent.data.find(item => item.name === name);
+      this.formValues = Object.assign({}, this.formValues, {
+        oldSecretKeyName: this.currRecord.name
+      });
+    }
+  }
 };
 </script>

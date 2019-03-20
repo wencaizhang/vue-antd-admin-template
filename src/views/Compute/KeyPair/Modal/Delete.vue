@@ -3,7 +3,6 @@
   <div>
     <a-modal
       :visible="visible"
-      :confirmLoading="confirmLoading"
       @cancel="handleCancel"
       title="删除密钥对"
     >
@@ -12,15 +11,17 @@
       >即将删除下列密钥对，请确认你的操作。</p>
       <ul>
         <li v-for="item in list" :key="item.id">
-          {{ item.id }}
-          <a-icon v-show="item.status === 'pending' " type="loading" />
-          <span >{{ item | desc }}</span>
+          <span>{{ item.id }}</span>
+          <span >
+            <a-icon v-show="item.status === 'pending' " type="loading" />
+            {{ item | desc }}
+          </span>
         </li>
       </ul>
       <template slot="footer">
         <template v-if="!showMyFooter">
           <a-button @click="handleCancel">取消</a-button>
-          <a-button @click="handleCreate" type="danger">删除</a-button>
+          <a-button @click="handleCreate" :loading="confirmLoading" type="danger">删除</a-button>
         </template>
         <template v-else>
           <a-button @click="handleClose">确定</a-button>
@@ -57,6 +58,7 @@ export default {
   },
   methods: {
     onShow () {
+      this.showMyFooter = false;
       this.list = this.$parent.selectedRowKeys.map(item => {
         return {
           id: item,
@@ -87,7 +89,7 @@ export default {
       // 所有请求全部结束
       this.confirmLoading = false;
       this.showMyFooter = true;
-      this.openNotification('操作完成');
+      this.$message.success('操作完成');
     },
     async handleDelete (item) {
       try {
@@ -113,3 +115,15 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+
+li {
+  display: table-row;
+}
+li span {
+  display: table-cell;
+  padding-right: 20px;
+  padding-bottom: 16px;
+}
+</style>
