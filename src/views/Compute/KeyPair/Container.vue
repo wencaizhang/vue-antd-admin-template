@@ -22,17 +22,21 @@
                   icon="upload"
                   @click="handleSingleMenuClick('import')"
                 >导入密钥对</a-button>
-                <a-dropdown>
-                  <a-menu slot="overlay" @click="handleMultiMenuClick($event.key)">
-                    <a-menu-item
-                      v-for="item in multiMenuOptions"
-                      :key="item.id"
-                    >{{item.name}}</a-menu-item>
-                  </a-menu>
-                  <a-button type="primary" style="margin-left: 8px">批量操作
-                    <a-icon type="down"/>
-                  </a-button>
-                </a-dropdown>
+                <a-button
+                  type="primary"
+                  style="margin-right: 10px;"
+                  icon="delete"
+                  :disabled="!selectedRowKeys.length"
+                  @click="handleMultiMenuClick('batchDeleta')"
+                >删除</a-button>
+                <a-button
+                  type="primary"
+                  style="margin-right: 10px;"
+                  icon="edit"
+                  :disabled="selectedRowKeys.length !== 1"
+                  :title="selectedRowKeys.length !== 1 ? '您只能选择其中一项进行修改' : '修改密钥对属性'"
+                  @click="handleMultiMenuClick('edit')"
+                >修改</a-button>
               </a-row>
             </a-col>
             <a-col>
@@ -56,20 +60,6 @@
           :loading="loading"
           @change="handleTableChange"
         >
-          <template slot="operation" slot-scope="text, record">
-            <a-dropdown style="margin-right: 10px;">
-              <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
-                <a-menu-item
-                  v-for="item in singleMenuOptions"
-                  :disabled="record | downloadable(item.id)"
-                  :key="item.id"
-                >{{item.name}}</a-menu-item>
-              </a-menu>
-              <a-button style="margin-left: 8px">操作
-                <a-icon type="down"/>
-              </a-button>
-            </a-dropdown>
-          </template>
         </a-table>
       </div>
     </PageLayout>

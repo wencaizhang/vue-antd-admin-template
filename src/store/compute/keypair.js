@@ -15,16 +15,17 @@ const columns = [
     title: "所属项目",
     dataIndex: "subordinateProject"
   },
-  {
-    title: "操作",
-    dataIndex: "operation",
-    scopedSlots: { customRender: "operation" }
-  }
+  // {
+  //   title: "操作",
+  //   dataIndex: "operation",
+  //   scopedSlots: { customRender: "operation" }
+  // }
 ];
 export default {
   namespaced: true,
   state: {
     handleRowData: {},
+    lastCreatedKeyPair: {},
     columns,
     menuOptions: [
       { visible: false, type: 'none',   id: "create",      name: "创建", },
@@ -33,10 +34,13 @@ export default {
       // { visible: false, type: 'batch',  id: "bindTags",    name: "绑定标签", },
       // TODO
       { visible: false, type: 'single', id: "edit",        name: "修改", },
-      { visible: false, type: 'single', id: "download",    name: "下载", },
+      { visible: false, type: 'none',   id: "download",    name: "下载", },
     ],
   },
   mutations: {
+    setLastCreatedKeyPair (state, payload) {
+      state.lastCreatedKeyPair = payload;
+    }
   },
   actions: {},
   getters: {}

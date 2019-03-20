@@ -46,7 +46,12 @@ export default {
         const resp = await this.getList(this.payload);
         this.data = resp.data;
         this.pagination.total = resp.totalPage;
-      } 
+      }
+      catch (err) {
+        if (err.response.status === 404) {
+          this.data = [];
+        }
+      }
       finally {
         this.loading = false;
       }

@@ -28,6 +28,7 @@ export const baseModalMixins = {
         this.handleID();
         this.onShow();
       } else {
+        this.form && this.form.resetFields();
         this.onHidden();
       }
     }
@@ -43,7 +44,6 @@ export const baseModalMixins = {
     onHidden () {
       // 自定义钩子函数～～
       // 隐藏 modal 之后触发，参见 watch.visible
-      this.form && this.form.resetFields();
     },
     handleCancel() {
       this.$store.commit(`${this.$parent.id}/toggleModalVisible`, this.name);
