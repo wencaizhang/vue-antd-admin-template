@@ -76,18 +76,8 @@ export const baseModalMixins = {
     },
     openNotification(resp) {
       this.$message.success(resp.desc);
-      // this.$notification.open({
-      //   message: "提醒",
-      //   description: desc,
-      //   icon: <a-icon type="check-circle" style="color: #52c41a" />
-      // });
     },
     formatter(postfix, value) {
-      // let v = parseInt(value);
-      // if (isNaN(v)); {
-      //   console.log('value', '---', v, '---', v==='')
-      //   return '';
-      // }
       return parseInt(value) + " " + postfix;
     },
     parser(value) {
