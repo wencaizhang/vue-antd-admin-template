@@ -9,7 +9,7 @@
           <a-row type="flex" justify="space-between">
             <a-col>
               <a-row type="flex" justify="space-between">
-                <a-button icon="sync" @click="handleRefresh" style="margin-right: 10px;" title="刷新"></a-button>
+                <a-button icon="sync" :disabled="loading" @click="handleRefresh" style="margin-right: 10px;" title="刷新"></a-button>
                 <a-button
                   type="primary"
                   style="margin-right: 10px;"
