@@ -30,10 +30,10 @@
         htmlType="submit"
         class="login-button"
         style="width: 100%;"
-        :loading="loginBtn"
-        :disabled="loginBtn"
-        @click.stop.prevent="handleSubmit"
-      >确定</a-button>
+        :loading="loading"
+        :disabled="loading"
+        @click="handleSubmit"
+      >登录</a-button>
 
       <div class="user-login-other">
         <!-- <div>
@@ -73,17 +73,10 @@ export default {
     UsernameForm,
     PhoneForm
   },
-  // created () {
-  //   this.$ls.set('test', JSON.stringify({ name: 'zwc', age: 18 }))
-  //   console.log(JSON.parse(this.$ls.get('test')))
-
-  //   this.$ls.set('list', [2,3,4])
-  //   console.log(this.$ls.get('list'))
-  // },
   data() {
     return {
       customActiveKey: "UsernameForm",
-      loginBtn: false,
+      loading: false,
       // login type: 0 email, 1 username, 2 telephone
       loginType: 0,
 
@@ -146,22 +139,17 @@ export default {
 
       try {
         const payload = await this.$refs[this.customActiveKey].handleSubmit();
-        this.doLogin(payload);
+        this.loading = true;
+        const resp = await login(payload);
+        this.loginSuccess(resp);
       } catch (err) {
 
+      } finally {
+        this.loading = false;
       }
       // const loginParams = {
       //   remember_me: that.formLogin.rememberMe
       // };
-    },
-    async doLogin(payload) {
-      this.loginBtn = true;
-      try {
-        const resp = await login(payload);
-        this.loginSuccess(resp);
-      } catch (err) {
-        // this.requestFailed(err);
-      }
     },
     loginSuccess(resp) {
       console.log(resp);
@@ -169,20 +157,9 @@ export default {
       Vue.ls.set(ACCESS_TOKEN, resp.tokenId);
       Vue.ls.set(PROJECT_ID, resp.defalutProjectId);
 
-      this.loginBtn = false;
       this.$router.push({ name: "dashboard" });
       this.$message.success(timeFix() + "，欢迎回来", 3);
     },
-    // requestFailed(err) {
-    //   this.$notification["error"]({
-    //     message: err.desc || "错误",
-    //     description:
-    //       ((err.desc || {}).data || {}).message ||
-    //       "请求出现错误，请稍后再试",
-    //     duration: 4
-    //   });
-    //   this.loginBtn = false;
-    // }
   }
 };
 </script>

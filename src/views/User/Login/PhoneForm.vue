@@ -58,7 +58,6 @@ export default {
 
     handleSubmit() {
       return new Promise((resolve, reject) => {
-        const self = this;
         this.form.validateFields((err, values) => {
           err ? reject(err) : resolve(values);
         });

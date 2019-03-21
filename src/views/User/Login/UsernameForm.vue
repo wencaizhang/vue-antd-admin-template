@@ -21,6 +21,7 @@
         type="password"
         autocomplete="false"
         placeholder="密码 / demo2018"
+        @keyup.enter="$parent.handleSubmit"
         v-decorator="[
           'password',
           {rules: [{ required: true, message: '请输入密码!' }]}
@@ -42,7 +43,6 @@ export default {
   methods: {
     handleSubmit() {
       return new Promise((resolve, reject) => {
-        const self = this;
         this.form.validateFields((err, values) => {
           err ? reject(err) : resolve(values);
         });
