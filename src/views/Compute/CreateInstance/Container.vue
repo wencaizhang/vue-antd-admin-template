@@ -1,25 +1,26 @@
 <template>
   <div>
     <page-layout>
-      <a-steps :current="current">
+      <a-steps :current="currStepIndex">
         <a-step v-for="item in steps" :key="item.title" :title="item.title"/>
       </a-steps>
       <div class="steps-content">
-        <Step0 v-show="current === 0" ref="content0" @next="nextStep"/>
-        <Step1 v-show="current === 1" ref="content1" @next="nextStep"/>
-        <Step2 v-show="current === 2" ref="content2" @next="nextStep"/>
-        <Step3 v-show="current === 3" ref="content3" @next="nextStep" @submit="handleSubmit"/>
+        <Step0 v-show="currStepIndex === 0" ref="content0" />
+        <Step1 v-show="currStepIndex === 1" ref="content1" />
+        <Step2 v-show="currStepIndex === 2" ref="content2" />
+        <Step3 v-show="currStepIndex === 3" ref="content3" />
       </div>
       <div class="steps-action">
-        <a-button v-if="current>0" @click="prev">上一步</a-button>
+        <a-button v-if="currStepIndex>0" @click="handlePrevClick">上一步</a-button>
         <a-button
           style="margin-left: 8px"
-          v-if="current == steps.length - 1"
+          v-if="currStepIndex == steps.length - 1"
           type="primary"
+          :loading="createLoading"
           @click="handleNextClick"
         >创建</a-button>
         <a-button
-          v-if="current < steps.length - 1"
+          v-if="currStepIndex < steps.length - 1"
           style="margin-left: 8px"
           type="primary"
           @click="handleNextClick"
@@ -35,51 +36,58 @@ import Step2 from "./Step2";
 import Step3 from "./Step3";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 
+import { createInstance } from "@/api/compute/instance";
+
 export default {
   components: { Step0, Step1, Step2, Step3, PageLayout },
   data() {
     return {
-      current: 0,
+      currStepIndex: 0,
+      createLoading: false,
       steps: [
-        {
-          title: "选择映像",
-          name: "step1"
-        },
-        {
-          title: "配置选择",
-          name: "step2"
-        },
-        {
-          title: "网络设置",
-          name: "step3"
-        },
-        {
-          title: "基本信息",
-          name: "step4"
-        }
+        { title: "选择映像", name: "step1" },
+        { title: "配置选择", name: "step2" },
+        { title: "网络设置", name: "step3" },
+        { title: "基本信息", name: "step4" },
       ],
-      values: {},
-      forms: []
+      formValueCollection: {},
     };
   },
   methods: {
-    handleSubmit(payload) {
-      Object.assign(this.values, payload);
-      console.log(this.values);
-      this.$message.success("创建成功！");
+    async handleCreateInstance () {
+      this.createLoading = true;
+      try {
+        const resp = await createInstance(this.formValueCollection);
+        this.$message.success("创建成功！");
+        this.$router.push({ name: "instance" });
+      } catch (error) {
+        
+      } finally {
+        this.createLoading = false;
+      }
 
-      this.$router.push({ name: "instance" });
     },
-    nextStep(payload) {
-      this.current++;
-      Object.assign(this.values, payload);
+    async handleNextClick() {
+      try {
+        const currFormValues = await this.$refs["content" + this.currStepIndex].handleSubmit();
+        console.log('currFormValues', currFormValues)
+        Object.assign(this.formValueCollection, currFormValues);
+        
+        if (this.steps.length === this.currStepIndex + 1) {
+          this.handleCreateInstance();
+        } else {
+          this.currStepIndex++
+        }
+
+      } catch (error) {
+        
+      }
     },
-    handleNextClick() {
-      this.$refs["content" + this.current].handleSubmit();
+    handlePrevClick() {
+      if (this.currStepIndex > 0) {
+        this.currStepIndex--
+      };
     },
-    prev() {
-      this.current--;
-    }
   }
 };
 </script>

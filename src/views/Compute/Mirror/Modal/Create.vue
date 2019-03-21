@@ -19,7 +19,11 @@
             v-decorator="[
               'name',
               {
-                rules: [{ required: true, message: '请输入名称!' }]}
+                rules: [
+                  { required: true, message: '请输入名称!' },
+                  { pattern: /^(\w|_)*$/, message: '请使用英文字母、数字和下划线的组合，且不超过 12 个字符!' },
+                ]
+              }
             ]"
           />
         </a-form-item>
@@ -33,7 +37,8 @@
             v-decorator="[
               'description',
               {
-                rules: [{ message: '请输入描述' }]}
+                rules: [{ message: '请输入描述' }]
+              }
             ]"
           />
         </a-form-item>
@@ -48,7 +53,9 @@
             v-decorator="[
               'description',
               {
-                rules: [{ required: true, message: '请选择镜像源' }]}
+                initialValue: sourceType,
+                rules: [{ required: true, message: '请选择镜像源' }]
+              }
             ]"
           >
             <a-select-option value="0">镜像文件</a-select-option>
@@ -57,12 +64,10 @@
         </a-form-item>
 
         <a-form-item
-          v-show="sourceType == 0"
+          v-if="sourceType == 0"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
           label="镜像文件："
-          :help="!validateFilePass ? '请上传镜像地址!' : ''"
-          :validateStatus="!validateFilePass ? 'error' : ''"
         >
           <a-upload
             action="/"
@@ -71,6 +76,9 @@
             @change="handleFileChange"
             v-decorator="[
               'file',
+              {
+                rules: [{ required: true, message: '请上传镜像文件' }]
+              }
             ]"
           >
             <a-button>
@@ -79,16 +87,18 @@
           </a-upload>
         </a-form-item>
         <a-form-item
-          v-show="sourceType == 1"
+          v-if="sourceType == 1"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
           label="镜像地址："
-          :help="!validateUrlPass ? '请输入镜像地址!' : ''"
-          :validateStatus="!validateUrlPass ? 'error' : ''"
         >
           <a-input placeholder="请输入镜像地址" v-decorator="[
-              'url',
-            ]"/>
+              'imageUrl',
+              {
+                rules: [{ required: true, message: '请输入镜像地址' }]
+              }
+            ]"
+          />
         </a-form-item>
         <a-form-item
           :labelCol="formItemLayout.labelCol"
@@ -98,9 +108,8 @@
           <a-select
             placeholder="选择镜像格式"
             v-decorator="[
-              'type',
-              {
-                rules: [{ required: true, message: '请选择镜像格式!' }]}
+              'imageFormat',
+              { rules: [{ required: true, message: '请选择镜像格式!' }] }
             ]"
           >
             <a-select-option value="QCOW2-QEMU">QCOW2-QEMU</a-select-option>
@@ -118,9 +127,8 @@
         >
           <a-input
             v-decorator="[
-              'framework',
-              {
-                rules: [{ required: true, message: '请填写架构!' }]}
+              'architecture',
+              { rules: [{ required: true, message: '请填写架构!' }] }
             ]"
           />
         </a-form-item>
@@ -135,9 +143,8 @@
             :formatter="value => formatter('G', value)"
             :parser="value => parser(value)"
             v-decorator="[
-              'minDisk',
-              {
-                rules: [{ required: true, message: '请填写最小磁盘!' }]}
+              'disk',
+              { rules: [{ required: true, message: '请填写最小磁盘!' }] }
             ]"
           />
         </a-form-item>
@@ -152,22 +159,24 @@
             :formatter="value => formatter('G', value)"
             :parser="value => parser(value)"
             v-decorator="[
-              'minMemory',
-              {
-                rules: [{ required: true, message: '请填写最低内存!' }]}
+              'memory',
+              { rules: [{ required: true, message: '请填写最低内存!' }] }
             ]"
           />
         </a-form-item>
         <a-form-item
           v-show="sourceType == 1"
          :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
-          <a-checkbox checked v-decorator="[
-              'copy',
+          <a-checkbox v-decorator="[
+              'isReplicaData',
+              {
+                initialValue: true,
+              }
             ]">数据复刻</a-checkbox>
         </a-form-item>
         <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
           <a-checkbox v-decorator="[
-              'public',
+              'isPublic',
             ]">公有</a-checkbox>
         </a-form-item>
       </a-form>
@@ -184,20 +193,28 @@ export default {
       fetchAPI,
       name: "create",
       fileList: [],
-      sourceType: 0,
-      validateUrlPass: true,
-      validateFilePass: true,
+      sourceType: '1',
+      // 镜像源[0:镜像文件 1:镜像路径]
     };
   },
 
   methods: {
     handleSelectSource(value) {
-      if (value == 0) {
-        this.validateUrlPass = true;
-      } else {
-        this.validateFilePass = true;
-      }
       this.sourceType = value;
+
+
+
+      // const { form } = this;
+      // // can use data-binding to get
+      // const keys = form.getFieldValue('keys');
+      // const nextKeys = keys.concat(++id);
+      // // can use data-binding to set
+      // // important! notify form to detect changes
+      // form.setFieldsValue({
+      //   keys: nextKeys,
+      // });
+
+
     },
     handleFileChange(info) {
       let fileList = info.fileList;

@@ -47,7 +47,7 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
-import { rebuild as fetchAPI } from '@/api/compute/images';
+import { rebuild as fetchAPI } from '@/api/compute/instance';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {

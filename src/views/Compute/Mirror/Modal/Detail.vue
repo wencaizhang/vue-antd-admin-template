@@ -10,7 +10,8 @@
   >
     <ul v-if="show">
       <li v-for="item in columns" :key="item.title">
-        {{ item.title }}：{{ currRecord[ item.dataIndex ] || '无'}}
+        <span>{{ item.title }}</span>
+        <span>{{ currRecord[ item.dataIndex ] || '无'}}</span>
       </li>
     </ul>
   </a-modal>
@@ -70,9 +71,18 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .detail-modal .ant-modal-footer .ant-btn-default{
   /* 隐藏取消按钮 */
   display: none;
+}
+
+li {
+  display: table-row;
+}
+li span {
+  display: table-cell;
+  padding-right: 20px;
+  padding-bottom: 16px;
 }
 </style>
