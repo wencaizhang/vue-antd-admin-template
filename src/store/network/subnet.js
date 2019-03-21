@@ -5,7 +5,7 @@ const columns = [
   },
   {
     title: "名称",
-    dataIndex: "name.first"
+    dataIndex: "name"
   },
   {
     title: "已连接的子网",

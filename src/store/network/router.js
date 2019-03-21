@@ -5,7 +5,7 @@ const columns = [
   },
   {
     title: "名称",
-    dataIndex: "name.first"
+    dataIndex: "name"
   },
   {
     title: "状态",

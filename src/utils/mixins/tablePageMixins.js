@@ -45,7 +45,13 @@ export default {
       try {
         const resp = await this.getList(this.payload);
         this.data = resp.data;
-        this.pagination.total = resp.totalPage;
+
+        // 数据只有一页时不显示分页
+        if (resp.totalPage > 1) {
+          this.pagination.total = resp.totalPage;
+        } else {
+          this.pagination = false;
+        }
       }
       catch (err) {
         if (err.response.status === 404) {

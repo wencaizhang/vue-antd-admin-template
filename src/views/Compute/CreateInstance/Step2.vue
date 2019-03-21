@@ -14,7 +14,7 @@
     <a-table
       :rowSelection="{selectedRowKeys: selectedNetworkRowKeys, onChange: onNetworkSelectChange}"
       :columns="columns"
-      :rowKey="record => record.id"
+      :rowKey="record => record.id + record.name"
       :dataSource="data"
       :pagination="pagination"
       :loading="loading"
@@ -22,22 +22,23 @@
   </div>
 </template>
 <script>
+import { getNetworkList } from '@/api/network/subnet'
 const columns = [
   {
     title: "ID",
-    dataIndex: "cell"
+    dataIndex: "id"
   },
   {
     title: "名称",
-    dataIndex: "name.first"
+    dataIndex: "name"
   },
   {
     title: "子网",
-    dataIndex: "login.password"
+    dataIndex: "connectedSubnet"
   },
   {
     title: "类型",
-    dataIndex: "id"
+    dataIndex: "type"
   }
 ];
 export default {
@@ -56,17 +57,27 @@ export default {
     };
   },
   methods: {
-    handleSubmit() {
-      // 网络需要单独处理
-      if (!this.selectedNetworkRowKeys.length) {
-        this.$message.warn("请至少选择一个私有网络");
-        return false;
+    async fetch() {
+      this.loading = true;
+      try {
+        const resp = await getNetworkList();
+        this.data = resp.data;
+      } catch (err) {
+
+      } finally {
+        this.loading = false;
       }
-      this.$emit("next", {
-        step3: Object.assign({}, {
-          selectedNetworkRowKeys: this.selectedNetworkRowKeys
-        })
-      });
+    },
+    handleSubmit() {
+      return new Promise((resolve, reject) => {
+        if (!this.selectedNetworkRowKeys.length) {
+          this.$message.warn("请至少选择一个私有网络");
+          reject(err)
+        }
+        resolve(Object.assign({}, {
+          network: this.selectedNetworkRowKeys
+        }))
+      })
     },
     onNetworkSelectChange(selectedRowKeys) {
       this.selectedNetworkRowKeys = selectedRowKeys;
@@ -74,26 +85,6 @@ export default {
     onNetworkClearSelected() {
       this.selectedNetworkRowKeys = [];
     },
-    fetch(params = {}) {
-      this.loading = true;
-      let url = "/api/demo";
-      this.$http
-        .get(url, {
-          // params: {
-          //   results: 10,
-          //   ...params
-          // }
-        })
-        .then(data => {
-          const pagination = { ...this.pagination };
-          // Read total count from server
-          // pagination.total = data.totalCount;
-          pagination.total = 200;
-          this.loading = false;
-          this.data = data.results;
-          this.pagination = pagination;
-        });
-    }
   }
 };
 </script>
