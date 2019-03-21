@@ -5,8 +5,9 @@
     </span> -->
     <a-dropdown>
       <span class="action ant-dropdown-link user-dropdown-menu">
-        <a-avatar class="avatar" size="small" :src="avatar"/>
-        <span>{{ nickname }}</span>
+        <!-- <a-avatar class="avatar" size="small" :src="avatar"/> -->
+        <a-icon type="user" style="margin-right: 10px;"/>
+        <span>{{ userInfo.name }}</span>
       </span>
       <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
         <!-- <a-menu-item key="0">
@@ -45,11 +46,12 @@ import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 export default {
   name: "",
   components: {},
-  computed: {},
+  mounted () {
+    this.userInfo = this.$ls.get('userInfo');
+  },
   data() {
     return {
-      nickname: "用户名",
-      avatar: "https://avatars1.githubusercontent.com/u/34718241?s=460&v=4"
+      userInfo: {},
     };
   },
   methods: {
