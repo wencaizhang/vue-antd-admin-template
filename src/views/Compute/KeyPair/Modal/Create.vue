@@ -61,16 +61,14 @@ export default {
     };
   },
   methods: {
-    onHidden () {
-      this.$parent.handleSingleMenuClick('download')
-    },
     openNotification(resp) {
       const { download } = this;
       this.$message.success(
         <span>密钥对创建成功，请立即下载</span>,
         3
       );
-      this.$store.commit(`${this.$parent.id}/setLastCreatedKeyPair`, resp)
+      this.$store.commit(`${this.$parent.id}/setLastCreatedKeyPair`, resp);
+      this.$parent.handleSingleMenuClick('download');
     },
   }
 };
