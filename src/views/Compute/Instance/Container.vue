@@ -3,7 +3,7 @@
     <page-layout>
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">
-          <a-button icon="sync" @click="handleRefresh" style="margin-right: 10px;" title="刷新"></a-button>
+          <a-button icon="sync" :disabled="loading" @click="handleRefresh" style="margin-right: 10px;" title="刷新"></a-button>
           <a-button @click="$router.push({name: 'CreateInstance'})" type="primary" style="margin-right: 10px;" icon="plus">
             新建
           </a-button>
