@@ -24,7 +24,7 @@ export const baseModalMixins = {
   watch: {
     visible (newVal, oldVal) {
       if (newVal) {
-        this.currRecord = this.$parent.currRecord;
+        this.currRecord = this.$parent.currRecord || {};
         this.handleID();
         this.onShow();
       } else {
