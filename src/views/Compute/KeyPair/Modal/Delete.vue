@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-import { baseModalMixins } from "@/utils/mixins/modalMixin";
+import { baseModalMixins } from "@/mixins/modalMixin";
 import { deleteKeyPair as fetchAPI } from '@/api/compute/keypair';
 export default {
   mixins: [baseModalMixins],

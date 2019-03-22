@@ -69,7 +69,7 @@
   </div>
 </template>
 <script>
-import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { importKeyPair as fetchAPI } from '@/api/compute/keypair';
 export default {
   mixins: [baseModalMixins, formModalMixins],

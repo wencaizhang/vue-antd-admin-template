@@ -20,7 +20,7 @@
   </a-modal>
 </template>
 <script>
-import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { editSecuritygroup as fetchAPI, getSecuritygroupList } from "@/api/compute/instance";
 export default {
   mixins: [baseModalMixins, formModalMixins],

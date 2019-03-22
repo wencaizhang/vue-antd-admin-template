@@ -15,7 +15,7 @@
   </div>
 </template>
 <script>
-import { baseModalMixins } from "@/utils/mixins/modalMixin";
+import { baseModalMixins } from "@/mixins/modalMixin";
 import { unbindIP as fetchAPI } from "@/api/compute/instance";
 import mixins from './mixins'
 export default {

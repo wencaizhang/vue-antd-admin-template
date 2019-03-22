@@ -119,7 +119,7 @@
 </template>
 
 <script>
-import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import mixins from './mixins'
 import { editImage as fetchAPI } from '@/api/compute/images';
 export default {

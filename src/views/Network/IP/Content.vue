@@ -88,7 +88,7 @@ import BindIP from "./Modal/BindIP";
 import FreeIP from "./Modal/FreeIP";
 import UnbindIP from "./Modal/UnbindIP";
 
-import tablePageMixins from "@/utils/mixins/tablePageMixins";
+import tablePageMixins from "@/mixins/tablePageMixins";
 
 export default {
   mixins: [tablePageMixins],

@@ -50,7 +50,7 @@
   </div>
 </template>
 <script>
-import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { rebuild as fetchAPI } from '@/api/compute/instance';
 import { getImageList } from "@/api/compute/images";
 export default {

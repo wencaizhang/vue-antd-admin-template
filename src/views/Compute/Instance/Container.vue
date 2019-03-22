@@ -94,7 +94,7 @@ import RebuildCloudHostModal from "./Modals/RebuildCloudHost";
 import EditSecurityGroupModal from "./Modals/EditSafetyGroup";
 import OverviewModal from "./Modals/Overview";
 
-import tablePageMixins from "@/utils/mixins/tablePageMixins";
+import tablePageMixins from "@/mixins/tablePageMixins";
 
 import { getinstanceList as getList } from "@/api/compute/instance";
 

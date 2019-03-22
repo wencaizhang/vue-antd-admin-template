@@ -116,7 +116,7 @@
 </template>
 
 <script>
-import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {

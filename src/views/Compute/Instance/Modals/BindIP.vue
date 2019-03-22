@@ -58,7 +58,7 @@
   </div>
 </template>
 <script>
-import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { bindIP as fetchAPI } from "@/api/compute/instance";
 export default {
   mixins: [baseModalMixins, formModalMixins],

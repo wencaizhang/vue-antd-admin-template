@@ -76,7 +76,7 @@ import EditModal from "./Modal/Edit";
 import DetailModal from "./Modal/Detail";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 
-import tablePageMixins from "@/utils/mixins/tablePageMixins";
+import tablePageMixins from "@/mixins/tablePageMixins";
 
 import { getImageList as getList } from "@/api/compute/images";
 

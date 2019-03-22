@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
+import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { createSnapshoot as fetchAPI } from "@/api/compute/instance";
 import mixins from './mixins'
 export default {

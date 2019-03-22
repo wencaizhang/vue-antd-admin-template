@@ -83,7 +83,7 @@ import EditModal from "./Modal/Edit";
 import DownloadModal from "./Modal/Download";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 
-import tablePageMixins from "@/utils/mixins/tablePageMixins";
+import tablePageMixins from "@/mixins/tablePageMixins";
 
 import { getKeyPairList as getList } from "@/api/compute/keypair";
 export default {
