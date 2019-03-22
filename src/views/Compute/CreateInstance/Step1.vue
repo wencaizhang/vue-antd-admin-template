@@ -185,7 +185,9 @@ export default {
       return new Promise((resolve, reject) => {
         this.form.validateFields((err, values) => {
           err ? reject(err) : resolve(Object.assign({}, values, {
-              dataDisk: this.selectedNetworkRowKeys
+              dataDisk: this.selectedNetworkRowKeys,
+              memory: values.memory * 1024,
+              // 接口需要内存单位为 M
             }));
         });
       })

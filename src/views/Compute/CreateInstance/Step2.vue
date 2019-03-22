@@ -14,7 +14,7 @@
     <a-table
       :rowSelection="{selectedRowKeys: selectedNetworkRowKeys, onChange: onNetworkSelectChange}"
       :columns="columns"
-      :rowKey="record => record.id + record.name"
+      :rowKey="record => record.id"
       :dataSource="data"
       :pagination="pagination"
       :loading="loading"

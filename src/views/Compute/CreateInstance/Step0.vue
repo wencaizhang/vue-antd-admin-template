@@ -53,26 +53,36 @@ export default {
       labelCol: { span: 8 },
       wrapperCol: { span: 12 },
       imageProvider: '0',
-      imageList: [],
+      imageObj: {},
       spinning: false,
     };
   },
   mounted () {
     this.fetchImageList();
   },
+  computed: {
+    imageList () {
+      return this.imageObj[this.imageProvider] || [];
+    },
+  },
   methods: {
     async fetchImageList () {
+      if (this.imageObj[this.imageProvider]) {
+        return;
+      }
       this.spinning = true;
+      let list = [];
       try {
         const resp = await getImageList({
           imageSource: this.imageProvider
         })
-        this.imageList = resp.data;
+        list = resp.data;
       } catch (err) {
         if (err.response.status === 404) {
-          this.imageList = []
+          
         }
       } finally {
+        this.$set(this.imageObj, this.imageProvider, list);
         this.spinning = false;
       }
     },

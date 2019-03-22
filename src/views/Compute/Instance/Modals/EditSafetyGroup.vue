@@ -21,7 +21,7 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
-import { editSecuritygroup as fetchAPI } from "@/api/compute/instance";
+import { editSecuritygroup as fetchAPI, getSecuritygroupList } from "@/api/compute/instance";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   props: ["record"],
@@ -45,10 +45,27 @@ export default {
       mockData,
       targetKeys,
       selectedKeys: ["1", "4"],
-      confirmLoading: false
+      confirmLoading: false,
+
+      list: [],
     };
   },
   methods: {
+    onShow() {
+      this.fetchList()
+    },
+    async fetchList () {
+      try {
+        const resp = await getSecuritygroupList();
+        this.list = resp.data.map(item => ({
+          title: item.securityGroupName,
+          key: item.securityGroupId,
+        }));
+        console.log(this.list);
+      } catch (error) {
+        
+      }
+    },
     handleChange(nextTargetKeys, direction, moveKeys) {
       this.targetKeys = nextTargetKeys;
 

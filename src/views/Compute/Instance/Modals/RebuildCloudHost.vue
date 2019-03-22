@@ -11,21 +11,24 @@
     >
       <a-form :form="form">
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="选择镜像：">
-          <a-select
-            placeholder="请选择镜像！"
-            v-decorator="[
-              'mirror',
-              {
-                rules: [{ required: true, message: '请选择镜像！' }]
-              }
-            ]"
-          >
-            <a-select-option value="Centos6.5">Centos6.5</a-select-option>
-            <a-select-option value="Centos7.4">Centos7.4</a-select-option>
-            <a-select-option value="Centos7.5">Centos7.5</a-select-option>
-            <a-select-option value="Ubuntu14.04">Ubuntu14.04</a-select-option>
-            <a-select-option value="Ubuntu16.04">Ubuntu16.04</a-select-option>
-          </a-select>
+          <a-spin :spinning="spinning" tip="Loading...">
+            <a-select
+              v-decorator="[
+                'mirrorId',
+                { 
+                  initialValue: imageList[0] && imageList[0].value,
+                  rules: [{ required: true, message: '请选择镜像！!' }]
+                }
+              ]"
+              placeholder="请选择"
+            >
+              <a-select-option
+                v-for="item in imageList"
+                :key="item.id"
+                :value="item.id"
+              >{{ item.name }}</a-select-option>
+            </a-select>
+          </a-spin>
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="磁盘分区：">
           <a-select
@@ -37,8 +40,9 @@
               }
             ]"
           >
-            <a-select-option value="0">自动</a-select-option>
-            <a-select-option value="1">手动</a-select-option>
+            <!-- 磁盘分区[0:自动 1:手动] -->
+            <a-select-option :value="0">自动</a-select-option>
+            <a-select-option :value="1">手动</a-select-option>
           </a-select>
         </a-form-item>
       </a-form>
@@ -48,15 +52,38 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/utils/mixins/modalMixin";
 import { rebuild as fetchAPI } from '@/api/compute/instance';
+import { getImageList } from "@/api/compute/images";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
       fetchAPI,
-      name: "rebuildCloudHost"
+      name: "rebuildCloudHost",
+      imageProvider: '0',
+      imageList: [],
+      spinning: false,
     };
   },
-
-  methods: {}
+  methods: {
+    onShow () {
+      this.fetchImageList();
+    },
+    async fetchImageList () {
+      if (this.imageList.length) {
+        return;
+      }
+      this.spinning = true;
+      try {
+        const resp = await getImageList();
+        this.imageList = resp.data;
+      } catch (err) {
+        if (err.response.status === 404) {
+          
+        }
+      } finally {
+        this.spinning = false;
+      }
+    },
+  }
 };
 </script>
