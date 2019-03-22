@@ -131,6 +131,17 @@ export default {
         description: "操作成功，数据已更新",
         icon: <a-icon type="check-circle" style="color: #52c41a" />
       });
+    },
+    handleParseData (data) {
+      // 处理从后台接收的数据格式
+      const newData = data.map(item => {
+        Object.keys(item).forEach(key => {
+          item[key] = item[key] || '-';
+        })
+        return item;
+      })
+
+      return newData;
     }
   }
 };

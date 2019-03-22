@@ -4,3 +4,9 @@
 .christmas.ant-btn-primary:before {
   display: none;
 }
+table {
+  font-size: 12px;
+}
+table thead > * {
+  white-space:nowrap; 
+}

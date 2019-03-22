@@ -61,7 +61,7 @@ export default {
         dataIndex: "",
       },
       {
-        title: "VCPU数量",
+        title: "CPU数量",
         dataIndex: "",
       },
       {

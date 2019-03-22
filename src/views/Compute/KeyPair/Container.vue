@@ -36,7 +36,7 @@
                   :disabled="selectedRowKeys.length !== 1"
                   :title="selectedRowKeys.length !== 1 ? '您只能选择其中一项进行修改' : '修改密钥对属性'"
                   @click="handleMultiMenuClick('edit')"
-                >修改</a-button>
+                >编辑</a-button>
               </a-row>
             </a-col>
             <a-col>

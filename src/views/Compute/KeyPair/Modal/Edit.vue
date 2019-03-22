@@ -6,7 +6,7 @@
       @ok="handleCreate"
       :visible="visible"
       :confirmLoading="confirmLoading"
-      title="修改秘钥属性"
+      title="编辑秘钥属性"
       okText="提交"
     >
       <a-form :form="form">

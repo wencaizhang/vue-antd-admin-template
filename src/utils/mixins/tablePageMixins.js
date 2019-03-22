@@ -44,8 +44,7 @@ export default {
       this.loading = true;
       try {
         const resp = await this.getList(this.payload);
-        this.data = resp.data;
-
+        this.data = this.handleParseData ? this.handleParseData(resp.data) : resp.data
         // 数据只有一页时不显示分页
         if (resp.totalPage > 1) {
           this.pagination.total = resp.totalPage;

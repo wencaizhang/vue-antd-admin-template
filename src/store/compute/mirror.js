@@ -11,16 +11,16 @@ const columns = [
   {
     title: "状态",
     dataIndex: "status",
-    filters: [
-      { text: "状态", value: "状态" },
-      { text: "等待中", value: "等待中" },
-      { text: "运行中", value: "运行中" },
-      { text: "已暂停", value: "已暂停" },
-      { text: "已关闭", value: "已关闭" },
-      { text: "已删除", value: "已删除" },
-      { text: "重启中", value: "重启中" }
-    ],
-    filterMultiple: false
+    // filters: [
+    //   { text: "状态", value: "状态" },
+    //   { text: "等待中", value: "等待中" },
+    //   { text: "运行中", value: "运行中" },
+    //   { text: "已暂停", value: "已暂停" },
+    //   { text: "已关闭", value: "已关闭" },
+    //   { text: "已删除", value: "已删除" },
+    //   { text: "重启中", value: "重启中" }
+    // ],
+    // filterMultiple: false
   },
   {
     title: "容量（G)",
