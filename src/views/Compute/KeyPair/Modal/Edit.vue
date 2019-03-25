@@ -6,12 +6,12 @@
       @ok="handleCreate"
       :visible="visible"
       :confirmLoading="confirmLoading"
-      title="编辑秘钥属性"
+      title="编辑密钥属性"
       okText="提交"
     >
       <a-form :form="form">
         <a-form-item
-          label="秘钥名称："
+          label="密钥名称："
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -22,7 +22,7 @@
                 initialValue: currRecord.name,
                 rules: [
                   { required: true, message: '请输入名称!' },
-                  { pattern: /^(\w|_)*$/, message: '请使用英文字母、数字和下划线的组合，且不超过 12 个字符!' },
+                  rules.name,
                 ]
               }
             ]"
@@ -51,6 +51,7 @@
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import mixins from './mixins'
 import { editKeyPair as fetchAPI } from '@/api/compute/keypair';
+import { rules } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins, mixins],
   data() {

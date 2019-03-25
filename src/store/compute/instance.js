@@ -22,7 +22,7 @@ const columns = [
   },
   {
     title: "区域",
-    dataIndex: "area",
+    dataIndex: "availableDomains",
     // filters: [
     //   { text: "北京一区", value: "北京一区" },
     //   { text: "北京二区", value: "北京二区" }
@@ -31,7 +31,7 @@ const columns = [
   },
   {
     title: "映像",
-    dataIndex: "image"
+    dataIndex: "imageName"
   },
   {
     title: "规格",
@@ -39,15 +39,15 @@ const columns = [
   },
   {
     title: "网络",
-    dataIndex: "netword"
+    dataIndex: "network"
   },
   {
     title: "公网IP",
-    dataIndex: "publicIP"
+    dataIndex: "ipAddress"
   },
   {
     title: "安全组",
-    dataIndex: "securityGroup"
+    dataIndex: "secuGroupString"
   },
   {
     title: "创建时间",

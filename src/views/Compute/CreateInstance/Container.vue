@@ -8,7 +8,7 @@
         <Step0 v-show="currStepIndex === 0" ref="content0" />
         <Step1 v-show="currStepIndex === 1" ref="content1" />
         <Step2 v-show="currStepIndex === 2" ref="content2" />
-        <Step3 v-show="currStepIndex === 3" ref="content3" />
+        <Step3 v-show="currStepIndex === 3" ref="content3" :defaultUserName="defaultUserName"/>
       </div>
       <div class="steps-action">
         <a-button v-if="currStepIndex>0" @click="handlePrevClick">上一步</a-button>
@@ -51,6 +51,7 @@ export default {
         { title: "基本信息", name: "step4" },
       ],
       formValueCollection: {},
+      defaultUserName: '',
     };
   },
   methods: {

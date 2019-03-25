@@ -46,9 +46,9 @@ service.interceptors.request.use(config => {
   } else {
     router.push({ name: 'login' })
   }
-  console.log('>>>>>>>>')
-  console.log(config)
-  console.log('>>>>>>>>')
+  // console.log('>>>>>>>>')
+  // console.log(config)
+  // console.log('>>>>>>>>')
 
 
   /**

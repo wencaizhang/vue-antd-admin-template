@@ -61,7 +61,13 @@ export default {
       this.loading = true;
       try {
         const resp = await getNetworkList();
-        this.data = resp.data;
+        /**
+         *  routerExternal:
+            type: integer
+            format: int32
+            description: 是否为外部路由[0:否 1:是]
+         */
+        this.data = resp.data.filter(item => item.routerExternal === 0);
       } catch (err) {
 
       } finally {

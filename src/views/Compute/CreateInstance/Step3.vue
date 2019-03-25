@@ -43,6 +43,22 @@
           ]"
         />
       </a-form-item>
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="登录方式：">
+        <a-radio-group
+          buttonStyle="solid"
+          @change="handleChangeLoginType"
+          v-decorator="[
+            'loginWay',
+            {
+              initialValue: 1,
+              rules: [{ required: true, message: '请选择登录方式!' }]
+            }
+          ]"
+        >
+          <a-radio :value="1">SSH密钥</a-radio>
+          <a-radio :value="2">密码</a-radio>
+        </a-radio-group>
+      </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="用户名：">
         <a-select
           mode="tags"
@@ -55,15 +71,52 @@
           ]"
           style="width: 250px"
         >
-          <a-select-option value="urcentos">urcentos</a-select-option>
-          <a-select-option value="ubuntu">ubuntu</a-select-option>
-          <a-select-option value="admin">admin</a-select-option>
-          <a-select-option value="administrator">administrator</a-select-option>
+          <a-select-option v-for="name in userNameList" :key="name" :value="name">{{ name }}</a-select-option>
         </a-select>
+      </a-form-item>
+      <a-form-item
+        v-if="loginWay == 2"
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+        label="密码："
+      >
+        <a-input
+          type="password"
+          v-decorator="[
+            'password',
+            {
+              rules: [{ required: true, message: '请填写密码!' }]
+            }
+          ]"
+          style="width: 250px"
+          placeholder="请填写密码"
+        />
+      </a-form-item>
+      <a-form-item
+        v-if="loginWay == 2"
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+        label="确认密码："
+      >
+        <a-input
+          type="password"
+          v-decorator="[
+            'password2',
+            {
+              rules: [
+                { required: true, message: '请确认密码!', },
+                { validator: confirmPassword,}
+              ]
+            }
+          ]"
+          style="width: 250px"
+          placeholder="请确认密码"
+        />
       </a-form-item>
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
+        v-if="loginWay == 1"
         label="SSH密钥："
       >
         <div>
@@ -90,7 +143,7 @@
           </a-radio-group>
         </a-spin>
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="用户数据：">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="用户数据：" style="margin-bottom: 5px;">
         <a-radio-group
           @change="e => userData = e.target.value"
           v-decorator="[
@@ -104,7 +157,6 @@
           <!-- 用户数据类型[0:无 1:文本 2:可执行文件] -->
           <a-radio :value="0">无</a-radio>
           <a-radio :value="1">文本</a-radio>
-          <a-radio :value="2">可执行文件</a-radio>
         </a-radio-group>
       </a-form-item>
       <a-row style="margin-bottom: 24px;">
@@ -112,21 +164,22 @@
           <a-form-item
             v-show="userData == 1"
           >
-            <a-textarea v-decorator="[ 'userDataText', ]" placeholder="请填写用户数据" :rows="4"/>
-          </a-form-item>
-          <a-form-item
-            v-show="userData == 2"
-          >
             <a-upload
-              :action="uploadAction"
               :multiple="true"
-              :fileList="fileList"
-              @change="handleChange"
+              accept=".txt,.sh"
+              :remove="handleRemoveFile"
+              :beforeUpload="beforeUpload"
+              @change="handleFileChange"
             >
               <a-button>
-                <a-icon type="upload" /> Upload
+                <a-icon type="upload" />上传
               </a-button>
             </a-upload>
+            <a-textarea
+              v-decorator="[ 'userDataText', ]"
+              placeholder="请填写可执行脚本，或者直接上传后缀为 sh 的文本文件，如果出现乱码，请将文件编码格式修改为 UTF-8."
+              :rows="6"
+            />
           </a-form-item>
         </a-col>
       </a-row>
@@ -136,29 +189,33 @@
 </template>
 <script>
 import { getKeyPairList } from "@/api/compute/keypair";
+import { all } from 'q';
 // import CreateModal from "@/views/Compute/KeyPair/Modal/Create";
 export default {
   // components: [CreateModal],
+  props: ['defaultUserName'],
   data() {
     return {
       form: this.$form.createForm(this),
       labelCol: { span: 8 },
       wrapperCol: { span: 12 },
+
       userData: 0,
-      customValidateErrors: {
-        userDataText: false,
-        userDataText: false
-      },
+      fileList: [],
 
       keypairList: [],
       loading: false,
 
-      fileList: [],
-      uploadAction: '',
+      loginWay: 1,
     };
   },
   mounted() {
     this.fetchKeyPairList();
+  },
+  computed: {
+    userNameList () {
+      return [ this.defaultUserName ]
+    }
   },
   methods: {
     async fetchKeyPairList () {
@@ -181,6 +238,9 @@ export default {
         value.splice(0, value.length - 1);
       }
     },
+    handleChangeLoginType(e) {
+      this.loginWay = e.target.value;
+    },
     handleSubmit() {
       return new Promise((resolve, reject) => {
         this.form.validateFields((err, values) => {
@@ -190,32 +250,37 @@ export default {
         });
       })
     },
-    handleChange(info) {
-      let fileList = info.fileList;
-
-      // 1. Limit the number of uploaded files
-      //    Only to show two recent uploaded files, and old ones will be replaced by the new
-      fileList = fileList.slice(-2);
-
-      // 2. read from response and show file link
-      fileList = fileList.map((file) => {
-        if (file.response) {
-          // Component will show file.url as link
-          file.url = file.response.url;
-        }
-        return file;
-      });
-
-      // 3. filter successfully uploaded files according to response from server
-      fileList = fileList.filter((file) => {
-        if (file.response) {
-          return file.response.status === 'success';
-        }
-        return false;
-      });
-
-      this.fileList = fileList
+    handleRemoveFile () {
+      this.form.setFieldsValue({
+        userDataText: ''
+      })
     },
+    beforeUpload(file) {
+      var reader = new FileReader();
+      reader.onload = (event) =>{
+        this.form.setFieldsValue({
+          userDataText: event.target.result
+        })
+      };
+      reader.onerror = (err) => {
+        console.log(err);
+      }
+      reader.readAsText(file, "UTF-8");
+      return false;
+    },
+
+    handleFileChange(info) {
+      info.fileList.splice(0, info.fileList.length - 1);
+    },
+    confirmPassword (rule, value, callback) {
+      const { getFieldValue } = this.form
+      if (value && value !== getFieldValue('password')) {
+          callback('两次密码输入不一致！')
+      }
+      // callback 必须调用，
+      // 不带参数调用说明校验通过，如果带有参数说明校验失败，参数为校验文案
+      callback()
+    }
   }
 };
 </script>

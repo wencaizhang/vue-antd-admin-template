@@ -26,7 +26,7 @@ const sourceData = [
       { text: "CPU(核)", value: 1, },
       { text: "内存(GB)", value: 3, },
       { text: "系统镜像(个)", value: 4, },
-      { text: "秘钥对(个)", value: 6, },
+      { text: "密钥对(个)", value: 6, },
       { text: "防火墙策略(个)", value: 8, }
     ]
   },

@@ -93,9 +93,17 @@ export default {
     handleSubmit() {
       return new Promise((resolve, reject) => {
         this.form.validateFields((err, values) => {
+          this.handleGetUserName();
           err ? reject(err) : resolve(values);
         });
       })
+    },
+    handleGetUserName () {
+      const item = Object.keys(this.imageObj).find(key => {
+        const item = this.imageObj[key];
+        return item.id === this.form.getFieldValue('os')
+      });
+      this.$parent.defaultUserName = item ? item.name : '';
     }
   }
 };

@@ -64,9 +64,8 @@
           ]"
             :min="40"
             :max="200"
-            :formatter="value => value ? `${value} G` : '' "
-            :parser="value => value.replace(' G', '')"
           />
+          G
         </a-col>
       </a-form-item>
       <a-form-item
@@ -118,24 +117,6 @@ const optionList = {
     { text: "24核", value: 24 },
     { text: "32核", value: 32 }
   ],
-  mirror: [
-    { text: "Centos6.5_X86_64bit", value: "Centos6.5_X86_64bit" },
-    { text: "Centos6.6_X86_64bit", value: "Centos6.6_X86_64bit" },
-    { text: "Centos7.1_X86_64bit", value: "Centos7.1_X86_64bit" },
-    { text: "Centos7.2_X86_64bit", value: "Centos7.2_X86_64bit" },
-    { text: "Centos7.4_X86_64bit", value: "Centos7.4_X86_64bit" },
-    { text: "Centos7.5_X86_64bit", value: "Centos7.5_X86_64bit" },
-    { text: "Ubuntu14.04_x86_64bit", value: "Ubuntu14.04_x86_64bit" },
-    { text: "Ubuntu16.04_X86_64bit", value: "Ubuntu16.04_X86_64bit" },
-    {
-      text: "Window Server2008 R2 64bit",
-      value: "Window Server2008 R2 64bit"
-    },
-    {
-      text: "Window Server2012 R2 64bit",
-      value: "Window Server2012 R2 64bit"
-    }
-  ]
 };
 
 const columns = [

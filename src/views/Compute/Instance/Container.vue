@@ -138,6 +138,19 @@ export default {
         Object.keys(item).forEach(key => {
           item[key] = item[key] || '-';
         })
+        let memory = item.memory >= 1024 ? `${item.memory / 1024}G` : `${item.memory}M`;
+        let vcpu = item.vcpu + '核';
+        let spec = vcpu + memory;
+
+        const securityGroupList = Array.isArray(item.securityGroups) ? item.securityGroups : [];
+        const secuGroupNameList = securityGroupList.map(item => item.securityGroupName);
+        const secuGroupString = secuGroupNameList.length ? secuGroupNameList.join(' ') : '-';
+        Object.assign(item, {
+          memory,
+          vcpu,
+          spec,
+          secuGroupString,
+        })
         return item;
       })
 

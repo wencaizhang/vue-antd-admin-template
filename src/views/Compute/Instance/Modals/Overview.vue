@@ -36,41 +36,37 @@ export default {
       },
       {
         title: "可用域",
-        dataIndex: "",
+        dataIndex: "availableDomains",
       },
       {
         title: "时间创建",
         dataIndex: "createDate",
       },
-      {
-        title: "主机",
-        dataIndex: "",
-      },
       // ===========
       // 规格
       {
         title: "云主机类型名称",
-        dataIndex: "",
+        dataIndex: "hostTypeName",
       },
       {
         title: "云主机类型ID",
-        dataIndex: "",
+        dataIndex: "hostTypeId",
       },
       {
         title: "内存",
-        dataIndex: "",
+        dataIndex: "memory",
       },
       {
-        title: "CPU数量",
-        dataIndex: "",
+        title: "VCPU",
+        dataIndex: "vcpu",
       },
       {
         title: "磁盘",
-        dataIndex: "",
+        dataIndex: "disk",
       },
       {
         title: "IP地址",
-        dataIndex: "",
+        dataIndex: "ipAddress",
       },
       // ===========
       // 安全组
@@ -80,15 +76,15 @@ export default {
 
       {
         title: "密钥对名称",
-        dataIndex: "",
+        dataIndex: "secretKeyName",
       },
       {
         title: "镜像名称",
-        dataIndex: "",
+        dataIndex: "imageName",
       },
       {
         title: "镜像ID",
-        dataIndex: "",
+        dataIndex: "imageId",
       },
 
       // ==========
