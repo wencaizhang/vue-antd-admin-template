@@ -22,7 +22,7 @@
                 initialValue: currRecord.name,
                 rules: [
                   { required: true, message: '请输入名称!' },
-                  rules.name,
+                  rulesObj.name,
                 ]
               }
             ]"
@@ -51,11 +51,12 @@
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import mixins from './mixins'
 import { editKeyPair as fetchAPI } from '@/api/compute/keypair';
-import { rules } from '@/utils/util';
+import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins, mixins],
   data() {
     return {
+      rulesObj,
       fetchAPI,
       name: "edit"
     };

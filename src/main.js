@@ -12,6 +12,8 @@ import App from './App.vue';
 import config from '@/settings'
 import '@/permission' // 权限控制
 
+import '@/utils/util'
+
 // 只在开发模式下引入 mock.js，打包部署不引入 mock.js
 process.env.NODE_ENV === 'production' || require('./mock/index.js');
 

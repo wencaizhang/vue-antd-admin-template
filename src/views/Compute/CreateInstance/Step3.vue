@@ -22,7 +22,10 @@
           v-decorator="[
             'hostName',
             {
-              rules: [{ required: true, message: '请填写主机名称!' }]
+              rules: [
+                { required: true, message: '请填写主机名称!' },
+                rulesObj.name
+              ]
             }
           ]"
           style="width: 250px"
@@ -55,8 +58,8 @@
             }
           ]"
         >
-          <a-radio :value="1">SSH密钥</a-radio>
-          <a-radio :value="2">密码</a-radio>
+          <a-radio :value="0">SSH密钥</a-radio>
+          <a-radio :value="1">密码</a-radio>
         </a-radio-group>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="用户名：">
@@ -66,7 +69,10 @@
           v-decorator="[
             'userName',
             {
-              rules: [{ required: true, message: '请选择用户名!' }]
+              rules: [
+                { required: true, message: '请选择用户名!' },
+                rulesObj.name
+              ]
             }
           ]"
           style="width: 250px"
@@ -75,7 +81,7 @@
         </a-select>
       </a-form-item>
       <a-form-item
-        v-if="loginWay == 2"
+        v-if="loginWay == 1"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         label="密码："
@@ -85,7 +91,10 @@
           v-decorator="[
             'password',
             {
-              rules: [{ required: true, message: '请填写密码!' }]
+              rules: [
+                { required: true, message: '请填写密码!' },
+                rulesObj.password,
+              ]
             }
           ]"
           style="width: 250px"
@@ -93,7 +102,7 @@
         />
       </a-form-item>
       <a-form-item
-        v-if="loginWay == 2"
+        v-if="loginWay == 1"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         label="确认密码："
@@ -116,7 +125,7 @@
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        v-if="loginWay == 1"
+        v-if="loginWay == 0"
         label="SSH密钥："
       >
         <div>
@@ -189,13 +198,15 @@
 </template>
 <script>
 import { getKeyPairList } from "@/api/compute/keypair";
-import { all } from 'q';
+import { rulesObj } from '@/utils/util';
+
 // import CreateModal from "@/views/Compute/KeyPair/Modal/Create";
 export default {
   // components: [CreateModal],
   props: ['defaultUserName'],
   data() {
     return {
+      rulesObj,
       form: this.$form.createForm(this),
       labelCol: { span: 8 },
       wrapperCol: { span: 12 },
@@ -214,7 +225,8 @@ export default {
   },
   computed: {
     userNameList () {
-      return [ this.defaultUserName ]
+      console.log('this.defaultUserName', this.defaultUserName)
+      return this.defaultUserName ? [ this.defaultUserName ] : [];
     }
   },
   methods: {

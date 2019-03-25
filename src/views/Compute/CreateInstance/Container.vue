@@ -5,10 +5,14 @@
         <a-step v-for="item in steps" :key="item.title" :title="item.title"/>
       </a-steps>
       <div class="steps-content">
-        <Step0 v-show="currStepIndex === 0" ref="content0" />
+        <Step0 v-show="currStepIndex === 0" ref="content0" 
+          @setDefaultUserName="setDefaultUserName"
+        />
         <Step1 v-show="currStepIndex === 1" ref="content1" />
         <Step2 v-show="currStepIndex === 2" ref="content2" />
-        <Step3 v-show="currStepIndex === 3" ref="content3" :defaultUserName="defaultUserName"/>
+        <Step3 v-show="currStepIndex === 3" ref="content3" 
+          :defaultUserName="defaultUserName"
+        />
       </div>
       <div class="steps-action">
         <a-button v-if="currStepIndex>0" @click="handlePrevClick">上一步</a-button>
@@ -89,6 +93,9 @@ export default {
         this.currStepIndex--
       };
     },
+    setDefaultUserName (defaultUserName) {
+      this.defaultUserName = defaultUserName;
+    }
   }
 };
 </script>

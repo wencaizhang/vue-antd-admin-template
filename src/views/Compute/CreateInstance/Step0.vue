@@ -99,11 +99,17 @@ export default {
       })
     },
     handleGetUserName () {
+      let defaultUserName;
+      const osid = this.form.getFieldValue('os');
       const item = Object.keys(this.imageObj).find(key => {
-        const item = this.imageObj[key];
-        return item.id === this.form.getFieldValue('os')
+        const list = this.imageObj[key];
+        const img = list.find(item => item.id === osid);
+        if (img) {
+          defaultUserName = img.defaultUserName
+        }
+        return img;
       });
-      this.$parent.defaultUserName = item ? item.name : '';
+      this.$emit('setDefaultUserName', defaultUserName);
     }
   }
 };
