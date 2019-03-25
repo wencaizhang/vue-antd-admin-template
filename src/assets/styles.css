@@ -12,5 +12,5 @@ table thead > * {
   white-space:nowrap; 
 }
 .ant-table-body {
-  overflow: scroll;
+  overflow-y: auto;
 }

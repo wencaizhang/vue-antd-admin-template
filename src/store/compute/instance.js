@@ -65,7 +65,7 @@ export default {
     handleRowData: {},
     columns,
     menuOptions: [
-      { visible: false, type: 'none', name: "启动", id: "start" },
+      { visible: false, type: 'none', name: "启动", id: "launch" },
       { visible: false, type: 'none', name: "关机", id: "shutdown" },
 
       { visible: false, type: 'batch', name: "删除", id: "delete" },

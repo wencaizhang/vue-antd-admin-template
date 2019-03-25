@@ -53,7 +53,7 @@
           v-decorator="[
             'loginWay',
             {
-              initialValue: 1,
+              initialValue: 0,
               rules: [{ required: true, message: '请选择登录方式!' }]
             }
           ]"
@@ -88,6 +88,8 @@
       >
         <a-input
           type="password"
+          autocomplete="nope"
+          aria-autocomplete="nope"
           v-decorator="[
             'password',
             {

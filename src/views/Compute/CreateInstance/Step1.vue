@@ -188,6 +188,9 @@ export default {
         // status: 状态[0:使用中 1:可挂载]
         const resp = await getDiskList({ status: 1 });
         this.diskList = resp.data;
+        if (resp.totalPage <= 1) {
+          this.pagination = false;
+        }
       } catch (error) {
         
       } finally {

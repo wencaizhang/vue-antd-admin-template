@@ -7,13 +7,18 @@
           <a-button @click="$router.push({name: 'CreateInstance'})" type="primary" style="margin-right: 10px;" icon="plus">
             新建
           </a-button>
-          <a-button type="primary" style="margin-right: 10px;" icon="play-circle" disabled>启动</a-button>
+          <a-button
+            type="primary"
+            style="margin-right: 10px;"
+            icon="play-circle"
+            @click="handleMultiMenuClick('launch')"
+          >启动</a-button>
           <a-button
             type="primary"
             style="margin-right: 10px;"
             icon="poweroff"
             class="shut-down"
-            disabled
+            @click="handleMultiMenuClick('shutdown')"
           >关机</a-button>
           <a-dropdown style="margin-right: 10px;">
             <a-menu slot="overlay" @click="handleMultiMenuClick($event.key)">
@@ -71,6 +76,11 @@
       </div>
 
     </page-layout>
+
+    <multi-launch />
+    <multi-shutdown />
+    <multi-delete />
+
     <create-snapshoot-modal />
     <bind-IP-modal />
     <UnbindIP />
@@ -85,10 +95,15 @@
 <script>
 import PageLayout from "@/components/Layout/PageLayout.vue";
 
+
+import MultiLaunch from "./Modals/MultiLaunch";
+import MultiShutdown from "./Modals/MultiShutdown";
+
 import CreateSnapshootModal from "./Modals/CreateSnapshoot";
 import BindIPModal from "./Modals/BindIP";
 import UnbindIP from "./Modals/UnbindIP";
 import Delete from "./Modals/Delete";
+import MultiDelete from "./Modals/MultiDelete";
 // import AllotIPModal from "./Modals/AllotIP";
 import RebuildCloudHostModal from "./Modals/RebuildCloudHost";
 import EditSecurityGroupModal from "./Modals/EditSafetyGroup";
@@ -102,10 +117,14 @@ export default {
   mixins: [tablePageMixins],
   components: {
     PageLayout,
+    MultiLaunch,
+    MultiShutdown,
+
     CreateSnapshootModal,
     BindIPModal,
     UnbindIP,
     Delete,
+    MultiDelete,
     // AllotIPModal,
     RebuildCloudHostModal,
     EditSecurityGroupModal,

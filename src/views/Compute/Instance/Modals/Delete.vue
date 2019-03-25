@@ -12,7 +12,7 @@
     >
       <p
         style="margin-top: 10px; text-align: center;"
-      >您已经选择了云主机“{{ currRecord.name }}”，将被删除，请确认你的操作。</p>
+      >您已经选择了云主机“<strong>{{ currRecord.name }}</strong>”，将被删除，请确认你的操作。</p>
     </a-modal>
   </div>
 </template>
