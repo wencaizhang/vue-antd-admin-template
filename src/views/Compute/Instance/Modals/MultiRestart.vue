@@ -49,7 +49,7 @@
 </template>
 <script>
 import { baseModalMixins } from "@/mixins/modalMixin";
-import { deleteInstance as fetchAPI } from '@/api/compute/instance';
+import { restart as fetchAPI } from '@/api/compute/instance';
 import mixins from './mixins'
 export default {
   mixins: [baseModalMixins, mixins],
