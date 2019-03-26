@@ -88,8 +88,7 @@
       >
         <a-input
           type="password"
-          autocomplete="nope"
-          aria-autocomplete="nope"
+          autocomplete="new-password"
           v-decorator="[
             'password',
             {
@@ -111,6 +110,7 @@
       >
         <a-input
           type="password"
+          autocomplete="new-password"
           v-decorator="[
             'password2',
             {
