@@ -28,7 +28,7 @@
               >{{item.name}}</a-menu-item>
             </a-menu>
             <a-button style="margin-left: 8px">批量操作
-              <a-icon type="down"/>
+              <a-icon type="down" />
             </a-button>
           </a-dropdown>
           <a-input-search
@@ -68,27 +68,28 @@
                 >{{ item.name }}</a-menu-item>
               </a-menu>
               <a-button style="margin-left: 8px">操作
-                <a-icon type="down"/>
+                <a-icon type="down" />
               </a-button>
             </a-dropdown>
           </template>
         </a-table>
       </div>
-
     </page-layout>
 
-    <multi-launch />
-    <multi-shutdown />
-    <multi-delete />
+    <MultiLaunch />
+    <MultiShutdown />
+    <MultiDelete />
+    <MultiRestart />
+    <MultiSoftRestart />
 
-    <create-snapshoot-modal />
-    <bind-IP-modal />
+    <CreateSnapshootModal />
+    <BindIPModal />
     <UnbindIP />
     <Delete />
     <!-- <allot-IP-modal /> -->
-    <rebuild-cloud-host-modal />
-    <edit-security-group-modal />
-    <overview-modal />
+    <RebuildCloudHostModal />
+    <EditSecurityGroupModal />
+    <OverviewModal />
   </div>
 </template>
 
@@ -98,12 +99,14 @@ import PageLayout from "@/components/Layout/PageLayout.vue";
 
 import MultiLaunch from "./Modals/MultiLaunch";
 import MultiShutdown from "./Modals/MultiShutdown";
+import MultiRestart from "./Modals/MultiRestart";
+import MultiDelete from "./Modals/MultiDelete";
+import MultiSoftRestart from "./Modals/MultiSoftRestart";
 
 import CreateSnapshootModal from "./Modals/CreateSnapshoot";
 import BindIPModal from "./Modals/BindIP";
 import UnbindIP from "./Modals/UnbindIP";
 import Delete from "./Modals/Delete";
-import MultiDelete from "./Modals/MultiDelete";
 // import AllotIPModal from "./Modals/AllotIP";
 import RebuildCloudHostModal from "./Modals/RebuildCloudHost";
 import EditSecurityGroupModal from "./Modals/EditSafetyGroup";
@@ -119,12 +122,14 @@ export default {
     PageLayout,
     MultiLaunch,
     MultiShutdown,
+    MultiRestart,
+    MultiDelete,
+    MultiSoftRestart,
 
     CreateSnapshootModal,
     BindIPModal,
     UnbindIP,
     Delete,
-    MultiDelete,
     // AllotIPModal,
     RebuildCloudHostModal,
     EditSecurityGroupModal,

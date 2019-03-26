@@ -53,7 +53,7 @@
           v-decorator="[
             'loginWay',
             {
-              initialValue: 0,
+              initialValue: loginWay,
               rules: [{ required: true, message: '请选择登录方式!' }]
             }
           ]"
@@ -219,7 +219,7 @@ export default {
       keypairList: [],
       loading: false,
 
-      loginWay: 1,
+      loginWay: 0,
     };
   },
   mounted() {
