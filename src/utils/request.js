@@ -20,7 +20,6 @@ const errHandle = error => {
 
     switch (error.response.status) {
       case 404:
-      case 409:
         break;
       case 403:
         notification.error({ message: "Token 失效", description: "请重新登录" });

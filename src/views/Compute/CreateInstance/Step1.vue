@@ -13,7 +13,7 @@
           ]"
         >
           <a-radio-button value="1">北京1区</a-radio-button>
-          <a-radio-button value="2">北京2区</a-radio-button>
+          <a-radio-button value="2" disabled>北京2区</a-radio-button>
         </a-radio-group>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="CPU">
@@ -55,6 +55,10 @@
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="系统盘">
         <a-col>
           <a-input-number
+            :step="10"
+            :min="40"
+            :max="200"
+            @blur="handleSystemDiskBlur"
             v-decorator="[
             'systemDisk',
             {  
@@ -62,8 +66,6 @@
               rules: [{ required: true, message: '请填写系统盘大小!' }]
             }
           ]"
-            :min="40"
-            :max="200"
           />
           G
         </a-col>
@@ -197,6 +199,13 @@ export default {
         this.loading = false;
       }
     },
+    handleSystemDiskBlur (e) {
+      // 将系统盘转为 10 的倍数
+      let v = e.target.value;
+      this.form.setFieldsValue({
+        systemDisk: Math.ceil(parseInt(v) / 10 ) * 10
+      })
+    }
   }
 };
 </script>

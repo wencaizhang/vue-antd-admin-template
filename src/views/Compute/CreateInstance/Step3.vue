@@ -62,7 +62,7 @@
           <a-radio :value="1">密码</a-radio>
         </a-radio-group>
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="用户名：">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="云主机用户名：">
         <a-select
           mode="tags"
           @change="handleSelectUserName"

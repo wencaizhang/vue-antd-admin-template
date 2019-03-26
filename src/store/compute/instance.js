@@ -1,7 +1,8 @@
 const columns = [
   {
     title: "ID",
-    dataIndex: "id"
+    dataIndex: "id",
+    scopedSlots: { customRender: "id" }
   },
   {
     title: "名称",
@@ -9,7 +10,8 @@ const columns = [
   },
   {
     title: "状态",
-    dataIndex: "status",
+    dataIndex: "status_zh",
+    scopedSlots: { customRender: "status" }
     // filters: [
     //   { text: "等待中", value: "等待中" },
     //   { text: "运行中", value: "运行中" },
@@ -20,17 +22,17 @@ const columns = [
     // ],
     // filterMultiple: false
   },
+  // {
+  //   title: "区域",
+  //   dataIndex: "availableDomains",
+  //   // filters: [
+  //   //   { text: "北京一区", value: "北京一区" },
+  //   //   { text: "北京二区", value: "北京二区" }
+  //   // ],
+  //   // filterMultiple: false
+  // },
   {
-    title: "区域",
-    dataIndex: "availableDomains",
-    // filters: [
-    //   { text: "北京一区", value: "北京一区" },
-    //   { text: "北京二区", value: "北京二区" }
-    // ],
-    // filterMultiple: false
-  },
-  {
-    title: "映像",
+    title: "镜像",
     dataIndex: "imageName"
   },
   {
@@ -80,7 +82,7 @@ export default {
       { visible: false, type: 'single', name: "重建云主机", id: "rebuildCloudHost" },
       { visible: false, type: 'single', name: "编辑安全组", id: "editSafetyGroup" },
       { visible: false, type: 'single', name: "删除云主机", id: "deleteCloudHost" },
-      { visible: false, type: 'single', name: "查看主机状况", id: "hostDetail" }
+      { visible: false, type: 'single', name: "查看主机概况", id: "hostDetail" }
     ]
   },
   mutations: {},

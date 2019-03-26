@@ -3,6 +3,10 @@ import { GET, POST, DELETE } from '@/utils/request';
 // 实例列表
 export const getinstanceList = payload => GET('/compute/instance/list', payload);
 
+// 实例状态
+
+export const getInstanceStatus = instanceId => GET(`/compute/instance/status/${instanceId}`)
+
 // 区域列表
 export const getRegionList   = payload => GET('/compute/instance/region​/list', payload);
 

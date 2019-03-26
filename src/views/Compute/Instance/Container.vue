@@ -58,7 +58,13 @@
           :loading="loading"
           @change="handleTableChange"
         >
-          <template slot="name" slot-scope="text">{{text.first}} {{text.last}}</template>
+          <template slot="id" slot-scope="id, record">
+            <a @click="handleSingleMenuClick('hostDetail', record)">{{ id.substr(0, 8) }}</a>
+          </template>
+          <template slot="status" slot-scope="text">
+            <p>{{ text }}</p>
+            <!-- <p>(重启中)</p> -->
+          </template>
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
               <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
@@ -114,7 +120,11 @@ import OverviewModal from "./Modals/Overview";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
-import { getinstanceList as getList } from "@/api/compute/instance";
+import { getinstanceList as getList, getInstanceStatus } from "@/api/compute/instance";
+
+import instance from '@/i18n/zh/instance'
+
+const statusDicts = instance.instance.status;
 
 export default {
   mixins: [tablePageMixins],
@@ -135,7 +145,6 @@ export default {
     EditSecurityGroupModal,
     OverviewModal
   },
-
   data() {
     return {
       getList,
@@ -144,10 +153,11 @@ export default {
       name: "实例",
       selectedRowData: null, // 当行操作
       showAllotIPModal: false,
-      selectedOperationKey: 0
+      selectedOperationKey: 0,
+
+      queryList: [],
     };
   },
-
   methods: {
     openNotification() {
       this.$notification.open({
@@ -166,6 +176,9 @@ export default {
         let vcpu = item.vcpu + '核';
         let spec = vcpu + memory;
 
+        // 转换成中文
+        let status_zh = statusDicts[item.status] || item.status;
+
         const securityGroupList = Array.isArray(item.securityGroups) ? item.securityGroups : [];
         const secuGroupNameList = securityGroupList.map(item => item.securityGroupName);
         const secuGroupString = secuGroupNameList.length ? secuGroupNameList.join(' ') : '-';
@@ -174,12 +187,41 @@ export default {
           vcpu,
           spec,
           secuGroupString,
+          status_zh,
         })
         return item;
       })
 
       return newData;
-    }
+    },
+    pollingTimer () {
+      // TODO 轮询
+      // 关机/重启等操作需要一个过程，在此期间进行轮询获取其状态。
+      const ACTIVE = 'ACTIVE';
+      const targetStatus = ACTIVE;
+      this.queryList = [...this.selectedRowKeys]; // 需要查询状态的实例 id 数组
+
+      let count = 0;
+      let timer = setInterval(() => {
+        if (count > 10) {
+          clearInterval(timer);
+        } else {
+          this.loopQuery()
+        }
+      }, 1000)
+    },
+    async queryStatus (id) {
+      try {
+        const resp = await getInstanceStatus(id);
+      } catch (error) {
+        
+      }
+    },
+    loopQuery () {
+      this.queryList.forEach(id => {
+        this.queryStatus(id);
+      })
+    },
   }
 };
 </script>

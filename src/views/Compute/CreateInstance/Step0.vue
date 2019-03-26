@@ -1,14 +1,14 @@
 <template>
   <div>
     <a-form :form="form">
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="映像提供方：">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="镜像提供方：">
         <a-radio-group
           @change="handleChange"
           buttonStyle="solid"
           v-decorator="[
             'imageProvider',
             {
-              rules: [{ required: true, message: '请选择一个映像提供方!' }],
+              rules: [{ required: true, message: '请选择一个镜像提供方!' }],
               initialValue: '0'
             }
           ]"
@@ -17,7 +17,7 @@
           <a-radio-button value="1">自有</a-radio-button>
           <a-radio-button value="2">共享</a-radio-button>
         </a-radio-group>
-        <!-- 映像提供方[0:系统 1:自有 2:共享] -->
+        <!-- 镜像提供方[0:系统 1:自有 2:共享] -->
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="选择操作系统：">
         <a-spin :spinning="spinning" tip="Loading...">
@@ -45,7 +45,7 @@
 <script>
 import { getImageList } from "@/api/compute/images";
 
-// 映像提供方[0:系统 1:自有 2:共享]
+// 镜像提供方[0:系统 1:自有 2:共享]
 export default {
   data() {
     return {

@@ -32,7 +32,7 @@ export default {
       },
       {
         title: "状态",
-        dataIndex: "status",
+        dataIndex: "status_zh",
       },
       {
         title: "可用域",

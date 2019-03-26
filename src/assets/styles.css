@@ -14,3 +14,7 @@ table thead > * {
 .ant-table-body {
   overflow-y: auto;
 }
+ul,p {
+  margin: 0;
+  padding: 0;
+}
