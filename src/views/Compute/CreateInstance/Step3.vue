@@ -257,7 +257,7 @@ export default {
     },
     handleSubmit() {
       return new Promise((resolve, reject) => {
-        this.form.validateFields((err, values) => {
+        this.form.validateFieldsAndScroll((err, values) => {
           err ? reject(err) : resolve(Object.assign({}, values, {
             userName: values.userName[0]
           }));

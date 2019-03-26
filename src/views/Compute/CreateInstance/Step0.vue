@@ -92,7 +92,7 @@ export default {
     },
     handleSubmit() {
       return new Promise((resolve, reject) => {
-        this.form.validateFields((err, values) => {
+        this.form.validateFieldsAndScroll((err, values) => {
           this.handleGetUserName();
           err ? reject(err) : resolve(values);
         });

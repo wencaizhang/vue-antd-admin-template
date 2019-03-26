@@ -164,7 +164,7 @@ export default {
   methods: {
     handleSubmit() {
       return new Promise((resolve, reject) => {
-        this.form.validateFields((err, values) => {
+        this.form.validateFieldsAndScroll((err, values) => {
           err ? reject(err) : resolve(Object.assign({}, values, {
               dataDisk: this.selectedNetworkRowKeys,
               memory: values.memory * 1024,

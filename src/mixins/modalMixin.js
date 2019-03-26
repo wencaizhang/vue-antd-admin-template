@@ -100,7 +100,7 @@ export const formModalMixins = {
   methods: {
     handleCreate() {
       const self = this;
-      this.form.validateFields((err, values) => {
+      this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
           self.formValues = Object.assign({}, self.formValues, values);
           self.handleFetch();

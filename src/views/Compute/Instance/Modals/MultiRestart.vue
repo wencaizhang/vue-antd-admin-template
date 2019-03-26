@@ -56,7 +56,7 @@ export default {
   data() {
     return {
       fetchAPI,
-      name: "delete",
+      name: "restart",
       showMyFooter: false,
       list: [],
       listLength: 0,
