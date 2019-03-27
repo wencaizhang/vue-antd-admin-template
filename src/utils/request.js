@@ -9,7 +9,7 @@ import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 // 创建 axios 实例
 const service = axios.create({
   baseURL: "/cmp/v1",
-  timeout: 6000 // 请求超时时间
+  timeout: 10000 // 请求超时时间
 });
 
 
