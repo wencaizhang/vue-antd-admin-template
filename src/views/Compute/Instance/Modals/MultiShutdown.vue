@@ -28,8 +28,8 @@
           <td>{{ item.id.substr(0,8) }}</td>
           <td>{{ item.name }}</td>
           <td >
-            <a-icon v-show="item.status === 'pending' " type="loading" />
-            {{ item | desc }}
+            <span :class="{ 'status-disabled': item.taskState }">{{ item.status_zh }}</span>
+            <a-icon v-show="item.taskState" type="loading-3-quarters" style="font-size: 12px; margin-left: 5px; color: #1890ff;" spin />
           </td>
         </tr>
         </tbody>
@@ -71,17 +71,17 @@ export default {
     };
   },
 
-  filters: {
-    desc (item) {
-      const obj = {
-        // 空字符：未启动
-        pending: "发送请求中",
-        fulfilled: "接受请求",
-        rejected: "拒绝请求",
-      }
-      return item.status === STATUS ? STATUS : obj[ item.status ] || '';
-    }
-  },
+  // filters: {
+  //   desc (item) {
+  //     const obj = {
+  //       // 空字符：未启动
+  //       pending: "发送请求中",
+  //       fulfilled: "接受请求",
+  //       rejected: "拒绝请求",
+  //     }
+  //     return item.status === STATUS ? STATUS : obj[ item.status ] || '';
+  //   }
+  // },
   methods: {
 
     onShow () {
@@ -92,7 +92,7 @@ export default {
       })
       this.some = selectedList.some(item => item.status === STATUS);
       this.every = selectedList.every(item => item.status === STATUS);
-
+      this.list = selectedList;
       /**
        * status 表示关机的状态（参考 Promise 的三种状态），有四个值
        * 空字符：未关机
@@ -100,12 +100,12 @@ export default {
        * fulfilled: 关机成功
        * rejected: 关机失败
        */
-      this.list = selectedList.map(item => {
-        return {
-          ...item,
-          status: item.status === STATUS ? STATUS : '',
-        }
-      });
+      // this.list = selectedList.map(item => {
+      //   return {
+      //     ...item,
+      //     status: item.status === STATUS ? STATUS : '',
+      //   }
+      // });
       this.listLength = selectedList.filter(item => item.status !== STATUS).length;
     },
     handleFetch() {
@@ -124,17 +124,17 @@ export default {
       this.confirmLoading = false;
       this.showMyFooter = true;
       this.$message.success('操作完成');
-      this.handleCancel();
+      // this.handleCancel();
     },
     async handleDelete (item) {
       try {
-        item.status = 'pending';
+        // item.status = 'pending';
         const payload = { instanceId: item.id }
         const resp = await this.fetchAPI(payload);
-        item.status = 'fulfilled';
+        // item.status = 'fulfilled';
       }
       catch (err) {
-        item.status = 'rejected';
+        // item.status = 'rejected';
       }
       finally {
         this.$parent.handleTraceStatus(item.id)
@@ -160,5 +160,9 @@ table {
 table td, table th {
   padding: 5px 10px;
   border: 1px solid #f2f2f2;
+}
+.status-disabled {
+  user-select: none;
+  color: #BBB;
 }
 </style>

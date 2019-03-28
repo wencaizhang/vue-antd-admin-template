@@ -22,7 +22,7 @@ const columns = [
     dataIndex: "string"
   },
   {
-    title: "挂载主机/盘符",
+    title: "挂载云主机/盘符",
     dataIndex: "absolutePath"
   },
   {

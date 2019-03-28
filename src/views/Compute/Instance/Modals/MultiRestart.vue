@@ -26,8 +26,8 @@
           <td>{{ item.id.substr(0,8) }}</td>
           <td>{{ item.name }}</td>
           <td >
-            <a-icon v-show="item.status === 'pending' " type="loading" />
-            {{ item | desc }}
+            <span :class="{ 'status-disabled': item.taskState }">{{ item.status_zh }}</span>
+            <a-icon v-show="item.taskState" type="loading-3-quarters" style="font-size: 12px; margin-left: 5px; color: #1890ff;" spin />
           </td>
         </tr>
         </tbody>
@@ -62,17 +62,17 @@ export default {
     };
   },
 
-  filters: {
-    desc (item) {
-      const obj = {
-        // 空字符：未启动
-        pending: "发送请求中",
-        fulfilled: "接受请求",
-        rejected: "拒绝请求",
-      }
-      return obj[ item.status ] || '';
-    }
-  },
+  // filters: {
+  //   desc (item) {
+  //     const obj = {
+  //       // 空字符：未启动
+  //       pending: "发送请求中",
+  //       fulfilled: "接受请求",
+  //       rejected: "拒绝请求",
+  //     }
+  //     return obj[ item.status ] || '';
+  //   }
+  // },
   methods: {
     onShow () {
       this.showMyFooter = false;
@@ -80,20 +80,21 @@ export default {
       const selectedList = this.$parent.data.filter(item => {
         return this.$parent.selectedRowKeys.includes(item.id)
       })
-      console.log('selectedList', selectedList)
-      this.list = selectedList.map(item => {
-        return {
-          ...item,
-          status: '',
-          /**
-           * status 表示重启的状态（参考 Promise 的三种状态），有四个值
-           * 空字符：未重启
-           * pending: 重启中
-           * fulfilled: 重启成功
-           * rejected: 重启失败
-           */
-        }
-      });
+      this.list = selectedList;
+      // console.log('selectedList', selectedList)
+      // this.list = selectedList.map(item => {
+      //   return {
+      //     ...item,
+      //     status: '',
+      //     /**
+      //      * status 表示重启的状态（参考 Promise 的三种状态），有四个值
+      //      * 空字符：未重启
+      //      * pending: 重启中
+      //      * fulfilled: 重启成功
+      //      * rejected: 重启失败
+      //      */
+      //   }
+      // });
       this.listLength = this.list.length;
     },
     handleFetch() {
@@ -113,17 +114,17 @@ export default {
       this.showMyFooter = true;
       this.$message.success('操作完成');
 
-      this.handleCancel();
+      // this.handleCancel();
     },
     async handleDelete (item) {
       try {
-        item.status = 'pending';
+        // item.status = 'pending';
         const payload = { instanceId: item.id }
         const resp = await this.fetchAPI(payload);
-        item.status = 'fulfilled';
+        // item.status = 'fulfilled';
       }
       catch (err) {
-        item.status = 'rejected';
+        // item.status = 'rejected';
       }
       finally {
         this.$parent.handleTraceStatus(item.id)
@@ -149,5 +150,9 @@ table {
 table td, table th {
   padding: 5px 10px;
   border: 1px solid #f2f2f2;
+}
+.status-disabled {
+  user-select: none;
+  color: #BBB;
 }
 </style>

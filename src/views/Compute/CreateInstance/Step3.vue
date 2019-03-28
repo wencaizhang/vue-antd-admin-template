@@ -17,22 +17,22 @@
           <a-radio :value="2">按量付费</a-radio>
         </a-radio-group>
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="主机名称：">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="云主机名称：">
         <a-input
           v-decorator="[
             'hostName',
             {
               rules: [
-                { required: true, message: '请填写主机名称!' },
+                { required: true, message: '请填写云主机名称!' },
                 rulesObj.name
               ]
             }
           ]"
           style="width: 250px"
-          placeholder="请填写主机名称"
+          placeholder="请填写云主机名称"
         />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="主机数量：">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="云主机数量：">
         <a-input-number
           style="width: 250px"
           :min="1"
@@ -41,7 +41,7 @@
             'hostNumber',
             {
               initialValue: 1,
-              rules: [{ required: true, message: '请填写主机数量!' }]
+              rules: [{ required: true, message: '请填写云主机数量!' }]
             }
           ]"
         />

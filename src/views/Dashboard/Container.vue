@@ -22,7 +22,7 @@ const sourceData = [
     title: "计算",
     id: 'compute',
     children: [
-      { text: "主机(个)", value: 10, },
+      { text: "云主机(个)", value: 10, },
       { text: "CPU(核)", value: 1, },
       { text: "内存(GB)", value: 3, },
       { text: "系统镜像(个)", value: 4, },

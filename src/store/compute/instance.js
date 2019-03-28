@@ -5,7 +5,7 @@ const columns = [
     scopedSlots: { customRender: "id" }
   },
   {
-    title: "名称",
+    title: "云主机名称",
     dataIndex: "name"
   },
   {
@@ -83,7 +83,7 @@ export default {
       { visible: false, type: 'single', name: "重建云主机", id: "rebuildCloudHost" },
       { visible: false, type: 'single', name: "编辑安全组", id: "editSafetyGroup" },
       { visible: false, type: 'single', name: "删除云主机", id: "deleteCloudHost" },
-      { visible: false, type: 'single', name: "查看主机概况", id: "hostDetail" }
+      { visible: false, type: 'single', name: "查看云主机概况", id: "hostDetail" }
     ]
   },
   mutations: {},
