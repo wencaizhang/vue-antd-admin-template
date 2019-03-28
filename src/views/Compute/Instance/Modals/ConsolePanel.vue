@@ -12,7 +12,7 @@
       <a-spin :spinning="loading" tip="正在获取控制台信息">
         <div class="spin-content">
           <a :href="resp.consoleUrl" target="_blank" title="控制台">
-            {{ resp.consoleUrl }}
+            点击进入控制台
           </a>
         </div>
       </a-spin>

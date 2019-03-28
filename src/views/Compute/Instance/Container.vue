@@ -75,7 +75,7 @@
           </template>
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
-              <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
+              <a-menu slot="overlay" @click="handleBeforeSingleMenuClick($event.key, record)">
                 <a-menu-item
                   v-for="item in record.singleMenuOptions"
                   :key="item.id"
@@ -170,17 +170,22 @@ export default {
   },
   methods: {
     __handleFilterOptions (status) {
+      // 等待和重启中禁止任何操作
+      if( ['BUILD', 'REBOOT'].includes(status) ) {
+        return [];
+      }
       // 操作菜单权限过滤
       const options = JSON.parse(JSON.stringify(this.singleMenuOptions))
-      if (!['ACTIVE', 'SHUTOFF'].includes(status)) {
-        // 创建快照只在运行中和关机两种状态下可用
-        options.forEach(item => {
-          if (item.id === 'createSnapshoot') {
-            item.disabled = true;
-          }
-        })
-      }
-      return options;
+
+      // 只有当实例处于 availableStatus 中的状态时，对应的操作才可用
+      const result = options.filter(({ id, availableStatus=[]}, index) => {
+        if (availableStatus.length === 0) {
+          return true;
+        }
+        return availableStatus.includes(status);
+      })
+
+      return result;
     },
     __handleTransformToZh (status) {
       return statusDicts[status] || status
@@ -253,7 +258,13 @@ export default {
         this.__handleUpdateStatus(resp);
       }
     },
-
+    handleBeforeSingleMenuClick (key, record) {
+      if (key === 'console' && record.consoleUrl) {
+        window.open(record.consoleUrl);
+      } else {
+        this.handleSingleMenuClick(key, record)
+      }
+    },
   }
 };
 </script>

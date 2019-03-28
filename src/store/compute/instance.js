@@ -67,23 +67,26 @@ export default {
   state: {
     handleRowData: {},
     columns,
-    menuOptions: [
-      { visible: false, type: 'none', name: "启动", id: "launch" },
-      { visible: false, type: 'none', name: "关机", id: "shutdown" },
 
-      { visible: false, type: 'batch', name: "删除", id: "delete" },
-      { visible: false, type: 'batch', name: "重启", id: "restart" },
-      { visible: false, type: 'batch', name: "软重启", id: "softRestart" },
+    // 只有当实例处于 availableStatus 中的状态时，对应的操作才可用
+    // availableStatus 为 true：任何状态都可用，反之任何状态都不可用
+    menuOptions: [
+      { visible: false, type: 'none',  name: "启动",   id: "launch",      availableStatus: ['SHUTOFF'] },
+      { visible: false, type: 'none',  name: "关机",   id: "shutdown",    availableStatus: ['ACTIVE', ] },
+
+      { visible: false, type: 'batch', name: "删除",   id: "delete",      availableStatus: true },
+      { visible: false, type: 'batch', name: "重启",   id: "restart",     availableStatus: ['ACTIVE', ] },
+      { visible: false, type: 'batch', name: "软重启", id: "softRestart", availableStatus: ['ACTIVE', ] },
 
       // { visible: false, type: 'none', name: "分配公网IP", id: "allotIP" },
-      { visible: false, type: 'single', name: "创建快照", id: "createSnapshoot" },
-      { visible: false, type: 'single', name: "绑定公网IP", id: "bindIP" },
-      { visible: false, type: 'single', name: "解绑公网IP", id: "unbindIP" },
-      { visible: false, type: 'single', name: "进入控制台", id: "console" },
-      { visible: false, type: 'single', name: "重建云主机", id: "rebuildCloudHost" },
-      { visible: false, type: 'single', name: "编辑安全组", id: "editSafetyGroup" },
-      { visible: false, type: 'single', name: "删除云主机", id: "deleteCloudHost" },
-      { visible: false, type: 'single', name: "查看云主机概况", id: "hostDetail" }
+      { visible: false, type: 'single', name: "创建快照",   id: "createSnapshoot",  availableStatus: ['ACTIVE', ] },
+      { visible: false, type: 'single', name: "绑定公网IP", id: "bindIP",           availableStatus: ['ACTIVE', ] },
+      { visible: false, type: 'single', name: "解绑公网IP", id: "unbindIP",         availableStatus: ['ACTIVE', 'SHUTOFF', 'PAUSED'] },
+      { visible: false, type: 'single', name: "进入控制台", id: "console",          availableStatus: [ 'ACTIVE' ] },
+      { visible: false, type: 'single', name: "重建云主机", id: "rebuildCloudHost", availableStatus: ['ACTIVE', ] },
+      { visible: false, type: 'single', name: "编辑安全组", id: "editSafetyGroup",  availableStatus: ['ACTIVE', 'PAUSED', ]},
+      { visible: false, type: 'single', name: "删除云主机", id: "deleteCloudHost",  availableStatus: ['ACTIVE', 'SHUTOFF', 'PAUSED'] },
+      { visible: false, type: 'single', name: "查看云主机概况", id: "hostDetail",    availableStatus: ['ACTIVE', ] }
     ]
   },
   mutations: {},
