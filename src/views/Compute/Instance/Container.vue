@@ -171,7 +171,7 @@ export default {
   methods: {
     __handleFilterOptions (status) {
       // 操作菜单权限过滤
-      const options = [ ...this.singleMenuOptions ];
+      const options = JSON.parse(JSON.stringify(this.singleMenuOptions))
       if (!['ACTIVE', 'SHUTOFF'].includes(status)) {
         // 创建快照只在运行中和关机两种状态下可用
         options.forEach(item => {
