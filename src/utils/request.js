@@ -22,8 +22,12 @@ const errHandle = error => {
       case 404:
         break;
       case 403:
-        notification.error({ message: "Token 失效", description: "请重新登录" });
-        clearToken();
+        const token = Vue.ls.get(ACCESS_TOKEN);
+        if (token) {
+          // 避免同时请求多个接口时 token 失效导致多个提示同时出现
+          notification.error({ message: "Token 失效", description: "请重新登录" });
+          clearToken();
+        }
         router.push({ name: 'login' })
         break;
       default:
