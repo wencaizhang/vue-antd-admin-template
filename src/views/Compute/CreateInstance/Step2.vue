@@ -18,7 +18,11 @@
       :dataSource="data"
       :pagination="pagination"
       :loading="loading"
-    ></a-table>
+    >
+      <template slot="id" slot-scope="id">
+        {{ id.substr(0, 8) }}
+      </template>
+    </a-table>
   </div>
 </template>
 <script>
@@ -26,7 +30,8 @@ import { getNetworkList } from '@/api/network/subnet'
 const columns = [
   {
     title: "ID",
-    dataIndex: "id"
+    dataIndex: "id",
+    scopedSlots: { customRender: "id" }
   },
   {
     title: "名称",

@@ -41,7 +41,8 @@ const columns = [
   },
   {
     title: "网络",
-    dataIndex: "network"
+    dataIndex: "network",
+    scopedSlots: { customRender: "network" }
   },
   {
     title: "公网IP",

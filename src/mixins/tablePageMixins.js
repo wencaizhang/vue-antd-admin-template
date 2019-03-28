@@ -51,6 +51,7 @@ export default {
         } else {
           this.pagination = false;
         }
+        this.handleFetchSuccess();
       }
       catch (err) {
         if (err.response.status === 404) {
@@ -61,7 +62,9 @@ export default {
         this.loading = false;
       }
     },
+    handleFetchSuccess () {
 
+    },
     handleTableChange(pagination, filters, sorter) {
       const pager = { ...this.pagination };
       pager.current = pagination.current;

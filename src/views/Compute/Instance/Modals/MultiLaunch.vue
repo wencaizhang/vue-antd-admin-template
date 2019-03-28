@@ -10,18 +10,13 @@
       okText="启动"
       okType="danger"
     >
-      <p
-        v-if="!every"
-        style="margin-top: 10px; text-align: center;"
-      >即将启动下列云主机，请确认你的操作。</p>
-      <p
-        v-if="some && !every"
-        style="margin-top: 10px; text-align: center; color: #ccc;"
-      >（下列云主机中有一部分已经处于运行状态，将不对其进行任何操作）</p>
-      <p
-        v-if="every"  
-        style="margin-top: 10px; text-align: center; color: #ccc;"
-      >（下列云主机全部处于运行状态，无需再次启动）</p>
+      <p v-if="!every">
+        即将启动下列云主机，请确认你的操作。
+      </p>
+      <p v-if="some && !every" style="color: #ccc;">
+        （下列云主机中有一部分已经处于运行状态，将不对其进行任何操作）
+      </p>
+      <p v-if="every" style="color: #ccc;" >（下列云主机全部处于运行状态，无需再次启动）</p>
 
       <table>
         <thead>
@@ -34,7 +29,7 @@
         <tbody>
           
         <tr v-for="item in list" :key="item.id">
-          <td>{{ item.id }}</td>
+          <td>{{ item.id.substr(0,8) }}</td>
           <td>{{ item.name }}</td>
           <td >
             <a-icon v-show="item.status === 'pending' " type="loading" />
@@ -53,7 +48,7 @@
           <a-button @click="handleCreate" :loading="confirmLoading" type="primary">启动</a-button>
         </template>
         <template v-else>
-          <a-button @click="handleClose">确定</a-button>
+          <a-button @click="handleCancel">确定</a-button>
         </template>
       </template>
     </a-modal>
@@ -76,7 +71,8 @@ export default {
       listLength: 0,
       some: false,
       every: false,
-      isFetchEnd: false,
+
+      isRefreshParentTable: false, 
     };
   },
 
@@ -84,9 +80,9 @@ export default {
     desc (item) {
       const obj = {
         // 空字符：未启动
-        pending: "启动中",
-        fulfilled: "已启动",
-        rejected: "启动失败",
+        pending: "发送请求中",
+        fulfilled: "接受请求",
+        rejected: "拒绝请求",
       }
       return item.status === STATUS ? STATUS : obj[ item.status ] || '';
     }
@@ -131,9 +127,9 @@ export default {
     handleFetchEnd () {
       // 所有请求全部结束
       this.confirmLoading = false;
-      this.isFetchEnd = true;
       this.showMyFooter = true;
       this.$message.success('操作完成');
+      this.handleCancel();
     },
     async handleDelete (item) {
       try {
@@ -146,26 +142,25 @@ export default {
         item.status = 'rejected';
       }
       finally {
+        this.$parent.handleTraceStatus(item.id)
         this.listLength = this.listLength - 1;
         if (this.listLength === 0) {
           this.handleFetchEnd();
         }
       }
     },
-    handleClose () {
-      this.handleCancel();
-      this.handleRefreshParentTable();
-    },
-    onHidden () {
-      this.isFetchEnd && this.handleRefreshParentTable();
-    },
   }
 };
 </script>
 
 <style scoped>
+p {
+  margin-bottom: 10px;
+  text-align: center;
+}
 table {
   margin: 0 auto;
+  width: 100%;
 }
 table td, table th {
   padding: 5px 10px;

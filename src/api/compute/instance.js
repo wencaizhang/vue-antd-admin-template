@@ -52,3 +52,6 @@ export const getSecuritygroupList = payload =>
 
 // 主机概况
 export const overview        = payload => GET('/compute/instance/overview', payload);
+
+// 进入控制台
+export const getConsoleUrl   = payload => POST('/compute/instance/console/enter', payload);

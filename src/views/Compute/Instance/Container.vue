@@ -61,16 +61,25 @@
           <template slot="id" slot-scope="id, record">
             <a @click="handleSingleMenuClick('hostDetail', record)">{{ id.substr(0, 8) }}</a>
           </template>
-          <template slot="status" slot-scope="text">
-            <p>{{ text }}</p>
+          <template slot="network" slot-scope="network">
+            <p v-for="item in network" :key="item">{{ item }}</p>
+          </template>
+          <template slot="status" slot-scope="text, record">
+            <p>
+              <span :class="{ 'status-disabled': record.taskState }">{{ text }}</span>
+              <a-spin v-if="record.taskState">
+                <a-icon slot="indicator" type="loading-3-quarters" style="font-size: 12px" spin />
+              </a-spin>
+            </p>
             <!-- <p>(重启中)</p> -->
           </template>
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
               <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
                 <a-menu-item
-                  v-for="item in singleMenuOptions"
+                  v-for="item in record.singleMenuOptions"
                   :key="item.id"
+                  :disabled="item.disabled"
                 >{{ item.name }}</a-menu-item>
               </a-menu>
               <a-button style="margin-left: 8px">操作
@@ -96,12 +105,12 @@
     <RebuildCloudHostModal />
     <EditSecurityGroupModal />
     <OverviewModal />
+    <ConsolePanel />
   </div>
 </template>
 
 <script>
 import PageLayout from "@/components/Layout/PageLayout.vue";
-
 
 import MultiLaunch from "./Modals/MultiLaunch";
 import MultiShutdown from "./Modals/MultiShutdown";
@@ -117,6 +126,7 @@ import Delete from "./Modals/Delete";
 import RebuildCloudHostModal from "./Modals/RebuildCloudHost";
 import EditSecurityGroupModal from "./Modals/EditSafetyGroup";
 import OverviewModal from "./Modals/Overview";
+import ConsolePanel from './Modals/ConsolePanel'
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
@@ -143,7 +153,8 @@ export default {
     // AllotIPModal,
     RebuildCloudHostModal,
     EditSecurityGroupModal,
-    OverviewModal
+    OverviewModal,
+    ConsolePanel,
   },
   data() {
     return {
@@ -154,17 +165,24 @@ export default {
       selectedRowData: null, // 当行操作
       showAllotIPModal: false,
       selectedOperationKey: 0,
-
-      queryList: [],
     };
   },
   methods: {
-    openNotification() {
-      this.$notification.open({
-        message: "提醒",
-        description: "操作成功，数据已更新",
-        icon: <a-icon type="check-circle" style="color: #52c41a" />
-      });
+    __handleFilterOptions (status) {
+      // 操作菜单权限过滤
+      const options = [ ...this.singleMenuOptions ];
+      if (!['ACTIVE', 'SHUTOFF'].includes(status)) {
+        // 创建快照只在运行中和关机两种状态下可用
+        options.forEach(item => {
+          if (item.id === 'createSnapshoot') {
+            item.disabled = true;
+          }
+        })
+      }
+      return options;
+    },
+    __handleTransformToZh (status) {
+      return statusDicts[status] || status
     },
     handleParseData (data) {
       // 处理从后台接收的数据格式
@@ -177,51 +195,71 @@ export default {
         let spec = vcpu + memory;
 
         // 转换成中文
-        let status_zh = statusDicts[item.status] || item.status;
+        let status_zh = this.__handleTransformToZh(item.status);
 
         const securityGroupList = Array.isArray(item.securityGroups) ? item.securityGroups : [];
         const secuGroupNameList = securityGroupList.map(item => item.securityGroupName);
         const secuGroupString = secuGroupNameList.length ? secuGroupNameList.join(' ') : '-';
+
         Object.assign(item, {
           memory,
           vcpu,
           spec,
           secuGroupString,
           status_zh,
+          singleMenuOptions: { ...this.__handleFilterOptions(item.status) },
+          taskState: '',
         })
         return item;
-      })
-
+      });
       return newData;
     },
-    pollingTimer () {
-      // TODO 轮询
-      // 关机/重启等操作需要一个过程，在此期间进行轮询获取其状态。
-      const ACTIVE = 'ACTIVE';
-      const targetStatus = ACTIVE;
-      this.queryList = [...this.selectedRowKeys]; // 需要查询状态的实例 id 数组
-
-      let count = 0;
-      let timer = setInterval(() => {
-        if (count > 10) {
-          clearInterval(timer);
-        } else {
-          this.loopQuery()
-        }
-      }, 1000)
-    },
-    async queryStatus (id) {
-      try {
-        const resp = await getInstanceStatus(id);
-      } catch (error) {
-        
-      }
-    },
-    loopQuery () {
-      this.queryList.forEach(id => {
-        this.queryStatus(id);
+    handleFetchSuccess () {
+      const processingStatus = [ 'BUILD', ]
+      const list = this.data.filter(item => processingStatus.includes(item.status));
+      list.forEach(item => {
+        this.handleTraceStatus(item.id);
       })
     },
+    __handleUpdateStatus({ id, status, taskState}) {
+      // 更新表格中的状态
+      const currItem = this.data.find(item => item.id === id);
+      const currStatus = (status || currItem.status).toUpperCase();
+      const options = this.__handleFilterOptions(currStatus);
+      Object.assign(currItem, {
+        status: currStatus,
+        taskState: taskState,
+        status_zh: this.__handleTransformToZh(currStatus),
+        singleMenuOptions: options,
+      })
+      this.$nextTick();
+    },
+    handleTraceStatus (id) {
+      this.__handleUpdateStatus({ id, taskState: 'Start' });
+      this.__queryListStatus(id)
+    },
+    async __queryListStatus (id) {
+      const resp = {};
+      try {
+        const data = await getInstanceStatus(id);
+        Object.assign(resp, data);
+        if (resp.taskState) {
+          this.__queryListStatus(id);
+        }
+      } catch (error) {
+
+      } finally {
+        this.__handleUpdateStatus(resp);
+      }
+    },
+
   }
 };
 </script>
+
+<style scoped>
+.status-disabled {
+  user-select: none;
+  color: #BBB;
+}
+</style>

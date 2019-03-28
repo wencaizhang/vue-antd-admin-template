@@ -67,7 +67,13 @@
             }
           ]"
           />
-          G
+          <span style="margin: 0 5px">G</span>
+          <a-tooltip class="tooltip">
+            <template slot='title'>
+              可选大小40GB-200GB,步长为10GB
+            </template>
+            <a-icon type="info-circle" />
+          </a-tooltip>
         </a-col>
       </a-form-item>
       <a-form-item
@@ -91,7 +97,11 @@
           :dataSource="diskList"
           :pagination="pagination"
           :loading="loading"
-        ></a-table>
+        >
+          <template slot="id" slot-scope="id">
+            {{ id.substr(0, 8) }}
+          </template>
+        </a-table>
       </a-form-item>
     </a-form>
   </div>
@@ -124,7 +134,8 @@ const optionList = {
 const columns = [
   {
     title: "ID",
-    dataIndex: "id"
+    dataIndex: "id",
+    scopedSlots: { customRender: "id" }
   },
   {
     title: "名称",
@@ -189,7 +200,7 @@ export default {
       try {
         // status: 状态[0:使用中 1:可挂载]
         const resp = await getDiskList({ status: 1 });
-        this.diskList = resp.data;
+        this.diskList = resp.data.filter(item => item.status === 'available');
         if (resp.totalPage <= 1) {
           this.pagination = false;
         }
@@ -209,5 +220,11 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
+.tooltip {
+  cursor: pointer;
+}
+.tooltip:hover {
+  color: #1890ff;
+}
 </style>

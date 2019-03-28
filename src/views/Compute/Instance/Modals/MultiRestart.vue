@@ -10,9 +10,7 @@
       okText="重启"
       okType="danger"
     >
-      <p
-        style="margin-top: 10px; text-align: center;"
-      >即将重启下列云主机，请确认你的操作。</p>
+      <p>即将重启下列云主机，请确认你的操作。</p>
 
       <table>
         <thead>
@@ -25,7 +23,7 @@
         <tbody>
           
         <tr v-for="item in list" :key="item.id">
-          <td>{{ item.id }}</td>
+          <td>{{ item.id.substr(0,8) }}</td>
           <td>{{ item.name }}</td>
           <td >
             <a-icon v-show="item.status === 'pending' " type="loading" />
@@ -41,7 +39,7 @@
           <a-button @click="handleCreate" :loading="confirmLoading" type="danger">重启</a-button>
         </template>
         <template v-else>
-          <a-button @click="handleClose">确定</a-button>
+          <a-button @click="handleCancel">确定</a-button>
         </template>
       </template>
     </a-modal>
@@ -60,16 +58,17 @@ export default {
       showMyFooter: false,
       list: [],
       listLength: 0,
+      isRefreshParentTable: false, 
     };
   },
 
   filters: {
     desc (item) {
       const obj = {
-        // 空字符：未重启
-        pending: "重启中",
-        fulfilled: "已重启",
-        rejected: "重启失败",
+        // 空字符：未启动
+        pending: "发送请求中",
+        fulfilled: "接受请求",
+        rejected: "拒绝请求",
       }
       return obj[ item.status ] || '';
     }
@@ -113,6 +112,8 @@ export default {
       this.confirmLoading = false;
       this.showMyFooter = true;
       this.$message.success('操作完成');
+
+      this.handleCancel();
     },
     async handleDelete (item) {
       try {
@@ -125,23 +126,25 @@ export default {
         item.status = 'rejected';
       }
       finally {
+        this.$parent.handleTraceStatus(item.id)
         this.listLength = this.listLength - 1;
         if (this.listLength === 0) {
           this.handleFetchEnd();
         }
       }
     },
-    handleClose () {
-      this.handleCancel();
-      this.handleRefreshParentTable();
-    }
   }
 };
 </script>
 
 <style scoped>
+p {
+  margin-bottom: 10px;
+  text-align: center;
+}
 table {
   margin: 0 auto;
+  width: 100%;
 }
 table td, table th {
   padding: 5px 10px;

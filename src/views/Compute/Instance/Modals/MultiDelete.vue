@@ -10,9 +10,7 @@
       okText="删除"
       okType="danger"
     >
-      <p
-        style="margin-top: 10px; text-align: center;"
-      >即将删除下列云主机，请确认你的操作。</p>
+      <p>即将删除下列云主机，请确认你的操作。</p>
 
       <table>
         <thead>
@@ -25,7 +23,7 @@
         <tbody>
           
         <tr v-for="item in list" :key="item.id">
-          <td>{{ item.id }}</td>
+          <td>{{ item.id.substr(0,8) }}</td>
           <td>{{ item.name }}</td>
           <td >
             <a-icon v-show="item.status === 'pending' " type="loading" />
@@ -140,8 +138,13 @@ export default {
 </script>
 
 <style scoped>
+p {
+  margin-bottom: 10px;
+  text-align: center;
+}
 table {
   margin: 0 auto;
+  width: 100%;
 }
 table td, table th {
   padding: 5px 10px;

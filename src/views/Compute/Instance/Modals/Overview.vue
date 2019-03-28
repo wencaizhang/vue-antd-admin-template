@@ -34,10 +34,10 @@ export default {
         title: "状态",
         dataIndex: "status_zh",
       },
-      {
-        title: "可用域",
-        dataIndex: "availableDomains",
-      },
+      // {
+      //   title: "可用域",
+      //   dataIndex: "availableDomains",
+      // },
       {
         title: "时间创建",
         dataIndex: "createDate",
@@ -103,7 +103,6 @@ export default {
   },
   methods: {
     onShow () {
-      console.log(this.currRecord)
       this.show = true;
     }
   }
