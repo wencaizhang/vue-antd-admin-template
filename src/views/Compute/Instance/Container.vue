@@ -168,6 +168,9 @@ export default {
 
     };
   },
+  mounted () {
+    this.$store.commit[`${this.$parent.id}/clearModal`]; 
+  },
   methods: {
     __handleFilterOptions (status) {
       // 等待和重启中禁止任何操作
