@@ -18,6 +18,7 @@
       :dataSource="data"
       :pagination="pagination"
       :loading="loading"
+      :hideDefaultSelections="false"
     >
       <template slot="id" slot-scope="id">
         {{ id.substr(0, 8) }}

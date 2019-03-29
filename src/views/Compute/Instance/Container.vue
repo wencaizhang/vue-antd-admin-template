@@ -59,7 +59,7 @@
           @change="handleTableChange"
         >
           <template slot="id" slot-scope="id, record">
-            <a @click="handleSingleMenuClick('hostDetail', record)">{{ id.substr(0, 8) }}</a>
+            <a @click="handleSingleMenuClick('hostDetail', record)" title="查看云主机概况">{{ id.substr(0, 8) }}</a>
           </template>
           <template slot="network" slot-scope="network">
             <p v-for="item in network" :key="item">{{ item }}</p>
@@ -74,7 +74,7 @@
             <!-- <p>(重启中)</p> -->
           </template>
           <template slot="operation" slot-scope="text, record">
-            <a-dropdown style="margin-right: 10px;">
+            <a-dropdown style="margin-right: 10px;" :disabled="!record.singleMenuOptions">
               <a-menu slot="overlay" @click="handleBeforeSingleMenuClick($event.key, record)">
                 <a-menu-item
                   v-for="item in record.singleMenuOptions"
@@ -262,8 +262,8 @@ export default {
       }
     },
     handleBeforeSingleMenuClick (key, record) {
-      if (key === 'console' && record.consoleUrl) {
-        window.open(record.consoleUrl);
+      if (key === 'console') {
+        window.open(`/console.html?instanceId=${record.id}`);
       } else {
         this.handleSingleMenuClick(key, record)
       }
