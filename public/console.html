@@ -72,10 +72,16 @@
       height: 100%;
       border: 0;
     }
+    p {
+      text-align: center; margin-top: 100px;
+    }
+    .red {
+      color: #f5222d;
+    }
     </style>
   </head>
   <body>
-    <p class="spin-box" style="text-align: center; margin-top: 100px;">
+    <p class="spin-box">
       <span class="spin-text" style="margin-right: 10px">正在进入控制台</span>
       <span class="spin-loading"></span>
     </p>
@@ -96,8 +102,7 @@
           fetchSuccess(resp);
         },
         error: function (err) {
-          var desc = err.desc;
-          alert(desc); 
+          fetchFail(err);
         }
       })
 
@@ -146,6 +151,13 @@
         var iframe = document.createElement('iframe');
         iframe.setAttribute('src', resp.consoleUrl);
         document.querySelector('body').appendChild(iframe);
+        document.querySelector('.spin-box').style.display = 'none';
+      }
+      function fetchFail (err){
+        var p = document.createElement('p');
+        p.setAttribute('class', 'red');
+        p.innerText = err.desc;
+        document.querySelector('body').appendChild(p);
         document.querySelector('.spin-box').style.display = 'none';
       }
 
