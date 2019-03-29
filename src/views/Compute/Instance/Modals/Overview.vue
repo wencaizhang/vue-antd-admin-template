@@ -22,7 +22,7 @@
 </template>
 <script>
 import { baseModalMixins } from '@/mixins/modalMixin';
-
+import { getTimeDiff } from "@/utils/util";
 export default {
   mixins: [baseModalMixins],
   data() {
@@ -40,8 +40,12 @@ export default {
         dataIndex: 'status_zh',
       },
       {
-        title: '时间创建',
+        title: '创建时间',
         dataIndex: 'createDate',
+      },
+      {
+        title: '创建以来',
+        dataIndex: 'timeDiff',
       },
       // ===========
       // 规格
@@ -139,7 +143,14 @@ export default {
       }).join('');
 
       this.currRecord.cloudHost = '未连接云硬盘';
-      this.currRecord.ip = this.currRecord.network.join(', ')
+      this.currRecord.ip = this.currRecord.network.join(', ');
+      this.setTimeDiff()
+    },
+    setTimeDiff () {
+      const timeStr = this.currRecord.createDate + ':00'
+      const stamptime = (new Date(timeStr)).getTime();;
+      const timeDiff = getTimeDiff(stamptime)
+      this.currRecord.timeDiff = timeDiff;
     }
   }
 };
