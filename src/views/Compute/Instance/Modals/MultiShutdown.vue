@@ -10,10 +10,8 @@
       okText="关机"
       okType="danger"
     >
-      <p v-if="!every">即将关闭下列云主机，请确认你的操作。</p>
-      <p v-if="some && !every" style="color: #ccc;" >（下列云主机中有一部分已经处于关机状态，将不对其进行任何操作）</p>
-      <p v-if="every" style="color: #ccc;" >（下列云主机全部处于关机状态，无需再次关机）</p>
-
+      <p v-if="some">即将关闭下列云主机，请确认你的操作。</p>
+      <p style="color: #ccc;" >本操作只对{{ availableStatus.map(s=>$parent.__handleTransformToZh(s)).join('、') }}状态的云主机有效</p>
       <table>
         <thead>
           <tr>
@@ -28,7 +26,7 @@
           <td>{{ item.id.substr(0,8) }}</td>
           <td>{{ item.name }}</td>
           <td >
-            <span :class="{ 'status-disabled': item.taskState }">{{ item.status_zh }}</span>
+            <span :class="{ 'status-disabled': item.taskState, 'fb': availableStatus.includes(item.status) }">{{ item.status_zh }}</span>
             <a-icon v-show="item.taskState" type="loading-3-quarters" style="font-size: 12px; margin-left: 5px; color: #1890ff;" spin />
           </td>
         </tr>
@@ -36,10 +34,7 @@
       </table>
 
       <template slot="footer">
-        <template v-if="every">
-          <a-button @click="handleCancel">确定</a-button>
-        </template>
-        <template v-else-if="!showMyFooter">
+        <template v-if="handleItemCount">
           <a-button @click="handleCancel">取消</a-button>
           <a-button @click="handleCreate" :loading="confirmLoading" type="danger">关机</a-button>
         </template>
@@ -54,96 +49,18 @@
 import { baseModalMixins } from "@/mixins/modalMixin";
 import { shutdown as fetchAPI } from '@/api/compute/instance';
 import mixins from './mixins'
+import multiMixins from './multiMixins'
 
-const STATUS = 'SHUTOFF';
 export default {
-  mixins: [baseModalMixins, mixins],
+  mixins: [baseModalMixins, mixins, multiMixins],
   data() {
     return {
       fetchAPI,
       name: "shutdown",
-      showMyFooter: false,
-      list: [],
-      listLength: 0,
-      some: false,
-      every: false,
-      isRefreshParentTable: false, 
     };
   },
-
-  // filters: {
-  //   desc (item) {
-  //     const obj = {
-  //       // 空字符：未启动
-  //       pending: "发送请求中",
-  //       fulfilled: "接受请求",
-  //       rejected: "拒绝请求",
-  //     }
-  //     return item.status === STATUS ? STATUS : obj[ item.status ] || '';
-  //   }
-  // },
   methods: {
 
-    onShow () {
-      this.showMyFooter = false;
-      this.confirmLoading = false;
-      const selectedList = this.$parent.data.filter(item => {
-        return this.$parent.selectedRowKeys.includes(item.id)
-      })
-      this.some = selectedList.some(item => item.status === STATUS);
-      this.every = selectedList.every(item => item.status === STATUS);
-      this.list = selectedList;
-      /**
-       * status 表示关机的状态（参考 Promise 的三种状态），有四个值
-       * 空字符：未关机
-       * pending: 关机中
-       * fulfilled: 关机成功
-       * rejected: 关机失败
-       */
-      // this.list = selectedList.map(item => {
-      //   return {
-      //     ...item,
-      //     status: item.status === STATUS ? STATUS : '',
-      //   }
-      // });
-      this.listLength = selectedList.filter(item => item.status !== STATUS).length;
-    },
-    handleFetch() {
-      /**
-       * 遍历发送请求
-       * Promise.all 只要有一个失败就直接返回失败的结果，所以使用遍历
-       */
-      if (!this.list.length || this.every) { return;}
-      this.confirmLoading = true;
-      this.list.forEach(item => {
-        item.status !== STATUS && this.handleDelete(item);
-      })
-    },
-    handleFetchEnd () {
-      // 所有请求全部结束
-      this.confirmLoading = false;
-      this.showMyFooter = true;
-      this.$message.success('操作完成');
-      // this.handleCancel();
-    },
-    async handleDelete (item) {
-      try {
-        // item.status = 'pending';
-        const payload = { instanceId: item.id }
-        const resp = await this.fetchAPI(payload);
-        // item.status = 'fulfilled';
-      }
-      catch (err) {
-        // item.status = 'rejected';
-      }
-      finally {
-        this.$parent.handleTraceStatus(item.id)
-        this.listLength = this.listLength - 1;
-        if (this.listLength === 0) {
-          this.handleFetchEnd();
-        }
-      }
-    },
   }
 };
 </script>
@@ -164,5 +81,8 @@ table td, table th {
 .status-disabled {
   user-select: none;
   color: #BBB;
+}
+.fb {
+  font-weight: bold;
 }
 </style>
