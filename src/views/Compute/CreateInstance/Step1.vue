@@ -108,6 +108,9 @@
 </template>
 <script>
 import { getDiskList } from '@/api/store/disk'
+import disk from '@/i18n/zh/disk'
+
+const statusDicts = disk.disk.status
 const optionList = {
   memory: [
     { text: "1G", value: 1 },
@@ -151,7 +154,7 @@ const columns = [
   },
   {
     title: "状态",
-    dataIndex: "status"
+    dataIndex: "status_zh"
   }
 ];
 export default {
@@ -175,6 +178,9 @@ export default {
     };
   },
   methods: {
+    __handleTransformToZh (status) {
+      return statusDicts[status.toUpperCase()] || status
+    },
     handleSubmit() {
       return new Promise((resolve, reject) => {
         this.form.validateFieldsAndScroll((err, values) => {
@@ -200,7 +206,9 @@ export default {
       try {
         // status: 状态[0:使用中 1:可挂载]
         const resp = await getDiskList({ status: 1 });
-        this.diskList = resp.data.filter(item => item.status === 'available');
+        this.diskList = resp.data.filter(item => item.status === 'available').map(item => {
+          return Object.assign({}, item, { status_zh: this.__handleTransformToZh(item.status)})
+        });
         if (resp.totalPage <= 1) {
           this.pagination = false;
         }
