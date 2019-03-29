@@ -99,12 +99,12 @@
         method: 'POST',
         body: JSON.stringify(params),
         headers: myHeaders,
-      }).then(function(res) {res.json()})
-      .catch(function(error) {
+      }).then(res => res.json())
+      .catch(error => {
         var desc = error.response.data.desc;
         alert(desc);
       })
-      .then(function(resp) {
+      .then(resp => {
         fetchSuccess(resp);
       });
 

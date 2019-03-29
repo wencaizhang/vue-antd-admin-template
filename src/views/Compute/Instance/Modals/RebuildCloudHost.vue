@@ -38,8 +38,9 @@
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { rebuild as fetchAPI } from '@/api/compute/instance';
 import { getImageList } from "@/api/compute/images";
+import mixins from './mixins'
 export default {
-  mixins: [baseModalMixins, formModalMixins],
+  mixins: [baseModalMixins, formModalMixins, mixins],
   data() {
     return {
       fetchAPI,

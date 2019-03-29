@@ -199,8 +199,9 @@ export default {
         Object.keys(item).forEach(key => {
           item[key] = item[key] || '-';
         })
-        let memory = item.memory >= 1024 ? `${item.memory / 1024}G` : `${item.memory}M`;
+        let memory = item.memory >= 1024 ? `${item.memory / 1024}GB` : `${item.memory}MB`;
         let vcpu = item.vcpu + '核';
+        let disk = item.disk + 'GB';
         let spec = vcpu + memory;
 
         // 转换成中文
@@ -211,11 +212,7 @@ export default {
         const secuGroupString = secuGroupNameList.length ? secuGroupNameList.join(' ') : '-';
 
         Object.assign(item, {
-          memory,
-          vcpu,
-          spec,
-          secuGroupString,
-          status_zh,
+          memory, vcpu, spec, disk, secuGroupString, status_zh,
           singleMenuOptions: { ...this.__handleFilterOptions(item.status) },
           taskState: '',
         })
@@ -224,7 +221,7 @@ export default {
       return newData;
     },
     handleFetchSuccess () {
-      const processingStatus = [ 'BUILD', ]
+      const processingStatus = [ 'BUILD', 'REBUILD' ]
       const list = this.data.filter(item => processingStatus.includes(item.status));
       list.forEach(item => {
         this.handleTraceStatus(item.id);

@@ -6,7 +6,7 @@ export default {
       PAUSED: '已暂停',
       REBOOT: '重启中',
       SHUTOFF: '已关机',
-      // REBUILD: '重建云主机',
+      REBUILD: '重建云主机',
       // SUSPENDED: '',
       // RESIZE: '',
       // VERIFY_RESIZE: '',
