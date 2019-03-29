@@ -63,6 +63,10 @@
       margin: 0;
       padding: 0;
     }
+    body {
+      width: 100vw;
+      height: 100vh;
+    }
     iframe {
       width: 100%;
       height: 100%;
@@ -95,9 +99,12 @@
         method: 'POST',
         body: JSON.stringify(params),
         headers: myHeaders,
-      }).then(res => res.json())
-      .catch(error => console.error('Error:', error))
-      .then(resp => {
+      }).then(function(res) {res.json()})
+      .catch(function(error) {
+        var desc = error.response.data.desc;
+        alert(desc);
+      })
+      .then(function(resp) {
         fetchSuccess(resp);
       });
 
