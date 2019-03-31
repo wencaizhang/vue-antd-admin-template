@@ -65,9 +65,9 @@ const columns = [
 
 const allInstanceStatus = [
   'ACTIVE',
-  'BUILD',
+  // 'BUILD',  // 等待中禁止任何操作
   'PAUSED',
-  'REBOOT',
+  // 'REBOOT', // 等待中禁止任何操作 
   'SHUTOFF',
   'REBUILD',
   'SUSPENDED',
