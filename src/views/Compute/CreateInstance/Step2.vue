@@ -12,6 +12,7 @@
       </div>
     </a-alert>
     <a-table
+      @change="handleTableChange"
       :rowSelection="{selectedRowKeys: selectedNetworkRowKeys, onChange: onNetworkSelectChange}"
       :columns="columns"
       :rowKey="record => record.id"
@@ -65,10 +66,10 @@ export default {
     };
   },
   methods: {
-    async fetch() {
+    async fetch(payload={}) {
       this.loading = true;
       try {
-        const resp = await getNetworkList();
+        const resp = await getNetworkList(payload);
         /**
          *  routerExternal:
             type: integer
@@ -78,7 +79,7 @@ export default {
         this.data = resp.data.filter(item => item.routerExternal === 0);
         // 数据只有一页时不显示分页
         if (resp.totalPage > 1) {
-          this.pagination = Object.assign({}, paginationConfig, { total: resp.totalPage });
+          this.pagination = Object.assign({}, this.paginationConfig, { total: resp.count });
         } else {
           this.pagination = false;
         }
@@ -87,6 +88,12 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    handleTableChange({ current, pageSize, },) {
+      this.fetch({
+        pageSize,
+        pageIndex: current,
+      });
     },
     handleSubmit() {
       return new Promise((resolve, reject) => {

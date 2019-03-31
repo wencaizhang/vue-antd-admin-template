@@ -91,6 +91,7 @@
         </a-alert>
         <a-table
           bordered
+          @change="handleTableChange"
           :rowSelection="{selectedRowKeys: selectedNetworkRowKeys, onChange: onDiskSelectChange}"
           :columns="columns"
           :rowKey="record => record.id"
@@ -159,7 +160,7 @@ const columns = [
 ];
 export default {
   mounted() {
-    this.fetchDiskList();
+    this.fetch();
   },
   data() {
     return {
@@ -203,17 +204,23 @@ export default {
     onDiskSelectChange(selectedRowKeys) {
       this.selectedNetworkRowKeys = selectedRowKeys;
     },
-    async fetchDiskList() {
+    handleTableChange({ current, pageSize, },) {
+      this.fetch({
+        pageSize,
+        pageIndex: current,
+      });
+    },
+    async fetch (payload={}) {
       this.loading = true;
       try {
         // status: 状态[0:使用中 1:可挂载]
-        const resp = await getDiskList({ status: 1 });
+        const resp = await getDiskList(Object.assign(payload, { status: 1 }));
         this.diskList = resp.data.filter(item => item.status === 'available').map(item => {
           return Object.assign({}, item, { status_zh: this.__handleTransformToZh(item.status)})
         });
         // 数据只有一页时不显示分页
         if (resp.totalPage > 1) {
-          this.pagination = Object.assign({}, paginationConfig, { total: resp.totalPage });
+          this.pagination = Object.assign({}, this.paginationConfig, { total: resp.count });
         } else {
           this.pagination = false;
         }

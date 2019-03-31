@@ -66,7 +66,7 @@ export default {
         dataIndex: 'memory',
       },
       {
-        title: 'VCPU',
+        title: 'VCPU(核)',
         dataIndex: 'vcpu',
       },
       {

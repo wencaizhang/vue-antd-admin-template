@@ -71,9 +71,8 @@
                 <a-icon slot="indicator" type="loading-3-quarters" style="font-size: 12px" spin />
               </a-spin>
             </p>
-            <!-- <p>(重启中)</p> -->
           </template>
-          <template slot="operation" slot-scope="text, record">
+          <template slot="operation" slot-scope="options, record">
             <a-dropdown style="margin-right: 10px;">
               <a-menu slot="overlay" @click="handleBeforeSingleMenuClick($event.key, record)">
                 <a-menu-item
@@ -82,7 +81,7 @@
                   :disabled="item.disabled"
                 >{{ item.name }}</a-menu-item>
               </a-menu>
-              <a-button style="margin-left: 8px" :disabled="!record.singleMenuOptions">操作
+              <a-button style="margin-left: 8px" :disabled="!Boolean(record.singleMenuOptions.length)">操作
                 <a-icon type="down" />
               </a-button>
             </a-dropdown>
@@ -187,7 +186,6 @@ export default {
         }
         return availableStatus.includes(status);
       })
-
       return result;
     },
     __handleTransformToZh (status) {
@@ -213,7 +211,7 @@ export default {
 
         Object.assign(item, {
           memory, vcpu, spec, disk, secuGroupString, status_zh,
-          singleMenuOptions: { ...this.__handleFilterOptions(item.status) },
+          singleMenuOptions: [ ...this.__handleFilterOptions(item.status) ],
           taskState: '',
         })
         return item;

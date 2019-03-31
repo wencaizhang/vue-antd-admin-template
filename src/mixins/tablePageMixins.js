@@ -42,14 +42,14 @@ export default {
       this.fetch();
     },
 
-    async fetch () {
+    async fetch (payload={}) {
       this.loading = true;
       try {
-        const resp = await this.getList(this.payload);
-        this.data = this.handleParseData ? this.handleParseData(resp.data) : resp.data
+        const resp = await this.getList(payload);
+        this.data = this.handleParseData ? this.handleParseData(resp.data) : resp.data;
         // 数据只有一页时不显示分页
         if (resp.totalPage > 1) {
-          this.pagination = Object.assign({}, paginationConfig, { total: resp.totalPage });
+          this.pagination = Object.assign({}, this.paginationConfig, { total: resp.count });
         } else {
           this.pagination = false;
         }
@@ -67,16 +67,13 @@ export default {
     handleFetchSuccess () {
 
     },
-    handleTableChange(pagination, filters, sorter) {
-      const pager = { ...this.pagination };
-      pager.current = pagination.current;
-      this.pagination = pager;
+    handleTableChange({ current, pageSize, }, filters, sorter) {
       this.fetch({
-        results: pagination.pageSize,
-        page: pagination.current,
-        sortField: sorter.field,
-        sortOrder: sorter.order,
-        ...filters
+        pageSize,
+        pageIndex: current,
+        // sortField: sorter.field,
+        // sortOrder: sorter.order,
+        // ...filters
       });
     },
 

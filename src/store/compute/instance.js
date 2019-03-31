@@ -58,7 +58,7 @@ const columns = [
   },
   {
     title: '操作',
-    dataIndex: 'operation',
+    dataIndex: 'singleMenuOptions',
     scopedSlots: { customRender: 'operation' }
   }
 ];
