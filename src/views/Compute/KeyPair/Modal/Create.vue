@@ -21,7 +21,7 @@
               {
                 rules: [
                   { required: true, message: '请输入名称!' },
-                  { pattern: /^(\w|_)*$/, message: '请使用英文字母、数字和下划线的组合，且不超过 12 个字符!' },
+                  rulesObj.name,
                 ]
               }
             ]"
@@ -52,10 +52,12 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { createKeyPair as fetchAPI, downloadKeyPair } from '@/api/compute/keypair';
+import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      rulesObj,
       fetchAPI,
       name: "create"
     };

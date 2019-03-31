@@ -51,6 +51,7 @@ export default {
         } else {
           this.pagination = false;
         }
+        this.handleFetchSuccess();
       }
       catch (err) {
         if (err.response.status === 404) {
@@ -61,7 +62,9 @@ export default {
         this.loading = false;
       }
     },
+    handleFetchSuccess () {
 
+    },
     handleTableChange(pagination, filters, sorter) {
       const pager = { ...this.pagination };
       pager.current = pagination.current;
@@ -84,7 +87,7 @@ export default {
     },
 
     onSearch(value) {
-      this.fetch();
+      // this.fetch();
     },
 
     handleViewDetail(record) {
@@ -98,7 +101,7 @@ export default {
     handleMultiMenuClick (key) {
       // 批量操作
       if (this.selectedRowKeys.length === 0) {
-        this.$message.info("请先选择您要操作的数据");
+        this.$message.info(`请先选择您要操作的${this.name || '数据'}`);
         return;
       }
       this.handleShowModal(key);

@@ -9,7 +9,7 @@ import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 // 创建 axios 实例
 const service = axios.create({
   baseURL: "/cmp/v1",
-  timeout: 6000 // 请求超时时间
+  timeout: 20000 // 请求超时时间
 });
 
 
@@ -20,11 +20,14 @@ const errHandle = error => {
 
     switch (error.response.status) {
       case 404:
-      case 409:
         break;
       case 403:
-        notification.error({ message: "Token 失效", description: "请重新登录" });
-        clearToken();
+        const token = Vue.ls.get(ACCESS_TOKEN);
+        if (token) {
+          // 避免同时请求多个接口时 token 失效导致多个提示同时出现
+          notification.error({ message: "Token 失效", description: "请重新登录" });
+          clearToken();
+        }
         router.push({ name: 'login' })
         break;
       default:
@@ -46,9 +49,9 @@ service.interceptors.request.use(config => {
   } else {
     router.push({ name: 'login' })
   }
-  console.log('>>>>>>>>')
-  console.log(config)
-  console.log('>>>>>>>>')
+  // console.log('>>>>>>>>')
+  // console.log(config)
+  // console.log('>>>>>>>>')
 
 
   /**

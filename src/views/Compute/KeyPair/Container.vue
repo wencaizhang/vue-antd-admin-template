@@ -2,7 +2,7 @@
   <div>
     <PageLayout>
       <div slot="header">
-        <p>如果您使用的是 Linux 主机，强烈建议使用 SSH 公钥/私钥 （Keypair）进行远程登录身份验证。您可以创建一个 SSH 密钥，并立刻下载其私钥。请保管好私钥，因为 YPCloud 是不保存您的私钥的。</p>
+        <p>如果您使用的是 Linux 云主机，强烈建议使用 SSH 公钥/私钥 （Keypair）进行远程登录身份验证。您可以创建一个 SSH 密钥，并立刻下载其私钥。请保管好私钥，因为 YPCloud 是不保存您的私钥的。</p>
       </div>
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">

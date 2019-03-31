@@ -43,7 +43,7 @@ export default {
   methods: {
     handleSubmit() {
       return new Promise((resolve, reject) => {
-        this.form.validateFields((err, values) => {
+        this.form.validateFieldsAndScroll((err, values) => {
           err ? reject(err) : resolve(values);
         });
       })

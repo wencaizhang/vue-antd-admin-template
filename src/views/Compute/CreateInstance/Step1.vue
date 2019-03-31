@@ -13,7 +13,7 @@
           ]"
         >
           <a-radio-button value="1">北京1区</a-radio-button>
-          <a-radio-button value="2">北京2区</a-radio-button>
+          <a-radio-button value="2" disabled>北京2区</a-radio-button>
         </a-radio-group>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="CPU">
@@ -55,6 +55,10 @@
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="系统盘">
         <a-col>
           <a-input-number
+            :step="10"
+            :min="40"
+            :max="200"
+            @blur="handleSystemDiskBlur"
             v-decorator="[
             'systemDisk',
             {  
@@ -62,11 +66,14 @@
               rules: [{ required: true, message: '请填写系统盘大小!' }]
             }
           ]"
-            :min="40"
-            :max="200"
-            :formatter="value => value ? `${value} G` : '' "
-            :parser="value => value.replace(' G', '')"
           />
+          <span style="margin: 0 5px">G</span>
+          <a-tooltip class="tooltip">
+            <template slot='title'>
+              可选大小40GB-200GB,步长为10GB
+            </template>
+            <a-icon type="info-circle" />
+          </a-tooltip>
         </a-col>
       </a-form-item>
       <a-form-item
@@ -90,13 +97,20 @@
           :dataSource="diskList"
           :pagination="pagination"
           :loading="loading"
-        ></a-table>
+        >
+          <template slot="id" slot-scope="id">
+            {{ id.substr(0, 8) }}
+          </template>
+        </a-table>
       </a-form-item>
     </a-form>
   </div>
 </template>
 <script>
 import { getDiskList } from '@/api/store/disk'
+import disk from '@/i18n/zh/disk'
+
+const statusDicts = disk.disk.status
 const optionList = {
   memory: [
     { text: "1G", value: 1 },
@@ -118,30 +132,13 @@ const optionList = {
     { text: "24核", value: 24 },
     { text: "32核", value: 32 }
   ],
-  mirror: [
-    { text: "Centos6.5_X86_64bit", value: "Centos6.5_X86_64bit" },
-    { text: "Centos6.6_X86_64bit", value: "Centos6.6_X86_64bit" },
-    { text: "Centos7.1_X86_64bit", value: "Centos7.1_X86_64bit" },
-    { text: "Centos7.2_X86_64bit", value: "Centos7.2_X86_64bit" },
-    { text: "Centos7.4_X86_64bit", value: "Centos7.4_X86_64bit" },
-    { text: "Centos7.5_X86_64bit", value: "Centos7.5_X86_64bit" },
-    { text: "Ubuntu14.04_x86_64bit", value: "Ubuntu14.04_x86_64bit" },
-    { text: "Ubuntu16.04_X86_64bit", value: "Ubuntu16.04_X86_64bit" },
-    {
-      text: "Window Server2008 R2 64bit",
-      value: "Window Server2008 R2 64bit"
-    },
-    {
-      text: "Window Server2012 R2 64bit",
-      value: "Window Server2012 R2 64bit"
-    }
-  ]
 };
 
 const columns = [
   {
     title: "ID",
-    dataIndex: "id"
+    dataIndex: "id",
+    scopedSlots: { customRender: "id" }
   },
   {
     title: "名称",
@@ -157,7 +154,7 @@ const columns = [
   },
   {
     title: "状态",
-    dataIndex: "status"
+    dataIndex: "status_zh"
   }
 ];
 export default {
@@ -181,9 +178,12 @@ export default {
     };
   },
   methods: {
+    __handleTransformToZh (status) {
+      return statusDicts[status.toUpperCase()] || status
+    },
     handleSubmit() {
       return new Promise((resolve, reject) => {
-        this.form.validateFields((err, values) => {
+        this.form.validateFieldsAndScroll((err, values) => {
           err ? reject(err) : resolve(Object.assign({}, values, {
               dataDisk: this.selectedNetworkRowKeys,
               memory: values.memory * 1024,
@@ -206,15 +206,33 @@ export default {
       try {
         // status: 状态[0:使用中 1:可挂载]
         const resp = await getDiskList({ status: 1 });
-        this.diskList = resp.data;
+        this.diskList = resp.data.filter(item => item.status === 'available').map(item => {
+          return Object.assign({}, item, { status_zh: this.__handleTransformToZh(item.status)})
+        });
+        if (resp.totalPage <= 1) {
+          this.pagination = false;
+        }
       } catch (error) {
         
       } finally {
         this.loading = false;
       }
     },
+    handleSystemDiskBlur (e) {
+      // 将系统盘转为 10 的倍数
+      let v = e.target.value;
+      this.form.setFieldsValue({
+        systemDisk: Math.ceil(parseInt(v) / 10 ) * 10
+      })
+    }
   }
 };
 </script>
-<style>
+<style scoped>
+.tooltip {
+  cursor: pointer;
+}
+.tooltip:hover {
+  color: #1890ff;
+}
 </style>

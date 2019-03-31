@@ -11,10 +11,10 @@ const columns = [
     title: "加密方法",
     dataIndex: "encryptionScheme"
   },
-  {
-    title: "所属项目",
-    dataIndex: "subordinateProject"
-  },
+  // {
+  //   title: "所属项目",
+  //   dataIndex: "subordinateProject"
+  // },
   // {
   //   title: "操作",
   //   dataIndex: "operation",

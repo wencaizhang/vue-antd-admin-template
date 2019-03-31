@@ -14,7 +14,7 @@
           <a-spin :spinning="spinning" tip="Loading...">
             <a-select
               v-decorator="[
-                'mirrorId',
+                'imageId',
                 { 
                   initialValue: imageList[0] && imageList[0].value,
                   rules: [{ required: true, message: '请选择镜像！!' }]
@@ -30,21 +30,6 @@
             </a-select>
           </a-spin>
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="磁盘分区：">
-          <a-select
-            placeholder="请选择一种方式！"
-            v-decorator="[
-              '磁盘分区',
-              {
-                rules: [{ required: true, message: '请选择一种方式！！' }]
-              }
-            ]"
-          >
-            <!-- 磁盘分区[0:自动 1:手动] -->
-            <a-select-option :value="0">自动</a-select-option>
-            <a-select-option :value="1">手动</a-select-option>
-          </a-select>
-        </a-form-item>
       </a-form>
     </a-modal>
   </div>
@@ -53,8 +38,9 @@
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { rebuild as fetchAPI } from '@/api/compute/instance';
 import { getImageList } from "@/api/compute/images";
+import mixins from './mixins'
 export default {
-  mixins: [baseModalMixins, formModalMixins],
+  mixins: [baseModalMixins, formModalMixins, mixins],
   data() {
     return {
       fetchAPI,
@@ -74,7 +60,7 @@ export default {
       }
       this.spinning = true;
       try {
-        const resp = await getImageList();
+        const resp = await getImageList({ pageSize: 100, });
         this.imageList = resp.data;
       } catch (err) {
         if (err.response.status === 404) {
@@ -83,6 +69,10 @@ export default {
       } finally {
         this.spinning = false;
       }
+    },
+
+    filterOption (input, option) {
+      return option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
     },
   }
 };

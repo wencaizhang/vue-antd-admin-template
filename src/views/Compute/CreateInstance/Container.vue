@@ -5,10 +5,22 @@
         <a-step v-for="item in steps" :key="item.title" :title="item.title"/>
       </a-steps>
       <div class="steps-content">
-        <Step0 v-show="currStepIndex === 0" ref="content0" />
-        <Step1 v-show="currStepIndex === 1" ref="content1" />
-        <Step2 v-show="currStepIndex === 2" ref="content2" />
-        <Step3 v-show="currStepIndex === 3" ref="content3" />
+        <Step0
+          v-show="currStepIndex === 0"
+          ref="content0" 
+          @setDefaultUserName="setDefaultUserName"
+        />
+        <Step1
+          v-show="currStepIndex === 1"
+          ref="content1" />
+        <Step2
+          v-show="currStepIndex === 2"
+          ref="content2" />
+        <Step3
+          v-show="currStepIndex === 3"
+          ref="content3" 
+          :defaultUserName="defaultUserName"
+        />
       </div>
       <div class="steps-action">
         <a-button v-if="currStepIndex>0" @click="handlePrevClick">上一步</a-button>
@@ -45,12 +57,13 @@ export default {
       currStepIndex: 0,
       createLoading: false,
       steps: [
-        { title: "选择映像", name: "step1" },
+        { title: "选择镜像", name: "step1" },
         { title: "配置选择", name: "step2" },
         { title: "网络设置", name: "step3" },
         { title: "基本信息", name: "step4" },
       ],
       formValueCollection: {},
+      defaultUserName: '',
     };
   },
   methods: {
@@ -88,6 +101,9 @@ export default {
         this.currStepIndex--
       };
     },
+    setDefaultUserName (defaultUserName) {
+      this.defaultUserName = defaultUserName;
+    }
   }
 };
 </script>

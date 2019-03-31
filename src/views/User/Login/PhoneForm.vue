@@ -58,7 +58,7 @@ export default {
 
     handleSubmit() {
       return new Promise((resolve, reject) => {
-        this.form.validateFields((err, values) => {
+        this.form.validateFieldsAndScroll((err, values) => {
           err ? reject(err) : resolve(values);
         });
       })
@@ -67,7 +67,7 @@ export default {
     async getCaptcha(e) {
       let that = this;
 
-      this.form.validateFields(["mobile"], { force: true }, async err => {
+      this.form.validateFieldsAndScroll(["mobile"], { force: true }, async err => {
         if (!err) {
           this.state.smsSendBtn = true;
 

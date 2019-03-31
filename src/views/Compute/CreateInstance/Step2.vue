@@ -18,7 +18,12 @@
       :dataSource="data"
       :pagination="pagination"
       :loading="loading"
-    ></a-table>
+      :hideDefaultSelections="false"
+    >
+      <template slot="id" slot-scope="id">
+        {{ id.substr(0, 8) }}
+      </template>
+    </a-table>
   </div>
 </template>
 <script>
@@ -26,7 +31,8 @@ import { getNetworkList } from '@/api/network/subnet'
 const columns = [
   {
     title: "ID",
-    dataIndex: "id"
+    dataIndex: "id",
+    scopedSlots: { customRender: "id" }
   },
   {
     title: "名称",
@@ -61,7 +67,13 @@ export default {
       this.loading = true;
       try {
         const resp = await getNetworkList();
-        this.data = resp.data;
+        /**
+         *  routerExternal:
+            type: integer
+            format: int32
+            description: 是否为外部路由[0:否 1:是]
+         */
+        this.data = resp.data.filter(item => item.routerExternal === 0);
       } catch (err) {
 
       } finally {
@@ -80,7 +92,11 @@ export default {
       })
     },
     onNetworkSelectChange(selectedRowKeys) {
-      this.selectedNetworkRowKeys = selectedRowKeys;
+      if (this.selectedNetworkRowKeys.length >= 2) {
+        this.$message.warn('最多可以选择两个网络')
+      } else {
+        this.selectedNetworkRowKeys = selectedRowKeys;
+      }
     },
     onNetworkClearSelected() {
       this.selectedNetworkRowKeys = [];

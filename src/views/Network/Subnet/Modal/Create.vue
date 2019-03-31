@@ -210,7 +210,7 @@ export default {
     },
     _handleValidate () {
       var result
-      this['form' + this.currStep].validateFields((err, values) => {
+      this['form' + this.currStep].validateFieldsAndScroll((err, values) => {
         if (err) {
           result = false;
         } else {

@@ -8,5 +8,13 @@ table {
   font-size: 12px;
 }
 table thead > * {
+  max-width: 100%;
   white-space:nowrap; 
+}
+.ant-table-body {
+  overflow-y: auto;
+}
+ul,p {
+  margin: 0;
+  padding: 0;
 }
