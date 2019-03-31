@@ -57,6 +57,7 @@
 
 <script>
 import Vue from "vue";
+import notification from "ant-design-vue/es/notification";
 
 import PhoneForm from "./Login/PhoneForm";
 import UsernameForm from "./Login/UsernameForm";
@@ -143,6 +144,8 @@ export default {
         const resp = await login(payload);
         this.loginSuccess(resp);
       } catch (err) {
+
+        notification.error({ message: err.response.data.desc, });
 
       } finally {
         this.loading = false;
