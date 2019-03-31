@@ -247,6 +247,11 @@ export default {
       try {
         const data = await getInstanceStatus(id);
         Object.assign(resp, data);
+
+        if (resp.status.toLowerCase() === 'deleted') {
+          this.__handleDeleteInstance(id);
+          return;
+        }
         if (resp.taskState) {
           this.__queryListStatus(id);
         }
