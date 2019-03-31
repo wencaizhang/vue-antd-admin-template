@@ -13,7 +13,7 @@ export default {
       // REVERT_RESIZE: '',
       // PASSWORD: '',
       // HARD_REBOOT: '硬重启',
-      // DELETED: '',
+      DELETED: '已删除',
       // UNKNOWN: '',
       // ERROR: '',
       // STOPPED: '',
