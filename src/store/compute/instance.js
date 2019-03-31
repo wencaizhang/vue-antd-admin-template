@@ -62,6 +62,25 @@ const columns = [
     scopedSlots: { customRender: 'operation' }
   }
 ];
+
+const allInstanceStatus = [
+  'ACTIVE',
+  'BUILD',
+  'PAUSED',
+  'REBOOT',
+  'SHUTOFF',
+  'REBUILD',
+  'SUSPENDED',
+  'RESIZE',
+  'VERIFY_RESIZE',
+  'REVERT_RESIZE',
+  'PASSWORD',
+  'HARD_REBOOT',
+  'DELETED',
+  'UNKNOWN',
+  'ERROR',
+  'STOPPED', 
+];
 export default {
   namespaced: true,
   state: {
@@ -74,7 +93,7 @@ export default {
       { visible: false, type: 'none',  name: '启动',   id: 'launch',      availableStatus: ['SHUTOFF'] },
       { visible: false, type: 'none',  name: '关机',   id: 'shutdown',    availableStatus: ['ACTIVE', ] },
 
-      { visible: false, type: 'batch', name: '删除',   id: 'delete',      availableStatus: true },
+      { visible: false, type: 'batch', name: '删除',   id: 'delete',      availableStatus: allInstanceStatus },
       { visible: false, type: 'batch', name: '重启',   id: 'restart',     availableStatus: ['ACTIVE', ] },
       { visible: false, type: 'batch', name: '软重启', id: 'softRestart', availableStatus: ['ACTIVE', ] },
 

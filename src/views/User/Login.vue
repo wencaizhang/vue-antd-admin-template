@@ -22,7 +22,7 @@
       </a-tabs> -->
 
       <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-        <a-checkbox class="com-unselect" v-model="formLogin.rememberMe">自动登陆</a-checkbox>
+        <a-checkbox class="com-unselect" v-model="formLogin.rememberMe">自动登录</a-checkbox>
       </div>
       <a-button
         size="large"

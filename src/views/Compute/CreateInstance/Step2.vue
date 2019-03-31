@@ -92,7 +92,7 @@ export default {
       })
     },
     onNetworkSelectChange(selectedRowKeys) {
-      if (this.selectedNetworkRowKeys.length >= 2) {
+      if (selectedRowKeys.length > 2) {
         this.$message.warn('最多可以选择两个网络')
       } else {
         this.selectedNetworkRowKeys = selectedRowKeys;

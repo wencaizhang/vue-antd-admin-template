@@ -6,7 +6,8 @@ export default {
     return {
       name: "选项",
       pagination: {
-        showSizeChanger: true
+        showSizeChanger: true,
+        pageSizeOptions: ['10', '20', '30', '40', '50']
       },
       url: "/api/demo",
       data: [],

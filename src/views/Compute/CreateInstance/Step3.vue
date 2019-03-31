@@ -7,7 +7,7 @@
           v-decorator="[
             'billingRule',
             {
-              initialValue: 1,
+              initialValue: 0,
               rules: [{ required: true, message: '请选择计费方式!' }]
             }
           ]"

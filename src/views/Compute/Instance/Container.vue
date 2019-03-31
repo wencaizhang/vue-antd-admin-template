@@ -74,7 +74,7 @@
             <!-- <p>(重启中)</p> -->
           </template>
           <template slot="operation" slot-scope="text, record">
-            <a-dropdown style="margin-right: 10px;" :disabled="!record.singleMenuOptions">
+            <a-dropdown style="margin-right: 10px;">
               <a-menu slot="overlay" @click="handleBeforeSingleMenuClick($event.key, record)">
                 <a-menu-item
                   v-for="item in record.singleMenuOptions"
@@ -82,7 +82,7 @@
                   :disabled="item.disabled"
                 >{{ item.name }}</a-menu-item>
               </a-menu>
-              <a-button style="margin-left: 8px">操作
+              <a-button style="margin-left: 8px" :disabled="!record.singleMenuOptions">操作
                 <a-icon type="down" />
               </a-button>
             </a-dropdown>
@@ -227,7 +227,7 @@ export default {
         this.handleTraceStatus(item.id);
       })
     },
-    __handleUpdateStatus({ id, status, taskState}) {
+    __handleUpdateStatus({ id, status, taskState }) {
       // 更新表格中的状态
       const currItem = this.data.find(item => item.id === id);
       const currStatus = (status || currItem.status).toUpperCase();
@@ -252,11 +252,24 @@ export default {
         if (resp.taskState) {
           this.__queryListStatus(id);
         }
-      } catch (error) {
-
-      } finally {
         this.__handleUpdateStatus(resp);
+      } catch (error) {
+        if (error.response.status == 404) {
+          this.__handleDeleteInstance(id);
+        }
       }
+    },
+    __handleDeleteInstance (id) {
+      const currItem = this.data.find(item => item.id === id)
+      const currIndex = this.data.indexOf(currItem);
+      Object.assign(currItem, {
+        status: 'DELETED',
+        taskState: false,
+        status_zh: '已删除',
+        singleMenuOptions: [],
+      });
+      this.data.splice(currIndex, 1);
+      this.$nextTick();
     },
     handleBeforeSingleMenuClick (key, record) {
       if (key === 'console') {
