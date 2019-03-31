@@ -145,7 +145,7 @@ const columns = [
     dataIndex: "name"
   },
   {
-    title: "大小（G）",
+    title: "容量(G)",
     dataIndex: "capacity"
   },
   {
