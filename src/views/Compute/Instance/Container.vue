@@ -263,7 +263,8 @@ export default {
       }
     },
     __handleDeleteInstance (id) {
-      const currItem = this.data.find(item => item.id === id)
+      // 更新 data
+      const currItem = this.data.find(item => item.id === id);
       const currIndex = this.data.indexOf(currItem);
       Object.assign(currItem, {
         status: 'DELETED',
@@ -272,6 +273,12 @@ export default {
         singleMenuOptions: [],
       });
       this.data.splice(currIndex, 1);
+      // 更新页码
+      this.pagination.total = this.pagination.total ? this.pagination.total - 1 : 0;
+      // 更新选择项
+      const index = this.selectedRowKeys.indexOf(id);
+      this.selectedRowKeys.splice(index, 1);
+
       this.$nextTick();
     },
     handleBeforeSingleMenuClick (key, record) {
