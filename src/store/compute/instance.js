@@ -67,7 +67,7 @@ const allInstanceStatus = [
   'ACTIVE',
   // 'BUILD',  // 等待中禁止任何操作
   'PAUSED',
-  // 'REBOOT', // 等待中禁止任何操作 
+  // 'REBOOT', // 重启中禁止任何操作 
   'SHUTOFF',
   'REBUILD',
   'SUSPENDED',
