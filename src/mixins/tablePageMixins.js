@@ -5,7 +5,8 @@ export default {
   data() {
     return {
       name: "选项",
-      pagination: {
+      pagination: {},
+      paginationConfig: {
         showSizeChanger: true,
         pageSizeOptions: ['10', '20', '30', '40', '50']
       },
@@ -48,7 +49,7 @@ export default {
         this.data = this.handleParseData ? this.handleParseData(resp.data) : resp.data
         // 数据只有一页时不显示分页
         if (resp.totalPage > 1) {
-          this.pagination.total = resp.totalPage;
+          this.pagination = Object.assign({}, paginationConfig, { total: resp.totalPage });
         } else {
           this.pagination = false;
         }

@@ -171,8 +171,10 @@ export default {
       loading: false,
       systemDisk: 1,
       optionList,
-      pagination: {
-        showSizeChanger: true
+      pagination: {},
+      paginationConfig: {
+        showSizeChanger: true,
+        pageSizeOptions: ['10', '20', '30', '40', '50']
       },
       selectedNetworkRowKeys: []
     };
@@ -209,7 +211,10 @@ export default {
         this.diskList = resp.data.filter(item => item.status === 'available').map(item => {
           return Object.assign({}, item, { status_zh: this.__handleTransformToZh(item.status)})
         });
-        if (resp.totalPage <= 1) {
+        // 数据只有一页时不显示分页
+        if (resp.totalPage > 1) {
+          this.pagination = Object.assign({}, paginationConfig, { total: resp.totalPage });
+        } else {
           this.pagination = false;
         }
       } catch (error) {

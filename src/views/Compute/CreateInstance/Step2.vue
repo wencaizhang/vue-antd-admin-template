@@ -56,8 +56,10 @@ export default {
       data: [],
       columns,
       loading: false,
-      pagination: {
-        showSizeChanger: true
+      pagination: {},
+      paginationConfig: {
+        showSizeChanger: true,
+        pageSizeOptions: ['10', '20', '30', '40', '50']
       },
       selectedNetworkRowKeys: [],
     };
@@ -74,6 +76,12 @@ export default {
             description: 是否为外部路由[0:否 1:是]
          */
         this.data = resp.data.filter(item => item.routerExternal === 0);
+        // 数据只有一页时不显示分页
+        if (resp.totalPage > 1) {
+          this.pagination = Object.assign({}, paginationConfig, { total: resp.totalPage });
+        } else {
+          this.pagination = false;
+        }
       } catch (err) {
 
       } finally {
