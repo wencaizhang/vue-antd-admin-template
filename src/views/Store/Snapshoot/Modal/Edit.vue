@@ -19,7 +19,7 @@
             v-decorator="[
               'name',
               {
-                initialValue: 'db3-snap-201811020800(100GB',
+                initialValue: 'db3-snap-201811020800(100G',
                 rules: [{ required: true, message: '请输入名称' }]
               }
             ]"

@@ -14,7 +14,7 @@ const columns = [
     dataIndex: "id"
   },
   {
-    title: "容量(GB)",
+    title: "容量(G)",
     dataIndex: "size"
   },
   {

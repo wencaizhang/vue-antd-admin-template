@@ -40,7 +40,7 @@ export default {
       data: [
         { name: "名称", key: "名称", value: "db3" },
         { name: "状态", key: "状态", value: "使用中" },
-        { name: "容量", key: "容量", value: "100 GB" },
+        { name: "容量", key: "容量", value: "100 G" },
         { name: "类型", key: "类型", value: "SSD" },
         { name: "月费用", key: "月费用", value: "￥120" },
         { name: "可启动", key: "可启动", value: "否" },

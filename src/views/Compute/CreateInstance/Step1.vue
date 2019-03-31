@@ -70,7 +70,7 @@
           <span style="margin: 0 5px">G</span>
           <a-tooltip class="tooltip">
             <template slot='title'>
-              可选大小40GB-200GB,步长为10GB
+              可选大小40G-200G,步长为10G
             </template>
             <a-icon type="info-circle" />
           </a-tooltip>

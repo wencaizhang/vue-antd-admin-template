@@ -24,7 +24,7 @@ const sourceData = [
     children: [
       { text: "云主机(个)", value: 10, },
       { text: "CPU(核)", value: 1, },
-      { text: "内存(GB)", value: 3, },
+      { text: "内存(G)", value: 3, },
       { text: "系统镜像(个)", value: 4, },
       { text: "密钥对(个)", value: 6, },
       { text: "防火墙策略(个)", value: 8, }
@@ -35,11 +35,11 @@ const sourceData = [
     id: 'store',
     children: [
       { text: "性能型硬盘(个)", value: 1 },
-      { text: "性能型硬盘容量(GB)", value: 2 },
+      { text: "性能型硬盘容量(G)", value: 2 },
       { text: "SSD硬盘(个)", value: 3 },
-      { text: "SSD硬盘容量(GB)", value: 4 },
+      { text: "SSD硬盘容量(G)", value: 4 },
       { text: "对象存储(个)", value: 6 },
-      { text: "对象存储容量(GB)", value: 8 }
+      { text: "对象存储容量(G)", value: 8 }
     ]
   },
   {

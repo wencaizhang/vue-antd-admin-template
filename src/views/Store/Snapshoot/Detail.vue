@@ -36,7 +36,7 @@ export default {
         { name: "名称", key: "名称", value: "db3" },
         { name: "硬盘名称", key: "disk", value: "硬盘名称db3" },
         { name: "状态", key: "状态", value: "使用中" },
-        { name: "容量", key: "容量", value: "100 GB" },
+        { name: "容量", key: "容量", value: "100 G" },
         { name: "类型", key: "类型", value: "SSD" },
         { name: "日费用", key: "日费用", value: "￥120" },
         { name: "创建时间", key: "创建时间", value: "2018年1月1日 02:15" },

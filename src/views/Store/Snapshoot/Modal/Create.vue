@@ -49,7 +49,7 @@
             v-decorator="[
               'source',
               {
-                initialValue: 'db3-snap-201811020800(100GB',
+                initialValue: 'db3-snap-201811020800(100G',
               }
             ]"
             placeholder="请输入名称"

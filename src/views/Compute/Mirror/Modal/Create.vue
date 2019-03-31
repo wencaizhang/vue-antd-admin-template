@@ -135,7 +135,7 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="最小磁盘(GB)："
+          label="最小磁盘(G)："
         >
           <a-input-number
             :min="40"
@@ -151,7 +151,7 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="最低内存(GB)："
+          label="最低内存(G)："
         >
           <a-input-number
             :min="2"

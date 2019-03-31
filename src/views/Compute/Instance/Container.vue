@@ -197,9 +197,9 @@ export default {
         Object.keys(item).forEach(key => {
           item[key] = item[key] || '-';
         })
-        let memory = item.memory >= 1024 ? `${item.memory / 1024}GB` : `${item.memory}MB`;
+        let memory = item.memory >= 1024 ? `${item.memory / 1024}G` : `${item.memory}MB`;
         let vcpu = item.vcpu + '核';
-        let disk = item.disk + 'GB';
+        let disk = item.disk + 'G';
         let spec = vcpu + memory;
 
         // 转换成中文
