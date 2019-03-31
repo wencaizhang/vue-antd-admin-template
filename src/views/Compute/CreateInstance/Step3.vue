@@ -13,8 +13,8 @@
           ]"
         >
           <!-- 计费方式[0:预付费 1:按量付费] -->
-          <a-radio :value="1">预付费</a-radio>
-          <a-radio :value="2">按量付费</a-radio>
+          <a-radio :value="0">预付费</a-radio>
+          <a-radio :value="1">按量付费</a-radio>
         </a-radio-group>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="主机名称：">
