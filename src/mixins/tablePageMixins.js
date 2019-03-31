@@ -48,11 +48,7 @@ export default {
         const resp = await this.getList(payload);
         this.data = this.handleParseData ? this.handleParseData(resp.data) : resp.data;
         // 数据只有一页时不显示分页
-        if (resp.totalPage > 1) {
-          this.pagination = Object.assign({}, this.paginationConfig, { total: resp.count });
-        } else {
-          this.pagination = false;
-        }
+        this.pagination = Object.assign({}, this.paginationConfig, { total: resp.count });
         this.handleFetchSuccess();
       }
       catch (err) {

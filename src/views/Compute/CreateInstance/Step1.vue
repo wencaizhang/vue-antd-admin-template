@@ -219,11 +219,7 @@ export default {
           return Object.assign({}, item, { status_zh: this.__handleTransformToZh(item.status)})
         });
         // 数据只有一页时不显示分页
-        if (resp.totalPage > 1) {
-          this.pagination = Object.assign({}, this.paginationConfig, { total: resp.count });
-        } else {
-          this.pagination = false;
-        }
+        this.pagination = Object.assign({}, this.paginationConfig, { total: resp.count });
       } catch (error) {
         
       } finally {

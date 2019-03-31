@@ -78,11 +78,7 @@ export default {
          */
         this.data = resp.data.filter(item => item.routerExternal === 0);
         // 数据只有一页时不显示分页
-        if (resp.totalPage > 1) {
-          this.pagination = Object.assign({}, this.paginationConfig, { total: resp.count });
-        } else {
-          this.pagination = false;
-        }
+        this.pagination = Object.assign({}, this.paginationConfig, { total: resp.count });
       } catch (err) {
 
       } finally {
