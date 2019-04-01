@@ -15,7 +15,7 @@ export default {
       // HARD_REBOOT: '硬重启',
       DELETED: '已删除',
       // UNKNOWN: '',
-      // ERROR: '',
+      ERROR: '错误',
       // STOPPED: '',
     }
   }
