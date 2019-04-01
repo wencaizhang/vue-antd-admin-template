@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <a-modal
@@ -10,18 +9,50 @@
       okText="删除"
       okType="danger"
     >
-      <p
-        style="margin-top: 10px; text-align: center;"
-      >您已经选择了云主机“<strong>{{ currRecord.name }}</strong>”，将被删除，请确认你的操作。</p>
+      <p>即将删除下列云主机，请确认你的操作。</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>名称</th>
+            <th>状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        
+        <tr v-for="item in list" :key="item.id">
+          <td>{{ item.id.substr(0,8) }}</td>
+          <td>{{ item.name }}</td>
+          <td >
+            <span :class="{ 'status-disabled': item.taskState }">{{ item.status_zh }}</span>
+            <a-icon v-show="item.taskState" type="loading-3-quarters" style="font-size: 12px; margin-left: 5px; color: #1890ff;" spin />
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <template slot="footer">
+        <template v-if="handleItemCount">
+          <a-button @click="handleCancel">取消</a-button>
+          <a-button @click="handleCreate" :loading="confirmLoading" type="danger">删除</a-button>
+        </template>
+        <template v-else>
+          <a-button @click="handleCancel">确定</a-button>
+        </template>
+      </template>
     </a-modal>
   </div>
 </template>
 <script>
 import { baseModalMixins } from "@/mixins/modalMixin";
 import { deleteInstance as fetchAPI } from '@/api/compute/instance';
+
 import mixins from './mixins'
+import multiMixins from './multiMixins';
 export default {
-  mixins: [baseModalMixins, mixins],
+  mixins: [baseModalMixins, mixins, multiMixins],
   data() {
     return {
       fetchAPI,
@@ -29,6 +60,38 @@ export default {
     };
   },
 
-  methods: {}
+  methods: {
+
+    onShow () {
+      this.availableStatus = this.$parent.menuOptions.find(item => item.id === this.name).availableStatus;
+      this.confirmLoading  = false;
+      const selectedList   = [ this.currRecord ]
+      this.handleItemCount = selectedList.filter(item => this.availableStatus.includes(item.status)).length;
+      this.some = this.handleItemCount;
+      this.list  = selectedList;
+    },
+  }
 };
 </script>
+
+<style scoped>
+p {
+  margin-bottom: 10px;
+  text-align: center;
+}
+table {
+  margin: 0 auto;
+  width: 100%;
+}
+table td, table th {
+  padding: 5px 10px;
+  border: 1px solid #f2f2f2;
+}
+.status-disabled {
+  user-select: none;
+  color: #BBB;
+}
+.fb {
+  font-weight: bold;
+}
+</style>
