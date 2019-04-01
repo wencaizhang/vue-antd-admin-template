@@ -88,7 +88,6 @@ export default {
     columns,
 
     // 只有当实例处于 availableStatus 中的状态时，对应的操作才可用
-    // availableStatus 为 true：任何状态都可用，反之任何状态都不可用
     menuOptions: [
       { visible: false, type: 'none',  name: '启动',   id: 'launch',      availableStatus: ['SHUTOFF'] },
       { visible: false, type: 'none',  name: '关机',   id: 'shutdown',    availableStatus: ['ACTIVE', ] },
