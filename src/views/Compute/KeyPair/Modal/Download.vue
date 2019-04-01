@@ -11,7 +11,7 @@
     >
       <p>
         <a-icon type="warning" style="color: #faad14;" />
-        我们不会保管您的私钥信息，请您在10分钟内点击"<strong>下载</strong>"按钮获取私钥</p>
+        我们不会保管您的私钥信息，请您在{{ minute }}分钟内点击"<strong>下载</strong>"按钮获取私钥</p>
     </a-modal>
   </div>
 </template>
@@ -22,10 +22,20 @@ export default {
   data() {
     return {
       name: "download",
+      minute: 5,
+      timer: 0,
     };
   },
 
   methods: {
+    onShow () {
+      this.timer = setTimeout(() => {
+        this.handleCancel();
+      }, this.minute * 60 * 1000);
+    },
+    onHidden () {
+      clearTimeout(this.timer);
+    },
     handleCreate () {
       const data = this.$store.state[this.$parent.module][this.$parent.id]['lastCreatedKeyPair'];
       this.fileDownload (data.privateKey, data.secrectKeyName);
