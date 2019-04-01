@@ -44,6 +44,7 @@ export default {
 
     async fetch (payload={}) {
       this.loading = true;
+      this.handleClearSelected();
       try {
         const resp = await this.getList(payload);
         this.data = this.handleParseData ? this.handleParseData(resp.data) : resp.data;
