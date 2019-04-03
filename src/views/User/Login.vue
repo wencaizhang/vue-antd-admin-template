@@ -155,12 +155,11 @@ export default {
       // };
     },
     loginSuccess(resp) {
-      console.log(resp);
+
       // const expire = 1 * 60 * 60 * 1000;
       Vue.ls.set(ACCESS_TOKEN, resp.tokenId);
-      Vue.ls.set(PROJECT_ID, resp.defalutProjectId);
+      Vue.ls.set(PROJECT_ID, resp.projectId[0]);
       Vue.ls.set('userInfo', resp);
-      // this.$store.commit('user/setUserInfo', resp)
 
       this.$router.push({ name: "dashboard" });
       this.$message.success(timeFix() + "，欢迎回来", 3);
