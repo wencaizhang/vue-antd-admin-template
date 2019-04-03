@@ -26,7 +26,6 @@ export default {
       selectedRowKeys: [],
       currRecord: {},
 
-
     };
   },
   computed: {
@@ -68,7 +67,12 @@ export default {
       this.pagination = Object.assign({}, this.pagination, { total: this.tempData.length });
 
       this.getCurrPageData();  // 分页
-      this.data = this.tempData;
+
+      this.loading = true;
+      setTimeout(() => {
+        this.data = this.tempData;
+        this.loading = false;
+      }, 100)
     },
 
     handleRefresh() {

@@ -34,7 +34,7 @@
 
           <span style="float: right;">
             <a-input-group compact class="compact-search-input">
-              <a-select @change="v => searchValues.type = v" :defaultValue="searchValues.type" style="width: 72px;">
+              <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 72px;">
                 <a-select-option value="name">名称</a-select-option>
                 <a-select-option value="network">网络</a-select-option>
                 <a-select-option value="ipAddress">IP</a-select-option>
@@ -47,13 +47,12 @@
               />
             </a-input-group>
             
-            <a-select @change="v => searchValues.status = v" :defaultValue="searchValues.status" style="margin-left: 4px; width: 90px;">
+            <a-select @change="v => searchValues.status = v" v-model="searchValues.status" style="margin-left: 4px; width: 90px;">
               <a-select-option key="all" value="all">全部</a-select-option>
               <a-select-option key="build" value="build">等待中</a-select-option>
               <a-select-option key="active" value="active">运行中</a-select-option>
               <a-select-option key="paused" value="paused">已暂停</a-select-option>
               <a-select-option key="shutoff" value="shutoff">已关机</a-select-option>
-              <a-select-option key="deleted" value="deleted">已删除</a-select-option>
               <a-select-option key="reboot" value="reboot">重启中</a-select-option>
             </a-select>
             <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
@@ -205,6 +204,14 @@ export default {
     this.$store.commit[`${this.$parent.id}/clearModal`]; 
   },
   methods: {
+    handleRefresh() {
+      this.searchValues = {
+        type: 'name',
+        inputValue: '',
+        status: 'all',
+      }
+      this.fetch();
+    },
     __handleFilterOptions (status) {
       // 等待和重启中禁止任何操作
       if( ['build', 'reboot'].includes(status) ) {
