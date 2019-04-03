@@ -9,7 +9,7 @@ const columns = [
   },
   {
     title: "状态",
-    dataIndex: "phone",
+    dataIndex: "status",
     // filters: [
     //   { text: "等待中", value: "等待中" },
     //   { text: "运行中", value: "运行中" },
@@ -22,11 +22,11 @@ const columns = [
   },
   {
     title: "外部网络",
-    dataIndex: ""
+    dataIndex: "extrannet"
   },
   {
     title: "可用域",
-    dataIndex: ""
+    dataIndex: "region"
   },
   {
     title: "操作",

@@ -14,7 +14,7 @@
             <a-button type="danger" @click="handleBatchDelete" style="margin-right: 10px;">删除</a-button>
             <a-input-search
               placeholder="input search text"
-              @search="onSearch"
+              @search="getSearchData"
               style="width: 200px"
               enterButton
             />

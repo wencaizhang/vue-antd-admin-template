@@ -9,11 +9,11 @@ const columns = [
   },
   {
     title: "已连接的子网",
-    dataIndex: "phone",
+    dataIndex: "connectedSubnet",
   },
   {
     title: "共享",
-    dataIndex: ""
+    dataIndex: "share"
   },
   {
     title: "运行状态",

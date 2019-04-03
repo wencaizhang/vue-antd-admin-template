@@ -17,7 +17,7 @@
       <div class="container">
         <a-input-search
           placeholder="input search text"
-          @search="onSearch"
+          @search="getSearchData"
           style="width: 200px"
           enterButton
         />
@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     onChange() {},
-    onSearch() {},
+    getSearchData() {},
     handleCreate() {
       this.handleCancel();
     }

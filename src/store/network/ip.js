@@ -1,15 +1,15 @@
 const columns = [
   {
     title: "IP",
-    dataIndex: "id"
+    dataIndex: "ip"
   },
   {
     title: "描述",
-    dataIndex: "name"
+    dataIndex: "description"
   },
   {
     title: "状态",
-    dataIndex: "phone",
+    dataIndex: "status",
     // filters: [
     //   { text: "等待中", value: "等待中" },
     //   { text: "运行中", value: "运行中" },
@@ -22,15 +22,15 @@ const columns = [
   },
   {
     title: "已映射固定IP",
-    dataIndex: ""
+    dataIndex: "mappedStaticIp"
   },
   {
     title: "资源池",
-    dataIndex: ""
+    dataIndex: "resourcePool"
   },
   {
     title: "带宽上限(Mbps)",
-    dataIndex: ""
+    dataIndex: "bandwidthLimit"
   },
   {
     title: "操作",

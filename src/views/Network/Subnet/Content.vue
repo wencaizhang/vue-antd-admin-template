@@ -24,7 +24,7 @@
             </a-dropdown>
             <a-input-search
               placeholder="input search text"
-              @search="onSearch"
+              @search="getSearchData"
               style="width: 200px"
               enterButton
             />
@@ -88,6 +88,8 @@ import DeleteModal from "./Modal/Delete";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
+import { getNetworkList as getList } from "@/api/network/network";
+
 export default {
   mixins: [tablePageMixins],
   components: {
@@ -98,6 +100,7 @@ export default {
 
   data() {
     return {
+      getList,
       module: "network",
       id: "subnet",
       name: "路由",

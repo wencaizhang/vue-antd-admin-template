@@ -24,7 +24,7 @@
             </a-dropdown>
             <a-input-search
               placeholder="input search text"
-              @search="onSearch"
+              @search="getSearchData"
               style="width: 200px"
               enterButton
             />
@@ -90,6 +90,8 @@ import UnbindIP from "./Modal/UnbindIP";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
+import { getIPList as getList } from "@/api/network/ip";
+
 export default {
   mixins: [tablePageMixins],
   components: {
@@ -101,6 +103,7 @@ export default {
 
   data() {
     return {
+      getList,
       module: "network",
       id: "ip",
       name: "路由",

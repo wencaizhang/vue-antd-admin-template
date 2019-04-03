@@ -24,7 +24,7 @@
             </a-dropdown>
             <a-input-search
               placeholder="input search text"
-              @search="onSearch"
+              @search="getSearchData"
               style="width: 200px"
               enterButton
             />
@@ -92,6 +92,8 @@ import Gateway from "./Modal/Gateway";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
+import { getRouterList as getList } from "@/api/network/router";
+
 export default {
   mixins: [tablePageMixins],
   components: {
@@ -104,6 +106,7 @@ export default {
 
   data() {
     return {
+      getList,
       module: "network",
       id: "router",
       name: "路由",

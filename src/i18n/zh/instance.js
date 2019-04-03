@@ -1,22 +1,22 @@
 export default {
   instance: {
     status: {
-      ACTIVE: '运行中',
-      BUILD: '等待中',
-      PAUSED: '已暂停',
-      REBOOT: '重启中',
-      SHUTOFF: '已关机',
-      REBUILD: '重建云主机',
-      // SUSPENDED: '',
-      // RESIZE: '',
-      // VERIFY_RESIZE: '',
-      // REVERT_RESIZE: '',
-      // PASSWORD: '',
-      // HARD_REBOOT: '硬重启',
-      DELETED: '已删除',
-      // UNKNOWN: '',
-      ERROR: '错误',
-      // STOPPED: '',
+      active: '运行中',
+      build: '等待中',
+      paused: '已暂停',
+      reboot: '重启中',
+      shutoff: '已关机',
+      rebuild: '重建云主机',
+      // suspended: '',
+      // resize: '',
+      // verify_resize: '',
+      // REVERT_resize: '',
+      // password: '',
+      // hard_reboot: '硬重启',
+      deleted: '已删除',
+      // unknown: '',
+      error: '错误',
+      // stopped: '',
     }
   }
 }
