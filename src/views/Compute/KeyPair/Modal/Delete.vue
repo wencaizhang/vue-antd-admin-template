@@ -9,6 +9,7 @@
       <p
         style="margin-top: 10px; text-align: center;"
       >即将删除下列密钥对，请确认你的操作。</p>
+      <p>删除前请确认你已经备份该秘钥，或者确定已不再使用该秘钥。</p>
       <ul>
         <li v-for="item in list" :key="item.id">
           <span>{{ item.id }}</span>

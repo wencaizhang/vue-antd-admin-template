@@ -28,7 +28,7 @@
   </div>
 </template>
 <script>
-import { getNetworkList } from '@/api/network/subnet'
+import { getNetworkList } from '@/api/network/network'
 const columns = [
   {
     title: "ID",
@@ -77,7 +77,6 @@ export default {
             description: 是否为外部路由[0:否 1:是]
          */
         this.data = resp.data.filter(item => item.routerExternal === 0);
-        // 数据只有一页时不显示分页
         this.pagination = Object.assign({}, this.paginationConfig, { total: resp.count });
       } catch (err) {
 

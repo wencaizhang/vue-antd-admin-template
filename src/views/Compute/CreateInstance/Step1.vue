@@ -218,7 +218,6 @@ export default {
         this.diskList = resp.data.filter(item => item.status === 'available').map(item => {
           return Object.assign({}, item, { status_zh: this.__handleTransformToZh(item.status)})
         });
-        // 数据只有一页时不显示分页
         this.pagination = Object.assign({}, this.paginationConfig, { total: resp.count });
       } catch (error) {
         

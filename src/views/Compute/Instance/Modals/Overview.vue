@@ -147,9 +147,7 @@ export default {
       this.setTimeDiff()
     },
     setTimeDiff () {
-      const timeStr = this.currRecord.createDate + ':00'
-      const stamptime = (new Date(timeStr)).getTime();;
-      const timeDiff = getTimeDiff(stamptime)
+      const timeDiff = getTimeDiff(this.currRecord.timestamp)
       this.currRecord.timeDiff = timeDiff;
     }
   }

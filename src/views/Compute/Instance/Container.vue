@@ -31,12 +31,35 @@
               <a-icon type="down" />
             </a-button>
           </a-dropdown>
-          <a-input-search
-            placeholder="input search text"
-            @search="onSearch"
-            style="width: 200px"
-            enterButton
-          />
+
+          <span style="float: right;">
+            <a-input-group compact class="compact-search-input">
+              <a-select @change="v => searchValues.type = v" :defaultValue="searchValues.type" style="width: 72px;">
+                <a-select-option value="name">名称</a-select-option>
+                <a-select-option value="network">网络</a-select-option>
+                <a-select-option value="ipAddress">IP</a-select-option>
+              </a-select>
+              <a-input
+                placeholder="input search text"
+                style="width: 200px"
+                v-model="searchValues.inputValue"
+              />
+            </a-input-group>
+            
+            <a-select @change="v => searchValues.status = v" :defaultValue="searchValues.status" style="margin-left: 4px; width: 90px;">
+              <a-select-option key="all" value="all">全部</a-select-option>
+              <a-select-option key="build" value="build">等待中</a-select-option>
+              <a-select-option key="active" value="active">运行中</a-select-option>
+              <a-select-option key="paused" value="paused">已暂停</a-select-option>
+              <a-select-option key="shutoff" value="shutoff">已关机</a-select-option>
+              <a-select-option key="deleted" value="deleted">已删除</a-select-option>
+              <a-select-option key="reboot" value="reboot">重启中</a-select-option>
+            </a-select>
+            <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
+              <a-icon type="search" />
+            </a-button>
+          </span>
+          
         </div>
         <a-alert type="info" showIcon style="margin-bottom: 16px;">
           <div slot="message">
@@ -66,7 +89,7 @@
           </template>
           <template slot="status" slot-scope="text, record">
             <p>
-              <span :class="{ 'status-disabled': record.taskState }">{{ text }}</span>
+              <span :class="{ 'status-disabled': record.taskState }">{{ record.status_zh }}</span>
               <a-spin v-if="record.taskState">
                 <a-icon slot="indicator" type="loading-3-quarters" style="font-size: 12px" spin />
               </a-spin>
@@ -131,7 +154,10 @@ import tablePageMixins from "@/mixins/tablePageMixins";
 
 import { getinstanceList as getList, getInstanceStatus } from "@/api/compute/instance";
 
+import { transToTimestamp } from "@/utils/util";
+
 import instance from '@/i18n/zh/instance'
+import { constants } from 'crypto';
 
 const statusDicts = instance.instance.status;
 
@@ -165,6 +191,13 @@ export default {
       showAllotIPModal: false,
       selectedOperationKey: 0,
 
+      searchType: 'name',
+
+      searchValues: {
+        type: 'name',
+        inputValue: '',
+        status: 'all',
+      }
     };
   },
   mounted () {
@@ -173,7 +206,7 @@ export default {
   methods: {
     __handleFilterOptions (status) {
       // 等待和重启中禁止任何操作
-      if( ['BUILD', 'REBOOT'].includes(status) ) {
+      if( ['build', 'reboot'].includes(status) ) {
         return [];
       }
       // 操作菜单权限过滤
@@ -201,6 +234,8 @@ export default {
         let vcpu = item.vcpu + '核';
         let disk = item.disk + 'G';
         let spec = vcpu + memory;
+        let status = item.status.toLowerCase();
+        let timestamp = transToTimestamp(item.createDate + ':00');
 
         // 转换成中文
         let status_zh = this.__handleTransformToZh(item.status);
@@ -210,7 +245,7 @@ export default {
         const secuGroupString = secuGroupNameList.length ? secuGroupNameList.join(' ') : '-';
 
         Object.assign(item, {
-          memory, vcpu, spec, disk, secuGroupString, status_zh,
+          memory, vcpu, spec, disk, secuGroupString, status_zh, timestamp,
           singleMenuOptions: [ ...this.__handleFilterOptions(item.status) ],
           taskState: '',
         })
@@ -219,7 +254,7 @@ export default {
       return newData;
     },
     handleFetchSuccess () {
-      const processingStatus = [ 'BUILD', 'REBUILD' ]
+      const processingStatus = [ 'build', 'rebuild' ]
       const list = this.data.filter(item => processingStatus.includes(item.status));
       list.forEach(item => {
         this.handleTraceStatus(item.id);
@@ -267,7 +302,7 @@ export default {
       const currItem = this.data.find(item => item.id === id);
       const currIndex = this.data.indexOf(currItem);
       Object.assign(currItem, {
-        status: 'DELETED',
+        status: 'deleted',
         taskState: false,
         status_zh: '已删除',
         singleMenuOptions: [],
@@ -288,6 +323,60 @@ export default {
         this.handleSingleMenuClick(key, record)
       }
     },
+
+
+    /**
+     * 过滤
+     */
+    handleFilterByStatus () {
+      const { status } = this.searchValues;
+      if (this.tempData.length > 0) {
+        this.tempData = status === 'all' ? this.tempData : this.tempData.filter(item => item.status === status);
+      }
+    },
+    /**
+     * 搜索
+     */
+    handleFilterByInput () {
+      
+      const { type, inputValue } = this.searchValues;
+
+      if (this.tempData.length === 0 || inputValue === '') {
+        return;
+      }
+
+      const lowerInputValue = inputValue.toLowerCase();
+
+      const data = this.tempData.filter(item => {
+        const value = item[type];
+        if (typeof value === 'string') {
+          return value.toLowerCase().includes(lowerInputValue)
+        }
+        else if (Array.isArray(value)) {
+          // 考虑一维 string 类型的数组
+          return value.find(item => item.toLowerCase().includes(lowerInputValue))
+        }
+        else if (value.toString() === "[object Object]") {
+          return Object.values(value).find(item => item.toLowerCase().includes(lowerInputValue));
+        };
+      });
+      this.tempData = data;
+    },
+    handleCustomData () {
+      this.handleFilterByStatus();
+      this.handleFilterByInput();   // 搜索
+    }
+    // handleTableChange({ current, pageSize, }, filters, sorter) {
+    //   const { status_zh: statusList } = filters;
+    //   this.fetch({
+    //     pageSize,
+    //     pageIndex: current,
+    //     // sortField: sorter.field,
+    //     // sortOrder: sorter.order,
+    //     // ...filters
+    //   });
+    // },
+
   }
 };
 </script>
@@ -296,5 +385,12 @@ export default {
 .status-disabled {
   user-select: none;
   color: #BBB;
+}
+.compact-search-input {
+  display: inline-block;
+  width: auto;
+  /* FIXME 对齐问题 */
+  vertical-align: middle;
+  margin-top: -2px;
 }
 </style>

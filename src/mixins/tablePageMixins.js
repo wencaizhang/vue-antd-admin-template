@@ -1,21 +1,32 @@
 export default {
   mounted() {
+    this.pagination = Object.assign({}, this.pagination, this.initPagination);
     this.fetch();
   },
   data() {
     return {
       name: "选项",
-      pagination: {},
-      paginationConfig: {
+      pagination: { },
+      initPagination: {
+        total: 0,  // 数据个数
+        current: 1,  // 当前页码
+        pageSize: 10,  // 每页显示数量
         showSizeChanger: true,
-        pageSizeOptions: ['10', '20', '30', '40', '50']
+        pageSizeOptions: ['10', '20', '30', '40', '50'],
       },
+
       url: "/api/demo",
-      data: [],
+
+      allData: [],  // 所有的数据
+      tempData: [],  // 中间处理过程把数据临时存放到 tempData
+      data: [],  // 最终要展示在网页上的数据
+
       loading: false,
 
       selectedRowKeys: [],
-      currRecord: {}
+      currRecord: {},
+
+
     };
   },
   computed: {
@@ -37,8 +48,30 @@ export default {
     },
   },
   methods: {
+
+    /**
+     * 分页
+     */
+    getCurrPageData () {
+      const { total, current, pageSize  } = this.pagination;
+      const begin = (current - 1) * pageSize;
+      const end = current * pageSize;
+      this.tempData = this.tempData.slice( begin, end );
+    },
+    handleDATA () {
+      // 处理数据：分页，排序，过滤，搜索
+      this.tempData = this.allData;
+
+      this.handleCustomData && this.handleCustomData();
+
+      // 页码需要在分页之前
+      this.pagination = Object.assign({}, this.pagination, { total: this.tempData.length });
+
+      this.getCurrPageData();  // 分页
+      this.data = this.tempData;
+    },
+
     handleRefresh() {
-      this.handleClearSelected();
       this.fetch();
     },
 
@@ -47,9 +80,22 @@ export default {
       this.handleClearSelected();
       try {
         const resp = await this.getList(payload);
-        this.data = this.handleParseData ? this.handleParseData(resp.data) : resp.data;
-        // 数据只有一页时不显示分页
-        this.pagination = Object.assign({}, this.paginationConfig, { total: resp.count });
+
+        // 测试需要，用完删除
+        let arr = []
+        for (var i = 0; i < 9; i++) {
+          const tempArr = resp.data.map(item => Object.assign({}, item, {
+            id: item.id + '--' + item.name + '--' + i,
+            createDate: item.createDate.replace(/[0-9]{2}$/, parseInt(Math.random() * 60))
+          }));
+          arr = [...arr, ...tempArr]
+        }
+        // end
+
+
+        this.allData = this.handleParseData ? this.handleParseData(arr) : arr;
+        this.handleDATA();
+
         this.handleFetchSuccess();
       }
       catch (err) {
@@ -62,16 +108,11 @@ export default {
       }
     },
     handleFetchSuccess () {
-
+      // 数据请求结束后执行
     },
-    handleTableChange({ current, pageSize, }, filters, sorter) {
-      this.fetch({
-        pageSize,
-        pageIndex: current,
-        // sortField: sorter.field,
-        // sortOrder: sorter.order,
-        // ...filters
-      });
+    handleTableChange(pagination, filters, sorter) {
+      this.pagination = Object.assign({}, this.pagination, pagination);
+      this.handleDATA();
     },
 
     onTableSelectChange(selectedRowKeys) {
@@ -80,10 +121,6 @@ export default {
 
     handleClearSelected() {
       this.selectedRowKeys = [];
-    },
-
-    onSearch(value) {
-      // this.fetch();
     },
 
     handleViewDetail(record) {
@@ -111,6 +148,8 @@ export default {
 
     handleShowModal (key) {
       this.$store.commit(`${this.id}/toggleModalVisible`, key);
-    }
+    },
+
+    getSearchData() {},
   }
 };

@@ -5,7 +5,8 @@ const columns = [
   },
   {
     title: "创建时间",
-    dataIndex: "createDate"
+    dataIndex: "createDate",
+    sorter: true,
   },
   {
     title: "加密方法",
