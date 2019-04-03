@@ -22,12 +22,11 @@
         </thead>
         <tbody>
           
-        
         <tr v-for="item in list" :key="item.id">
           <td>{{ item.id.substr(0,8) }}</td>
           <td>{{ item.name }}</td>
           <td >
-            <span :class="{ 'status-disabled': item.taskState }">{{ item.status_zh }}</span>
+            <span class="blue" :class="{ 'status-disabled': item.taskState }">{{ item.status_zh }}</span>
             <a-icon v-show="item.taskState" type="loading-3-quarters" style="font-size: 12px; margin-left: 5px; color: #1890ff;" spin />
           </td>
         </tr>

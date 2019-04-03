@@ -11,7 +11,9 @@
       okType="danger"
     >
       <p v-if="some">即将软重启下列云主机，请确认你的操作。</p>
-      <p style="color: #ccc;" >本操作只对{{ availableStatus.map(s=>$parent.__handleTransformToZh(s)).join('、') }}状态的云主机有效</p>
+      <p >本操作只对
+        <span class="blue">{{ availableStatus.map(s=>$parent.__handleTransformToZh(s)).join('、') }}</span>
+        状态的云主机有效</p>
       <table>
         <thead>
           <tr>
@@ -26,7 +28,7 @@
           <td>{{ item.id.substr(0,8) }}</td>
           <td>{{ item.name }}</td>
           <td >
-            <span :class="{ 'status-disabled': item.taskState }">{{ item.status_zh }}</span>
+            <span class="blue" :class="{ 'status-disabled': item.taskState }">{{ item.status_zh }}</span>
             <a-icon v-show="item.taskState" type="loading-3-quarters" style="font-size: 12px; margin-left: 5px; color: #1890ff;" spin />
           </td>
         </tr>
@@ -67,23 +69,5 @@ export default {
 </script>
 
 <style scoped>
-p {
-  margin-bottom: 10px;
-  text-align: center;
-}
-table {
-  margin: 0 auto;
-  width: 100%;
-}
-table td, table th {
-  padding: 5px 10px;
-  border: 1px solid #f2f2f2;
-}
-.status-disabled {
-  user-select: none;
-  color: #BBB;
-}
-.fb {
-  font-weight: bold;
-}
+@import './multiStyle.css';
 </style>

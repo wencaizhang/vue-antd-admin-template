@@ -60,7 +60,7 @@ export default {
       }
       this.spinning = true;
       try {
-        const resp = await getImageList({ pageSize: 100, });
+        const resp = await getImageList();
         this.imageList = resp.data;
       } catch (err) {
         if (err.response.status === 404) {
