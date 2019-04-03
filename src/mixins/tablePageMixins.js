@@ -1,3 +1,4 @@
+import { transToTimestamp } from '@/utils/util'
 export default {
   mounted() {
     this.pagination = Object.assign({}, this.pagination, this.initPagination);
@@ -8,9 +9,9 @@ export default {
       name: "选项",
       pagination: { },
       initPagination: {
-        total: 0,  // 数据个数
-        current: 1,  // 当前页码
-        pageSize: 10,  // 每页显示数量
+        total: 0,     // 数据个数
+        current: 1,   // 当前页码
+        pageSize: 10, // 每页显示数量
         showSizeChanger: true,
         pageSizeOptions: ['10', '20', '30', '40', '50'],
       },
@@ -18,8 +19,8 @@ export default {
       url: "/api/demo",
 
       allData: [],  // 所有的数据
-      tempData: [],  // 中间处理过程把数据临时存放到 tempData
-      data: [],  // 最终要展示在网页上的数据
+      tempData: [], // 中间处理过程把数据临时存放到 tempData
+      data: [],     // 最终要展示在网页上的数据
 
       loading: false,
 
@@ -72,7 +73,8 @@ export default {
       setTimeout(() => {
         this.data = this.tempData;
         this.loading = false;
-      }, 100)
+        this.handleFetchSuccess();
+      }, 100);
     },
 
     handleRefresh() {
@@ -84,23 +86,12 @@ export default {
       this.handleClearSelected();
       try {
         const resp = await this.getList(payload);
-
-        // 测试需要，用完删除
-        // let arr = []
-        // for (var i = 0; i < 9; i++) {
-        //   const tempArr = resp.data.map(item => Object.assign({}, item, {
-        //     id: item.id + '--' + item.name + '--' + i,
-        //     createDate: item.createDate.replace(/[0-9]{2}$/, parseInt(Math.random() * 60))
-        //   }));
-        //   arr = [...arr, ...tempArr]
-        // }
-        // end
-
-
         this.allData = this.handleParseData ? this.handleParseData(resp.data) : resp.data;
-        this.handleDATA();
 
-        this.handleFetchSuccess();
+        resp.data.forEach(item => {
+          item.timestamp = transToTimestamp(item.createDate + ':00');
+        })
+        this.handleDATA();
       }
       catch (err) {
         if (err.response.status === 404) {
