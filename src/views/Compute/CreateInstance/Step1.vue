@@ -95,7 +95,7 @@
           :rowSelection="{selectedRowKeys: selectedNetworkRowKeys, onChange: onDiskSelectChange}"
           :columns="columns"
           :rowKey="record => record.id"
-          :dataSource="diskList"
+          :dataSource="data"
           :pagination="pagination"
           :loading="loading"
         >
@@ -167,31 +167,37 @@ export default {
       form: this.$form.createForm(this),
       labelCol: { span: 8 },
       wrapperCol: { span: 12 },
-      diskList: [],
       columns,
       loading: false,
       systemDisk: 1,
       optionList,
+
+      data: [],
+      allData: [],
       pagination: {},
-      paginationConfig: {
+      initPagination: {
+        total: 0,     // 数据个数
+        current: 1,   // 当前页码
+        pageSize: 10, // 每页显示数量
         showSizeChanger: true,
-        pageSizeOptions: ['10', '20', '30', '40', '50']
+        pageSizeOptions: ['10', '20', '30', '40', '50'],
       },
       selectedNetworkRowKeys: []
     };
   },
   methods: {
     __handleTransformToZh (status) {
-      return statusDicts[status.toUpperCase()] || status
+      return statusDicts[status.toLowerCase()] || status
     },
     handleSubmit() {
       return new Promise((resolve, reject) => {
         this.form.validateFieldsAndScroll((err, values) => {
-          err ? reject(err) : resolve(Object.assign({}, values, {
-              dataDisk: this.selectedNetworkRowKeys,
-              memory: values.memory * 1024,
-              // 接口需要内存单位为 M
-            }));
+          err ? reject(err)
+              : resolve(Object.assign({}, values, {
+                  dataDisk: this.selectedNetworkRowKeys,
+                  memory: values.memory * 1024,
+                  // 接口需要内存单位为 M
+                }));
         });
       })
     },
@@ -204,21 +210,32 @@ export default {
     onDiskSelectChange(selectedRowKeys) {
       this.selectedNetworkRowKeys = selectedRowKeys;
     },
-    handleTableChange({ current, pageSize, },) {
-      this.fetch({
-        pageSize,
-        pageIndex: current,
-      });
+    getCurrPageData () {
+      const { total, current, pageSize  } = this.pagination;
+      const begin = (current - 1) * pageSize;
+      const end = current * pageSize;
+
+      setTimeout(() => {
+        this.data = this.allData.slice( begin, end );
+        this.loading = false;
+      }, 100);
+    },
+    handleTableChange(pagination) {
+      this.loading = true;
+      this.pagination = Object.assign({}, this.pagination, pagination);
+      this.getCurrPageData();
     },
     async fetch (payload={}) {
       this.loading = true;
       try {
         // status: 状态[0:使用中 1:可挂载]
         const resp = await getDiskList(Object.assign(payload, { status: 1 }));
-        this.diskList = resp.data.filter(item => item.status === 'available').map(item => {
+        this.allData = resp.data.filter(item => item.status === 'available').map(item => {
           return Object.assign({}, item, { status_zh: this.__handleTransformToZh(item.status)})
         });
-        this.pagination = Object.assign({}, this.paginationConfig, { total: resp.count });
+
+        this.pagination = Object.assign({}, this.initPagination, { total: this.allData.length });
+        this.getCurrPageData();
       } catch (error) {
         
       } finally {

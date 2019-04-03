@@ -54,18 +54,38 @@ export default {
   },
   data() {
     return {
-      data: [],
       columns,
       loading: false,
+
+      data: [],
+      allData: [],
       pagination: {},
-      paginationConfig: {
+      initPagination: {
+        total: 0,     // 数据个数
+        current: 1,   // 当前页码
+        pageSize: 10, // 每页显示数量
         showSizeChanger: true,
-        pageSizeOptions: ['10', '20', '30', '40', '50']
+        pageSizeOptions: ['10', '20', '30', '40', '50'],
       },
       selectedNetworkRowKeys: [],
     };
   },
   methods: {
+    getCurrPageData () {
+      const { total, current, pageSize  } = this.pagination;
+      const begin = (current - 1) * pageSize;
+      const end = current * pageSize;
+
+      setTimeout(() => {
+        this.data = this.allData.slice( begin, end );
+        this.loading = false;
+      }, 100);
+    },
+    handleTableChange(pagination) {
+      this.loading = true;
+      this.pagination = Object.assign({}, this.pagination, pagination);
+      this.getCurrPageData();
+    },
     async fetch(payload={}) {
       this.loading = true;
       try {
@@ -76,19 +96,14 @@ export default {
             format: int32
             description: 是否为外部路由[0:否 1:是]
          */
-        this.data = resp.data.filter(item => item.routerExternal === 0);
-        this.pagination = Object.assign({}, this.paginationConfig, { total: resp.count });
+        this.allData = resp.data.filter(item => item.routerExternal === 0);
+        this.pagination = Object.assign({}, this.initPagination, { total: this.allData.length });
+        this.getCurrPageData();
       } catch (err) {
 
       } finally {
         this.loading = false;
       }
-    },
-    handleTableChange({ current, pageSize, },) {
-      this.fetch({
-        pageSize,
-        pageIndex: current,
-      });
     },
     handleSubmit() {
       return new Promise((resolve, reject) => {
