@@ -37,10 +37,9 @@
               <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 72px;">
                 <a-select-option value="name">名称</a-select-option>
                 <a-select-option value="network">网络</a-select-option>
-                <a-select-option value="ipAddress">IP</a-select-option>
+                <a-select-option value="ipAddress">公网IP</a-select-option>
               </a-select>
               <a-input
-                placeholder="input search text"
                 style="width: 200px"
                 @pressEnter="handleDATA" 
                 v-model="searchValues.inputValue"
