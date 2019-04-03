@@ -70,7 +70,7 @@ const allInstanceStatus = [
   'paused',
   // 'reboot', // 重启中禁止任何操作 
   'shutoff',
-  'rebuild',
+  // 'rebuild',  // 重建中禁止任何操作
   'suspended',
   'resize',
   'verify_resize',
