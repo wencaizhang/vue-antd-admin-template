@@ -55,6 +55,13 @@ export default {
       imageProvider: '0',
       imageObj: {},
       spinning: false,
+
+      allList: [],
+      type: {
+        '0': 'public',
+        '1': 'private',
+        '2': 'unknown'
+      }
     };
   },
   mounted () {
@@ -62,27 +69,24 @@ export default {
   },
   computed: {
     imageList () {
-      return this.imageObj[this.imageProvider] || [];
+      return this.allList.filter(item => item.isPublic === this.type[this.imageProvider])
     },
   },
   methods: {
     async fetchImageList () {
-      if (this.imageObj[this.imageProvider]) {
+      if (this.allList.length) {
         return;
       }
       this.spinning = true;
       let list = [];
       try {
-        const resp = await getImageList({
-          imageSource: this.imageProvider
-        })
-        list = resp.data;
+        const resp = await getImageList()
+        this.allList = resp.data;
       } catch (err) {
         if (err.response.status === 404) {
           
         }
       } finally {
-        this.$set(this.imageObj, this.imageProvider, list);
         this.spinning = false;
       }
     },
