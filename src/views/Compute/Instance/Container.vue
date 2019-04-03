@@ -47,7 +47,7 @@
               />
             </a-input-group>
             
-            <a-select @change="v => searchValues.status = v" v-model="searchValues.status" style="margin-left: 4px; width: 90px;">
+            <a-select @change="v => searchValues.status = v" v-model="searchValues.status" style="margin-left: 8px; width: 90px;">
               <a-select-option key="all" value="all">全部</a-select-option>
               <a-select-option key="build" value="build">等待中</a-select-option>
               <a-select-option key="active" value="active">运行中</a-select-option>
@@ -271,7 +271,7 @@ export default {
     __handleUpdateStatus({ id, status, taskState }) {
       // 更新表格中的状态
       const currItem = this.data.find(item => item.id === id);
-      const currStatus = (status || currItem.status).toUpperCase();
+      const currStatus = (status || currItem.status).toLowerCase();
       const options = this.__handleFilterOptions(currStatus);
       Object.assign(currItem, {
         status: currStatus,

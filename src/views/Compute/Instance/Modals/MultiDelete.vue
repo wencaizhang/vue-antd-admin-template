@@ -1,6 +1,6 @@
 
 <template>
-  <div>
+  <div class="modal">
     <a-modal
       @cancel="handleCancel"
       @ok="handleCreate"
@@ -65,23 +65,5 @@ export default {
 </script>
 
 <style scoped>
-p {
-  margin-bottom: 10px;
-  text-align: center;
-}
-table {
-  margin: 0 auto;
-  width: 100%;
-}
-table td, table th {
-  padding: 5px 10px;
-  border: 1px solid #f2f2f2;
-}
-.status-disabled {
-  user-select: none;
-  color: #BBB;
-}
-.fb {
-  font-weight: bold;
-}
+@import './multiStyle.css';
 </style>

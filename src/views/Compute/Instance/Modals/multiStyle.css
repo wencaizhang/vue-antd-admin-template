@@ -1,22 +1,22 @@
-p {
+.modal p {
   margin-bottom: 10px;
   text-align: center;
 }
-table {
+.modal table {
   margin: 0 auto;
   width: 100%;
 }
-table td, table th {
+.modal table td, table th {
   padding: 5px 10px;
   border: 1px solid #f2f2f2;
 }
-.status-disabled {
+.modal .status-disabled {
   user-select: none;
   color: #BBB;
 }
-.fb {
+.modal .fb {
   font-weight: bold;
 }
-.blue {
+.modal .blue {
   color: #1890ff;
 }
