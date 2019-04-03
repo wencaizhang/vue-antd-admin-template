@@ -82,18 +82,18 @@ export default {
         const resp = await this.getList(payload);
 
         // 测试需要，用完删除
-        let arr = []
-        for (var i = 0; i < 9; i++) {
-          const tempArr = resp.data.map(item => Object.assign({}, item, {
-            id: item.id + '--' + item.name + '--' + i,
-            createDate: item.createDate.replace(/[0-9]{2}$/, parseInt(Math.random() * 60))
-          }));
-          arr = [...arr, ...tempArr]
-        }
+        // let arr = []
+        // for (var i = 0; i < 9; i++) {
+        //   const tempArr = resp.data.map(item => Object.assign({}, item, {
+        //     id: item.id + '--' + item.name + '--' + i,
+        //     createDate: item.createDate.replace(/[0-9]{2}$/, parseInt(Math.random() * 60))
+        //   }));
+        //   arr = [...arr, ...tempArr]
+        // }
         // end
 
 
-        this.allData = this.handleParseData ? this.handleParseData(arr) : arr;
+        this.allData = this.handleParseData ? this.handleParseData(resp.data) : resp.data;
         this.handleDATA();
 
         this.handleFetchSuccess();

@@ -42,6 +42,7 @@
               <a-input
                 placeholder="input search text"
                 style="width: 200px"
+                @pressEnter="handleDATA" 
                 v-model="searchValues.inputValue"
               />
             </a-input-group>
