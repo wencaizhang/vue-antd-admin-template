@@ -46,7 +46,6 @@ export const baseModalMixins = {
       // 隐藏 modal 之后触发，参见 watch.visible
     },
     handleCancel() {
-      console.log('cancel');
       this.$store.commit(`${this.$parent.id}/toggleModalVisible`, this.name);
     },
     handleCreate() {
