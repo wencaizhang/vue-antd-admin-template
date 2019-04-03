@@ -13,7 +13,7 @@
             >创建</a-button>
             <a-button type="danger" @click="handleBatchDelete" style="margin-right: 10px;">删除</a-button>
             <a-input-search
-              placeholder="input search text"
+              placeholder=" "
               @search="getSearchData"
               style="width: 200px"
               enterButton

@@ -23,7 +23,7 @@
               </a-button>
             </a-dropdown>
             <a-input-search
-              placeholder="input search text"
+              placeholder=" "
               @search="getSearchData"
               style="width: 200px"
               enterButton
