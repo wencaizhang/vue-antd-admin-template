@@ -130,29 +130,30 @@
         v-if="loginWay == 0"
         label="SSH密钥："
       >
-        <div>
+        <!-- <div>
           <span style="margin-right: 3px;">选择已有密钥，或</span>
           <a @click="createKeypair">新建</a>
-        </div>
+        </div> -->
         <a-spin
           :spinning="loading"
           tip="正在加载密钥数据..."
-          class="a-spin-text-align-left"
+          style="width: 250px; display: inline-block;"
         >
-          <a-radio-group
+          <a-select
             v-decorator="[
               'secretKey',
               {rules: [{ required: true, message: '请选择密钥!' }]}
             ]"
           >
-            <a-radio
+            <a-select-option
               v-for="item in keypairList"
               :key="item.name"
               :value="item.name"
               style="display: block;"
-            >{{ item.name }}</a-radio>
-          </a-radio-group>
+            >{{ item.name }}</a-select-option>
+          </a-select>
         </a-spin>
+        <a @click="createKeypair" style="margin-left: 8px;">新建</a>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="用户数据：" style="margin-bottom: 5px;">
         <a-radio-group
@@ -195,17 +196,21 @@
         </a-col>
       </a-row>
     </a-form>
-    <!-- <CreateModal /> -->
+    <create-keypair :visible="showCreateKeypairModal"/>
+    <download-keypair :visible="showDownloadKeypairModal" />
+    
   </div>
 </template>
 <script>
+import CreateKeypair from './modal/CreateKeypair'
+import DownloadKeypair from './modal/DownloadKeypair'
+
 import { getKeyPairList } from "@/api/compute/keypair";
 import { rulesObj } from '@/utils/util';
 
-// import CreateModal from "@/views/Compute/KeyPair/Modal/Create";
 export default {
-  // components: [CreateModal],
   props: ['defaultUserName'],
+  components:  { DownloadKeypair, CreateKeypair },
   data() {
     return {
       rulesObj,
@@ -220,6 +225,10 @@ export default {
       loading: false,
 
       loginWay: 0,
+
+      showCreateKeypairModal: false,
+      showDownloadKeypairModal: false,
+      createKeypairData: {},
     };
   },
   mounted() {
@@ -227,7 +236,6 @@ export default {
   },
   computed: {
     userNameList () {
-      console.log('this.defaultUserName', this.defaultUserName)
       return this.defaultUserName ? [ this.defaultUserName ] : [];
     }
   },
@@ -237,6 +245,9 @@ export default {
       try {
         const resp = await getKeyPairList();
         this.keypairList = resp.data;
+        this.form.setFieldsValue({
+          secretKey: this.createKeypairData.name || ''
+        })
       } catch (err) {
 
       } finally {
@@ -244,7 +255,7 @@ export default {
       }
     },
     createKeypair () {
-
+      this.showCreateKeypairModal = true;
     },
     handleSelectUserName (value) {
       // 只允许选择一个名字
@@ -302,12 +313,12 @@ export default {
 <style>
 
 /* a-spin 加载动画靠左显示 */
-.a-spin-text-align-left .ant-spin-dot {
+/* .a-spin-text-align-left .ant-spin-dot {
   left: 0 !important;
   margin-left: 40px !important;
 }
 
 .a-spin-text-align-left .ant-spin-text {
   width: auto !important;
-}
+} */
 </style>
