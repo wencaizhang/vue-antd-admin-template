@@ -89,8 +89,16 @@ export default {
         this.allData = this.handleParseData ? this.handleParseData(resp.data) : resp.data;
 
         resp.data.forEach(item => {
-          item.timestamp = transToTimestamp(item.createDate + ':00');
+          if (item.createDate) {
+            // 计算时间戳
+            item.timestamp = transToTimestamp(item.createDate + ':00');
+          }
+          if (item.status) {
+            // 保证状态永远是小写字母
+            item.status = item.status.toLowerCase();
+          }
         })
+        
         this.handleDATA();
       }
       catch (err) {
