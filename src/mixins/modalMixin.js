@@ -46,6 +46,7 @@ export const baseModalMixins = {
       // 隐藏 modal 之后触发，参见 watch.visible
     },
     handleCancel() {
+      console.log('cancel');
       this.$store.commit(`${this.$parent.id}/toggleModalVisible`, this.name);
     },
     handleCreate() {
@@ -54,7 +55,6 @@ export const baseModalMixins = {
     async handleFetch() {
       this.confirmLoading = true;
       try {
-        console.log('this.formValues', this.formValues)
         const resp = await this.fetchAPI(this.formValues);
         this.handleCancel();
         this.openNotification(resp);

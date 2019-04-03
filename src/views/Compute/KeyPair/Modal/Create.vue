@@ -51,28 +51,38 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
-import { createKeyPair as fetchAPI, downloadKeyPair } from '@/api/compute/keypair';
+// import { createKeyPair as fetchAPI } from '@/api/compute/keypair';
 import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
       rulesObj,
-      fetchAPI,
+      // fetchAPI,
       name: "create"
     };
   },
   methods: {
-    openNotification(resp) {
-      const { download } = this;
-      this.$message.success(
-        <span>密钥对创建成功，请立即下载</span>,
-        3
-      );
-      this.$store.commit(`${this.$parent.id}/setLastCreatedKeyPair`, resp);
-      this.$parent.handleSingleMenuClick('download');
+    handleCreate () {
+      const self = this;
+      this.form.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          self.formValues = Object.assign({}, self.formValues, values);
+          self.$store.commit(`${self.$parent.id}/setLastCreatedKeyPair`, self.formValues);
+          self.$parent.handleSingleMenuClick('download');
+        }
+      });
     },
-  }
+    // openNotification(resp) {
+    //   const { download } = this;
+    //   this.$message.success(
+    //     <span>密钥对创建成功，请立即下载</span>,
+    //     3
+    //   );
+    //   this.$store.commit(`${this.$parent.id}/setLastCreatedKeyPair`, resp);
+    //   this.$parent.handleSingleMenuClick('download');
+    // },
+  },
 };
 </script>
 
