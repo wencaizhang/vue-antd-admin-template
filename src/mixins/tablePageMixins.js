@@ -59,6 +59,7 @@ export default {
       this.tempData = this.tempData.slice( begin, end );
     },
     handleDATA () {
+      this.handleClearSelected()
       // 处理数据：分页，排序，过滤，搜索
       this.tempData = this.allData;
 
