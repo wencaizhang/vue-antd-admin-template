@@ -2,7 +2,7 @@
   <div>
     <page-layout>
       <div class="content">
-        <div class="table-operator" style="margin-bottom: 16px;">
+        <div class="table-operator clearfix" style="margin-bottom: 16px;">
           <a-button icon="sync" :disabled="loading" @click="handleRefresh" style="margin-right: 10px;" title="刷新"></a-button>
           <a-button @click="$router.push({name: 'CreateInstance'})" type="primary" style="margin-right: 10px;" icon="plus">
             新建
@@ -305,18 +305,22 @@ export default {
       }
     },
     __handleDeleteInstance (id) {
-      // 更新 data
+      // 更新实例数据
       const currItem = this.data.find(item => item.id === id);
-      const currIndex = this.data.indexOf(currItem);
       Object.assign(currItem, {
         status: 'deleted',
         taskState: false,
         status_zh: '已删除',
         singleMenuOptions: [],
       });
+
+      // 删除并更新页码数据
+      const currIndex = this.data.indexOf(currItem);
+      const currIndexInAll = this.allData.indexOf(currItem);
       this.data.splice(currIndex, 1);
-      // 更新页码
-      this.pagination.total = this.pagination.total ? this.pagination.total - 1 : 0;
+      this.allData.splice(currIndex, 1);
+      this.pagination.total = this.allData.length;
+
       // 更新选择项
       const index = this.selectedRowKeys.indexOf(id);
       this.selectedRowKeys.splice(index, 1);

@@ -12,7 +12,7 @@ export default {
       // verify_resize: '',
       // REVERT_resize: '',
       // password: '',
-      // hard_reboot: '硬重启',
+      hard_reboot: '硬重启',
       deleted: '已删除',
       // unknown: '',
       error: '错误',
