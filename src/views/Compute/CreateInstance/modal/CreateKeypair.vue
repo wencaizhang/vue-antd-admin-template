@@ -45,6 +45,15 @@
             <!-- <a-select-option value="ssh-dss">ssh-dss</a-select-option> -->
           </a-select>
         </a-form-item>
+        <a-form-item
+          label="描述："
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
+          <a-textarea
+            v-decorator="[ 'description', ]"
+          />
+        </a-form-item>
       </a-form>
     </a-modal>
   </div>

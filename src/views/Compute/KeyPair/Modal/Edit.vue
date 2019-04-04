@@ -28,21 +28,15 @@
             ]"
           />
         </a-form-item>
-        <!-- <a-form-item
+        <a-form-item
           label="描述："
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-textarea
-            v-decorator="[
-              'description',
-              {
-                initialValue: currRecord.description,
-                rules: [{ message: '请输入描述!' }]
-              }
-            ]"
+            v-decorator="[ 'description', ]"
           />
-        </a-form-item> -->
+        </a-form-item>
       </a-form>
     </a-modal>
   </div>

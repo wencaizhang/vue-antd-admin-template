@@ -51,13 +51,7 @@
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-textarea
-            v-decorator="[
-              'desc',
-              {
-                rules: [
-                ]
-              }
-            ]"
+            v-decorator="[ 'description', ]"
           />
         </a-form-item>
       </a-form>
