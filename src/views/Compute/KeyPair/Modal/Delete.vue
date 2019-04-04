@@ -5,9 +5,10 @@
       :visible="visible"
       @cancel="handleCancel"
       title="删除密钥对"
+      type="danger"
     >
       <p><a-icon type="warning" style="color: #faad14;" /> 删除前请确认你已经备份该秘钥，或者确定已不再使用该秘钥。</p>
-      <p style="margin-top: 10px;" >即将删除下列密钥对 {{ list.map(item=>item.id).join(', ') }}，请确认你的操作。</p>
+      <p style="margin-top: 10px;" >即将删除密钥对 {{ list.map(item=>item.id).join(', ') }}，请确认你的操作。</p>
       <template slot="footer">
         <template v-if="!showMyFooter">
           <a-button @click="handleCancel">取消</a-button>

@@ -1,8 +1,7 @@
 import { transToTimestamp } from '@/utils/util'
 export default {
   mounted() {
-    this.pagination = Object.assign({}, this.pagination, this.initPagination);
-    this.fetch();
+    this.handleRefresh();
   },
   data() {
     return {
@@ -48,7 +47,6 @@ export default {
     },
   },
   methods: {
-
     /**
      * 分页
      */
@@ -79,6 +77,7 @@ export default {
     },
 
     handleRefresh() {
+      this.pagination = Object.assign({}, this.pagination, this.initPagination);
       this.fetch();
     },
 
