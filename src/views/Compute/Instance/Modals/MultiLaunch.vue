@@ -67,5 +67,26 @@ export default {
 };
 </script>
 <style scoped>
-@import './multiStyle.css';
+p {
+  margin-bottom: 10px;
+  text-align: center;
+}
+table {
+  margin: 0 auto;
+  width: 100%;
+}
+table td, table th {
+  padding: 5px 10px;
+  border: 1px solid #f2f2f2;
+}
+.status-disabled {
+  user-select: none;
+  color: #BBB;
+}
+.fb {
+  font-weight: bold;
+}
+.blue {
+  color: #1890ff;
+}
 </style>
