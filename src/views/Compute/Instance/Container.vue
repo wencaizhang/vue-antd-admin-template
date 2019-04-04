@@ -209,6 +209,7 @@ export default {
         inputValue: '',
         status: 'all',
       }
+      this.pagination = Object.assign({}, this.pagination, this.initPagination);
       this.fetch();
     },
     __handleFilterOptions (status) {

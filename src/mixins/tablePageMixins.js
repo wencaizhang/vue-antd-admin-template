@@ -1,8 +1,5 @@
 import { transToTimestamp } from '@/utils/util'
 export default {
-  mounted() {
-    this.handleRefresh();
-  },
   data() {
     return {
       name: "选项",
@@ -46,14 +43,21 @@ export default {
       return this.menuOptions.filter(item => item.type === 'single')
     },
   },
+  mounted() {
+    this.handleRefresh();
+  },
   methods: {
+    handleRefresh() {
+      this.pagination = Object.assign({}, this.pagination, this.initPagination);
+      this.fetch();
+    },
     /**
      * 分页
      */
     getCurrPageData () {
       const { total, current, pageSize  } = this.pagination;
-      const begin = (current - 1) * pageSize;
-      const end = current * pageSize;
+      const begin = (current - 1) * pageSize || 0;
+      const end = current * pageSize || 10;
       this.tempData = this.tempData.slice( begin, end );
     },
     handleDATA () {
@@ -76,10 +80,6 @@ export default {
       }, 100);
     },
 
-    handleRefresh() {
-      this.pagination = Object.assign({}, this.pagination, this.initPagination);
-      this.fetch();
-    },
 
     async fetch (payload={}) {
       this.loading = true;
