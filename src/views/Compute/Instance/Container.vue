@@ -314,11 +314,10 @@ export default {
         singleMenuOptions: [],
       });
 
-      // 删除并更新页码数据
-      const currIndex = this.data.indexOf(currItem);
+      // 删除并更新页面
       const currIndexInAll = this.allData.indexOf(currItem);
-      this.data.splice(currIndex, 1);
-      this.allData.splice(currIndex, 1);
+      this.allData.splice(currIndexInAll, 1);
+      this.handleDATA();
       this.pagination.total = this.allData.length;
 
       // 更新选择项
