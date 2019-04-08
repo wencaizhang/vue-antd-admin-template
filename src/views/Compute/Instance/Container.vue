@@ -34,7 +34,7 @@
 
           <span style="float: right;">
             <a-input-group compact class="compact-search-input">
-              <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 72px;">
+              <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 90px!important;">
                 <a-select-option value="name">名称</a-select-option>
                 <a-select-option value="network">网络</a-select-option>
                 <a-select-option value="ipAddress">公网IP</a-select-option>
@@ -156,8 +156,6 @@ import { getinstanceList as getList, getInstanceStatus } from "@/api/compute/ins
 import { transToTimestamp } from "@/utils/util";
 
 import instance from '@/i18n/zh/instance'
-import { constants } from 'crypto';
-
 const statusDicts = instance.instance.status;
 
 export default {
