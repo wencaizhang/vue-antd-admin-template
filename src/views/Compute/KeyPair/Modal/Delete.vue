@@ -4,12 +4,17 @@
     <a-modal
       :visible="visible"
       @cancel="handleCancel"
+      @ok="handleCreate"
+      :confirmLoading="confirmLoading"
       title="删除密钥对"
       type="danger"
+      okText="删除"
+      okType="danger"
     >
       <p><a-icon type="warning" style="color: #faad14;" /> 删除前请确认你已经备份该秘钥，或者确定已不再使用该秘钥。</p>
-      <p style="margin-top: 10px;" >即将删除密钥对 {{ list.map(item=>item.id).join(', ') }}，请确认你的操作。</p>
-      <template slot="footer">
+      <p style="margin-top: 10px;" >即将删除密钥对 {{ list.join(', ') }}，请确认你的操作。</p>
+
+      <!-- <template slot="footer">
         <template v-if="!showMyFooter">
           <a-button @click="handleCancel">取消</a-button>
           <a-button @click="handleCreate" :loading="confirmLoading" type="danger">删除</a-button>
@@ -17,7 +22,7 @@
         <template v-else>
           <a-button @click="handleClose">确定</a-button>
         </template>
-      </template>
+      </template> -->
 
     </a-modal>
   </div>
@@ -31,38 +36,15 @@ export default {
     return {
       fetchAPI,
       name: "batchDeleta",
-      showMyFooter: false,
+      // showMyFooter: false,
       list: [],
       listLength: 0,
     };
   },
-  filters: {
-    desc (item) {
-      const obj = {
-        // 空字符：未删除
-        pending: "删除中",
-        fulfilled: "已删除",
-        rejected: "删除失败",
-      }
-      return obj[ item.status ] || '';
-    }
-  },
   methods: {
     onShow () {
-      this.showMyFooter = false;
-      this.list = this.$parent.selectedRowKeys.map(item => {
-        return {
-          id: item,
-          status: '',
-          /**
-           * status 表示删除的状态（参考 Promise 的三种状态），有四个值
-           * 空字符：未删除
-           * pending: 删除中
-           * fulfilled: 删除成功
-           * rejected: 删除失败
-           */
-        }
-      });
+      // this.showMyFooter = false;
+      this.list = this.$parent.selectedRowKeys;
       this.listLength = this.list.length;
     },
     handleFetch() {
@@ -79,18 +61,18 @@ export default {
     handleFetchEnd () {
       // 所有请求全部结束
       this.confirmLoading = false;
-      this.showMyFooter = true;
-      this.$message.success('操作完成');
+      // this.showMyFooter = true;
+      this.handleCancel();
+      this.handleRefreshParentTable();
+      this.$message.success('删除完成');
     },
     async handleDelete (item) {
       try {
-        item.status = 'pending';
-        const payload = {secretKeyId: item.id}
+        const payload = {secretKeyId: item}
         const resp = await this.fetchAPI(payload);
-        item.status = 'fulfilled';
       }
       catch (err) {
-        item.status = 'rejected';
+
       }
       finally {
         this.listLength = this.listLength - 1;
@@ -99,10 +81,6 @@ export default {
         }
       }
     },
-    handleClose () {
-      this.handleCancel();
-      this.handleRefreshParentTable();
-    }
   }
 };
 </script>
