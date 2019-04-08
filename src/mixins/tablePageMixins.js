@@ -91,7 +91,9 @@ export default {
         resp.data.forEach(item => {
           if (item.createDate) {
             // 计算时间戳
-            item.timestamp = transToTimestamp(item.createDate + ':00');
+            const createDate = item.createDate;
+            item.timestamp = transToTimestamp(createDate);
+            item.createDate = createDate.substring(0, createDate.length - 3);
           }
           if (item.status) {
             // 保证状态永远是小写字母
