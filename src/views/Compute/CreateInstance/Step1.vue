@@ -100,7 +100,7 @@
           :loading="loading"
         >
           <template slot="id" slot-scope="id">
-            {{ id.substr(0, 8) }}
+            {{ id.substring(0, 8) }}
           </template>
         </a-table>
       </a-form-item>

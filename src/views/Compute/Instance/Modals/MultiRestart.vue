@@ -25,7 +25,7 @@
         <tbody>
           
         <tr v-for="item in list" :key="item.id">
-          <td>{{ item.id.substr(0,8) }}</td>
+          <td>{{ item.id.substring(0,8) }}</td>
           <td>{{ item.name }}</td>
           <td >
             <span class="blue" :class="{ 'status-disabled': item.taskState }">{{ item.status_zh }}</span>

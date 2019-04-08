@@ -81,7 +81,7 @@
           @change="handleTableChange"
         >
           <template slot="id" slot-scope="id, record">
-            <a @click="handleSingleMenuClick('hostDetail', record)" title="查看云主机概况">{{ id.substr(0, 8) }}</a>
+            <a @click="handleSingleMenuClick('hostDetail', record)" title="查看云主机概况">{{ id.substring(0, 8) }}</a>
           </template>
           <template slot="network" slot-scope="network">
             <p v-for="item in network" :key="item">{{ item }}</p>
@@ -243,7 +243,6 @@ export default {
         let disk = item.disk + 'G';
         let spec = vcpu + memory;
         let status = item.status.toLowerCase();
-        let timestamp = transToTimestamp(item.createDate + ':00');
 
         // 转换成中文
         let status_zh = this.__handleTransformToZh(item.status);
@@ -253,7 +252,7 @@ export default {
         const secuGroupString = secuGroupNameList.length ? secuGroupNameList.join(' ') : '-';
 
         Object.assign(item, {
-          memory, vcpu, spec, disk, secuGroupString, status_zh, timestamp,
+          memory, vcpu, spec, disk, secuGroupString, status_zh,
           singleMenuOptions: [ ...this.__handleFilterOptions(item.status) ],
           taskState: '',
         })
