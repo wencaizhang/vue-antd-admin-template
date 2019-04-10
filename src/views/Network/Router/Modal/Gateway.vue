@@ -12,16 +12,21 @@
       <a-form :form="form">
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="外部网络：">
           <a-select
+            placeholder="请选择外部网络"
             v-decorator="[
-              'net',
+              'externalId',
               {
-                initialValue: 'ext_ipv4',
-                rules: [{ required: true, message: '请输入名称' }]
+                initialValue: currRecord.extrannet
               }
             ]"
           >
-            <a-select-option value="ext_ipv4">ext_ipv4</a-select-option>
-            <a-select-option value="ext_ipv6">ext_ipv6</a-select-option>
+            <a-select-option
+              v-for="item in $parent.networkList"
+              :key="item.id" 
+              :value="item.id"
+            >
+            {{item.name}}
+            </a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="路由名称：">
@@ -29,23 +34,11 @@
             v-decorator="[
               'name',
               {
-                initialValue: 'web1',
+                initialValue: currRecord.name,
                 rules: [{ required: true, message: '请输入名称' }]
               }
             ]"
             placeholder="请输入名称"
-          />
-        </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="路由ID：">
-          <a-input
-            v-decorator="[
-              'id',
-              {
-                initialValue: 'wexxxb1',
-                rules: [{ required: true, message: '请输入ID' }]
-              }
-            ]"
-            placeholder="请输入ID"
           />
         </a-form-item>
       </a-form>
@@ -54,14 +47,26 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
+import { setGateway as fetchAPI } from "@/api/network/router";
+
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
-      name: "gateway"
+      fetchAPI,
+      name: "gateway",
     };
   },
 
-  methods: {}
+  methods: {
+    onShow () {
+      // 操作类型[0:设置 1:清除]
+      this.formValues = { routerId: this.currRecord.id, type: 0 };
+      // const { data, selectedRowKeys } = this.$parent;
+      // this.list = data.filter(item => {
+      //   return selectedRowKeys.includes(item.id);
+      // })
+    },
+  },
 };
 </script>

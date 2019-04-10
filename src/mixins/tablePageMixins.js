@@ -51,6 +51,44 @@ export default {
       this.pagination = Object.assign({}, this.pagination, this.initPagination);
       this.fetch();
     },
+
+    /**
+     * 过滤
+     */
+    handleFilterByStatus () {
+      const { status } = this.searchValues;
+      if (status && this.tempData.length > 0) {
+        this.tempData = status === 'all' ? this.tempData : this.tempData.filter(item => item.status === status);
+      }
+    },
+    /**
+     * 搜索
+     */
+    handleFilterByInput () {
+      
+      const { type, inputValue } = this.searchValues;
+
+      if (this.tempData.length === 0 || inputValue === '') {
+        return;
+      }
+
+      const lowerInputValue = inputValue.toLowerCase();
+
+      const data = this.tempData.filter(item => {
+        const value = item[type];
+        if (typeof value === 'string') {
+          return value.toLowerCase().includes(lowerInputValue)
+        }
+        else if (Array.isArray(value)) {
+          // 考虑一维 string 类型的数组
+          return value.find(item => item.toLowerCase().includes(lowerInputValue))
+        }
+        else if (value.toString() === "[object Object]") {
+          return Object.values(value).find(item => item.toLowerCase().includes(lowerInputValue));
+        };
+      });
+      this.tempData = data;
+    },
     /**
      * 分页
      */
@@ -65,7 +103,10 @@ export default {
       // 处理数据：分页，排序，过滤，搜索
       this.tempData = this.allData;
 
-      this.handleCustomData && this.handleCustomData();
+      // this.handleCustomData && this.handleCustomData();
+
+      this.handleFilterByStatus();
+      this.handleFilterByInput();
 
       // 页码需要在分页之前
       this.pagination = Object.assign({}, this.pagination, { total: this.tempData.length });
@@ -86,9 +127,11 @@ export default {
       this.handleClearSelected();
       try {
         const resp = await this.getList(payload);
-        this.allData = this.handleParseData ? this.handleParseData(resp.data) : resp.data;
 
         resp.data.forEach(item => {
+          if (item.id) {
+            item.shortID = item.id.substring(0, 8);
+          }
           if (item.createDate) {
             // 计算时间戳
             const createDate = item.createDate;
@@ -99,8 +142,21 @@ export default {
             // 保证状态永远是小写字母
             item.status = item.status.toLowerCase();
           }
+
+          // 缺省处理
+          Object.keys(item).forEach(k => {
+            const value = item[k];
+            const str = '无';
+            if (!value) {
+              item[k] = str;
+            }
+            if (value && Array.isArray(value) && value.length === 0) {
+              value = [ str ];
+            }
+          })
+
         })
-        
+        this.allData = this.handleParseData ? this.handleParseData(resp.data) : resp.data;
         this.handleDATA();
       }
       catch (err) {

@@ -1,38 +1,38 @@
 const columns = [
   {
-    title: "ID",
-    dataIndex: "id",
-    scopedSlots: { customRender: "operation" }
+    title: 'ID',
+    dataIndex: 'id',
+    scopedSlots: { customRender: 'operation' }
   },
   {
-    title: "名称",
-    dataIndex: "name"
+    title: '名称',
+    dataIndex: 'name'
   },
   {
-    title: "状态",
-    dataIndex: "status",
+    title: '状态',
+    dataIndex: 'status',
     // filters: [
-    //   { text: "状态", value: "状态" },
-    //   { text: "等待中", value: "等待中" },
-    //   { text: "运行中", value: "运行中" },
-    //   { text: "已暂停", value: "已暂停" },
-    //   { text: "已关闭", value: "已关闭" },
-    //   { text: "已删除", value: "已删除" },
-    //   { text: "重启中", value: "重启中" }
+    //   { text: '状态', value: '状态' },
+    //   { text: '等待中', value: '等待中' },
+    //   { text: '运行中', value: '运行中' },
+    //   { text: '已暂停', value: '已暂停' },
+    //   { text: '已关闭', value: '已关闭' },
+    //   { text: '已删除', value: '已删除' },
+    //   { text: '重启中', value: '重启中' }
     // ],
     // filterMultiple: false
   },
   {
-    title: "容量（G)",
-    dataIndex: "capacity"
+    title: '容量（G)',
+    dataIndex: 'capacity'
   },
   {
-    title: "平台",
-    dataIndex: "platform"
+    title: '平台',
+    dataIndex: 'platform'
   },
   {
-    title: "操作",
-    scopedSlots: { customRender: "edit" }
+    title: '操作',
+    scopedSlots: { customRender: 'edit' }
   },
 ];
 export default {
@@ -43,21 +43,21 @@ export default {
     menuOptions: [
       {
         visible: false,
-        id: "create",
-        name: "创建",
-        menu: "none"
+        id: 'create',
+        name: '创建',
+        menu: 'none'
       },
       {
         visible: false,
-        id: "edit",
-        name: "编辑",
-        menu: "none"
+        id: 'edit',
+        name: '编辑',
+        menu: 'none'
       },
       {
         visible: false,
-        id: "detail",
-        name: "详情",
-        menu: "none"
+        id: 'detail',
+        name: '详情',
+        menu: 'none'
       },
     ]
   },

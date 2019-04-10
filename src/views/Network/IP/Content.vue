@@ -1,37 +1,45 @@
 <template>
   <div>
     <div class="table-operator" style="margin-bottom: 16px;">
-      <a-row type="flex" justify="space-between">
+      <a-row>
         <a-col>
           <a-row type="flex" justify="space-between">
-            <a-button icon="sync" :disabled="loading" @click="handleRefresh" style="margin-right: 10px;" title="刷新"></a-button>
-            <a-button
-              type="primary"
-              style="margin-right: 10px;"
-              icon="plus"
-              @click="handleSingleMenuClick('create')"
-            >申请IP</a-button>
-            <a-dropdown style="margin-right: 10px;">
-              <a-menu slot="overlay" @click="handleMultiMenuClick($event.key)">
-                <a-menu-item
-                  v-for="item in multiMenuOptions"
-                  :key="item.id"
-                >{{item.name}}</a-menu-item>
-              </a-menu>
-              <a-button style="margin-left: 8px">批量操作
-                <a-icon type="down"/>
+            <span>
+              <a-button icon="sync" :disabled="loading" @click="handleRefresh" style="margin-right: 10px;" title="刷新"></a-button>
+              <a-button
+                type="primary"
+                style="margin-right: 10px;"
+                icon="plus"
+                @click="handleSingleMenuClick('create')"
+              >申请IP</a-button>
+              <a-dropdown style="margin-right: 10px;">
+                <a-menu slot="overlay" @click="handleMultiMenuClick($event.key)">
+                  <a-menu-item
+                    v-for="item in multiMenuOptions"
+                    :key="item.id"
+                  >{{item.name}}</a-menu-item>
+                </a-menu>
+                <a-button style="margin-left: 8px">批量操作
+                  <a-icon type="down"/>
+                </a-button>
+              </a-dropdown>
+            </span>
+            <span style="display: inline-flex;">
+              <a-input-group compact class="compact-search-input">
+                <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 90px!important;">
+                  <a-select-option value="ip">IP</a-select-option>
+                </a-select>
+                <a-input
+                  style="width: 200px"
+                  @pressEnter="handleDATA" 
+                  v-model="searchValues.inputValue"
+                />
+              </a-input-group>
+              <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
+                <a-icon type="search" />
               </a-button>
-            </a-dropdown>
-            <a-input-search
-              placeholder=" "
-              @search="getSearchData"
-              style="width: 200px"
-              enterButton
-            />
+            </span>
           </a-row>
-        </a-col>
-        <a-col>
-          <a-row type="flex" justify="space-between"></a-row>
         </a-col>
       </a-row>
     </div>
@@ -45,7 +53,7 @@
     <a-table
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onTableSelectChange}"
       :columns="columns"
-      :rowKey="record => record.id"
+      :rowKey="record => record.ip"
       :dataSource="data"
       :pagination="pagination"
       :loading="loading"
@@ -59,7 +67,7 @@
           type="primary"
           style="margin-right: 10px;"
           icon="edit"
-          @click="handleSingleMenuClick('bind-ip')"
+          @click="handleSingleMenuClick('bind-ip', record)"
         >绑定IP</a-button>
         <!-- <a-dropdown style="margin-right: 10px;">
           <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
@@ -92,6 +100,9 @@ import tablePageMixins from "@/mixins/tablePageMixins";
 
 import { getIPList as getList } from "@/api/network/ip";
 
+import ip from '@/i18n/zh/ip';
+const statusDicts = ip.ip.status
+
 export default {
   mixins: [tablePageMixins],
   components: {
@@ -107,11 +118,25 @@ export default {
       module: "network",
       id: "ip",
       name: "路由",
-      confirmLoading: false
+      searchValues: {
+        type: 'ip',
+        inputValue: '',
+      }
     };
   },
-  computed: {},
-  methods: {}
+
+  methods: {
+    __handleTransformToZh (status) {
+      return statusDicts[status.toLowerCase()] || status
+    },
+    handleParseData (data) {
+      return data.map(item => {
+        return Object.assign({}, item , {
+          status_zh: this.__handleTransformToZh(item.status),
+        })
+      })
+    },
+  }
 };
 </script>
 

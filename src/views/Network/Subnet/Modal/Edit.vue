@@ -15,7 +15,7 @@
             v-decorator="[
               'name',
               {
-                initialValue: 'web1',
+                initialValue: currRecord.name,
                 rules: [{ required: true, message: '请输入名称' }]
               }
             ]"
@@ -28,6 +28,7 @@
             v-decorator="[
               'description',
               {
+                initialValue: currRecord.desc,
                 rules: [{ message: '请输入描述' }]}
             ]"
           />

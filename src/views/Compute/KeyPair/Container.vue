@@ -23,7 +23,7 @@
                   @click="handleSingleMenuClick('import')"
                 >导入密钥对</a-button>
                 <a-button
-                  type="primary"
+                  type="danger"
                   style="margin-right: 10px;"
                   icon="delete"
                   :disabled="!selectedRowKeys.length"

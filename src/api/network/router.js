@@ -12,5 +12,5 @@ export const deleteRouter  = payload => DELETE('/network/router/delete', payload
 // 编辑路由器
 export const editRouter    = payload => POST('/network/router/edit', payload);
  
-// 设置网关
+// 设置网关 / 清除网关
 export const setGateway    = payload => POST('/network/router/gateway', payload);

@@ -331,60 +331,6 @@ export default {
         this.handleSingleMenuClick(key, record)
       }
     },
-
-
-    /**
-     * 过滤
-     */
-    handleFilterByStatus () {
-      const { status } = this.searchValues;
-      if (this.tempData.length > 0) {
-        this.tempData = status === 'all' ? this.tempData : this.tempData.filter(item => item.status === status);
-      }
-    },
-    /**
-     * 搜索
-     */
-    handleFilterByInput () {
-      
-      const { type, inputValue } = this.searchValues;
-
-      if (this.tempData.length === 0 || inputValue === '') {
-        return;
-      }
-
-      const lowerInputValue = inputValue.toLowerCase();
-
-      const data = this.tempData.filter(item => {
-        const value = item[type];
-        if (typeof value === 'string') {
-          return value.toLowerCase().includes(lowerInputValue)
-        }
-        else if (Array.isArray(value)) {
-          // 考虑一维 string 类型的数组
-          return value.find(item => item.toLowerCase().includes(lowerInputValue))
-        }
-        else if (value.toString() === "[object Object]") {
-          return Object.values(value).find(item => item.toLowerCase().includes(lowerInputValue));
-        };
-      });
-      this.tempData = data;
-    },
-    handleCustomData () {
-      this.handleFilterByStatus();
-      this.handleFilterByInput();   // 搜索
-    }
-    // handleTableChange({ current, pageSize, }, filters, sorter) {
-    //   const { status_zh: statusList } = filters;
-    //   this.fetch({
-    //     pageSize,
-    //     pageIndex: current,
-    //     // sortField: sorter.field,
-    //     // sortOrder: sorter.order,
-    //     // ...filters
-    //   });
-    // },
-
   }
 };
 </script>

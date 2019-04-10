@@ -18,26 +18,29 @@
           <a-input
             v-decorator="[
             'hostName',
-            {rules: [{ required: true, message: '请填写网络名称!' }]}
+            {
+              rules: [
+                { required: true, message: '请填写网络名称!' },
+                rulesObj.name,
+              ]
+            }
           ]"
-            style="width: 250px"
             placeholder="网络名称"
           />
         </a-form-item>
         <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
-          <a-checkbox v-decorator="[
+          <a-checkbox checked>启用管理员状态</a-checkbox>
+          <!-- <a-checkbox disabled v-decorator="[
               'admin',
-            ]">启用管理员状态</a-checkbox>
+              { valuePropName: 'checked', initialValue: true }
+            ]">启用管理员状态</a-checkbox> -->
         </a-form-item>
         <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
-          <a-checkbox v-decorator="[
-              'share',
-            ]">是否共享</a-checkbox>
-        </a-form-item>
-        <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
-          <a-checkbox v-decorator="[
+          <a-checkbox checked>创建子网</a-checkbox>
+          <!-- <a-checkbox v-decorator="[
               'subnet',
-            ]">创建子网</a-checkbox>
+              { valuePropName: 'checked', initialValue: true }
+            ]">创建子网</a-checkbox> -->
         </a-form-item>
       </a-form>
 
@@ -45,16 +48,20 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="子网名称："
+          label="IP版本："
         >
-          <a-input
+          <a-select
             v-decorator="[
-            'subNetName',
-            {rules: [{ required: true, message: '请填写网络名称!' }]}
-          ]"
-            style="width: 250px"
-            placeholder="网络名称"
-          />
+              'bootable',
+              {
+                initialValue: 1,
+                rules: [{ required: true, message: '请选择IP版本' }]
+              }
+            ]"
+          >
+            <a-select-option :value="1">IPV4</a-select-option>
+            <a-select-option :value="0">IPV6</a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item
           :labelCol="formItemLayout.labelCol"
@@ -64,104 +71,96 @@
           <a-input
             v-decorator="[
             'ip',
-            {rules: [{ required: true, message: '请填写网络名称!' }]}
+            {rules: [{ required: true, message: '请填写网络地址段!' }]}
           ]"
-            style="width: 250px"
-            placeholder="网络名称"
+            placeholder="网络地址段"
           />
-        </a-form-item>
-        <a-form-item
-          :labelCol="formItemLayout.labelCol"
-          :wrapperCol="formItemLayout.wrapperCol"
-          label="IP版本："
-        >
-          <a-input
-            v-decorator="[
-            'ip',
-            {rules: [{ required: true, message: '请填写网络名称!' }]}
-          ]"
-            style="width: 250px"
-            placeholder="网络名称"
-          />
-        </a-form-item>
-        <a-form-item
-          :labelCol="formItemLayout.labelCol"
-          :wrapperCol="formItemLayout.wrapperCol"
-          label="网关IP："
-        >
-          <a-input
-            v-decorator="[
-            'gatewayIp',
-            {rules: [{ required: true, message: '请填写网关IP!' }]}
-          ]"
-            style="width: 250px"
-            placeholder="网关IP"
-          />
-        </a-form-item>
-        <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
-          <a-checkbox v-decorator="[
-              'disableGateway',
-            ]">禁用网关</a-checkbox>
-        </a-form-item>
-        <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
-          <a-checkbox v-decorator="[
-              'activeDHCP',
-            ]">激活DHCP</a-checkbox>
-        </a-form-item>
-      </a-form>
 
-      <a-form v-show="currStep === 2" :form="form2">
-        <a-form-item
-          :labelCol="formItemLayout.labelCol"
-          :wrapperCol="formItemLayout.wrapperCol"
-          label="分配地址池："
-        >
-          <a-textarea
-            :rows="4"
-            v-decorator="[
-            'subNetName',
-            {rules: [{ required: true, message: '请填写地址池!' }]}
-          ]"
-            style="width: 250px"
-            placeholder="示例：192.168.100.1，192.168.100.10；每行一条记录"
-          />
+          <a-tooltip style="position: absolute; top: 50%; right: -5px; transform: translate(100%, -50%);">
+            <template slot='title'>
+              CIDR格式的网络地址 (例如 192.168.0.0/24, 2001:DB8::/48)
+            </template>
+            <a-icon type="info-circle"/>
+          </a-tooltip>
+          
         </a-form-item>
-        <a-form-item
-          :labelCol="formItemLayout.labelCol"
-          :wrapperCol="formItemLayout.wrapperCol"
-          label="DNS服务器："
-        >
-          <a-textarea
-            :rows="4"
-            v-decorator="[
-            'DNS',
-            {rules: [{ required: true, message: '请填写网络名称!' }]}
-          ]"
-            style="width: 250px"
-            placeholder="示例：114.114.114.114，每行一个地址"
-          />
-        </a-form-item>
-        <a-form-item
-          :labelCol="formItemLayout.labelCol"
-          :wrapperCol="formItemLayout.wrapperCol"
-          label="主机路由："
-        >
-          <a-textarea
-            :rows="4"
-            v-decorator="[
-            'router',
-            {rules: [{ required: true, message: '请填写网络名称!' }]}
-          ]"
-            style="width: 250px"
-            placeholder="主机额外增加的路由，格式：目的CIDR 下一跳地址；示例：192.168.1.0/24，10.10.10.10;每行一条记录"
-          />
-        </a-form-item>
+
+        <a-row type="flex">
+          <a-col :offset="8" :span="14">
+            <div style="display: block; text-align: right;">
+              <a @click="showMore = !showMore">
+                高级<a-icon style="margin-left: 5px;" :type="showMore ? 'up' : 'down'" />
+              </a>
+            </div>
+          </a-col>
+        </a-row>
+
+        <template v-if="showMore">
+          <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
+            <a-checkbox checked>禁用网关</a-checkbox>
+          </a-form-item>
+          <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
+            <a-checkbox checked>激活DHCP</a-checkbox>
+          </a-form-item>
+          <a-form-item
+            :labelCol="formItemLayout.labelCol"
+            :wrapperCol="formItemLayout.wrapperCol"
+            label="网关IP："
+          >
+            <a-input
+              v-decorator="[
+              'gatewayIp',
+            ]"
+              placeholder="网关IP"
+            />
+          </a-form-item>
+          <a-form-item
+            style="margin-top: 24px;"
+            :labelCol="formItemLayout.labelCol"
+            :wrapperCol="formItemLayout.wrapperCol"
+            label="分配地址池："
+          >
+            <a-textarea
+              :rows="4"
+              v-decorator="[
+              'subNetName',
+            ]"
+              placeholder="示例：192.168.100.1，192.168.100.10；每行一条记录"
+            />
+          </a-form-item>
+          <a-form-item
+            :labelCol="formItemLayout.labelCol"
+            :wrapperCol="formItemLayout.wrapperCol"
+            label="DNS服务器："
+          >
+            <a-textarea
+              :rows="4"
+              v-decorator="[
+              'DNS',
+            ]"
+              placeholder="示例：114.114.114.114，每行一个地址"
+            />
+          </a-form-item>
+          <a-form-item
+            :labelCol="formItemLayout.labelCol"
+            :wrapperCol="formItemLayout.wrapperCol"
+            label="主机路由："
+          >
+            <a-textarea
+              :rows="4"
+              v-decorator="[
+              'router',
+            ]"
+              placeholder="主机额外增加的路由，格式：目的CIDR 下一跳地址；示例：192.168.1.0/24，10.10.10.10;每行一条记录"
+            />
+          </a-form-item>
+        </template>
       </a-form>
 
       <template slot="footer">
         <a-button v-if="currStep !== 0" @click="handlePrevStep">上一步</a-button>
-        <a-button v-if="currStep !== 2" @click="handleNextStep">下一步</a-button>
-        <a-button v-if="currStep === 2" type="primary" :loading="loading" @click="handleCreate">
+        <a-button v-if="currStep !== 1" @click="handleNextStep">下一步</a-button>
+        <a-button v-if="currStep === 1" type="primary" :loading="loading" @click="handleCreate">
           创建
         </a-button>
       </template>
@@ -170,22 +169,24 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
+import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      rulesObj,
       form0: this.$form.createForm(this),
       form1: this.$form.createForm(this),
-      form2: this.$form.createForm(this),
       name: "create",
       type: "0",
       titleList: [
         { title: '新建网络', data: {} },
-        { title: '配置子网', data: {} },
-        { title: '配置子网扩展属性', data: {} }
+        { title: '配置网络网段', data: {} },
       ],
       currStep: 0,
       loading: false,
+
+      showMore: false,
     };
   },
 

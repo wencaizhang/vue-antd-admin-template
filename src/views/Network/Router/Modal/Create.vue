@@ -17,10 +17,9 @@
         >
           <a-input
             v-decorator="[
-            'hostName',
+            'routerName',
             {rules: [{ required: true, message: '请填写路由器名称!' }]}
           ]"
-            style="width: 250px"
             placeholder="路由器名称"
           />
         </a-form-item>
@@ -29,36 +28,20 @@
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
-          <a-radio-group
-            @change="onChange"
+          <a-select
+            placeholder="请选择外部网络"
             v-decorator="[
-              'type',
-              {
-                rules: [{ required: true, message: '请选择外部网络' }],
-                initialValue: '0'
-              }
+              'externalId',
             ]"
           >
-            <a-radio value="0">external</a-radio>
-          </a-radio-group>
-        </a-form-item>
-        <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
-          <a-checkbox v-decorator="[
-              'admin',
-              {
-                valuePropName: 'checked',
-                initialValue: true,
-              }
-            ]">启用管理员状态</a-checkbox>
-        </a-form-item>
-        <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
-          <a-checkbox v-decorator="[
-              'snat',
-              {
-                valuePropName: 'checked',
-                initialValue: true,
-              }
-            ]">启动SNAT</a-checkbox>
+            <a-select-option
+              v-for="item in $parent.networkList"
+              :key="item.id" 
+              :value="item.id"
+            >
+            {{item.name}}
+            </a-select-option>
+          </a-select>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -66,19 +49,32 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
+import { createRouter as fetchAPI } from "@/api/network/router";
+
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       name: "create",
-      type: "0"
+      type: "0",
     };
   },
 
   methods: {
-    onChange(e) {
-      this.type = e.target.value;
-    }
+    handleCreate() {
+      const self = this;
+      this.form.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          console.log(values)
+          const { externalId } = values;
+          self.formValues = Object.assign({}, self.formValues, values, {
+            external: externalId ? 1 : 0,
+          });
+          self.handleFetch();
+        }
+      });
+    },
   }
 };
 </script>

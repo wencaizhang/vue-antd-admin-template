@@ -1,37 +1,47 @@
 <template>
   <div>
     <div class="table-operator" style="margin-bottom: 16px;">
-      <a-row type="flex" justify="space-between">
+      <a-row>
         <a-col>
           <a-row type="flex" justify="space-between">
-            <a-button icon="sync" :disabled="loading" @click="handleRefresh" style="margin-right: 10px;" title="刷新"></a-button>
-            <a-button
-              type="primary"
-              style="margin-right: 10px;"
-              icon="plus"
-              @click="handleSingleMenuClick('create')"
-            >创建网络</a-button>
-            <a-dropdown style="margin-right: 10px;">
-              <a-menu slot="overlay" @click="handleMultiMenuClick($event.key)">
-                <a-menu-item
-                  v-for="item in multiMenuOptions"
-                  :key="item.id"
-                >{{item.name}}</a-menu-item>
-              </a-menu>
-              <a-button style="margin-left: 8px">批量操作
-                <a-icon type="down"/>
+            <span>
+              <a-button icon="sync" :disabled="loading" @click="handleRefresh" style="margin-right: 10px;" title="刷新"></a-button>
+              <a-button
+                type="primary"
+                style="margin-right: 10px;"
+                icon="plus"
+                @click="handleSingleMenuClick('create')"
+              >创建网络</a-button>
+              <a-dropdown style="margin-right: 10px;">
+                <a-menu slot="overlay" @click="handleMultiMenuClick($event.key)">
+                  <a-menu-item
+                    v-for="item in multiMenuOptions"
+                    :key="item.id"
+                  >{{item.name}}</a-menu-item>
+                </a-menu>
+                <a-button style="margin-left: 8px">批量操作
+                  <a-icon type="down"/>
+                </a-button>
+              </a-dropdown>
+            </span>
+            
+            <span style="display: inline-flex;">
+              <a-input-group compact class="compact-search-input">
+                <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 90px!important;">
+                  <a-select-option value="name">名称</a-select-option>
+                  <a-select-option value="id">ID</a-select-option>
+                </a-select>
+                <a-input
+                  style="width: 200px"
+                  @pressEnter="handleDATA" 
+                  v-model="searchValues.inputValue"
+                />
+              </a-input-group>
+              <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
+                <a-icon type="search" />
               </a-button>
-            </a-dropdown>
-            <a-input-search
-              placeholder=" "
-              @search="getSearchData"
-              style="width: 200px"
-              enterButton
-            />
+            </span>
           </a-row>
-        </a-col>
-        <a-col>
-          <a-row type="flex" justify="space-between"></a-row>
         </a-col>
       </a-row>
     </div>
@@ -59,7 +69,7 @@
           type="primary"
           style="margin-right: 10px;"
           icon="edit"
-          @click="handleSingleMenuClick('edit')"
+          @click="handleSingleMenuClick('edit', record)"
         >编辑</a-button>
         <!-- <a-dropdown style="margin-right: 10px;">
           <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
@@ -90,6 +100,9 @@ import tablePageMixins from "@/mixins/tablePageMixins";
 
 import { getNetworkList as getList } from "@/api/network/network";
 
+import subnet from '@/i18n/zh/subnet';
+const statusDicts = subnet.subnet.status
+
 export default {
   mixins: [tablePageMixins],
   components: {
@@ -104,11 +117,27 @@ export default {
       module: "network",
       id: "subnet",
       name: "路由",
-      confirmLoading: false
+      searchValues: {
+        type: 'name',
+        inputValue: '',
+      }
     };
   },
   computed: {},
-  methods: {}
+  methods: {
+
+    __handleTransformToZh (status) {
+      return statusDicts[status.toLowerCase()] || status
+    },
+    handleParseData (data) {
+      return data.map(item => {
+        return Object.assign({}, item , {
+          share_zh: item.share ? '是' : '否',
+          runningStatus_zh: this.__handleTransformToZh(item.runningStatus),
+        })
+      })
+    },
+  }
 };
 </script>
 

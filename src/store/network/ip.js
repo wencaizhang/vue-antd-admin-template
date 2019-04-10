@@ -9,7 +9,7 @@ const columns = [
   },
   {
     title: "状态",
-    dataIndex: "status",
+    dataIndex: "status_zh",
     // filters: [
     //   { text: "等待中", value: "等待中" },
     //   { text: "运行中", value: "运行中" },
@@ -43,11 +43,11 @@ export default {
     handleRowData: {},
     columns,
     menuOptions: [
-      { visible: false, type: 'none', name: "申请IP", id: "create" },
+      { visible: false, type: 'none',   name: "申请IP", id: "create" },
 
       { visible: false, type: 'single', name: "绑定IP", id: "bind-ip" },
-      { visible: false, type: 'batch', name: "解绑IP", id: "unbind-ip" },
-      { visible: false, type: 'batch', name: "释放IP", id: "free-ip" },
+      { visible: false, type: 'batch',  name: "解绑IP", id: "unbind-ip" },
+      { visible: false, type: 'batch',  name: "释放IP", id: "free-ip" },
     ]
   },
   mutations: {},

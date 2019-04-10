@@ -15,7 +15,7 @@
             v-decorator="[
               'name',
               {
-                initialValue: 'web1',
+                initialValue: currRecord.name,
                 rules: [{ required: true, message: '请输入名称' }]
               }
             ]"
@@ -25,15 +25,16 @@
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="管理状态：">
           <a-select
             v-decorator="[
-              'status',
+              'bootable',
               {
-                initialValue: 'UP',
+                initialValue: currRecord.status === 'active' ? 1 : 0,
                 rules: [{ required: true, message: '请输入名称' }]
               }
             ]"
           >
-            <a-select-option value="UP">UP</a-select-option>
-            <a-select-option value="DOWN">DOWN</a-select-option>
+            <!-- 可启动[0:否 1:是] -->
+            <a-select-option :value="1">启用</a-select-option>
+            <a-select-option :value="0">关停</a-select-option>
           </a-select>
         </a-form-item>
       </a-form>
@@ -42,14 +43,21 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
+import { editRouter as fetchAPI } from "@/api/network/router";
+
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       name: "edit"
     };
   },
 
-  methods: {}
+  methods: {
+    onShow () {
+      this.formValues = Object.assign({}, this.formValues, { routerId: this.currRecord.id });
+    },
+  }
 };
 </script>

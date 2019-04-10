@@ -10,8 +10,8 @@
       okText="删除"
       okType="danger"
     >
-      <a-alert message="注意：删除硬盘后数据不可恢复！" type="warning" showIcon/>
-      <p style="margin-top: 10px; text-align: center;">是否删除硬盘web1?</p>
+      <a-alert message="注意：删除网络后数据不可恢复！" type="warning" showIcon/>
+      <p style="margin-top: 10px; text-align: center;">是否删除网络{{ list.map(item => item.name).join(', ') }}?</p>
     </a-modal>
   </div>
 </template>
@@ -26,6 +26,13 @@ export default {
   },
 
   methods: {
+    onShow () {
+      const { data, selectedRowKeys } = this.$parent;
+      this.list = data.filter(item => {
+        return selectedRowKeys.includes(item.id);
+      });
+      this.handleItemCount = this.list.length;
+    },
     handleCreate() {
       this.handleCancel();
     }

@@ -6,13 +6,17 @@ export const baseModalMixins = {
       radioStyle: {
         display: "block",
         height: "30px",
-        lineHeight: "30px"
+        lineHeight: "30px",
       },
       confirmLoading: false,
-      formValues: {},
-      currRecord: {},
+      formValues: {},  // 存放表单数据，可以
+      currRecord: {},  // 单项操作时的数据
       fetchAPI: () => {},
       isRefreshParentTable: true, // 刷新父组件表格
+
+      loop: false,  // 是否遍历发送请求
+      list: [],  // 遍历数据数组
+      handleItemCount: 0,  // 数据个数
     };
   },
   computed: {
@@ -52,6 +56,12 @@ export const baseModalMixins = {
       this.handleFetch();
     },
     async handleFetch() {
+
+      if (this.loop) {
+        this.handleLoopFetchStart();
+        return false;
+      }
+
       this.confirmLoading = true;
       try {
         const resp = await this.fetchAPI(this.formValues);
@@ -74,14 +84,48 @@ export const baseModalMixins = {
       this.isRefreshParentTable ? this.$parent.handleRefresh() : '';
     },
     openNotification(resp) {
-      this.$message.success(resp.desc);
+      this.$message.success(resp.desc || '操作成功');
     },
     formatter(postfix, value) {
       return parseInt(value) + " " + postfix;
     },
     parser(value) {
       return parseInt(value);
-    }
+    },
+
+    handleLoopFetchStart() {
+      /**
+       * 遍历发送请求
+       * Promise.all 只要有一个失败就直接返回失败的结果，所以使用遍历
+       */
+      if (!this.list.length || !this.handleItemCount) { return;}
+      this.confirmLoading = true;
+      this.list.forEach(item => {
+        this.handleItemFetch(item);
+      })
+    },
+    handleLoopFetchEnd () {
+      // 所有请求全部结束
+      this.confirmLoading = false;
+      this.$message.success('操作完成');
+      this.handleRefreshParentTable();
+      this.handleCancel();
+    },
+    // async handleItemFetch (item) {
+    //   try {
+    //     const payload = { routerId: item.id }
+    //     const resp = await this.fetchAPI(payload);
+    //   }
+    //   catch (err) {
+
+    //   }
+    //   finally {
+    //     this.handleItemCount = this.handleItemCount - 1;
+    //     if (this.handleItemCount === 0) {
+    //       this.handleLoopFetchEnd();
+    //     }
+    //   }
+    // },
   }
 };
 
