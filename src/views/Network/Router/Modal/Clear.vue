@@ -34,7 +34,7 @@ export default {
   methods: {
     onShow () {
       // 操作类型[0:设置 1:清除]
-      this.formValues = { type: 1 };
+      this.formValues = { routerId: this.currRecord.id, type: 1 };
       // const { data, selectedRowKeys } = this.$parent;
       // this.list = data.filter(item => {
       //   return selectedRowKeys.includes(item.id);

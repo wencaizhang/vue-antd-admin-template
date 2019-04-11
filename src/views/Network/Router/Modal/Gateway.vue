@@ -16,7 +16,8 @@
             v-decorator="[
               'externalId',
               {
-                initialValue: currRecord.extrannet
+                initialValue: currRecord.extrannet === '无' ? '' : currRecord.extrannet,
+                rules: [{ required: true, message: '请选择外部网络' }]
               }
             ]"
           >
@@ -30,15 +31,7 @@
           </a-select>
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="路由名称：">
-          <a-input
-            v-decorator="[
-              'name',
-              {
-                initialValue: currRecord.name,
-                rules: [{ required: true, message: '请输入名称' }]
-              }
-            ]"
-            placeholder="请输入名称"
+          <a-input :value="currRecord.name" disabled  placeholder="请输入名称"
           />
         </a-form-item>
       </a-form>

@@ -10,20 +10,8 @@
       okText="确定"
     >
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="选择一个IP地址：">
-          <a-select
-            placeholder="选择一个IP地址！"
-            v-decorator="[
-              '资源池',
-              {
-                initialValue: 'external_net',
-                rules: [{ required: true, message: '选择一个IP地址！' }]
-              }
-            ]"
-          >
-            <a-select-option value="external_net">external_net</a-select-option>
-            <a-select-option value="external_IPV6">external_IPV6</a-select-option>
-          </a-select>
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="IP地址：">
+          <a-input :value="currRecord.ip" disabled />
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="选择待绑定端口：">
           <a-select
@@ -31,13 +19,18 @@
             v-decorator="[
               '选择待绑定端口',
               {
-                initialValue: 'external_net',
+                initialValue: '',
                 rules: [{ required: true, message: '请选择待绑定端口！' }]
               }
             ]"
           >
-            <a-select-option value="external_net">external_net</a-select-option>
-            <a-select-option value="external_IPV6">external_IPV6</a-select-option>
+            <a-select-option
+              v-for="item in instanceList"
+              :key="item.network"
+              :value="item.network"
+            >
+              {{ item.name }} {{item.network}}
+            </a-select-option>
           </a-select>
         </a-form-item>
       </a-form>
@@ -46,16 +39,41 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
+import { getinstanceList } from '@/api/compute/instance';
+import { bindIP as fetchAPI } from "@/api/network/ip";
+
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       name: "bind-ip",
+      instanceList: [],
     };
   },
-
+  mounted () {
+    this.fetchIntanceList();
+  },
   methods: {
+    async fetchIntanceList () {
+      try {
+        const resp = await getinstanceList();
+        this.instanceList = resp.data;
 
+        const list = [];
+        resp.data.forEach(item => {
+          item.network.forEach(net => {
+            list.push({
+              network: net,
+              name: item.name,
+            });
+          });
+        })
+        this.instanceList = list;
+      } catch (error) {
+        
+      }
+    },
   }
 };
 </script>

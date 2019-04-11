@@ -17,7 +17,7 @@
         >
           <a-input
             v-decorator="[
-            'hostName',
+            'networkName',
             {
               rules: [
                 { required: true, message: '请填写网络名称!' },
@@ -52,15 +52,15 @@
         >
           <a-select
             v-decorator="[
-              'bootable',
+              'ipVersion',
               {
-                initialValue: 1,
+                initialValue: 'IPv4',
                 rules: [{ required: true, message: '请选择IP版本' }]
               }
             ]"
           >
-            <a-select-option :value="1">IPV4</a-select-option>
-            <a-select-option :value="0">IPV6</a-select-option>
+            <a-select-option value="IPv4">IPv4</a-select-option>
+            <a-select-option value="IPv6">IPv6</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item
@@ -70,9 +70,9 @@
         >
           <a-input
             v-decorator="[
-            'ip',
-            {rules: [{ required: true, message: '请填写网络地址段!' }]}
-          ]"
+              'segmentNetwork',
+              {rules: [{ required: true, message: '请填写网络地址段!' }]}
+            ]"
             placeholder="网络地址段"
           />
 
@@ -97,20 +97,25 @@
 
         <template v-if="showMore">
           <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
-            <a-checkbox checked>禁用网关</a-checkbox>
+            <!-- <a-checkbox checked>禁用网关</a-checkbox> -->
+            <a-checkbox @change="onChangeDisableGateway" v-decorator="[
+                'isDisableGateway',
+              ]">禁用网关</a-checkbox>
           </a-form-item>
           <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
             <a-checkbox checked>激活DHCP</a-checkbox>
           </a-form-item>
+
           <a-form-item
+            v-if="!formValues.isDisableGateway"
             :labelCol="formItemLayout.labelCol"
             :wrapperCol="formItemLayout.wrapperCol"
             label="网关IP："
           >
             <a-input
               v-decorator="[
-              'gatewayIp',
-            ]"
+                'gatewayIp',
+              ]"
               placeholder="网关IP"
             />
           </a-form-item>
@@ -123,8 +128,8 @@
             <a-textarea
               :rows="4"
               v-decorator="[
-              'subNetName',
-            ]"
+                'addressPool',
+              ]"
               placeholder="示例：192.168.100.1，192.168.100.10；每行一条记录"
             />
           </a-form-item>
@@ -136,8 +141,8 @@
             <a-textarea
               :rows="4"
               v-decorator="[
-              'DNS',
-            ]"
+                'dnsServer',
+              ]"
               placeholder="示例：114.114.114.114，每行一个地址"
             />
           </a-form-item>
@@ -149,8 +154,8 @@
             <a-textarea
               :rows="4"
               v-decorator="[
-              'router',
-            ]"
+                'hostRouter',
+              ]"
               placeholder="主机额外增加的路由，格式：目的CIDR 下一跳地址；示例：192.168.1.0/24，10.10.10.10;每行一条记录"
             />
           </a-form-item>
@@ -160,7 +165,7 @@
       <template slot="footer">
         <a-button v-if="currStep !== 0" @click="handlePrevStep">上一步</a-button>
         <a-button v-if="currStep !== 1" @click="handleNextStep">下一步</a-button>
-        <a-button v-if="currStep === 1" type="primary" :loading="loading" @click="handleCreate">
+        <a-button v-if="currStep === 1" type="primary" :loading="loading" @click="handleNextStep">
           创建
         </a-button>
       </template>
@@ -170,10 +175,12 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { rulesObj } from '@/utils/util';
+import { createNetwork as fetchAPI } from '@/api/network/network';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       rulesObj,
       form0: this.$form.createForm(this),
       form1: this.$form.createForm(this),
@@ -187,10 +194,26 @@ export default {
       loading: false,
 
       showMore: false,
+
+
+      formValues: {
+        // 启用管理员状态[0:否 1:是]
+        isEnableAdministrator: 1,
+        // 创建子网[0:否 1:是]
+        isCreateSubnetwork: 1,
+        // 禁用网关[0:否 1:是]
+        isDisableGateway: false,  // 提交时进行转化
+        // 激活DHCP[0:否 1:是]
+        isActivateDHCP: 1,
+      },
+
     };
   },
 
   methods: {
+    onChangeDisableGateway (e) {
+      this.formValues.isDisableGateway = e.target.checked;
+    },
     onChange(e) {
       this.type = e.target.value;
     },
@@ -200,27 +223,35 @@ export default {
         this.currStep--
       }
     },
-    handleNextStep () {
-      const result = this._handleValidate();
-      if (result && this.currStep < this.titleList.length) {
-        this.currStep++
+    async handleNextStep () {
+      try {
+        const result = await this._handleValidate();
+        if (result && this.currStep + 1 < this.titleList.length) {
+          this.currStep++
+        } else if (this.currStep + 1 === this.titleList.length) {
+          this.titleList.forEach(item => {
+            Object.assign(this.formValues, item.data);
+          })
+          this.formValues.isDisableGateway = this.formValues.isDisableGateway ? 1 : 0;
+          this.handleFetch();
+        }
+      } catch (error) {
+        
       }
-    },
-    handleCreate () {
-      this._handleValidate();
+      
     },
     _handleValidate () {
-      var result
-      this['form' + this.currStep].validateFieldsAndScroll((err, values) => {
-        if (err) {
-          result = false;
-        } else {
-          console.log("Received values of form: ", values);
-          Object.assign(this.titleList[this.currStep].data, values);
-          result = true;
-        }
-      });
-      return result;
+      return new Promise((resolve, reject) => {
+        this['form' + this.currStep].validateFieldsAndScroll((err, values) => {
+          if (err) {
+            reject(err);
+          } else {
+            console.log("Received values of form: ", values);
+            Object.assign(this.titleList[this.currStep].data, values);
+            resolve(true);
+          }
+        });
+      })
     },
   }
 };

@@ -1,8 +1,8 @@
 export default {
   ip: {
     status: {
-      up: '上升',
-      down: '下降'
+      up: '启用',
+      down: '关停',
     }
   }
 }

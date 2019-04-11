@@ -27,14 +27,14 @@
             v-decorator="[
               'bootable',
               {
-                initialValue: currRecord.status === 'active' ? 1 : 0,
+                initialValue: currRecord.status.toUpperCase(),
                 rules: [{ required: true, message: '请输入名称' }]
               }
             ]"
           >
             <!-- 可启动[0:否 1:是] -->
-            <a-select-option :value="1">启用</a-select-option>
-            <a-select-option :value="0">关停</a-select-option>
+            <a-select-option value="UP">启用</a-select-option>
+            <a-select-option value="DOWN">关停</a-select-option>
           </a-select>
         </a-form-item>
       </a-form>

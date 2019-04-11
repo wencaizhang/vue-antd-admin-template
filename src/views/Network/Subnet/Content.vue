@@ -12,17 +12,12 @@
                 icon="plus"
                 @click="handleSingleMenuClick('create')"
               >创建网络</a-button>
-              <a-dropdown style="margin-right: 10px;">
-                <a-menu slot="overlay" @click="handleMultiMenuClick($event.key)">
-                  <a-menu-item
-                    v-for="item in multiMenuOptions"
-                    :key="item.id"
-                  >{{item.name}}</a-menu-item>
-                </a-menu>
-                <a-button style="margin-left: 8px">批量操作
-                  <a-icon type="down"/>
-                </a-button>
-              </a-dropdown>
+              <a-button
+                type="danger"
+                style="margin-right: 10px;"
+                icon="delete"
+                @click="handleMultiMenuClick('delete')"
+              >删除</a-button>
             </span>
             
             <span style="display: inline-flex;">
@@ -132,8 +127,7 @@ export default {
     handleParseData (data) {
       return data.map(item => {
         return Object.assign({}, item , {
-          share_zh: item.share ? '是' : '否',
-          runningStatus_zh: this.__handleTransformToZh(item.runningStatus),
+          // runningStatus_zh: this.__handleTransformToZh(item.runningStatus),
         })
       })
     },

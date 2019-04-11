@@ -61,8 +61,6 @@
             :min="1"
             :max="50"
             :value="bandwidth"
-            :formatter="value => formatter('Mb', value)"
-            :parser="value => parser(value)"
           />
         </div>
       </a-form>

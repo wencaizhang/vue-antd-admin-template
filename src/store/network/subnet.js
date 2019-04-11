@@ -13,11 +13,7 @@ const columns = [
   },
   {
     title: '共享',
-    dataIndex: 'share_zh'
-  },
-  {
-    title: '运行状态',
-    dataIndex: 'runningStatus_zh'
+    dataIndex: 'share'
   },
   {
     title: '操作',
@@ -30,10 +26,10 @@ export default {
     handleRowData: {},
     columns,
     menuOptions: [
-      { visible: false, type: 'none', name: '创建', id: 'create' },
+      { visible: false, type: 'none', name: '创建',      id: 'create' },
+      { visible: false, type: 'none', name: '删除网络',   id: 'delete' },
 
       { visible: false, type: 'single', name: '编辑网络', id: 'edit' },
-      { visible: false, type: 'batch', name: '删除网络', id: 'delete' },
     ]
   },
   mutations: {},

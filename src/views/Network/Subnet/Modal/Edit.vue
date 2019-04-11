@@ -22,7 +22,22 @@
             placeholder="请输入名称"
           />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="描述：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="管理状态：">
+          <a-select
+            v-decorator="[
+              'bootable',
+              {
+                initialValue: currRecord.status === 'active' ? 'UP' : 'DOWN',
+                rules: [{ required: true, message: '请输入名称' }]
+              }
+            ]"
+          >
+            <!-- 可启动[0:否 1:是] -->
+            <a-select-option value="UP">启用</a-select-option>
+            <a-select-option value="DOWN">关停</a-select-option>
+          </a-select>
+        </a-form-item>
+        <!-- <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="描述：">
           <a-textarea
             placeholder="请输入描述"
             v-decorator="[
@@ -32,17 +47,7 @@
                 rules: [{ message: '请输入描述' }]}
             ]"
           />
-        </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14,offset:8 }" label>
-          <a-checkbox v-decorator="[
-          'on',
-          ]">可启动
-            <a-tooltip>
-              <template slot="title">“可启动”标记标明此硬盘可以被用来创建主机。</template>
-              <a-icon type="info-circle"/>
-            </a-tooltip>
-          </a-checkbox>
-        </a-form-item>
+        </a-form-item> -->
       </a-form>
     </a-modal>
   </div>

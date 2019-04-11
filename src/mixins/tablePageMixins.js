@@ -151,10 +151,9 @@ export default {
               item[k] = str;
             }
             if (value && Array.isArray(value) && value.length === 0) {
-              value = [ str ];
+              item[k] = [ str ];
             }
           })
-
         })
         this.allData = this.handleParseData ? this.handleParseData(resp.data) : resp.data;
         this.handleDATA();

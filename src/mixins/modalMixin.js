@@ -56,7 +56,6 @@ export const baseModalMixins = {
       this.handleFetch();
     },
     async handleFetch() {
-
       if (this.loop) {
         this.handleLoopFetchStart();
         return false;

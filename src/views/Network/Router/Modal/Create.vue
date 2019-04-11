@@ -31,7 +31,7 @@
           <a-select
             placeholder="请选择外部网络"
             v-decorator="[
-              'externalId',
+              'external',
             ]"
           >
             <a-select-option
@@ -66,11 +66,7 @@ export default {
       const self = this;
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log(values)
-          const { externalId } = values;
-          self.formValues = Object.assign({}, self.formValues, values, {
-            external: externalId ? 1 : 0,
-          });
+          self.formValues = Object.assign({}, self.formValues, values);
           self.handleFetch();
         }
       });
