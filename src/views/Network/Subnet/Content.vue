@@ -126,11 +126,15 @@ export default {
       return statusDicts[status.toLowerCase()] || status
     },
     handleParseData (data) {
-      return data.map(item => {
+      const temp = data.map(item => {
         return Object.assign({}, item , {
           adminState_zh: this.__handleTransformToZh(item.adminState),
         })
-      })
+      });
+
+      const list1 = temp.filter(item => item.isRouterExternal !== true);
+      const list2 = temp.filter(item => item.isRouterExternal === true);
+      return list1.concat(list2);
     },
   }
 };
