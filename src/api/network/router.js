@@ -14,3 +14,10 @@ export const editRouter    = payload => POST('/network/router/edit', payload);
  
 // 设置网关 / 清除网关
 export const setGateway    = payload => POST('/network/router/gateway', payload);
+
+// 关联子网到路由
+export const attach        = payload => POST('/network/router/attach', payload);
+
+// 删除路由网络接口
+export const detach        = payload => POST('/network/router/detach', payload);
+

@@ -27,7 +27,7 @@
             v-decorator="[
               'bootable',
               {
-                initialValue: currRecord.status.toUpperCase(),
+                initialValue: currRecord.status && currRecord.status.toUpperCase(),
                 rules: [{ required: true, message: '请输入名称' }]
               }
             ]"

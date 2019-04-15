@@ -16,6 +16,10 @@ const columns = [
     dataIndex: 'share'
   },
   {
+    title: '管理状态',
+    dataIndex: 'adminState_zh'
+  },
+  {
     title: '操作',
     scopedSlots: { customRender: 'operation' }
   },

@@ -16,6 +16,11 @@ const columns = [
     dataIndex: 'extrannet'
   },
   {
+    title: '内部网络',
+    dataIndex: 'internal',
+    scopedSlots: { customRender: 'internal' }
+  },
+  {
     title: '操作',
     scopedSlots: { customRender: 'operation' }
   },
@@ -26,12 +31,14 @@ export default {
     handleRowData: {},
     columns,
     menuOptions: [
-      { visible: false, type: 'none', name: '创建', id: 'create' },
-      { visible: false, type: 'none', name: '删除', id: 'delete' },
+      { visible: false, type: 'none',   name: '创建',       id: 'create' },
+      { visible: false, type: 'none',   name: '删除',       id: 'delete' },
 
-      { visible: false, type: 'single', name: '修改',    id: 'edit' },
-      { visible: false, type: 'single', name: '设置网关', id: 'gateway' },
-      { visible: false, type: 'single', name: '清除网关', id: 'clearGateway' },
+      { visible: false, type: 'single', name: '修改',       id: 'edit' },
+      { visible: false, type: 'single', name: '设置网关',    id: 'gateway' },
+      { visible: false, type: 'single', name: '清除网关',    id: 'clearGateway' },
+      { visible: false, type: 'single', name: '关联网络接口', id: 'attach' },
+      { visible: false, type: 'single', name: '删除网络接口', id: 'detach' },
     ]
   },
   mutations: {},

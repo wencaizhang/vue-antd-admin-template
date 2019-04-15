@@ -127,7 +127,7 @@ export default {
     handleParseData (data) {
       return data.map(item => {
         return Object.assign({}, item , {
-          // runningStatus_zh: this.__handleTransformToZh(item.runningStatus),
+          adminState_zh: this.__handleTransformToZh(item.adminState),
         })
       })
     },

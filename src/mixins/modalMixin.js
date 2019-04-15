@@ -60,7 +60,6 @@ export const baseModalMixins = {
         this.handleLoopFetchStart();
         return false;
       }
-
       this.confirmLoading = true;
       try {
         const resp = await this.fetchAPI(this.formValues);

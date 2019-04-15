@@ -14,7 +14,7 @@
           <a-select
             placeholder="请选择资源池！"
             v-decorator="[
-              '资源池',
+              'resourcePool',
               {
                 initialValue: 'external_net',
                 rules: [{ required: true, message: '请选择资源池！' }]
@@ -32,7 +32,7 @@
         >
           <a-textarea
             v-decorator="[
-            'hostName',
+            'description',
             {rules: [{ message: '请填写描述!' }]}
           ]"
             placeholder="描述"

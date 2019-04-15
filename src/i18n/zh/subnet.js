@@ -1,7 +1,8 @@
 export default {
   subnet: {
     status: {
-      active: '运行中',
+      up: '启用',
+      down: '关停',
     }
   }
 }

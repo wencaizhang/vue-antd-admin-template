@@ -59,11 +59,17 @@
       <template slot="name" slot-scope="text, record">
         <a href="javascript:;" @click="handleViewDetail(record)">{{text.first}} {{text.last}}</a>
       </template>
+      <template slot="internal" slot-scope="internal">
+        <p v-show="Array.isArray(internal)" v-for="item in internal" :key="item.id">
+          {{ item.name + ' : '}}{{ item.cidr}}
+        </p>
+        <p v-show="!Array.isArray(internal)">{{ internal }}</p>
+      </template>
       <template slot="operation" slot-scope="text, record">
         <a-dropdown>
           <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
             <a-menu-item
-              v-for="item in singleMenuOptions"
+              v-for="item in record.singleMenuOptions"
               :key="item.id"
             >{{ item.name }}</a-menu-item>
           </a-menu>
@@ -79,6 +85,8 @@
     <ClearModal />
     <DeleteModal />
     <Gateway />
+    <Attach />
+    <Detach />
   </div>
 </template>
 
@@ -88,6 +96,8 @@ import EditModal from "./Modal/Edit";
 import ClearModal from "./Modal/Clear";
 import DeleteModal from "./Modal/Delete";
 import Gateway from "./Modal/Gateway";
+import Attach from "./Modal/Attach";
+import Detach from "./Modal/Detach";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
@@ -106,7 +116,9 @@ export default {
     EditModal,
     ClearModal,
     DeleteModal,
-    Gateway
+    Gateway,
+    Attach,
+    Detach,
   },
 
   data() {
@@ -121,7 +133,8 @@ export default {
       searchValues: {
         type: 'name',
         inputValue: '',
-      }
+      },
+      
     };
   },
   mounted () {
@@ -142,9 +155,22 @@ export default {
     handleParseData (data) {
       data.forEach(item => {
         item.status_zh = this.__handleTransformToZh(item.status);
+
+        // 操作菜单权限过滤
+        const options = JSON.parse(JSON.stringify(this.singleMenuOptions));
+
+        item.singleMenuOptions = options;
       })
       return data;
-    }
+    },
+    handleSingleMenuClick(key, record) {
+      if (key === '') {
+
+      }
+      // 单项操作
+      this.currRecord = record;
+      this.handleShowModal(key);
+    },
   }
 };
 </script>

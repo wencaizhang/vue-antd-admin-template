@@ -17,11 +17,14 @@
 </template>
 <script>
 import { baseModalMixins } from "@/mixins/modalMixin";
+import { deleteNetwork as fetchAPI } from '@/api/network/network';
 export default {
   mixins: [baseModalMixins],
   data() {
     return {
-      name: "delete"
+      fetchAPI,
+      name: "delete",
+      loop: true,
     };
   },
 
@@ -33,9 +36,22 @@ export default {
       });
       this.handleItemCount = this.list.length;
     },
-    handleCreate() {
-      this.handleCancel();
-    }
+    
+    async handleItemFetch (item) {
+      try {
+        const payload = { networkId: item.id };
+        const resp = await this.fetchAPI(payload);
+      }
+      catch (err) {
+
+      }
+      finally {
+        this.handleItemCount = this.handleItemCount - 1;
+        if (this.handleItemCount === 0) {
+          this.handleLoopFetchEnd();
+        }
+      }
+    },
   }
 };
 </script>

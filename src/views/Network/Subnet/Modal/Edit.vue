@@ -27,14 +27,14 @@
             v-decorator="[
               'bootable',
               {
-                initialValue: currRecord.status === 'active' ? 'UP' : 'DOWN',
+                initialValue: (currRecord.adminState || '').toLowerCase() == 'up' ? 1 : 0,
                 rules: [{ required: true, message: '请输入名称' }]
               }
             ]"
           >
             <!-- 可启动[0:否 1:是] -->
-            <a-select-option value="UP">启用</a-select-option>
-            <a-select-option value="DOWN">关停</a-select-option>
+            <a-select-option :value="1">启用</a-select-option>
+            <a-select-option :value="0">关停</a-select-option>
           </a-select>
         </a-form-item>
         <!-- <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="描述：">
@@ -54,14 +54,22 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
+
+import { editNetwork as fetchAPI } from '@/api/network/network';
+
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       name: "edit"
     };
   },
 
-  methods: {}
+  methods: {
+    onShow () {
+      this.formValues = { networkId: this.currRecord.id };
+    },
+  }
 };
 </script>

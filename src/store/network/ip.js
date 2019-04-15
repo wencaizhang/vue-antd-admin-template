@@ -1,7 +1,7 @@
 const columns = [
   {
     title: "IP",
-    dataIndex: "ip"
+    dataIndex: "ipAddress"
   },
   {
     title: "描述",
@@ -26,7 +26,7 @@ const columns = [
   },
   {
     title: "资源池",
-    dataIndex: "resourcePool"
+    dataIndex: "pool"
   },
   {
     title: "带宽上限(Mbps)",

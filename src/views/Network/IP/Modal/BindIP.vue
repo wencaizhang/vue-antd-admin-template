@@ -11,13 +11,13 @@
     >
       <a-form :form="form">
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="IP地址：">
-          <a-input :value="currRecord.ip" disabled />
+          <a-input :value="currRecord.ipAddress" disabled />
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="选择待绑定端口：">
           <a-select
             placeholder="请选择待绑定端口！"
             v-decorator="[
-              '选择待绑定端口',
+              'portIp',
               {
                 initialValue: '',
                 rules: [{ required: true, message: '请选择待绑定端口！' }]
@@ -55,11 +55,13 @@ export default {
     this.fetchIntanceList();
   },
   methods: {
+    onShow () {
+      this.formValues = { id: this.currRecord.id }
+    },
     async fetchIntanceList () {
       try {
         const resp = await getinstanceList();
         this.instanceList = resp.data;
-
         const list = [];
         resp.data.forEach(item => {
           item.network.forEach(net => {

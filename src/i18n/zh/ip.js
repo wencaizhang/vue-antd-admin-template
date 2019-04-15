@@ -1,8 +1,8 @@
 export default {
   ip: {
     status: {
-      up: '启用',
-      down: '关停',
+      active: '已绑定',
+      down: '未绑定',
     }
   }
 }

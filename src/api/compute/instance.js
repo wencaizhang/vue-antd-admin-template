@@ -34,12 +34,6 @@ export const softreboot      = payload => POST('/compute/instance/softreboot', p
 // 创建快照
 export const createSnapshoot = payload => POST('/compute/instance/snapshoot/create', payload);
 
-// 绑定公网IP
-export const bindIP          = payload => POST('/compute/instance/publicIP/bind', payload);
-
-// 解绑公网IP
-export const unbindIP        = payload => POST('/compute/instance/publicIP/unbind', payload);
-
 // 重建云主机
 export const rebuild         = payload => POST('/compute/instance/rebuild', payload);
 

@@ -58,11 +58,11 @@ export function getTimeDiff (timestamp) {
   var diff = currentStamptime - timestamp;
   var points = [
     { value: 365 * 24 * 60 * 60, suffix: '年前', max: 2 },
-    { value: 30 * 24 * 60 * 60, suffix: '月前', max: 11 },
-    { value: 7 * 24 * 60 * 60, suffix: '周前', max: 4 },
-    { value: 24 * 60 * 60, suffix: '天前', max: 6 },
-    { value: 60 * 60, suffix: '小时前', max: 23 },
-    { value: 10 * 60, suffix: '0分钟前', max: 5 }
+    { value: 30 * 24 * 60 * 60,  suffix: '月前', max: 11 },
+    { value: 7 * 24 * 60 * 60,   suffix: '周前', max: 4 },
+    { value: 24 * 60 * 60,       suffix: '天前', max: 6 },
+    { value: 60 * 60,            suffix: '小时前', max: 23 },
+    { value: 10 * 60,            suffix: '0分钟前', max: 5 }
   ];
 
   for (var i = 0; i < points.length; i++) {
