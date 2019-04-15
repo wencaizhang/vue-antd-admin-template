@@ -61,6 +61,7 @@
       </template>
       <template slot="operation" slot-scope="text, record">
         <a-button
+          v-if="record.isRouterExternal !== true"
           type="primary"
           style="margin-right: 10px;"
           icon="edit"

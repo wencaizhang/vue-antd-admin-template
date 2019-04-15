@@ -13,8 +13,6 @@
       <a-alert message="注意：删除网络后数据不可恢复！" type="warning" showIcon/>
       <p style="margin-top: 10px; text-align: center;">是否删除网络{{ list.map(item => item.name).join(', ') }}?</p>
 
-
-
       <p>
         你已经选择了路由器“{{ totalList.map(item => item.name).join(', ') }}”，
         <template v-if="bindInstanList.length">
