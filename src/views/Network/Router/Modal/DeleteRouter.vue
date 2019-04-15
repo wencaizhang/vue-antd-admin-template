@@ -19,7 +19,7 @@
 
       <template v-else>
         <a-alert message="注意：删除路由器后数据不可恢复！" type="warning" showIcon/>
-        <p>你已经选择了路由"{{ currRecord.name }}",即将删除该理由,请确认你的操作.</p>
+        <p>你已经选择了路由"{{ currRecord.name }}",即将删除该路由,请确认你的操作.</p>
       </template>
 
     </a-modal>
