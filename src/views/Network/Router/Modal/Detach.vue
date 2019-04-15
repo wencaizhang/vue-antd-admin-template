@@ -10,15 +10,21 @@
       okText="删除"
       okType="danger"
     >
-      <a-alert message="说明:删除网络接口就是把用户私有网络的网关地址从路由器接口上删除." type="warning" showIcon />
 
-      <a-table
-        :columns="columns"
-        :dataSource="currRecord.internal"
-        :pagination="pagination"
-        :rowSelection="{hideDefaultSelections: true,type: 'radio',selectedRowKeys: selectedRowKeys,onChange: onSelect}"
-      >
-      </a-table>
+      <template v-if="currRecord.internal === '无'">
+        <p>该路由尚未关联网络接口</p>
+      </template>
+      <template v-else>
+        <a-alert message="说明:删除网络接口就是把用户私有网络的网关地址从路由器接口上删除." type="warning" showIcon />
+        <a-table
+          :columns="columns"
+          :dataSource="currRecord.internal"
+          :pagination="pagination"
+          :rowKey="record => record.id"
+          :rowSelection="{hideDefaultSelections: true,type: 'radio',selectedRowKeys: selectedRowKeys,onChange: onSelect}"
+        >
+        </a-table>
+      </template>
 
     </a-modal>
   </div>

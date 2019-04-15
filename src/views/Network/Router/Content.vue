@@ -84,6 +84,7 @@
     <EditModal />
     <ClearModal />
     <DeleteModal />
+    <DeleteRouter />
     <Gateway />
     <Attach />
     <Detach />
@@ -95,6 +96,7 @@ import CreateModal from "./Modal/Create";
 import EditModal from "./Modal/Edit";
 import ClearModal from "./Modal/Clear";
 import DeleteModal from "./Modal/Delete";
+import DeleteRouter from "./Modal/DeleteRouter";
 import Gateway from "./Modal/Gateway";
 import Attach from "./Modal/Attach";
 import Detach from "./Modal/Detach";
@@ -116,6 +118,7 @@ export default {
     EditModal,
     ClearModal,
     DeleteModal,
+    DeleteRouter,
     Gateway,
     Attach,
     Detach,
@@ -144,7 +147,7 @@ export default {
     async fetchNetworkList () {
       try {
         const resp = await getNetworkList();
-        this.networkList = resp.data.filter(item => item.routerExternal);
+        this.networkList = resp.data.filter(item => item.isRouterExternal);
       } catch (error) {
         
       }

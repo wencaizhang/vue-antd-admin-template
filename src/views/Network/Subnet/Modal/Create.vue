@@ -130,7 +130,7 @@
               v-decorator="[
                 'addressPool',
               ]"
-              placeholder="示例：192.168.100.1，192.168.100.10；每行一条记录"
+              placeholder="示例：192.168.100.1，192.168.100.10；每行一条记录，使用逗号分割。"
             />
           </a-form-item>
           <a-form-item
@@ -143,7 +143,7 @@
               v-decorator="[
                 'dnsServer',
               ]"
-              placeholder="示例：114.114.114.114，每行一个地址"
+              placeholder="示例：114.114.114.114，每行一个地址，使用逗号分割。"
             />
           </a-form-item>
           <a-form-item
@@ -156,7 +156,7 @@
               v-decorator="[
                 'hostRouter',
               ]"
-              placeholder="主机额外增加的路由，格式：目的CIDR 下一跳地址；示例：192.168.1.0/24，10.10.10.10;每行一条记录"
+              placeholder="主机额外增加的路由，格式：目的CIDR 下一跳地址；示例：192.168.1.0/24，10.10.10.10； 每行一条记录，使用逗号分割。"
             />
           </a-form-item>
         </template>

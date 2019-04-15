@@ -12,6 +12,23 @@
     >
       <a-alert message="注意：删除网络后数据不可恢复！" type="warning" showIcon/>
       <p style="margin-top: 10px; text-align: center;">是否删除网络{{ list.map(item => item.name).join(', ') }}?</p>
+
+
+
+      <p>
+        你已经选择了路由器“{{ totalList.map(item => item.name).join(', ') }}”，
+        <template v-if="bindInstanList.length">
+          其中“{{ bindInstanList.map(item => item.name).join(', ') }}”不满足删除条件,请先删除其关联的资源对象,再执行删除.
+        </template>
+        <template v-else>
+          即将删除该路由,请确认你的操作.
+        </template>
+      </p>
+
+      <template v-if="bindInstanList.length" slot="footer">
+        <a-button @click="handleCancel">取消</a-button>
+      </template>
+
     </a-modal>
   </div>
 </template>
@@ -25,15 +42,20 @@ export default {
       fetchAPI,
       name: "delete",
       loop: true,
+      totalList: [],
+      bindInstanList: [],
     };
   },
 
   methods: {
     onShow () {
       const { data, selectedRowKeys } = this.$parent;
-      this.list = data.filter(item => {
+      this.totalList = data.filter(item => {
         return selectedRowKeys.includes(item.id);
       });
+
+      this.bindInstanList = this.totalList.filter(item => item.isBindInstance);
+      this.list = this.totalList.filter(item => !item.isBindInstance);
       this.handleItemCount = this.list.length;
     },
     

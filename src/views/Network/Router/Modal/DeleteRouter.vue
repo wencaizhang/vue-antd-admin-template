@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <a-modal
@@ -6,46 +5,43 @@
       @ok="handleCreate"
       :visible="visible"
       :confirmLoading="confirmLoading"
-      title="清除网关"
-      okText="清除"
+      title="删除路由器"
+      okText="删除"
       okType="danger"
     >
-      
+
       <template v-if="currRecord.extrannet === '无'">
         <template slot="footer">
           <a-button @click="handleCancel">取消</a-button>
         </template>
-        <p>该路由器目前没有关联任何网络接口,无需执行此操作.</p>
+        <p>该路由器下有关联的网络,请先执行"删除网络接口"操作,再执行删除路由器的操作</p>
       </template>
-      <p v-else>
-        你已选择 {{ currRecord.name }} 。
-        清除网关后将无法联通公网. 请确认您的选择。你可以通过使用网关配置动作稍后重置网关，但网关IP可能改变。
-      </p>
 
+      <template v-else>
+        <a-alert message="注意：删除路由器后数据不可恢复！" type="warning" showIcon/>
+        <p>你已经选择了路由"{{ currRecord.name }}",即将删除该理由,请确认你的操作.</p>
+      </template>
 
     </a-modal>
   </div>
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
-import { setGateway as fetchAPI } from "@/api/network/router";
-
+import { deleteRouter as fetchAPI } from "@/api/network/router";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
       fetchAPI,
-      name: "clearGateway",
-      list: [],
+      name: "deleteRouter",
     };
   },
 
   methods: {
     onShow () {
-      // 操作类型[0:设置 1:清除]
-      this.formValues = { routerId: this.currRecord.id, type: 1 };
+      this.formValues = { routerId: this.currRecord.id }
     },
-  },
+  }
 };
 </script>
 
