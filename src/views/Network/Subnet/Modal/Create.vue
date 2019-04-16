@@ -212,6 +212,9 @@ export default {
   },
 
   methods: {
+    onShow () {
+      this.currStep = 0;
+    },
     onChangeDisableGateway (e) {
       this.formValues.isDisableGateway = e.target.checked;
     },

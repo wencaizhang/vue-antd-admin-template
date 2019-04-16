@@ -62,6 +62,7 @@
       <template slot="name" slot-scope="text, record">
         <a href="javascript:;" @click="handleViewDetail(record)">{{text.first}} {{text.last}}</a>
       </template>
+
       <template slot="operation" slot-scope="text, record">
         <a-button
           type="primary"
@@ -148,7 +149,7 @@ export default {
     handleParseData (data) {
       return data.map(item => {
         return Object.assign({}, item , {
-          status_zh: this.__handleTransformToZh(item.status),
+          isBind: item.mappedStaticIp === '无' ? '未绑定' : '已绑定',
         })
       })
     },

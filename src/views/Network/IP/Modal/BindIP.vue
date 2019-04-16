@@ -9,7 +9,7 @@
       title="绑定公网IP"
       okText="确定"
     >
-      <a-form :form="form">
+      <a-form :form="form" v-if="currRecord.mappedStaticIp === '无'">
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="IP地址：">
           <a-input :value="currRecord.ipAddress" disabled />
         </a-form-item>
@@ -34,6 +34,14 @@
           </a-select>
         </a-form-item>
       </a-form>
+
+      <template v-else>
+        <p style="margin-top: 10px;">每个 IP 只能绑定一个端口，如需绑定其他端口，请先解绑此 IP</p>
+
+        <template slot="footer">
+          <a-button @click="handleCancel">取消</a-button>
+        </template>
+      </template>
     </a-modal>
   </div>
 </template>
