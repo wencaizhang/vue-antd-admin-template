@@ -147,7 +147,7 @@ export default {
           Object.keys(item).forEach(k => {
             const value = item[k];
             const str = '无';
-            if (!value) {
+            if (typeof value !== 'boolean' && !value) {
               item[k] = str;
             }
             if (value && Array.isArray(value) && value.length === 0) {
