@@ -2,7 +2,7 @@ import { GET, POST, DELETE } from '@/utils/request';
 
 // 公网IP列表
 export const getIPList = payload => GET('/network/publicIP/list', payload);
- 
+
 // 分配公网IP
 export const assignIP  = payload => POST('/network/publicIP/assign', payload);
  

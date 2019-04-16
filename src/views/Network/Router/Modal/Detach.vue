@@ -54,15 +54,15 @@ export default {
 
   methods: {
     onShow () {
+      this.selectedRowKeys = [];
       this.formValues = {
         routerId: this.currRecord.id,
       };
     },
-    onSelect (index) {
-      this.selectedRowKeys = index;
-      
+    onSelect (data) {
+      this.selectedRowKeys = data;
       this.formValues = Object.assign({}, this.formValues, {
-        subnetId: this.currRecord.internal[index].id
+        subnetId: data[0]
       })
     }
   },

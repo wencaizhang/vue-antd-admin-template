@@ -11,19 +11,23 @@
     >
       <a-form :form="form">
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="资源池：">
-          <a-select
-            placeholder="请选择资源池！"
-            v-decorator="[
-              'resourcePool',
-              {
-                initialValue: 'external_net',
-                rules: [{ required: true, message: '请选择资源池！' }]
-              }
-            ]"
-          >
-            <a-select-option value="external_net">external_net</a-select-option>
-            <a-select-option value="external_IPV6">external_IPV6</a-select-option>
-          </a-select>
+          <a-spin :spinning="$parent.fetchNetworkListLoading">
+            <a-select
+              placeholder="请选择资源池！"
+              v-decorator="[
+                'networkId',
+                {
+                  rules: [{ required: true, message: '请选择资源池！' }]
+                }
+              ]"
+            >
+              <a-select-option
+                v-for="item in $parent.networkList"
+                :value="item.id"
+                :key="item.id"
+              >{{item.name}}</a-select-option>
+            </a-select>
+          </a-spin>
         </a-form-item>
         <a-form-item
           :labelCol="formItemLayout.labelCol"
@@ -33,7 +37,9 @@
           <a-textarea
             v-decorator="[
             'description',
-            {rules: [{ message: '请填写描述!' }]}
+            {
+              rules: [{ required: true, message: '请填写描述' }]
+            }
           ]"
             placeholder="描述"
           />
@@ -45,6 +51,7 @@
               v-decorator="[
               'bandwidth',
               {
+                initialValue: bandwidth,
                 rules: [{ required: true, message: '请填写带宽' }]
               }
             ]"
@@ -69,16 +76,24 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
+import { assignIP as fetchAPI } from "@/api/network/ip";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       name: "create",
-      bandwidth: "1"
+      bandwidth: 1
     };
   },
 
   methods: {
+    onShow () {
+      if (this.$parent.networkList.length <= 0) {
+        this.$parent.fetchNetworkList();
+      }
+      this.bandwidth = 1;
+    },
     onInputChange(v) {
       Object.assign(this, { bandwidth: v });
       this.form.setFieldsValue({

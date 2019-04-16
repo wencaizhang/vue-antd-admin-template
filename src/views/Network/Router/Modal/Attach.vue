@@ -6,7 +6,7 @@
       @ok="handleCreate"
       :visible="visible"
       :confirmLoading="confirmLoading"
-      title="关联子网到路由"
+      title="关联网络接口"
       okText="确定"
     >
       <a-form :form="form">

@@ -10,7 +10,7 @@
       okText="解绑"
       okType="danger"
     >
-      <p>您已选择了 {{ list.map(item => item.ip).join(', ') }}，请确认你的操作，解绑后该云主机将无法通过互联网访问。</p>
+      <p>您已选择了 {{ list.map(item => item.ipAddress).join(', ') }}，请确认你的操作，解绑后该云主机将无法通过互联网访问。</p>
     </a-modal>
   </div>
 </template>
@@ -31,13 +31,13 @@ export default {
     onShow () {
       const { data, selectedRowKeys } = this.$parent;
       this.list = data.filter(item => {
-        return selectedRowKeys.includes(item.ip);
+        return selectedRowKeys.includes(item.id);
       });
       this.handleItemCount = this.list.length;
     },
     async handleItemFetch (item) {
       try {
-        const payload = { ipAddress: item.ip, };
+        const payload = { id: item.id, };
         const resp = await this.fetchAPI(payload);
       }
       catch (err) {

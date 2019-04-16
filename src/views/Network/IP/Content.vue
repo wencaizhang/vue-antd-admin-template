@@ -53,7 +53,7 @@
     <a-table
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onTableSelectChange}"
       :columns="columns"
-      :rowKey="record => record.ip"
+      :rowKey="record => record.id"
       :dataSource="data"
       :pagination="pagination"
       :loading="loading"
@@ -99,6 +99,7 @@ import UnbindIP from "./Modal/UnbindIP";
 import tablePageMixins from "@/mixins/tablePageMixins";
 
 import { getIPList as getList } from "@/api/network/ip";
+import { getNetworkList } from "@/api/network/network";
 
 import ip from '@/i18n/zh/ip';
 const statusDicts = ip.ip.status
@@ -121,11 +122,26 @@ export default {
       searchValues: {
         type: 'ip',
         inputValue: '',
-      }
+      },
+      networkList: [],
+      fetchNetworkListLoading: false,
     };
   },
-
+  mounted () {
+    this.fetchNetworkList();
+  },
   methods: {
+    async fetchNetworkList () {
+      this.fetchNetworkListLoading = true;
+      try {
+        const resp = await getNetworkList();
+        this.networkList = resp.data.filter(item => item.isRouterExternal);
+      } catch (error) {
+        
+      } finally {
+        this.fetchNetworkListLoading = false;
+      }
+    },
     __handleTransformToZh (status) {
       return statusDicts[status.toLowerCase()] || status
     },

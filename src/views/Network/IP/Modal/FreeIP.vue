@@ -10,7 +10,7 @@
       okText="释放"
       okType="danger"
     >
-      <p>您已选择了 {{ list.map(item => item.ip).join(', ') }}，请确认你的操作，释放后该IP地址被回收到公网IP池，需要时重新申请。</p>
+      <p>您已选择了 {{ list.map(item => item.ipAddress).join(', ') }}，请确认你的操作，释放后该IP地址被回收到公网IP池，需要时重新申请。</p>
     </a-modal>
   </div>
 </template>
@@ -31,13 +31,13 @@ export default {
     onShow () {
       const { data, selectedRowKeys } = this.$parent;
       this.list = data.filter(item => {
-        return selectedRowKeys.includes(item.ip);
+        return selectedRowKeys.includes(item.id);
       });
       this.handleItemCount = this.list.length;
     },
     async handleItemFetch (item) {
       try {
-        const payload = { ipAddress: item.ip, id: "string" };
+        const payload = { id: item.id };
         const resp = await this.fetchAPI(payload);
       }
       catch (err) {

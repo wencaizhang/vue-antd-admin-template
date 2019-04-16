@@ -5,6 +5,7 @@
       @cancel="handleCancel"
       @ok="handleCreate"
       :visible="visible"
+      v-if="visible"
       :confirmLoading="confirmLoading"
       :title="titleList[currStep].title"
       okText="确定"
@@ -165,7 +166,7 @@
       <template slot="footer">
         <a-button v-if="currStep !== 0" @click="handlePrevStep">上一步</a-button>
         <a-button v-if="currStep !== 1" @click="handleNextStep">下一步</a-button>
-        <a-button v-if="currStep === 1" type="primary" :loading="loading" @click="handleNextStep">
+        <a-button v-if="currStep === 1" type="primary" :loading="confirmLoading" @click="handleNextStep">
           创建
         </a-button>
       </template>
