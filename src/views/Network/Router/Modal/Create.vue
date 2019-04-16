@@ -32,6 +32,7 @@
             placeholder="请选择外部网络"
             v-decorator="[
               'external',
+              {rules: [{ required: true, message: '请选择外部网络!' }]}
             ]"
           >
             <a-select-option
