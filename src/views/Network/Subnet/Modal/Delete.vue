@@ -11,9 +11,8 @@
       okType="danger"
     >
       <a-alert message="注意：删除网络后数据不可恢复！" type="warning" showIcon/>
-      <p style="margin-top: 10px; text-align: center;">是否删除网络{{ list.map(item => item.name).join(', ') }}?</p>
 
-      <p>
+      <p style="margin-top: 10px;">
         你已经选择了路由器“{{ totalList.map(item => item.name).join(', ') }}”，
         <template v-if="bindInstanList.length">
           其中“{{ bindInstanList.map(item => item.name).join(', ') }}”不满足删除条件,请先删除其关联的资源对象,再执行删除.
@@ -54,6 +53,7 @@ export default {
 
       this.bindInstanList = this.totalList.filter(item => item.isBindInstance);
       this.list = this.totalList.filter(item => !item.isBindInstance);
+
       this.handleItemCount = this.list.length;
     },
     
