@@ -27,7 +27,7 @@
             <span style="display: inline-flex;">
               <a-input-group compact class="compact-search-input">
                 <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 90px!important;">
-                  <a-select-option value="ip">IP</a-select-option>
+                  <a-select-option value="ipAddress">IP</a-select-option>
                 </a-select>
                 <a-input
                   style="width: 200px"
@@ -121,7 +121,7 @@ export default {
       id: "ip",
       name: "路由",
       searchValues: {
-        type: 'ip',
+        type: 'ipAddress',
         inputValue: '',
       },
       networkList: [],

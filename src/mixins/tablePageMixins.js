@@ -48,6 +48,10 @@ export default {
   },
   methods: {
     handleRefresh() {
+      if (this.searchValues) {
+        this.searchValues = Object.assign({}, this.searchValues, { inputValue: '' })
+      }
+
       this.pagination = Object.assign({}, this.pagination, this.initPagination);
       this.fetch();
     },

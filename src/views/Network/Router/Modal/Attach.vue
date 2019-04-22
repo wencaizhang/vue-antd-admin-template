@@ -17,6 +17,7 @@
               v-decorator="[
                 'subnetId',
                 {
+                  initialValue: subnetInitValue,
                   rules: [{ required: true, message: '请选择子网' }]
                 }
               ]"
@@ -52,6 +53,8 @@ export default {
       name: "attach",
       subnetList: [],
       fetchSubnetLoading: false,
+
+      subnetInitValue: '',
     };
   },
 
@@ -62,14 +65,33 @@ export default {
     },
     async fetchSubNetList () {
       this.fetchSubnetLoading = true;
+      this.subnetInitValue = '';
       try {
+        const { internal } = this.currRecord;
         const resp = await getSubNetList();
         this.fetchSubnetLoading = false;
-        this.subnetList = resp.data.filter(item => !item.isBindRouter);
+        this.subnetList = resp.data.filter(item => !item.isBindRouter).concat(internal);
+
+        this.subnetInitValue = Array.isArray(internal) && internal.length && internal[0].id;
       } catch (error) {
         
       }
-    }
+    },
+    handleCreate() {
+      const self = this;
+      this.form.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          const { internal } = self.currRecord
+          if (Array.isArray(internal) && internal.find(item => item.id === values['subnetId'])) {
+            self.handleCancel();
+            self.$message.info('该网络接口已关联！');
+          } else {
+            self.formValues = Object.assign({}, self.formValues, values);
+            self.handleFetch();
+          }
+        }
+      });
+    },
   },
 };
 </script>

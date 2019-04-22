@@ -59,11 +59,9 @@ export default {
       instanceList: [],
     };
   },
-  mounted () {
-    this.fetchIntanceList();
-  },
   methods: {
     onShow () {
+      this.fetchIntanceList();
       this.formValues = { id: this.currRecord.id }
     },
     async fetchIntanceList () {
@@ -71,15 +69,22 @@ export default {
         const resp = await getinstanceList();
         this.instanceList = resp.data;
         const list = [];
+
         resp.data.forEach(item => {
-          item.network.forEach(net => {
-            list.push({
-              network: net,
-              name: item.name,
+          // 每个端口只能绑定一个 IP
+          // 需要过滤出可以使用的端口（未绑定过的端口）
+          if (!item.ipAddress) {
+            item.network.forEach(net => {
+              list.push({
+                network: net,
+                name: item.name,
+              });
             });
-          });
-        })
+          }
+        });
+
         this.instanceList = list;
+
       } catch (error) {
         
       }

@@ -16,7 +16,7 @@
             v-decorator="[
               'externalId',
               {
-                initialValue: currRecord.extrannet === '无' ? '' : currRecord.extrannet,
+                initialValue: externalId,
                 rules: [{ required: true, message: '请选择外部网络' }]
               }
             ]"
@@ -48,6 +48,7 @@ export default {
     return {
       fetchAPI,
       name: "gateway",
+      externalId: '',
     };
   },
 
@@ -55,10 +56,9 @@ export default {
     onShow () {
       // 操作类型[0:设置 1:清除]
       this.formValues = { routerId: this.currRecord.id, type: 0 };
-      // const { data, selectedRowKeys } = this.$parent;
-      // this.list = data.filter(item => {
-      //   return selectedRowKeys.includes(item.id);
-      // })
+
+      const extrannet = this.$parent.networkList.find(item => item.name === this.currRecord.extrannet);
+      this.externalId = extrannet && extrannet.id;
     },
   },
 };

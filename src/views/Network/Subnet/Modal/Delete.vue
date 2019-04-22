@@ -13,12 +13,12 @@
       <a-alert message="注意：删除网络后数据不可恢复！" type="warning" showIcon/>
 
       <p style="margin-top: 10px;">
-        你已经选择了路由器“{{ totalList.map(item => item.name).join(', ') }}”，
+        你已经选择了网络“{{ totalList.map(item => item.name).join(', ') }}”，
         <template v-if="bindInstanList.length">
           其中“{{ bindInstanList.map(item => item.name).join(', ') }}”不满足删除条件,请先删除其关联的资源对象,再执行删除.
         </template>
         <template v-else>
-          即将删除该路由,请确认你的操作.
+          即将删除该网络,请确认你的操作.
         </template>
       </p>
 

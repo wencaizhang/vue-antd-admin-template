@@ -24,7 +24,7 @@
               <a-input-group compact class="compact-search-input">
                 <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 90px!important;">
                   <a-select-option value="name">名称</a-select-option>
-                  <a-select-option value="id">ID</a-select-option>
+                  <a-select-option value="shortID">ID</a-select-option>
                 </a-select>
                 <a-input
                   style="width: 200px"
