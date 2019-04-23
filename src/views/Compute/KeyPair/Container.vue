@@ -107,11 +107,7 @@ export default {
     };
   },
   computed: {},
-  filters: {
-    downloadable(record, key) {
-      if (key === "download") return true;
-    }
-  },
+
   methods: {
 
   }

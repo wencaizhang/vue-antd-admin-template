@@ -31,7 +31,6 @@ const columns = [
 export default {
   namespaced: true,
   state: {
-    handleRowData: {},
     columns,
     menuOptions: [
       { visible: false, type: 'none',   name: "申请IP", id: "create" },

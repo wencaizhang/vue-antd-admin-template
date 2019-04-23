@@ -59,9 +59,6 @@
       :loading="loading"
       @change="handleTableChange"
     >
-      <template slot="name" slot-scope="text, record">
-        <a href="javascript:;" @click="handleViewDetail(record)">{{text.first}} {{text.last}}</a>
-      </template>
 
       <template slot="operation" slot-scope="text, record">
         <a-button

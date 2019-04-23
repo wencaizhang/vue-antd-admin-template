@@ -239,12 +239,13 @@ export default {
         return availableStatus.includes(status);
       })
 
-      // 绑定IP后，绑定公网IP按钮不显示
-      if (ipAddress !== '无') {
-        const temp = result.find(item => item.id === 'bindIP');
-        const index = result.indexOf(temp);
-        result.splice(index, 1);
-      }
+      // 绑定IP后，绑定公网IP按钮不显示;
+      // 未绑定时，解绑公网IP按钮不显示。
+      const id = ipAddress === '无' ? 'unbindIP' : 'bindIP'
+      const temp = result.find(item => item.id === id);
+      const index = result.indexOf(temp);
+      result.splice(index, 1);
+
       return result;
     },
     __handleTransformToZh (status) {

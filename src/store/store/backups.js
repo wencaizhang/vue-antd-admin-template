@@ -33,7 +33,6 @@ export default {
   namespaced: true,
   state: {
 
-    handleRowData: {},
     columns,
     menuOptions: [
       {

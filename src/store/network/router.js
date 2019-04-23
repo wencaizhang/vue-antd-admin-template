@@ -28,7 +28,6 @@ const columns = [
 export default {
   namespaced: true,
   state: {
-    handleRowData: {},
     columns,
     menuOptions: [
       { visible: false, type: 'none',   name: '创建',       id: 'create' },

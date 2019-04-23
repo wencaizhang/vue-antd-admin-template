@@ -65,6 +65,7 @@ export default {
         this.tempData = status === 'all' ? this.tempData : this.tempData.filter(item => item.status === status);
       }
     },
+
     /**
      * 搜索
      */
@@ -93,6 +94,7 @@ export default {
       });
       this.tempData = data;
     },
+
     /**
      * 分页
      */
@@ -102,6 +104,7 @@ export default {
       const end = current * pageSize || 10;
       this.tempData = this.tempData.slice( begin, end );
     },
+
     handleDATA () {
       this.handleClearSelected()
       // 处理数据：分页，排序，过滤，搜索
@@ -125,10 +128,10 @@ export default {
       }, 100);
     },
 
-
     async fetch (payload={}) {
       this.loading = true;
       this.handleClearSelected();
+      
       try {
         const resp = await this.getList(payload);
 
@@ -171,6 +174,7 @@ export default {
         this.loading = false;
       }
     },
+
     handleFetchSuccess () {
       // 数据请求结束后执行
     },
@@ -185,14 +189,6 @@ export default {
 
     handleClearSelected() {
       this.selectedRowKeys = [];
-    },
-
-    handleViewDetail(record) {
-      this.$store.commit(`${this.id}/setHandleRowData`, record);
-      this.$router.push({
-        name: `${this.id}-instance`,
-        params: { id: record.id }
-      });
     },
 
     handleMultiMenuClick (key) {
