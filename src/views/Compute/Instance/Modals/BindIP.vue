@@ -21,15 +21,20 @@
             class="container-----"
             placeholder="请选择一个IP地址"
             v-decorator="[
-              'ipAddress',
+              'id',
               {
-                initialValue: 'web1',
+                initialValue: currRecord.ipAddress,
                 rules: [{ required: true, message: '请选择IP地址！' }]
               }
             ]"
           >
-            <a-select-option value="jack">Jack</a-select-option>
-            <a-select-option value="lucy">Lucy</a-select-option>
+            <a-select-option
+              v-for="item in $parent.ipList"
+              :key="item.id"
+              :value="item.id"
+            >
+            {{ item.ipAddress }}
+            </a-select-option>
             <a-icon
               slot="suffixIcon"
               class="addonAfter"
@@ -43,14 +48,18 @@
           <a-select
             placeholder="请选择一个接口"
             v-decorator="[
-              'ipInterface',
+              'portIp',
               {
                 rules: [{ required: true, message: '请选择一个接口！' }]
               }
             ]"
           >
-            <a-select-option value="Jack">Jack</a-select-option>
-            <a-select-option value="lucyx">Lucy</a-select-option>
+            <a-select-option
+              v-for="item in currRecord.network"
+              :key="item"
+              :value="item"
+            >{{ currRecord.name }}:{{ item }}
+            </a-select-option>
           </a-select>
         </a-form-item>
       </a-form>
@@ -59,17 +68,21 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
-import { bindIP as fetchAPI } from "@/api/compute/instance";
+import { bindIP as fetchAPI } from "@/api/network/ip";
+
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
       fetchAPI,
-      name: "bindIP"
+      name: "bindIP",
     };
   },
+  methods: {
+    onShow () {
 
-  methods: {}
+    },
+  }
 };
 </script>
 <style>

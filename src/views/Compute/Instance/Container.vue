@@ -152,6 +152,7 @@ import ConsolePanel from './Modals/ConsolePanel'
 import tablePageMixins from "@/mixins/tablePageMixins";
 
 import { getinstanceList as getList, getInstanceStatus } from "@/api/compute/instance";
+import { getIPList } from "@/api/network/ip";
 
 import { transToTimestamp } from "@/utils/util";
 
@@ -194,13 +195,25 @@ export default {
         type: 'name',
         inputValue: '',
         status: 'all',
-      }
+      },
+
+
+      ipList: [],
     };
   },
   mounted () {
     this.$store.commit[`${this.$parent.id}/clearModal`]; 
+    this.fetchIPList();
   },
   methods: {
+    async fetchIPList () {
+      try {
+        const resp = await getIPList();
+        this.ipList = resp.data;
+      } catch (error) {
+        
+      }
+    },
     handleRefresh() {
       this.searchValues = {
         type: 'name',
@@ -210,7 +223,7 @@ export default {
       this.pagination = Object.assign({}, this.pagination, this.initPagination);
       this.fetch();
     },
-    __handleFilterOptions (status) {
+    __handleFilterOptions ({ status, ipAddress }) {
       // 等待和重启中禁止任何操作
       if( ['build', 'reboot'].includes(status) ) {
         return [];
@@ -225,6 +238,13 @@ export default {
         }
         return availableStatus.includes(status);
       })
+
+      // 绑定IP后，绑定公网IP按钮不显示
+      if (ipAddress !== '无') {
+        const temp = result.find(item => item.id === 'bindIP');
+        const index = result.indexOf(temp);
+        result.splice(index, 1);
+      }
       return result;
     },
     __handleTransformToZh (status) {
@@ -251,7 +271,7 @@ export default {
 
         Object.assign(item, {
           memory, vcpu, spec, disk, secuGroupString, status_zh,
-          singleMenuOptions: [ ...this.__handleFilterOptions(item.status) ],
+          singleMenuOptions: [ ...this.__handleFilterOptions(item) ],
           taskState: '',
         })
         return item;
@@ -269,7 +289,7 @@ export default {
       // 更新表格中的状态
       const currItem = this.data.find(item => item.id === id);
       const currStatus = (status || currItem.status).toLowerCase();
-      const options = this.__handleFilterOptions(currStatus);
+      const options = this.__handleFilterOptions(currItem);
       Object.assign(currItem, {
         status: currStatus,
         taskState: taskState,

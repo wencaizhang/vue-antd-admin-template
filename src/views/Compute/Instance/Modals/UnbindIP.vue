@@ -16,7 +16,7 @@
 </template>
 <script>
 import { baseModalMixins } from "@/mixins/modalMixin";
-import { unbindIP as fetchAPI } from "@/api/compute/instance";
+import { unbindIP as fetchAPI } from "@/api/network/ip";
 import mixins from './mixins'
 export default {
   mixins: [baseModalMixins, mixins],
@@ -28,9 +28,10 @@ export default {
   },
 
   methods: {
-    handleCreateBefore () {
-      this.formValues = Object.assign(this.formValues, { publicIP: this.currRecord.publicIP })
-    }
+    onShow () {
+      const temp = this.$parent.ipList.find(item => item.ipAddress === this.currRecord.ipAddress);
+      this.formValues = { id: temp && temp.id }
+    },
   }
 };
 </script>

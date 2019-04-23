@@ -29,6 +29,9 @@
 </template>
 <script>
 import { getNetworkList } from '@/api/network/network'
+import subnet from '@/i18n/zh/subnet';
+const statusDicts = subnet.subnet.status
+
 const columns = [
   {
     title: "ID",
@@ -46,7 +49,11 @@ const columns = [
   {
     title: "类型",
     dataIndex: "type"
-  }
+  },
+  {
+    title: "状态",
+    dataIndex: "adminState_zh"
+  },
 ];
 export default {
   mounted() {
@@ -71,6 +78,9 @@ export default {
     };
   },
   methods: {
+    __handleTransformToZh (status) {
+      return statusDicts[status.toLowerCase()] || status
+    },
     getCurrPageData () {
       const { total, current, pageSize  } = this.pagination;
       const begin = (current - 1) * pageSize;
@@ -95,7 +105,13 @@ export default {
             type: boolean
             description: 是否为外部路由
          */
-        this.allData = resp.data.filter(item => !item.isRouterExternal);
+        this.allData = resp.data
+          .filter(item => !item.isRouterExternal && item.adminState.toLowerCase() === 'up' )
+          .map(item => {
+            return Object.assign(item, {
+              adminState_zh: this.__handleTransformToZh(item.adminState),
+            })
+          })
         this.pagination = Object.assign({}, this.initPagination, { total: this.allData.length });
         this.getCurrPageData();
       } catch (err) {

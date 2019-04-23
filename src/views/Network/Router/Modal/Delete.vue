@@ -48,8 +48,8 @@ export default {
       this.totalList = data.filter(item => {
         return selectedRowKeys.includes(item.id);
       });
-      this.internalList = this.totalList.filter(item => item.internal !== '无');
-      this.list = this.totalList.filter(item => item.internal === '无');
+      this.internalList = this.totalList.filter(item => Array.isArray(item.internal) && item.internal.length);
+      this.list = this.totalList.filter(item => !Array.isArray(item.internal) || !item.internal.length);
 
       this.handleItemCount = this.list.length;
     },
