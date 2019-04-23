@@ -76,6 +76,21 @@ service.interceptors.response.use(response => {
   return response.data;
 }, errHandle);
 
+function trimPayload (payload) {
+  Object.keys(payload).forEach(key => {
+    const value = payload[key];
+    if ( Object.prototype.toString.call(value) === '[object String]') {
+      if (value === '' || value === undefined) {
+        delete payload[key]
+      }
+    }
+    if ( Object.prototype.toString.call(value) === '[object Object]') {
+      trimPayload (value)
+    }
+  })
+  return payload;
+}
+
 /**
  * get方法，对应get请求
  * @param {String} url [请求的url地址]
@@ -83,7 +98,7 @@ service.interceptors.response.use(response => {
  */
 export function GET(url, payload) {
   return service.get(url, {
-    params: payload
+    params: trimPayload(payload)
   });
 }
 /**
@@ -92,7 +107,7 @@ export function GET(url, payload) {
  * @param {Object} payload [请求时携带的参数]
  */
 export function POST(url, payload) {
-  return service.post(url, payload);
+  return service.post(url, trimPayload(payload));
 }
 /**
  * delete方法，对应delete请求
@@ -101,6 +116,6 @@ export function POST(url, payload) {
  */
 export function DELETE(url, payload) {
   return service.delete(url, {
-    data: payload
+    data: trimPayload(payload)
   });
 }
