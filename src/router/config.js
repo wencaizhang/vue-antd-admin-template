@@ -195,23 +195,30 @@ export const asyncRouterMap = [
         ]
       },
 
-      // // 安全
-      // {
-      //   path: "safety",
-      //   name: "safety",
-      //   component: RouteView,
-      //   redirect: "safety/firewall",
-      //   meta: { title: "安全", icon: "safety-certificate", permission: ["dashboard"] },
-      //   children: [
-      //     {
-      //       path: "firewall",
-      //       name: "firewall",
-      //       component: () =>
-      //         import(/* webpackChunkName: "expense" */ "@/views/Safety/Firewall/Container"),
-      //       meta: { title: "防火墙", permission: ["dashboard"] }
-      //     }
-      //   ]
-      // },
+      // 安全
+      {
+        path: "security",
+        name: "security",
+        component: RouteView,
+        redirect: "security/group",
+        meta: { title: "安全", icon: "safety-certificate", permission: ["dashboard"] },
+        children: [
+          {
+            path: "group",
+            name: "group",
+            component: () =>
+              import(/* webpackChunkName: "expense" */ "@/views/Security/Group/Container"),
+            meta: { title: "安全组", permission: ["dashboard"] }
+          },
+          {
+            path: "rules",
+            name: "rules",
+            component: () =>
+              import(/* webpackChunkName: "expense" */ "@/views/Security/Rules/Container"),
+            meta: { title: "管理安全组规则", permission: ["dashboard"] }
+          },
+        ]
+      },
 
       // // 费用
       // {
