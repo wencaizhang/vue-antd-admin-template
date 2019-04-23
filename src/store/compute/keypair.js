@@ -25,7 +25,6 @@ const columns = [
 export default {
   namespaced: true,
   state: {
-    handleRowData: {},
     lastCreatedKeyPair: {},
     columns,
     menuOptions: [

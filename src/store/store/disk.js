@@ -43,7 +43,6 @@ export default {
   namespaced: true,
   state: {
 
-    handleRowData: {},
     columns,
     // 根据状态显示不同的操作选项
     // 状态为可用，则全部显示，状态为使用中，则显示 visible: true 的操作选项

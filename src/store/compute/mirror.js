@@ -38,7 +38,6 @@ const columns = [
 export default {
   namespaced: true,
   state: {
-    handleRowData: {},
     columns,
     menuOptions: [
       {

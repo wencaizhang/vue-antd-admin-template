@@ -11,9 +11,7 @@ export default {
       });
     },
     clearModal: state => state.menuOptions.forEach(item => item.visible = false),
-    setHandleRowData: (state, record) => {
-      Object.assign(state.handleRowData, record);
-    }
+
   },
   actions: {},
   getters: {
