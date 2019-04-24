@@ -211,5 +211,6 @@ export default {
     },
 
     getSearchData() {},
+    handleBatchDelete() {},
   }
 };

@@ -30,6 +30,7 @@ export const baseModalMixins = {
       if (newVal) {
         this.currRecord = this.$parent.currRecord || {};
         this.handleID();
+        this.formValues = {};
         this.onShow();
       } else {
         this.form && this.form.resetFields();
