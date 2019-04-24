@@ -76,7 +76,7 @@ service.interceptors.response.use(response => {
   return response.data;
 }, errHandle);
 
-function trimPayload (payload) {
+function trimPayload (payload={}) {
   Object.keys(payload).forEach(key => {
     const value = payload[key];
     if ( Object.prototype.toString.call(value) === '[object String]') {
