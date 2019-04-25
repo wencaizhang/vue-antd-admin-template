@@ -41,11 +41,11 @@
               </a-select>
               <a-input
                 style="width: 200px"
-                @pressEnter="handleDATA" 
+                @pressEnter="handleDATA"
                 v-model="searchValues.inputValue"
               />
             </a-input-group>
-            
+
             <a-select @change="v => searchValues.status = v" v-model="searchValues.status" style="margin-left: 8px; width: 90px;">
               <a-select-option key="all" value="all">全部</a-select-option>
               <a-select-option key="build" value="build">等待中</a-select-option>
@@ -58,7 +58,7 @@
               <a-icon type="search" />
             </a-button>
           </span>
-          
+
         </div>
         <a-alert type="info" showIcon style="margin-bottom: 16px;">
           <div slot="message">
@@ -199,19 +199,24 @@ export default {
 
 
       ipList: [],
+      isFetchIpList: false,
     };
   },
   mounted () {
-    this.$store.commit[`${this.$parent.id}/clearModal`]; 
+    this.$store.commit[`${this.$parent.id}/clearModal`];
     this.fetchIPList();
   },
   methods: {
     async fetchIPList () {
+      this.isFetchIpList = true;
       try {
         const resp = await getIPList();
         this.ipList = resp.data;
       } catch (error) {
-        
+
+      } finally {
+        this.isFetchIpList = false;
+        console.log('false', this.isFetchIpList)
       }
     },
     handleRefresh() {
