@@ -83,7 +83,7 @@
             </template>
             <a-icon type="info-circle"/>
           </a-tooltip>
-          
+
         </a-form-item>
 
         <a-row type="flex">
@@ -195,9 +195,13 @@ export default {
       loading: false,
 
       showMore: false,
+    };
+  },
 
-
-      formValues: {
+  methods: {
+    onShow () {
+      this.currStep = 0;
+      this.formValues = {
         // 启用管理员状态[0:否 1:是]
         isEnableAdministrator: 1,
         // 创建子网[0:否 1:是]
@@ -206,15 +210,7 @@ export default {
         isDisableGateway: false,  // 提交时进行转化
         // 激活DHCP[0:否 1:是]
         isActivateDHCP: 1,
-      },
-
-    };
-  },
-
-  methods: {
-    onShow () {
-      this.currStep = 0;
-      this.formValues = {};
+      }
     },
     onChangeDisableGateway (e) {
       this.formValues.isDisableGateway = e.target.checked;
@@ -241,9 +237,9 @@ export default {
           this.handleFetch();
         }
       } catch (error) {
-        
+
       }
-      
+
     },
     _handleValidate () {
       return new Promise((resolve, reject) => {
