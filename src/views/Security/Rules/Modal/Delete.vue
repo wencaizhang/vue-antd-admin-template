@@ -6,13 +6,13 @@
       @cancel="handleCancel"
       @ok="handleCreate"
       :confirmLoading="confirmLoading"
-      title="删除安全组"
+      title="删除规则"
       type="danger"
       okText="删除"
       okType="danger"
     >
       <p><a-icon type="warning" style="color: #faad14;" /> 删除前请确认你已经备份该秘钥，或者确定已不再使用该秘钥。</p>
-      <p style="margin-top: 10px;" >即将删除安全组 {{ list.join(', ') }}，请确认你的操作。</p>
+      <p style="margin-top: 10px;" >即将删除规则 {{ list.join(', ') }}，请确认你的操作。</p>
 
       <!-- <template slot="footer">
         <template v-if="!showMyFooter">

@@ -44,13 +44,27 @@
           :loading="loading"
           @change="handleTableChange"
         >
+          <template slot="operation" slot-scope="text, record">
+            <a-dropdown>
+              <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
+                <a-menu-item
+                  v-for="item in singleMenuOptions"
+                  :key="item.id"
+                >{{ item.name }}</a-menu-item>
+              </a-menu>
+              <a-button>操作
+                <a-icon type="down"/>
+              </a-button>
+            </a-dropdown>
+          </template>
         </a-table>
       </div>
     </PageLayout>
 
-    <!-- <create-modal />
-    <import-modal />
+    <create-modal />
     <delete-modal />
+    <!--
+    <import-modal />
     <edit-modal />
     <download-modal /> -->
   </div>
@@ -67,7 +81,7 @@ import PageLayout from "@/components/Layout/PageLayout.vue";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
-import { getRuleList as getList } from "@/api/security/index";
+import { getGroupList as getList } from "@/api/security/index";
 export default {
   mixins: [tablePageMixins],
   components: {
@@ -91,7 +105,15 @@ export default {
   computed: {},
 
   methods: {
-
+    handleParseData (data) {
+      const temp  = data.reduce((prev, curr) => { return prev.concat(curr.rules) }, []);
+      temp.forEach(item => {
+        Object.assign(item, {
+          portScope: item.portRangeMin + '~' + item.portRangeMax,
+        })
+      })
+      return temp
+    },
   }
 };
 </script>

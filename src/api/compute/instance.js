@@ -39,7 +39,7 @@ export const rebuild         = payload => POST('/compute/instance/rebuild', payl
 
 // 编辑云主机安全组
 export const editSecuritygroup = payload =>
-  POST('/compute/instance/securitygroup​/edit', payload);
+  POST('/compute/instance/securitygroup/edit', payload);
 
 export const getSecuritygroupList = payload =>
   GET('/compute/instance/securitygroup/list', payload);

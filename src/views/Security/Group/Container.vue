@@ -46,13 +46,28 @@
           :loading="loading"
           @change="handleTableChange"
         >
+          <template slot="operation" slot-scope="text, record">
+            <a-dropdown>
+              <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
+                <a-menu-item
+                  v-for="item in singleMenuOptions"
+                  :key="item.id"
+                >{{ item.name }}</a-menu-item>
+              </a-menu>
+              <a-button>操作
+                <a-icon type="down"/>
+              </a-button>
+            </a-dropdown>
+          </template>
         </a-table>
       </div>
     </PageLayout>
 
+    <create-modal />
+    <delete-modal />
     <!-- <create-modal />
     <import-modal />
-    <delete-modal />
+
     <edit-modal />
     <download-modal /> -->
   </div>

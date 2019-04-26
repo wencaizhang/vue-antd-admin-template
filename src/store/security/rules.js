@@ -1,11 +1,27 @@
 const columns = [
   {
-    title: '名称',
-    dataIndex: 'name'
+    title: '方向',
+    dataIndex: 'direction'
   },
   {
-    title: '描述',
-    dataIndex: 'desc',
+    title: '以太网类型',
+    dataIndex: 'etherType',
+  },
+  {
+    title: 'IP协议',
+    dataIndex: 'protocol',
+  },
+  {
+    title: '端口范围',
+    dataIndex: 'portScope',
+  },
+  {
+    title: '远端IP前缀',
+    dataIndex: 'remoteIpPrefix',
+  },
+  {
+    title: '远端安全组',
+    dataIndex: 'remoteGroupId',
   },
   {
     title: '操作',
