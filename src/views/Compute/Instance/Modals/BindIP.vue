@@ -17,32 +17,34 @@
       />
       <a-form :form="form">
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="IP地址：">
-          <a-select
-            class="container-----"
-            placeholder="请选择一个IP地址"
-            v-decorator="[
-              'id',
-              {
-                initialValue: currRecord.ipAddress,
-                rules: [{ required: true, message: '请选择IP地址！' }]
-              }
-            ]"
-          >
-            <a-select-option
-              v-for="item in $parent.ipList"
-              :key="item.id"
-              :value="item.id"
+          <a-spin :spinning="$parent.isFetchIpList">
+            <a-select
+              class="container-----"
+              placeholder="请选择一个IP地址"
+              v-decorator="[
+                'id',
+                {
+                  initialValue: currRecord.ipAddress && currRecord.ipAddress.replace('无', ''),
+                  rules: [{ required: true, message: '请选择IP地址！' }]
+                }
+              ]"
             >
-            {{ item.ipAddress }}
-            </a-select-option>
-            <a-icon
-              slot="suffixIcon"
-              class="addonAfter"
-              title="分配公网IP"
-              type="plus-circle"
-              @click.stop="$emit('allotIP')"
-            />
-          </a-select>
+              <a-select-option
+                v-for="item in ipList"
+                :key="item.id"
+                :value="item.id"
+              >
+              {{ item.ipAddress }}
+              </a-select-option>
+              <a-icon
+                slot="suffixIcon"
+                class="addonAfter"
+                title="分配公网IP"
+                type="plus-circle"
+                @click.stop="$emit('allotIP')"
+              />
+            </a-select>
+          </a-spin>
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="待绑定的IP接口：">
           <a-select
@@ -55,7 +57,7 @@
             ]"
           >
             <a-select-option
-              v-for="item in currRecord.network"
+              v-for="item in (currRecord.network || [])"
               :key="item"
               :value="item"
             >{{ currRecord.name }}:{{ item }}
@@ -79,9 +81,14 @@ export default {
       isRefreshParentTable: false, // 刷新父组件表格
     };
   },
+  computed: {
+    ipList () {
+      return this.$parent.ipList.filter(item => !item.mappedStaticIp) || [];
+    }
+  },
   methods: {
     onShow () {
-
+      this.$parent.fetchIPList();
     },
 
     openNotification (resp) {
