@@ -23,6 +23,8 @@ export default {
       selectedRowKeys: [],
       currRecord: {},
 
+      searchValues: {},
+
     };
   },
   computed: {
@@ -70,7 +72,7 @@ export default {
      * 搜索
      */
     handleFilterByInput () {
-      
+
       const { type, inputValue } = this.searchValues;
 
       if (this.tempData.length === 0 || inputValue === '') {
@@ -131,7 +133,7 @@ export default {
     async fetch (payload={}) {
       this.loading = true;
       this.handleClearSelected();
-      
+
       try {
         const resp = await this.getList(payload);
 
