@@ -300,8 +300,11 @@ export default {
         status: currStatus,
         taskState: taskState,
         status_zh: this.__handleTransformToZh(currStatus),
-        singleMenuOptions: options,
       })
+
+      // 操作按钮权限依赖于最新的状态
+      currItem.singleMenuOptions = this.__handleFilterOptions(currItem);
+
       this.$nextTick();
     },
     handleTraceStatus (id) {
