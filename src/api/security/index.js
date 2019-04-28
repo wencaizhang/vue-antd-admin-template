@@ -10,13 +10,13 @@ export const createGroup  = payload => POST('/securitygroup/create', payload);
 export const editGroup    = payload => POST('/securitygroup/edit', payload);
 
 // 删除安全组
-export const deleGroup    = payload => DELETE('/securitygroup​/delete', payload);
+export const deleGroup    = payload => DELETE('/securitygroup/delete', payload);
 
 // 规则列表
 export const getRuleList  = payload => GET('/securitygroup/rule/list', payload);
 
 // 添加规则
-export const addRule      = payload => POST('/securitygroup​/rule/add', payload);
+export const addRule      = payload => POST('/securitygroup/rule/add', payload);
 
 // 删除安全组规则
-export const deleRule     = payload => DELETE('/securitygroup​/rule​/delete', payload);
+export const deleRule     = payload => DELETE('/securitygroup/rule/delete', payload);

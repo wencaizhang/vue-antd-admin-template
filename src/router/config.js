@@ -208,15 +208,19 @@ export const asyncRouterMap = [
             name: "group",
             component: () =>
               import(/* webpackChunkName: "expense" */ "@/views/Security/Group/Container"),
-            meta: { title: "安全组", permission: ["dashboard"] }
+            meta: { title: "安全组", permission: ["dashboard"] },
+            children: [
+              {
+                path: "rules/:id",
+                name: "rules",
+                hidden: true,
+                component: () =>
+                  import(/* webpackChunkName: "expense" */ "@/views/Security/Rules/Container"),
+                meta: { title: "管理安全组规则", permission: ["dashboard"] }
+              },
+            ]
           },
-          {
-            path: "rules",
-            name: "rules",
-            component: () =>
-              import(/* webpackChunkName: "expense" */ "@/views/Security/Rules/Container"),
-            meta: { title: "管理安全组规则", permission: ["dashboard"] }
-          },
+
         ]
       },
 

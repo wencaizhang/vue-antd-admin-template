@@ -17,7 +17,7 @@
         >
           <a-input
             v-decorator="[
-              'name',
+              'secGroupName',
               {
                 rules: [
                   { required: true, message: '请输入名称!' },
@@ -39,7 +39,7 @@
                 rules: [
                   { required: true, message: '请输入描述!' },
                 ]
-              } 
+              }
             ]"
           />
         </a-form-item>
@@ -49,7 +49,7 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
-import { create as fetchAPI } from '@/api/security/index';
+import { createGroup as fetchAPI } from '@/api/security/index';
 import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins],

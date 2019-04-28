@@ -11,7 +11,7 @@ export default {
         showSizeChanger: true,
         pageSizeOptions: ['10', '20', '30', '40', '50'],
       },
-
+      payload: {},
       url: "/api/demo",
 
       allData: [],  // 所有的数据
@@ -133,7 +133,7 @@ export default {
     async fetch (payload={}) {
       this.loading = true;
       this.handleClearSelected();
-
+      payload = this.payload || {};
       try {
         const resp = await this.getList(payload);
 

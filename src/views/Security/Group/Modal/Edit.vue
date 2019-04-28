@@ -6,20 +6,24 @@
       @ok="handleCreate"
       :visible="visible"
       :confirmLoading="confirmLoading"
-      title="密钥标签"
+      title="编辑安全组"
       okText="确定"
     >
       <a-form :form="form">
         <a-form-item
-          label="标签名："
+          label="名称："
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-input
             v-decorator="[
-              'labelName',
+              'secGroupName',
               {
-                rules: [{ required: true, message: '请输入标签名!' }]
+                initialValue: currRecord.name,
+                rules: [
+                  { required: true, message: '请输入名称!' },
+                  rulesObj.name,
+                ]
               }
             ]"
           />
@@ -33,7 +37,10 @@
             v-decorator="[
               'description',
               {
-                rules: [{ message: '请输入描述!' }]
+                initialValue: currRecord.description,
+                rules: [
+                  { required: true, message: '请输入描述!' },
+                ]
               }
             ]"
           />
@@ -44,16 +51,22 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
-import { bindLabel as fetchAPI } from '@/api/compute/keypair';
+import { editGroup as fetchAPI } from '@/api/security/index';
+import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      rulesObj,
       fetchAPI,
-      name: "bindTags"
+      name: "editGroup"
     };
   },
-
-  methods: {}
+  methods: {
+    onShow () {
+      this.formValues = { secGroupId: this.currRecord.id }
+    }
+  },
 };
 </script>
+

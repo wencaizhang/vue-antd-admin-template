@@ -135,11 +135,33 @@ export const formModalMixins = {
         labelCol: { span: 8 },
         wrapperCol: { span: 14 }
       },
-      form: this.$form.createForm(this),
+      form: null,
     };
   },
 
+  created () {
+    this.form = this.$form.createForm(this, {
+      onFieldsChange: (_, changedFields) => {
+        this.onFieldsChange( _, changedFields)
+      },
+      onValuesChange: (_, values, allValues) => {
+        this.onValuesChange( _, values, allValues)
+      },
+    });
+  },
   methods: {
+    /**
+     * 任一表单域的值发生改变时的回调，由 ant-design-vue 提供
+     * @param {*} _
+     * @param {*} values 发生变化的表单控件的值
+     * @param {*} allValues 所有表单控件的值
+     */
+    onValuesChange (_, values, allValues) {
+
+    },
+    onFieldsChange () {
+
+    },
     handleCreate() {
       const self = this;
       this.form.validateFieldsAndScroll((err, values) => {

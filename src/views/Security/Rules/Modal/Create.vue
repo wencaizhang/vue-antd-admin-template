@@ -11,149 +11,189 @@
     >
       <a-form :form="form">
 
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="规则：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="规则：" :onValuesChange="onValuesChange">
           <a-select
+            @change="handleChangeRuleType"
             placeholder="请选择规则！"
             v-decorator="[
-              'portIp',
+              'id',
               {
-                initialValue: '',
+                initialValue: 0,
                 rules: [{ required: true, message: '请选择规则！' }]
               }
             ]"
           >
-            <a-select-option value="定制TCP规则">定制TCP规则</a-select-option>
-            <a-select-option value="定制UDP规则">定制UDP规则</a-select-option>
-            <a-select-option value="定制ICMP规则">定制ICMP规则</a-select-option>
-            <a-select-option value="ALL TCP">ALL TCP</a-select-option>
-            <a-select-option value="ALL UDP">ALL UDP</a-select-option>
-            <a-select-option value="ALL ICMP">ALL ICMP</a-select-option>
-            <a-select-option value="HTTPS">HTTPS</a-select-option>
-            <a-select-option value="HTTP">HTTP</a-select-option>
-            <a-select-option value="DNS">DNS</a-select-option>
-            <a-select-option value="SMTP">SMTP</a-select-option>
-            <a-select-option value="SMTPS">SMTPS</a-select-option>
-            <a-select-option value="POP3">POP3</a-select-option>
-            <a-select-option value="POP3S">POP3S</a-select-option>
-            <a-select-option value="LDAP">LDAP</a-select-option>
-            <a-select-option value="MYSQL">MYSQL</a-select-option>
-            <a-select-option value="MS SQL">MS SQL</a-select-option>
-            <a-select-option value="IMAP">IMAP</a-select-option>
-            <a-select-option value="IMAPS">IMAPS</a-select-option>
+
+            <a-select-option
+              v-for="item of procotol"
+              :key="item.value"
+              :value="item.value"
+            >{{ item.label }}</a-select-option>
 
           </a-select>
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="方向：">
-          <a-select
-            placeholder="请选择方向！"
-            v-decorator="[
-              'portIp',
-              {
-                initialValue: '',
-                rules: [{ required: true, message: '请选择方向！' }]
-              }
-            ]"
+
+        <template v-if="directionVisible">
+          <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="方向：">
+            <a-select
+              placeholder="请选择方向！"
+              v-decorator="[
+                'direction',
+                {
+                  initialValue: 'ingress',
+                  rules: [{ required: true, message: '请选择方向！' }]
+                }
+              ]"
+            >
+              <a-select-option value="ingress">入口</a-select-option>
+              <a-select-option value="egress">出口</a-select-option>
+            </a-select>
+          </a-form-item>
+        </template>
+
+        <template v-if="portVisible">
+          <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="端口类型：">
+            <a-select
+              @change="v => portType = v"
+              placeholder="请选择端口类型！"
+              v-decorator="[
+                'portType',
+                {
+                  initialValue: portType,
+                  rules: [{ required: true, message: '请选择端口类型！' }]
+                }
+              ]"
+            >
+              <a-select-option :value="1">端口</a-select-option>
+              <a-select-option :value="2">端口范围</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item
+            v-if="portType === 1"
+            label="端口号："
+            :labelCol="formItemLayout.labelCol"
+            :wrapperCol="formItemLayout.wrapperCol"
           >
-            <a-select-option value="ingress">入口</a-select-option>
-            <a-select-option value="egress">出口</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="端口类型：">
-          <a-select
-            placeholder="请选择端口类型！"
-            v-decorator="[
-              'portIp',
-              {
-                initialValue: '',
-                rules: [{ required: true, message: '请选择端口类型！' }]
-              }
-            ]"
+            <a-input-number
+              :min="1"
+              :max="65535"
+              v-decorator="[
+                'portRangeMin',
+                {
+                  rules: [
+                    { required: true, message: '请输入端口号!' },
+                  ]
+                }
+              ]"
+            />
+          </a-form-item>
+          <a-form-item
+            v-if="portType === 2"
+            label="起始端口号："
+            :labelCol="formItemLayout.labelCol"
+            :wrapperCol="formItemLayout.wrapperCol"
           >
-            <a-select-option value="ingress">端口</a-select-option>
-            <a-select-option value="egress">端口范围</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item
-          label="端口号："
-          :labelCol="formItemLayout.labelCol"
-          :wrapperCol="formItemLayout.wrapperCol"
-        >
-          <a-input-number
-            :min="1"
-            v-decorator="[
-              'port',
-              {
-                rules: [
-                  { required: true, message: '请输入端口号!' },
-                  rulesObj.name,
-                ]
-              }
-            ]"
-          />
-        </a-form-item>
-        <a-form-item
-          label="起始端口号："
-          :labelCol="formItemLayout.labelCol"
-          :wrapperCol="formItemLayout.wrapperCol"
-        >
-          <a-input-number
-            :min="1"
-            v-decorator="[
-              'portRangeMin',
-              {
-                rules: [
-                  { required: true, message: '请输入起始端口号!' },
-                  rulesObj.name,
-                ]
-              }
-            ]"
-          />
-        </a-form-item>
-        <a-form-item
-          label="终止端口号："
-          :labelCol="formItemLayout.labelCol"
-          :wrapperCol="formItemLayout.wrapperCol"
-        >
-          <a-input-number
-            :min="1"
-            v-decorator="[
-              'portRangeMax',
-              {
-                rules: [
-                  { required: true, message: '请输入终止端口号!' },
-                  rulesObj.name,
-                ]
-              }
-            ]"
-          />
-        </a-form-item>
+            <a-input-number
+              :min="1"
+              :max="65535"
+              v-decorator="[
+                'portRangeMin',
+                {
+                  rules: [
+                    { required: true, message: '请输入起始端口号!' },
+                  ]
+                }
+              ]"
+            />
+          </a-form-item>
+          <a-form-item
+            v-if="portType === 2"
+            label="终止端口号："
+            :labelCol="formItemLayout.labelCol"
+            :wrapperCol="formItemLayout.wrapperCol"
+          >
+            <a-input-number
+              :min="1"
+              :max="65535"
+              v-decorator="[
+                'portRangeMax',
+                {
+                  rules: [
+                    { required: true, message: '请输入终止端口号!' },
+                  ]
+                }
+              ]"
+            />
+          </a-form-item>
+        </template>
+
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="远程：">
           <a-select
+            @change="handleChangeRemoteType"
             placeholder="请选择远程！"
             v-decorator="[
               'remote',
               {
-                initialValue: '',
+                initialValue: remote,
                 rules: [{ required: true, message: '请选择远程！' }]
               }
             ]"
           >
-            <a-select-option value="CIDR">CIDR</a-select-option>
+            <a-select-option value="cidr">CIDR</a-select-option>
             <a-select-option value="group">安全组</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item
+          v-if="remote === 'group'"
+          :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="安全组：">
+
+          <a-spin :spinning="isFetchGroupList">
+            <a-select
+              placeholder="请选择安全组！"
+              v-decorator="[
+                'remoteGroupId',
+                {
+                  rules: [{ required: true, message: '请选择安全组！' }]
+                }
+              ]"
+            >
+              <a-select-option
+                v-for="item in groupList"
+                :value="item.id"
+                :key="item.id"
+              >{{ item.name }}</a-select-option>
+            </a-select>
+          </a-spin>
+        </a-form-item>
+        <a-form-item
+          v-if="remote === 'group'"
+          :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="IP类型：">
+          <a-select
+            placeholder="请选择IP类型！"
+            v-decorator="[
+              'protocol',
+              {
+                initialValue: 'IPV4',
+                rules: [{ required: true, message: '请选择IP类型！' }]
+              }
+            ]"
+          >
+            <a-select-option value="IPV4">IPV4</a-select-option>
+            <a-select-option value="IPV6">IPV6</a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item
+          v-if="remote === 'cidr'"
           label="CIDR："
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-input
             v-decorator="[
-              'cidr',
+              'remoteIpPrefix',
               {
                 rules: [
                   { required: true, message: '请输入CIDR!' },
-                  rulesObj.name,
                 ]
               }
             ]"
@@ -165,7 +205,7 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
-import { create as fetchAPI } from '@/api/security/index';
+import { addRule as fetchAPI, getGroupList } from '@/api/security/index';
 import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins],
@@ -173,11 +213,87 @@ export default {
     return {
       rulesObj,
       fetchAPI,
-      name: "create"
+      name: "create",
+      procotol: [
+        { value: 0, label : '定制TCP规则' },
+        { value: 1, label : '定制UDP规则' },
+        { value: 2, label : '定制ICMP规则' },
+        // { value: 3, label : '其他协议' },
+        { value: 5, label : 'ALL TCP' },
+        { value: 6, label : 'ALL UDP' },
+        { value: 4, label : 'ALL ICMP' },
+        { value: 9, label : 'HTTPS' },
+        { value: 8, label : 'HTTP' },
+        { value: 7, label : 'DNS' },
+        { value: 18, label : 'SMTP' },
+        { value: 19, label : 'SMTPS' },
+        { value: 15, label : 'POP3' },
+        { value: 16, label : 'POP3S' },
+        { value: 12, label : 'LDAP' },
+        { value: 14, label : 'MYSQL' },
+        { value: 13, label : 'MS SQL' },
+        // { value: 17, label : 'RDP' },
+        // { value: 20, label : 'SSH' },
+        { value: 10, label : 'IMAP' },
+        { value: 11, label : 'IMAPS' },
+      ],
+      portVisible: true,
+      directionVisible: true,
+      remote: 'cidr',
+      portType: 1,
+      groupList: [],
+      isFetchGroupList: false,
     };
   },
   methods: {
+    handleChangeRuleType (value) {
+      const arr = [
+        { reg: /定制/, type: 'custom' },
+        { reg: /ALL/, type: 'all' },
+        { reg: /./, type: 'assign' },
+      ]
+      const label = this.procotol.find(item => item.value === value).label;
+      const item = arr.find(item => item.reg.test(label));
+      this.directionVisible = ['custom', 'all'].includes(item.type);
+      this.portVisible = ['custom'].includes(item.type);
+      return item.type;
+    },
+    handleChangeRemoteType (value) {
+      this.remote = value;
+    },
+    onShow () {
+      this.fetchGroupList();
+    },
 
+    async fetchGroupList () {
+      this.isFetchGroupList = true;
+      try {
+        const resp = await getGroupList();
+        this.groupList = resp.data;
+        this.isFetchGroupList = false;
+      } catch (error) {
+        this.$message.error('请求失败')
+      }
+    },
+    handleFormValues () {
+      if (this.portType === 1) {
+        // 没有端口类型字段，端口范围对应的就是端口的最大最小值
+        // 指定端口号的话把最大值最小值填写成一样的就行
+        this.formValues.portRangeMax = this.formValues.portRangeMin;
+      }
+      delete this.formValues.remote;
+      delete this.formValues.portType;
+    },
+    handleCreate() {
+      const self = this;
+      this.form.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          self.formValues = Object.assign({}, self.formValues, values);
+          self.handleFormValues();
+          self.handleFetch();
+        }
+      });
+    },
   },
 };
 </script>

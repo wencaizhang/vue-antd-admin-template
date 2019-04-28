@@ -1,6 +1,7 @@
 <template>
   <div>
-    <PageLayout>
+    <router-view v-if="$route.matched.length === 4"></router-view>
+    <PageLayout v-else>
       <div slot="header">
         <p>友普云系统为每个用户提供了一个缺省安全组default,其允许所有下行端口,拒绝所有上行端口.您可以创建自己的安全组。初始状态下安全组任何端口都是封闭的，您需要建立规则以打开相应的端口,达到正常访问的目的.</p>
       </div>
@@ -21,7 +22,7 @@
                   style="margin-right: 10px;"
                   icon="delete"
                   :disabled="!selectedRowKeys.length"
-                  @click="handleMultiMenuClick('batchDeleta')"
+                  @click="handleMultiMenuClick('multiDeleta')"
                 >删除安全组</a-button>
               </a-row>
             </a-col>
@@ -40,7 +41,7 @@
         <a-table
           :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onTableSelectChange}"
           :columns="columns"
-          :rowKey="record => record.name"
+          :rowKey="record => record.id"
           :dataSource="data"
           :pagination="pagination"
           :loading="loading"
@@ -63,20 +64,18 @@
       </div>
     </PageLayout>
 
-    <create-modal />
-    <delete-modal />
-    <!-- <create-modal />
-    <import-modal />
-
-    <edit-modal />
-    <download-modal /> -->
+    <CreateModal />
+    <DeleteModal />
+    <EditModal />
+    <MultiDelete />
   </div>
 </template>
 
 <script>
 import CreateModal from "./Modal/Create";
 import DeleteModal from "./Modal/Delete";
-// import EditModal   from "./Modal/Edit";
+import EditModal   from "./Modal/Edit";
+import MultiDelete from './Modal/MultiDelete';
 
 import PageLayout from "@/components/Layout/PageLayout.vue";
 
@@ -89,6 +88,8 @@ export default {
   components: {
     CreateModal,
     DeleteModal,
+    EditModal,
+    MultiDelete,
     PageLayout
   },
 
@@ -103,7 +104,15 @@ export default {
   computed: {},
 
   methods: {
-
+    handleSingleMenuClick(key, record) {
+      if (key === 'editRule') {
+        this.$router.push({ name: "rules", params: { id: record.id, name: record.name }})
+        return;
+      }
+      // 单项操作
+      this.currRecord = record;
+      this.handleShowModal(key);
+    },
   }
 };
 </script>

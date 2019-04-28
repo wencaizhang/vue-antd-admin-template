@@ -19,7 +19,7 @@ export default {
     columns,
     menuOptions: [
       { visible: false, type: 'none',   id: 'create',      name: '创建', },
-      { visible: false, type: 'none',   id: 'batchDeleta', name: '删除', },
+      { visible: false, type: 'none',   id: 'multiDeleta', name: '删除安全组', },
 
       { visible: false, type: 'single', id: 'editRule',    name: '编辑规则', },
       { visible: false, type: 'single', id: 'editGroup',   name: '编辑安全组', },

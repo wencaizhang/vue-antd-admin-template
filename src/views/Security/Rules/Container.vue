@@ -19,7 +19,7 @@
                   style="margin-right: 10px;"
                   icon="delete"
                   :disabled="!selectedRowKeys.length"
-                  @click="handleMultiMenuClick('batchDeleta')"
+                  @click="handleMultiMenuClick('multiDeleta')"
                 >删除规则</a-button>
               </a-row>
             </a-col>
@@ -38,59 +38,45 @@
         <a-table
           :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onTableSelectChange}"
           :columns="columns"
-          :rowKey="record => record.name"
+          :rowKey="record => record.id"
           :dataSource="data"
           :pagination="pagination"
           :loading="loading"
           @change="handleTableChange"
         >
           <template slot="operation" slot-scope="text, record">
-            <a-dropdown>
-              <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
-                <a-menu-item
-                  v-for="item in singleMenuOptions"
-                  :key="item.id"
-                >{{ item.name }}</a-menu-item>
-              </a-menu>
-              <a-button>操作
-                <a-icon type="down"/>
-              </a-button>
-            </a-dropdown>
+            <a-button
+              type="danger"
+              style="margin-right: 10px;"
+              icon="delete"
+              @click="handleSingleMenuClick('delete', record)"
+            >删除规则</a-button>
           </template>
         </a-table>
       </div>
     </PageLayout>
 
-    <create-modal />
-    <delete-modal />
-    <!--
-    <import-modal />
-    <edit-modal />
-    <download-modal /> -->
+    <CreateModal />
+    <DeleteModal />
+    <MultiDelete />
   </div>
 </template>
 
 <script>
 import CreateModal from "./Modal/Create";
-import TagModal from "./Modal/Tag";
 import DeleteModal from "./Modal/Delete";
-import ImportModal from "./Modal/Import";
-import EditModal from "./Modal/Edit";
-import DownloadModal from "./Modal/Download";
+import MultiDelete from "./Modal/MultiDelete";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
-import { getGroupList as getList } from "@/api/security/index";
+import { getRuleList as getList } from "@/api/security/index";
 export default {
   mixins: [tablePageMixins],
   components: {
     CreateModal,
-    TagModal,
+    MultiDelete,
     DeleteModal,
-    ImportModal,
-    EditModal,
-    DownloadModal,
     PageLayout
   },
 
@@ -102,18 +88,13 @@ export default {
       name: "管理安全组规则",
     };
   },
-  computed: {},
+  beforeMount () {
+    const secGroupId = this.$route.params.id
+    this.payload = { secGroupId }
+  },
 
   methods: {
-    handleParseData (data) {
-      const temp  = data.reduce((prev, curr) => { return prev.concat(curr.rules) }, []);
-      temp.forEach(item => {
-        Object.assign(item, {
-          portScope: item.portRangeMin + '~' + item.portRangeMax,
-        })
-      })
-      return temp
-    },
+
   }
 };
 </script>

@@ -11,74 +11,29 @@
       okText="删除"
       okType="danger"
     >
-      <p><a-icon type="warning" style="color: #faad14;" /> 删除前请确认你已经备份该秘钥，或者确定已不再使用该秘钥。</p>
-      <p style="margin-top: 10px;" >即将删除安全组 {{ list.join(', ') }}，请确认你的操作。</p>
 
-      <!-- <template slot="footer">
-        <template v-if="!showMyFooter">
-          <a-button @click="handleCancel">取消</a-button>
-          <a-button @click="handleCreate" :loading="confirmLoading" type="danger">删除</a-button>
-        </template>
-        <template v-else>
-          <a-button @click="handleClose">确定</a-button>
-        </template>
-      </template> -->
+      <p style="margin-top: 10px;" >
+        您已经选择安全组“<span class="primay-color">{{ currRecord.name }}</span>”。
+        请确认你的操作，该操作不能撤销。
+      </p>
 
     </a-modal>
   </div>
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
-import { deleGroup as fetchAPI } from '@/api/compute/keypair';
+import { deleGroup as fetchAPI } from '@/api/security/index';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
       fetchAPI,
-      name: "batchDeleta",
-      list: [],
-      listLength: 0,
+      name: "deleGroup",
     };
   },
   methods: {
     onShow () {
-      // this.showMyFooter = false;
-      this.list = this.$parent.selectedRowKeys;
-      this.listLength = this.list.length;
-    },
-    handleFetch() {
-      /**
-       * 遍历发送请求
-       * Promise.all 只要有一个失败就直接返回失败的结果，所以使用遍历
-       */
-      if (!this.list.length) { return;}
-      this.confirmLoading = true;
-      this.list.forEach(item => {
-        this.handleDelete(item);
-      })
-    },
-    handleFetchEnd () {
-      // 所有请求全部结束
-      this.confirmLoading = false;
-      // this.showMyFooter = true;
-      this.handleCancel();
-      this.handleRefreshParentTable();
-      this.$message.success('删除完成');
-    },
-    async handleDelete (item) {
-      try {
-        const payload = {secretKeyId: item}
-        const resp = await this.fetchAPI(payload);
-      }
-      catch (err) {
-
-      }
-      finally {
-        this.listLength = this.listLength - 1;
-        if (this.listLength === 0) {
-          this.handleFetchEnd();
-        }
-      }
+      this.formValues = { securityGroupId: this.currRecord.id }
     },
   }
 };
