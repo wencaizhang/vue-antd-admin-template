@@ -1,7 +1,7 @@
 const columns = [
   {
     title: "方向",
-    dataIndex: "direction"
+    dataIndex: "direction_zh"
   },
   {
     title: "以太网类型",

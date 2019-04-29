@@ -68,6 +68,10 @@ import DeleteModal from "./Modal/Delete";
 import MultiDelete from "./Modal/MultiDelete";
 import PageLayout from "@/components/Layout/PageLayout.vue";
 
+import rule from '@/i18n/zh/rule'
+
+const statusDicts = rule.rule.status
+
 import tablePageMixins from "@/mixins/tablePageMixins";
 
 import { getRuleList as getList } from "@/api/security/index";
@@ -182,9 +186,13 @@ export default {
   },
 
   methods: {
+    __handleTransformToZh (status) {
+      return statusDicts[status.toLowerCase()] || status
+    },
     handleParseData (data) {
       const { SECURITY_GROUP_RULES } = this;
       data.forEach(item => {
+        // 端口范围
         const { portRangeMax, portRangeMin } = item;
         let portScope;
         if (portRangeMax === portRangeMin) {
@@ -193,8 +201,12 @@ export default {
         } else {
           portScope = portRangeMin + '~' + portRangeMax;
         };
+
+        // 方向
+        const direction_zh = this.__handleTransformToZh(item.direction);
         Object.assign(item, {
           portScope,
+          direction_zh,
         })
       })
       return data;
