@@ -11,7 +11,7 @@
       okText="删除"
       okType="danger"
     >
-      <p style="margin-top: 10px;" >即将删除规则 {{ list.map(item => item.id).join(', ') }}，请确认你的操作。</p>
+      <p style="margin-top: 10px;" >即将删除安全组“{{ groupName }}”的 {{ list.length }} 条规则，该操作不可逆，请确认你的操作。</p>
 
     </a-modal>
   </div>
@@ -26,10 +26,12 @@ export default {
       fetchAPI,
       name: "multiDeleta",
       loop: true,
+      groupName: '',
     };
   },
   methods: {
     onShow () {
+      this.groupName = this.$route.params.name;
       const { data, selectedRowKeys } = this.$parent;
       this.list = data.filter(item => selectedRowKeys.includes(item.id));
       this.handleItemCount = this.list.length;
