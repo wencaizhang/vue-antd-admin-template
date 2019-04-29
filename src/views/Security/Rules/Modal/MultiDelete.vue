@@ -25,6 +25,7 @@ export default {
     return {
       fetchAPI,
       name: "multiDeleta",
+      loop: true,
     };
   },
   methods: {
