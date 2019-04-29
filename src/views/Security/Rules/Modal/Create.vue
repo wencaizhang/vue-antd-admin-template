@@ -16,7 +16,7 @@
             @change="handleChangeRuleType"
             placeholder="请选择规则！"
             v-decorator="[
-              'id',
+              'protocol',
               {
                 initialValue: 0,
                 rules: [{ required: true, message: '请选择规则！' }]
@@ -283,6 +283,8 @@ export default {
       }
       delete this.formValues.remote;
       delete this.formValues.portType;
+
+      this.formValues.securityGroupId = this.$parent.payload.secGroupId;
     },
     handleCreate() {
       const self = this;
