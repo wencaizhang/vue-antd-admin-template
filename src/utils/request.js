@@ -25,7 +25,7 @@ const errHandle = error => {
         const token = Vue.ls.get(ACCESS_TOKEN);
         if (token) {
           // 避免同时请求多个接口时 token 失效导致多个提示同时出现
-          notification.error({ message: "请重新登录", description: "" });
+          notification.error({ message: "请登录", description: "" });
           clearToken();
         }
         router.push({ name: 'login' })
@@ -43,7 +43,7 @@ service.interceptors.request.use(config => {
   const token = Vue.ls.get(ACCESS_TOKEN);
   const projectId = Vue.ls.get(PROJECT_ID)
   if (token) {
-    // 每个请求添加自定义 headers 
+    // 每个请求添加自定义 headers
     config.headers["tokenId"] = token; // 让每个请求携带自定义 token 请根据实际情况自行修改
     config.headers["projectId"] = projectId; // 让每个请求携带自定义 token 请根据实际情况自行修改
   } else {
@@ -57,10 +57,10 @@ service.interceptors.request.use(config => {
   /**
    * 取消 axios 请求
    */
-  
+
   // const CancelToken = axios.CancelToken;
   // const source = CancelToken.source();
-  
+
   // source.throwIfRequested = source.token.throwIfRequested;
   // source.promise.then = source.token.promise.then.bind(source.promise);
   // source.promise.catch = source.token.promise.catch.bind(source.promise);

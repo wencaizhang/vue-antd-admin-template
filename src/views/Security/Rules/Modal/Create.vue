@@ -171,15 +171,15 @@
           <a-select
             placeholder="请选择IP类型！"
             v-decorator="[
-              'protocol',
+              'etherType',
               {
-                initialValue: 'IPV4',
+                initialValue: 'IPv4',
                 rules: [{ required: true, message: '请选择IP类型！' }]
               }
             ]"
           >
-            <a-select-option value="IPV4">IPV4</a-select-option>
-            <a-select-option value="IPV6">IPV6</a-select-option>
+            <a-select-option value="IPv4">IPv4</a-select-option>
+            <a-select-option value="IPv6">IPv6</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item
