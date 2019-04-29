@@ -189,7 +189,7 @@ export default {
         let portScope;
         if (portRangeMax === portRangeMin) {
           const ruleItem = SECURITY_GROUP_RULES.find(item => item.to_port == portRangeMax);
-          portScope = portRangeMax + (ruleItem ? `(${ruleItem.ip_protocol})` : '');
+          portScope = portRangeMax + (ruleItem ? `(${ruleItem.name})` : '');
         } else {
           portScope = portRangeMin + '~' + portRangeMax;
         };
