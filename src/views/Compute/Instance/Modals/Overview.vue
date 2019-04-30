@@ -122,7 +122,7 @@ export default {
         type: 'html',
         dataIndex: 'cloudHost',
       },
-      
+
     ];
     return {
       name: 'hostDetail',
@@ -139,7 +139,7 @@ export default {
     onShow () {
       this.show = true;
       this.currRecord.securityGroupsList = this.currRecord.securityGroups.map(item2 => {
-        return `<p>${item2.securityGroupName}</p>`
+        return `<p>${item2}</p>`
       }).join('');
 
       this.currRecord.cloudHost = '未连接云硬盘';

@@ -46,7 +46,7 @@ export default {
   },
   watch: {
     "currRecord.securityGroups" (newV, oldV) {
-      this.targetKeys = newV.map(item => item.securityGroupName);
+      this.targetKeys = newV;
     }
   },
   computed: {
@@ -85,7 +85,7 @@ export default {
     getResult () {
       const instanceId = this.currRecord.id;
       // 原有的
-      const oldGroup = this.currRecord.securityGroups.map(item => item.securityGroupName);
+      const oldGroup = this.currRecord.securityGroups;
 
       // 现有的
       const newGroup = this.targetKeys;

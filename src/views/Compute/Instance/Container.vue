@@ -90,7 +90,7 @@
             </a-spin>
             <template v-else>
               <template v-if="Array.isArray(group) && group.length">
-                <p v-for="(item, index) in group" :key="index + item.securityGroupName">{{ item.securityGroupName }}</p>
+                <p v-for="(item, index) in group" :key="index + item">{{ item }}</p>
               </template>
               <template v-else>
                 无
