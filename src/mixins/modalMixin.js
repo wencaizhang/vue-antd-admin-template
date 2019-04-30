@@ -110,21 +110,20 @@ export const baseModalMixins = {
       this.handleRefreshParentTable();
       this.handleCancel();
     },
-    // async handleItemFetch (item) {
-    //   try {
-    //     const payload = { routerId: item.id }
-    //     const resp = await this.fetchAPI(payload);
-    //   }
-    //   catch (err) {
+    async handleItemFetch (item) {
+      try {
+        const resp = await this.fetchAPI(item);
+      }
+      catch (err) {
 
-    //   }
-    //   finally {
-    //     this.handleItemCount = this.handleItemCount - 1;
-    //     if (this.handleItemCount === 0) {
-    //       this.handleLoopFetchEnd();
-    //     }
-    //   }
-    // },
+      }
+      finally {
+        this.handleItemCount = this.handleItemCount - 1;
+        if (this.handleItemCount === 0) {
+          this.handleLoopFetchEnd();
+        }
+      }
+    },
   }
 };
 

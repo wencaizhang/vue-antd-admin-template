@@ -23,6 +23,7 @@ import {
   Table,
   Tabs,
   Icon,
+  Transfer,
   // Badge,
   // Popover,
   Dropdown,
@@ -65,6 +66,7 @@ Vue.use(Modal)
 Vue.use(Table)
 Vue.use(Tabs)
 Vue.use(Icon)
+Vue.use(Transfer)
 // Vue.use(Badge)
 // Vue.use(Popover)
 Vue.use(Dropdown)

@@ -246,6 +246,15 @@ export default {
     };
   },
   methods: {
+    onShow () {
+      this.fetchGroupList();
+      Object.assign(this, {
+        portVisible: true,
+        directionVisible: true,
+        remote: 'cidr',
+        portType: 1,
+      })
+    },
     handleChangeRuleType (value) {
       const arr = [
         { reg: /定制/, type: 'custom' },
@@ -260,9 +269,6 @@ export default {
     },
     handleChangeRemoteType (value) {
       this.remote = value;
-    },
-    onShow () {
-      this.fetchGroupList();
     },
 
     async fetchGroupList () {

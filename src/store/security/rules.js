@@ -13,7 +13,8 @@ const columns = [
   },
   {
     title: "端口范围",
-    dataIndex: "portScope"
+    dataIndex: "portScope",
+    sorter: (a, b) => { return (parseInt(a.portRangeMin) || 0) - (parseInt(b.portRangeMin) || 0) },
   },
   {
     title: "远端IP前缀",

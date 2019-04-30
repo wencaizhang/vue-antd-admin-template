@@ -7,82 +7,111 @@
     :visible="visible"
     :confirmLoading="confirmLoading"
   >
-    <a-transfer
-      :dataSource="mockData"
-      :titles="['全部安全组', '云主机安全组']"
-      :targetKeys="targetKeys"
-      :selectedKeys="selectedKeys"
-      :render="item=>item.title"
-      @change="handleChange"
-      @selectChange="handleSelectChange"
-      @scroll="handleScroll"
-    ></a-transfer>
+    <a-spin :spinning="spinning">
+      <a-transfer
+        class="transfer-container"
+        :dataSource="dataSource"
+        :titles="['全部安全组', '云主机安全组']"
+        :targetKeys="targetKeys"
+        :selectedKeys="selectedKeys"
+        :render="item=>item.title"
+        @change="handleChange"
+        @selectChange="handleSelectChange"
+      ></a-transfer>
+    </a-spin>
+
   </a-modal>
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
-import { editSecuritygroup as fetchAPI, getSecuritygroupList } from "@/api/compute/instance";
+import { editSecuritygroup as fetchAPI } from "@/api/compute/instance";
+import { getGroupList } from "@/api/security/index";
 export default {
-  mixins: [baseModalMixins, formModalMixins],
+  mixins: [baseModalMixins],
   props: ["record"],
   data() {
-    const mockData = [];
-    for (let i = 0; i < 20; i++) {
-      mockData.push({
-        key: i.toString(),
-        title: `content${i + 1}`,
-        description: `description of content${i + 1}`,
-        disabled: i % 3 < 1
-      });
-    }
-
-    const targetKeys = mockData
-      .filter(item => +item.key % 3 > 1)
-      .map(item => item.key);
     return {
       fetchAPI,
       name: "editSafetyGroup",
-      mockData,
-      targetKeys,
-      selectedKeys: ["1", "4"],
       confirmLoading: false,
 
+      isFetchGroupList: false,
+      dataSource: [],
+      targetKeys: [],
+      selectedKeys: [],
+
+      loop: true,
       list: [],
     };
   },
+  watch: {
+    "currRecord.securityGroups" (newV, oldV) {
+      this.targetKeys = newV.map(item => item.securityGroupName);
+    }
+  },
+  computed: {
+    spinning () {
+      return this.isFetchGroupList || this.currRecord.loadingGroup
+    }
+  },
   methods: {
     onShow() {
-      this.fetchList()
+      !this.dataSource.length && this.fetchList();
+      this.targetKeys = [];
+      this.selectedKeys = [];
     },
     async fetchList () {
+      this.isFetchGroupList = true;
       try {
-        const resp = await getSecuritygroupList();
-        this.list = resp.data.map(item => ({
-          title: item.securityGroupName,
-          key: item.securityGroupId,
+        const resp = await getGroupList();
+        this.dataSource = resp.data.map(item => ({
+          title: item.name,
+          key: item.name,
         }));
-        console.log(this.list);
       } catch (error) {
-        
+
+      } finally {
+        this.isFetchGroupList = false;
       }
     },
     handleChange(nextTargetKeys, direction, moveKeys) {
       this.targetKeys = nextTargetKeys;
-
-      console.log("targetKeys: ", this.targetKeys);
-      console.log("direction: ", direction);
-      console.log("moveKeys: ", moveKeys);
+      this.getResult();
     },
     handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
       this.selectedKeys = [...sourceSelectedKeys, ...targetSelectedKeys];
-
-      console.log("sourceSelectedKeys: ", sourceSelectedKeys);
-      console.log("targetSelectedKeys: ", targetSelectedKeys);
     },
-    handleScroll(direction, e) {
-      console.log("direction:", direction);
-      console.log("target:", e.target);
+
+    getResult () {
+      const instanceId = this.currRecord.id;
+      // 原有的
+      const oldGroup = this.currRecord.securityGroups.map(item => item.securityGroupName);
+
+      // 现有的
+      const newGroup = this.targetKeys;
+
+      const result = [];
+
+      // actionType 执行类型[0:添加 1:移除]
+      // 新数组元素在原数组中不存在，即为新增
+      newGroup.forEach(item => {
+        !oldGroup.includes(item) && result.push({ actionType: 0, securitygroup: item, instanceId,  })
+      })
+      // 原数组元素在新数组中不存在，即为删除
+      oldGroup.forEach(item => {
+        !newGroup.includes(item) && result.push({ actionType: 1, securitygroup: item, instanceId,  })
+      })
+      this.list = result;
+      this.handleItemCount = result.length;
     }
   }
 };
 </script>
+
+<style scoped>
+.transfer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>

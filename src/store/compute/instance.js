@@ -46,11 +46,13 @@ const columns = [
   },
   {
     title: '公网IP',
-    dataIndex: 'ipAddress'
+    dataIndex: 'ipAddress',
+    scopedSlots: { customRender: 'ipAddress' }
   },
   {
     title: '安全组',
-    dataIndex: 'secuGroupString'
+    dataIndex: 'securityGroups',
+    scopedSlots: { customRender: 'securityGroups' }
   },
   {
     title: '创建时间',
@@ -68,7 +70,7 @@ const allInstanceStatus = [
   'active',
   // 'build',  // 等待中禁止任何操作
   'paused',
-  // 'reboot', // 重启中禁止任何操作 
+  // 'reboot', // 重启中禁止任何操作
   'shutoff',
   // 'rebuild',  // 重建中禁止任何操作
   'suspended',
@@ -80,7 +82,7 @@ const allInstanceStatus = [
   'deleted',
   'unknown',
   'error',
-  'stopped', 
+  'stopped',
 ];
 export default {
   namespaced: true,

@@ -4,8 +4,13 @@ import { GET, POST, DELETE } from '@/utils/request';
 export const getinstanceList = payload => GET('/compute/instance/list', payload);
 
 // 实例状态
-
 export const getInstanceStatus = instanceId => GET(`/compute/instance/status/${instanceId}`)
+
+// 实例网络
+export const getInstanceNetwork = instanceId => GET(`/compute/instance/network/${instanceId}`)
+
+// 实例安全组
+export const getInstanceGroup = instanceId => GET(`/compute/instance/securityGroup/${instanceId}`)
 
 // 区域列表
 export const getRegionList   = payload => GET('/compute/instance/region​/list', payload);
@@ -40,9 +45,6 @@ export const rebuild         = payload => POST('/compute/instance/rebuild', payl
 // 编辑云主机安全组
 export const editSecuritygroup = payload =>
   POST('/compute/instance/securitygroup/edit', payload);
-
-export const getSecuritygroupList = payload =>
-  GET('/compute/instance/securitygroup/list', payload);
 
 // 主机概况
 export const overview        = payload => GET('/compute/instance/overview', payload);

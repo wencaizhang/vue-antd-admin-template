@@ -196,10 +196,14 @@ export default {
         const { portRangeMax, portRangeMin } = item;
         let portScope;
         if (portRangeMax === portRangeMin) {
-          const ruleItem = SECURITY_GROUP_RULES.find(item => item.to_port == portRangeMax);
-          portScope = portRangeMax + (ruleItem ? `(${ruleItem.name})` : '');
+          if (portRangeMax === '无') {
+            portScope = '任何';
+          } else {
+            const ruleItem = SECURITY_GROUP_RULES.find(item => item.to_port == portRangeMax);
+            portScope = portRangeMax + (ruleItem ? `(${ruleItem.name})` : '');
+          }
         } else {
-          portScope = portRangeMin + '~' + portRangeMax;
+          portScope = portRangeMin + ' - ' + (portRangeMax === '无' ? 'None' : portRangeMax);
         };
 
         // 方向
@@ -207,6 +211,7 @@ export default {
         Object.assign(item, {
           portScope,
           direction_zh,
+          protocol: item.protocol === '无' ? '任何' : item.protocol
         })
       })
       return data;

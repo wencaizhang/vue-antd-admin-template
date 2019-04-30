@@ -83,9 +83,38 @@
           <template slot="id" slot-scope="id, record">
             <a @click="handleSingleMenuClick('hostDetail', record)" title="查看云主机概况">{{ id.substring(0, 8) }}</a>
           </template>
-          <template slot="network" slot-scope="network">
-            <p v-for="item in network" :key="item">{{ item }}</p>
+
+          <template slot="securityGroups" slot-scope="group, record">
+            <a-spin v-if="record.loadingGroup">
+              <a-icon slot="indicator" type="loading-3-quarters" style="font-size: 12px" spin />
+            </a-spin>
+            <template v-else>
+              <template v-if="Array.isArray(group) && group.length">
+                <p v-for="(item, index) in group" :key="index + item.securityGroupName">{{ item.securityGroupName }}</p>
+              </template>
+              <template v-else>
+                无
+              </template>
+            </template>
           </template>
+
+          <template slot="ipAddress" slot-scope="ipAddress, record">
+            <a-spin v-if="record.loadingNetwork">
+              <a-icon slot="indicator" type="loading-3-quarters" style="font-size: 12px" spin />
+            </a-spin>
+            <template v-else>
+              {{ ipAddress || '无' }}
+            </template>
+          </template>
+          <template slot="network" slot-scope="network, record">
+            <a-spin v-if="record.loadingNetwork">
+              <a-icon slot="indicator" type="loading-3-quarters" style="font-size: 12px" spin />
+            </a-spin>
+            <template v-else>
+              <p v-for="item in network" :key="item">{{ item }}</p>
+            </template>
+          </template>
+
           <template slot="status" slot-scope="text, record">
             <p>
               <span :class="{ 'status-disabled': record.taskState }">{{ record.status_zh }}</span>
@@ -94,6 +123,7 @@
               </a-spin>
             </p>
           </template>
+
           <template slot="operation" slot-scope="options, record">
             <a-dropdown style="margin-right: 10px;">
               <a-menu slot="overlay" @click="handleBeforeSingleMenuClick($event.key, record)">
@@ -108,6 +138,7 @@
               </a-button>
             </a-dropdown>
           </template>
+
         </a-table>
       </div>
     </page-layout>
@@ -151,7 +182,7 @@ import ConsolePanel from './Modals/ConsolePanel'
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
-import { getinstanceList as getList, getInstanceStatus } from "@/api/compute/instance";
+import { getinstanceList as getList, getInstanceStatus, getInstanceGroup, getInstanceNetwork } from "@/api/compute/instance";
 import { getIPList } from "@/api/network/ip";
 
 import { transToTimestamp } from "@/utils/util";
@@ -216,7 +247,6 @@ export default {
 
       } finally {
         this.isFetchIpList = false;
-        console.log('false', this.isFetchIpList)
       }
     },
     handleRefresh() {
@@ -256,7 +286,38 @@ export default {
     __handleTransformToZh (status) {
       return statusDicts[status] || status
     },
+    async _fetchNetwork (item) {
+      try {
+        item.loadingNetwork = true;
+        const resp = await getInstanceNetwork(item.id);
+        Object.assign(item, resp);
+      } catch (error) {
+
+      } finally {
+        item.loadingNetwork = false;
+      }
+    },
+    async _fetchGroup (item) {
+      try {
+        item.loadingGroup = true;
+        const resp = await getInstanceGroup(item.id);
+        Object.assign(item, resp);
+      } catch (error) {
+
+      } finally {
+        item.loadingGroup = false;
+      }
+    },
     handleParseData (data) {
+      // 请求网络和安全组
+      data.forEach(item => {
+        this._fetchNetwork(item);
+        this._fetchGroup(item);
+        item.securityGroups = [];
+        item.network = [];
+        item.ipAddress = '-';
+      })
+
       // 处理从后台接收的数据格式
       const newData = data.map(item => {
         Object.keys(item).forEach(key => {
@@ -271,12 +332,8 @@ export default {
         // 转换成中文
         let status_zh = this.__handleTransformToZh(item.status);
 
-        const securityGroupList = Array.isArray(item.securityGroups) ? item.securityGroups : [];
-        const secuGroupNameList = securityGroupList.map(item => item.securityGroupName);
-        const secuGroupString = secuGroupNameList.length ? secuGroupNameList.join(' ') : '-';
-
         Object.assign(item, {
-          memory, vcpu, spec, disk, secuGroupString, status_zh,
+          memory, vcpu, spec, disk, status_zh,
           singleMenuOptions: [ ...this.__handleFilterOptions(item) ],
           taskState: '',
         })
