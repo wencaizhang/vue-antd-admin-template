@@ -132,54 +132,81 @@
             :labelCol="formItemLayout.labelCol"
             :wrapperCol="formItemLayout.wrapperCol"
           >
-            <a-input-number
-              :min="-1"
-              :max="255"
-              v-decorator="[
-                'portRangeMin',
-                {
-                  rules: [
-                    { required: true, message: '请输入类型!' },
-                  ]
-                }
-              ]"
-            />
+            <div class="item-wrap">
+              <a-input-number
+                :min="-1"
+                :max="255"
+                v-decorator="[
+                  'portRangeMin',
+                  {
+                    rules: [
+                      { required: true, message: '请输入类型!' },
+                    ]
+                  }
+                ]"
+              />
+              &nbsp;
+              <a-tooltip placement="top" >
+                <template slot="title">
+                  <span>请输入ICMP类型值范围 (-1: 255)</span>
+                </template>
+                <a-icon type="info-circle" />
+              </a-tooltip>
+            </div>
           </a-form-item>
           <a-form-item
             label="编码："
             :labelCol="formItemLayout.labelCol"
             :wrapperCol="formItemLayout.wrapperCol"
           >
-            <a-input-number
-              :min="-1"
-              :max="255"
-              v-decorator="[
-                'portRangeMax',
-                {
-                  rules: [
-                    { required: true, message: '请输入编码!' },
-                  ]
-                }
-              ]"
-            />
+            <div class="item-wrap">
+              <a-input-number
+                :min="-1"
+                :max="255"
+                v-decorator="[
+                  'portRangeMax',
+                  {
+                    rules: [
+                      { required: true, message: '请输入编码!' },
+                    ]
+                  }
+                ]"
+              />
+              &nbsp;
+              <a-tooltip placement="top" >
+                <template slot="title">
+                  <span>请输入ICMP代码范围 (-1: 255)</span>
+                </template>
+                <a-icon type="info-circle" />
+              </a-tooltip>
+            </div>
           </a-form-item>
         </template>
 
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="远程：">
-          <a-select
-            @change="handleChangeRemoteType"
-            placeholder="请选择远程！"
-            v-decorator="[
-              'remote',
-              {
-                initialValue: remote,
-                rules: [{ required: true, message: '请选择远程！' }]
-              }
-            ]"
-          >
-            <a-select-option value="cidr">CIDR</a-select-option>
-            <a-select-option value="group">安全组</a-select-option>
-          </a-select>
+          <div class="item-wrap">
+            <a-select
+              @change="handleChangeRemoteType"
+              placeholder="请选择远程！"
+              v-decorator="[
+                'remote',
+                {
+                  initialValue: remote,
+                  rules: [{ required: true, message: '请选择远程！' }]
+                }
+              ]"
+            >
+              <a-select-option value="cidr">CIDR</a-select-option>
+              <a-select-option value="group">安全组</a-select-option>
+            </a-select>
+            &nbsp;
+            <a-tooltip placement="top" >
+              <template slot="title">
+                <span>选择"CIDR"以指定允许来访的IP地址范围。如欲允许来自另一安全组所有成员的访问，请选择"安全组"。</span>
+              </template>
+              <a-icon type="info-circle" />
+            </a-tooltip>
+          </div>
         </a-form-item>
         <a-form-item
           v-if="remote === 'group'"
@@ -226,17 +253,42 @@
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
-          <a-input
-            v-decorator="[
-              'remoteIpPrefix',
-              {
-                rules: [
-                  { required: true, message: '请输入CIDR!' },
-                ]
-              }
-            ]"
-          />
+          <div class="item-wrap">
+            <a-input
+              v-decorator="[
+                'remoteIpPrefix',
+                {
+                  rules: [
+                    { required: true, message: '请输入CIDR!' },
+                  ]
+                }
+              ]"
+            />
+            &nbsp;
+            <a-tooltip placement="top" >
+              <template slot="title">
+                <span>无类别域间路由标记(CIDR, 例如 192.168.0.0/24，或者2001:db8::/128)</span>
+              </template>
+              <a-icon type="info-circle" />
+            </a-tooltip>
+          </div>
         </a-form-item>
+
+      <p>
+        <h4 style="font-weight: bold; font-size: 18px;">描述：</h4>
+      </p>
+      <p>
+        实例可以关联安全组，组中的规则定义了允许哪些访问到达被关联的实例。安全组由以下三个主要组件组成：
+      </p>
+      <p>
+        <strong>规则：</strong> 您可以指定期望的规则模板或者使用定制规则，选项有定制TCP规则、定制UDP规则或定制ICMP规则。
+      </p>
+      <p>
+        <strong>打开端口/端口范围：</strong> 您选择的TCP和UDP规则可能会打开一个或一组端口.选择"端口范围"，您需要提供开始和结束端口的范围.对于ICMP规则您需要指定ICMP类型和代码.
+      </p>
+      <p>
+        <strong>远程：</strong> 您必须指定允许通过该规则的流量来源。可以通过以下两种方式实现：IP地址块(CIDR)或者来源地址组(安全组)。如果选择一个安全组作为来访源地址，则该安全组中的任何实例都被允许使用该规则访问任一其它实例。
+      </p>
       </a-form>
     </a-modal>
   </div>
@@ -347,3 +399,13 @@ export default {
 };
 </script>
 
+<style scoped>
+p {
+  margin-bottom: 5px;
+}
+
+.item-wrap {
+  display: flex;
+  align-items: center;
+}
+</style>
