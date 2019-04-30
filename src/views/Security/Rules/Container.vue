@@ -211,7 +211,8 @@ export default {
         Object.assign(item, {
           portScope,
           direction_zh,
-          protocol: item.protocol === '无' ? '任何' : item.protocol
+          protocol: item.protocol === '无' ? '任何' : item.protocol,
+          remoteIpPrefix: item.remoteIpPrefix === '无' ? '任何' : item.remoteIpPrefix,
         })
       })
       return data;

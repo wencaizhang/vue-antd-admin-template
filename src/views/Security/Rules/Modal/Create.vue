@@ -51,7 +51,7 @@
           </a-form-item>
         </template>
 
-        <template v-if="portVisible">
+        <template v-if="portVisible && !isICMP">
           <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="端口类型：">
             <a-select
               @change="v => portType = v"
@@ -120,6 +120,44 @@
                 {
                   rules: [
                     { required: true, message: '请输入终止端口号!' },
+                  ]
+                }
+              ]"
+            />
+          </a-form-item>
+        </template>
+        <template v-if="portVisible && isICMP">
+          <a-form-item
+            label="类型："
+            :labelCol="formItemLayout.labelCol"
+            :wrapperCol="formItemLayout.wrapperCol"
+          >
+            <a-input-number
+              :min="-1"
+              :max="255"
+              v-decorator="[
+                'portRangeMin',
+                {
+                  rules: [
+                    { required: true, message: '请输入类型!' },
+                  ]
+                }
+              ]"
+            />
+          </a-form-item>
+          <a-form-item
+            label="编码："
+            :labelCol="formItemLayout.labelCol"
+            :wrapperCol="formItemLayout.wrapperCol"
+          >
+            <a-input-number
+              :min="-1"
+              :max="255"
+              v-decorator="[
+                'portRangeMax',
+                {
+                  rules: [
+                    { required: true, message: '请输入编码!' },
                   ]
                 }
               ]"
@@ -237,6 +275,8 @@ export default {
         { value: 10, label : 'IMAP' },
         { value: 11, label : 'IMAPS' },
       ],
+
+      isICMP: false,
       portVisible: true,
       directionVisible: true,
       remote: 'cidr',
@@ -249,11 +289,12 @@ export default {
     onShow () {
       this.fetchGroupList();
       Object.assign(this, {
+        isICMP: false,
         portVisible: true,
         directionVisible: true,
         remote: 'cidr',
         portType: 1,
-      })
+      });
     },
     handleChangeRuleType (value) {
       const arr = [
@@ -265,7 +306,7 @@ export default {
       const item = arr.find(item => item.reg.test(label));
       this.directionVisible = ['custom', 'all'].includes(item.type);
       this.portVisible = ['custom'].includes(item.type);
-      return item.type;
+      this.isICMP = value == 2;
     },
     handleChangeRemoteType (value) {
       this.remote = value;

@@ -22,7 +22,7 @@ const columns = [
   },
   {
     title: "远端安全组",
-    dataIndex: "remoteGroupId"
+    dataIndex: "remoteGroupName"
   },
   {
     title: "操作",
