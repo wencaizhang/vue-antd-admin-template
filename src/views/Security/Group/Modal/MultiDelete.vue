@@ -10,9 +10,9 @@
       okText="删除"
       okType="danger"
     >
-      <a-alert message="注意：删除安全组后数据不可恢复（default 安全组无法删除）！" type="warning" showIcon/>
+      <a-alert message="注意：删除安全组后数据不可恢复（default 系统默认安全组，不允许删除）！" type="warning" showIcon/>
       <p>
-        你已经选择了安全组“{{ list.map(item => item.name).join(', ') }}”，
+        你已经选择了安全组“{{ totalList.map(item => item.name).join(', ') }}”
       </p>
     </a-modal>
   </div>
@@ -38,7 +38,7 @@ export default {
         return selectedRowKeys.includes(item.id);
       });
 
-      this.list = this.totalList;
+      this.list = this.totalList.filter(item => item.name !== 'default');
       this.handleItemCount = this.list.length;
     },
     async handleItemFetch (item) {
