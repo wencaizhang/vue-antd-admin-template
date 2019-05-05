@@ -375,7 +375,7 @@ export default {
       }
     },
     handleFormValues () {
-      if (this.portType === 1) {
+      if (this.portType === 1 && !this.isICMP) {
         // 没有端口类型字段，端口范围对应的就是端口的最大最小值
         // 指定端口号的话把最大值最小值填写成一样的就行
         this.formValues.portRangeMax = this.formValues.portRangeMin;
