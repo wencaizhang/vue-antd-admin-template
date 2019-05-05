@@ -10,20 +10,10 @@
       okText="删除"
       okType="danger"
     >
-      <a-alert message="注意：删除安全组后数据不可恢复！" type="warning" showIcon/>
+      <a-alert message="注意：删除安全组后数据不可恢复（default 安全组无法删除）！" type="warning" showIcon/>
       <p>
         你已经选择了安全组“{{ list.map(item => item.name).join(', ') }}”，
-        <!-- <template v-if="internalList.length">
-          其中“{{ internalList.map(item => item.name).join(', ') }}”不满足删除条件,请先删除其关联的资源对象,再执行删除.
-        </template> -->
-        <!-- <template v-else>
-          即将删除该路由,请确认你的操作.
-        </template> -->
       </p>
-
-      <!-- <template v-if="internalList.length" slot="footer">
-        <a-button @click="handleCancel">取消</a-button>
-      </template> -->
     </a-modal>
   </div>
 </template>

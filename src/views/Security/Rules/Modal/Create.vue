@@ -51,6 +51,34 @@
           </a-form-item>
         </template>
 
+
+        <a-form-item
+          v-if="isOther"
+          label="IP协议："
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
+          <div class="item-wrap">
+            <a-input
+              v-decorator="[
+                'ipName',
+                {
+                  rules: [
+                    { required: true, message: '请输入IP协议!' },
+                  ]
+                }
+              ]"
+            />
+            &nbsp;
+            <a-tooltip placement="top" >
+              <template slot="title">
+                <span>请输入一个介于-1和255之间的整数（-1表示使用通配符）。</span>
+              </template>
+              <a-icon type="info-circle" />
+            </a-tooltip>
+          </div>
+        </a-form-item>
+
         <template v-if="portVisible && !isICMP">
           <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="端口类型：">
             <a-select
@@ -252,6 +280,7 @@
           label="CIDR："
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
+          class="a-form-item"
         >
           <div class="item-wrap">
             <a-input
@@ -329,6 +358,7 @@ export default {
       ],
 
       isICMP: false,
+      isOther: false,
       portVisible: true,
       directionVisible: true,
       remote: 'cidr',
@@ -349,6 +379,14 @@ export default {
       });
     },
     handleChangeRuleType (value) {
+      if (value == 3) {
+        // 其他协议
+        this.directionVisible = true;
+        this.portVisible = false;
+        this.isICMP = false;
+        this.isOther = true;
+        return;
+      }
       const arr = [
         { reg: /定制/, type: 'custom' },
         { reg: /ALL/, type: 'all' },
@@ -359,6 +397,7 @@ export default {
       this.directionVisible = ['custom', 'all'].includes(item.type);
       this.portVisible = ['custom'].includes(item.type);
       this.isICMP = value == 2;
+
     },
     handleChangeRemoteType (value) {
       this.remote = value;
@@ -408,4 +447,8 @@ p {
   display: flex;
   align-items: center;
 }
+
+/* .a-form-item .ant-form-item-control-wrapper {
+  padding-right: 16px;
+} */
 </style>
