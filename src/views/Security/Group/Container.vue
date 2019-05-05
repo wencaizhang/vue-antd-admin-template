@@ -47,11 +47,12 @@
           :loading="loading"
           @change="handleTableChange"
         >
+
           <template slot="operation" slot-scope="text, record">
             <a-dropdown>
               <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
                 <a-menu-item
-                  v-for="item in singleMenuOptions"
+                  v-for="item in record.singleMenuOptions"
                   :key="item.id"
                 >{{ item.name }}</a-menu-item>
               </a-menu>
@@ -60,6 +61,7 @@
               </a-button>
             </a-dropdown>
           </template>
+
         </a-table>
       </div>
     </PageLayout>
@@ -113,6 +115,21 @@ export default {
       this.currRecord = record;
       this.handleShowModal(key);
     },
+    __handleFilterOptions ({ name }) {
+      // 操作菜单权限过滤
+      // default 安全组只能编辑规则，不能修改名称或者删除
+      if (name === 'default') {
+        return [{ visible: false, type: 'single', id: 'editRule',    name: '编辑规则', },]
+      } else {
+        return JSON.parse(JSON.stringify(this.singleMenuOptions))
+      }
+    },
+    handleParseData (data) {
+      data.forEach(item => {
+        item.singleMenuOptions = [ ...this.__handleFilterOptions(item) ]
+      })
+      return data;
+    }
   }
 };
 </script>
