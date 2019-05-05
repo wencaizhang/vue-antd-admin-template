@@ -58,10 +58,12 @@ export default {
       !this.dataSource.length && this.fetchList();
       this.targetKeys = [];
       this.selectedKeys = [];
+      this.updateTargetKeys();
     },
 
     updateTargetKeys () {
       this.targetKeys = this.dataSource.filter(item => this.currRecord.securityGroups.includes(item.title)).map(item => item.key)
+      this.getFormValues();
     },
 
     async fetchList () {
@@ -82,16 +84,19 @@ export default {
 
     handleChange(nextTargetKeys, direction, moveKeys) {
       this.targetKeys = nextTargetKeys;
-      this.formValues = {
-        instanceId: this.currRecord.id,
-        securitygroups: this.targetKeys
-      };
+      this.getFormValues();
     },
 
     handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
       this.selectedKeys = [...sourceSelectedKeys, ...targetSelectedKeys];
     },
 
+    getFormValues () {
+      this.formValues = {
+        instanceId: this.currRecord.id,
+        securitygroups: this.targetKeys
+      };
+    }
   }
 };
 </script>
