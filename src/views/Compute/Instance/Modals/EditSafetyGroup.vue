@@ -40,13 +40,12 @@ export default {
       targetKeys: [],
       selectedKeys: [],
 
-      loop: true,
-      list: [],
+      formValues: [],
     };
   },
   watch: {
     "currRecord.securityGroups" (newV, oldV) {
-      this.targetKeys = newV;
+      this.updateTargetKeys()
     }
   },
   computed: {
@@ -60,50 +59,39 @@ export default {
       this.targetKeys = [];
       this.selectedKeys = [];
     },
+
+    updateTargetKeys () {
+      this.targetKeys = this.dataSource.filter(item => this.currRecord.securityGroups.includes(item.title)).map(item => item.key)
+    },
+
     async fetchList () {
       this.isFetchGroupList = true;
       try {
         const resp = await getGroupList();
         this.dataSource = resp.data.map(item => ({
           title: item.name,
-          key: item.name,
+          key: item.id,
         }));
+        this.updateTargetKeys()
       } catch (error) {
 
       } finally {
         this.isFetchGroupList = false;
       }
     },
+
     handleChange(nextTargetKeys, direction, moveKeys) {
       this.targetKeys = nextTargetKeys;
-      this.getResult();
+      this.formValues = {
+        instanceId: this.currRecord.id,
+        securitygroups: this.targetKeys
+      };
     },
+
     handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
       this.selectedKeys = [...sourceSelectedKeys, ...targetSelectedKeys];
     },
 
-    getResult () {
-      const instanceId = this.currRecord.id;
-      // 原有的
-      const oldGroup = this.currRecord.securityGroups;
-
-      // 现有的
-      const newGroup = this.targetKeys;
-
-      const result = [];
-
-      // actionType 执行类型[0:添加 1:移除]
-      // 新数组元素在原数组中不存在，即为新增
-      newGroup.forEach(item => {
-        !oldGroup.includes(item) && result.push({ actionType: 0, securitygroup: item, instanceId,  })
-      })
-      // 原数组元素在新数组中不存在，即为删除
-      oldGroup.forEach(item => {
-        !newGroup.includes(item) && result.push({ actionType: 1, securitygroup: item, instanceId,  })
-      })
-      this.list = result;
-      this.handleItemCount = result.length;
-    }
   }
 };
 </script>
