@@ -90,94 +90,6 @@ export default {
       module: "security",
       id: "rules",
       name: "管理安全组规则",
-      SECURITY_GROUP_RULES: [
-        {
-          name: "All TCP",
-          ip_protocol: "tcp",
-          from_port: "1",
-          to_port: "65535"
-        },{
-          name: "All UDP",
-          ip_protocol: "udp",
-          from_port: "1",
-          to_port: "65535"
-        },{
-          name: "All ICMP",
-          ip_protocol: "icmp",
-          from_port: "-1",
-          to_port: "-1"
-        },{
-          name: "SSH",
-          ip_protocol: "tcp",
-          from_port: "22",
-          to_port: "22"
-        },{
-          name: "SMTP",
-          ip_protocol: "tcp",
-          from_port: "25",
-          to_port: "25"
-        },{
-          name: "DNS",
-          ip_protocol: "tcp",
-          from_port: "53",
-          to_port: "53"
-        },{
-          name: "HTTP",
-          ip_protocol: "tcp",
-          from_port: "80",
-          to_port: "80"
-        },{
-          name: "POP3",
-          ip_protocol: "tcp",
-          from_port: "110",
-          to_port: "110"
-        },{
-          name: "IMAP",
-          ip_protocol: "tcp",
-          from_port: "143",
-          to_port: "143"
-        },{
-          name: "LDAP",
-          ip_protocol: "tcp",
-          from_port: "389",
-          to_port: "389"
-        },{
-          name: "HTTPS",
-          ip_protocol: "tcp",
-          from_port: "443",
-          to_port: "443"
-        },{
-          name: "SMTPS",
-          ip_protocol: "tcp",
-          from_port: "465",
-          to_port: "465"
-        },{
-          name: "IMAPS",
-          ip_protocol: "tcp",
-          from_port: "993",
-          to_port: "993"
-        },{
-          name: "POP3S",
-          ip_protocol: "tcp",
-          from_port: "995",
-          to_port: "995"
-        },{
-          name: "MS SQL",
-          ip_protocol: "tcp",
-          from_port: "1433",
-          to_port: "1433"
-        },{
-          name: "MYSQL",
-          ip_protocol: "tcp",
-          from_port: "3306",
-          to_port: "3306"
-        },{
-          name: "RDP",
-          ip_protocol: "tcp",
-          from_port: "3389",
-          to_port: "3389"
-        }
-      ],
     };
   },
   beforeMount () {
@@ -190,7 +102,6 @@ export default {
       return statusDicts[status.toLowerCase()] || status
     },
     handleParseData (data) {
-      const { SECURITY_GROUP_RULES } = this;
       data.forEach(item => {
         // 端口范围
         const { portRangeMax, portRangeMin } = item;
@@ -199,8 +110,7 @@ export default {
           if (portRangeMax === '无') {
             portScope = '任何';
           } else {
-            const ruleItem = SECURITY_GROUP_RULES.find(item => item.to_port == portRangeMax);
-            portScope = portRangeMax + (ruleItem ? `(${ruleItem.name})` : '');
+            portScope = portRangeMax + (item.portProtocol !== '无' ? `(${item.portProtocol})` : '');
           }
         } else {
           portScope = portRangeMin + ' - ' + (portRangeMax === '无' ? 'None' : portRangeMax);
