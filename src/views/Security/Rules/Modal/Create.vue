@@ -9,10 +9,11 @@
       title="添加规则"
       okText="添加"
     >
-      <a-form :form="form">
+      <a-form :form="form" class="create-modal-form">
 
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="规则：">
           <a-select
+            :getPopupContainer="getPopupContainer"
             @change="handleChangeRuleType"
             placeholder="请选择规则！"
             v-decorator="[
@@ -430,6 +431,10 @@ export default {
         }
       });
     },
+    getPopupContainer() {
+      console.log('document.querySelector', document.querySelector('.create-modal-form'))
+      return document.querySelector('.create-modal-form')
+    }
   },
 };
 </script>
