@@ -104,13 +104,13 @@ export default {
     handleParseData (data) {
       data.forEach(item => {
         // 端口范围
-        const { portRangeMax, portRangeMin } = item;
+        const { portRangeMax, portRangeMin, protocol, portProtocol } = item;
         let portScope;
         if (portRangeMax === portRangeMin) {
           if (portRangeMax === '无') {
             portScope = '任何';
           } else {
-            portScope = portRangeMax + (item.portProtocol !== '无' ? `(${item.portProtocol})` : '');
+            portScope = portRangeMax + (portProtocol !== '无' && protocol === "tcp" ? `(${portProtocol})` : '');
           }
         } else {
           portScope = portRangeMin + ' - ' + (portRangeMax === '无' ? 'None' : portRangeMax);
