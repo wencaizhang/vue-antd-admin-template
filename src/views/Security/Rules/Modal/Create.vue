@@ -11,7 +11,7 @@
     >
       <a-form :form="form">
 
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="规则：" :onValuesChange="onValuesChange">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="规则：">
           <a-select
             @change="handleChangeRuleType"
             placeholder="请选择规则！"
@@ -23,17 +23,15 @@
               }
             ]"
           >
-
             <a-select-option
               v-for="item of procotol"
               :key="item.value"
               :value="item.value"
             >{{ item.label }}</a-select-option>
-
           </a-select>
         </a-form-item>
 
-        <template v-if="directionVisible">
+        <template v-if="createFormVisible[ruleType]['direction']">
           <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="方向：">
             <a-select
               placeholder="请选择方向！"
@@ -53,7 +51,7 @@
 
 
         <a-form-item
-          v-if="isOther"
+          v-if="createFormVisible[ruleType]['ipName']"
           label="IP协议："
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
@@ -79,7 +77,7 @@
           </div>
         </a-form-item>
 
-        <template v-if="portVisible && !isICMP">
+        <template v-if="createFormVisible[ruleType]['port']">
           <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="端口类型：">
             <a-select
               @change="v => portType = v"
@@ -106,7 +104,7 @@
               :min="1"
               :max="65535"
               v-decorator="[
-                'portRangeMin',
+                'portNumber',
                 {
                   rules: [
                     { required: true, message: '请输入端口号!' },
@@ -154,62 +152,63 @@
             />
           </a-form-item>
         </template>
-        <template v-if="portVisible && isICMP">
-          <a-form-item
-            label="类型："
-            :labelCol="formItemLayout.labelCol"
-            :wrapperCol="formItemLayout.wrapperCol"
-          >
-            <div class="item-wrap">
-              <a-input-number
-                :min="-1"
-                :max="255"
-                v-decorator="[
-                  'portRangeMin',
-                  {
-                    rules: [
-                      { required: true, message: '请输入类型!' },
-                    ]
-                  }
-                ]"
-              />
-              &nbsp;
-              <a-tooltip placement="top" >
-                <template slot="title">
-                  <span>请输入ICMP类型值范围 (-1: 255)</span>
-                </template>
-                <a-icon type="info-circle" />
-              </a-tooltip>
-            </div>
-          </a-form-item>
-          <a-form-item
-            label="编码："
-            :labelCol="formItemLayout.labelCol"
-            :wrapperCol="formItemLayout.wrapperCol"
-          >
-            <div class="item-wrap">
-              <a-input-number
-                :min="-1"
-                :max="255"
-                v-decorator="[
-                  'portRangeMax',
-                  {
-                    rules: [
-                      { required: true, message: '请输入编码!' },
-                    ]
-                  }
-                ]"
-              />
-              &nbsp;
-              <a-tooltip placement="top" >
-                <template slot="title">
-                  <span>请输入ICMP代码范围 (-1: 255)</span>
-                </template>
-                <a-icon type="info-circle" />
-              </a-tooltip>
-            </div>
-          </a-form-item>
-        </template>
+
+        <a-form-item
+          v-if="createFormVisible[ruleType]['type']"
+          label="类型："
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
+          <div class="item-wrap">
+            <a-input-number
+              :min="-1"
+              :max="255"
+              v-decorator="[
+                'portRangeMin',
+                {
+                  rules: [
+                    { required: true, message: '请输入类型!' },
+                  ]
+                }
+              ]"
+            />
+            &nbsp;
+            <a-tooltip placement="top" >
+              <template slot="title">
+                <span>请输入ICMP类型值范围 (-1: 255)</span>
+              </template>
+              <a-icon type="info-circle" />
+            </a-tooltip>
+          </div>
+        </a-form-item>
+        <a-form-item
+          v-if="createFormVisible[ruleType]['encoding']"
+          label="编码："
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
+          <div class="item-wrap">
+            <a-input-number
+              :min="-1"
+              :max="255"
+              v-decorator="[
+                'portRangeMax',
+                {
+                  rules: [
+                    { required: true, message: '请输入编码!' },
+                  ]
+                }
+              ]"
+            />
+            &nbsp;
+            <a-tooltip placement="top" >
+              <template slot="title">
+                <span>请输入ICMP代码范围 (-1: 255)</span>
+              </template>
+              <a-icon type="info-circle" />
+            </a-tooltip>
+          </div>
+        </a-form-item>
 
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="远程：">
           <div class="item-wrap">
@@ -303,21 +302,21 @@
           </div>
         </a-form-item>
 
-      <p>
-        <h4 style="font-weight: bold; font-size: 18px;">描述：</h4>
-      </p>
-      <p>
-        实例可以关联安全组，组中的规则定义了允许哪些访问到达被关联的实例。安全组由以下三个主要组件组成：
-      </p>
-      <p>
-        <strong>规则：</strong> 您可以指定期望的规则模板或者使用定制规则，选项有定制TCP规则、定制UDP规则或定制ICMP规则。
-      </p>
-      <p>
-        <strong>打开端口/端口范围：</strong> 您选择的TCP和UDP规则可能会打开一个或一组端口.选择"端口范围"，您需要提供开始和结束端口的范围.对于ICMP规则您需要指定ICMP类型和代码.
-      </p>
-      <p>
-        <strong>远程：</strong> 您必须指定允许通过该规则的流量来源。可以通过以下两种方式实现：IP地址块(CIDR)或者来源地址组(安全组)。如果选择一个安全组作为来访源地址，则该安全组中的任何实例都被允许使用该规则访问任一其它实例。
-      </p>
+        <p>
+          <h4 style="font-weight: bold; font-size: 18px;">描述：</h4>
+        </p>
+        <p>
+          实例可以关联安全组，组中的规则定义了允许哪些访问到达被关联的实例。安全组由以下三个主要组件组成：
+        </p>
+        <p>
+          <strong>规则：</strong> 您可以指定期望的规则模板或者使用定制规则，选项有定制TCP规则、定制UDP规则或定制ICMP规则。
+        </p>
+        <p>
+          <strong>打开端口/端口范围：</strong> 您选择的TCP和UDP规则可能会打开一个或一组端口.选择"端口范围"，您需要提供开始和结束端口的范围.对于ICMP规则您需要指定ICMP类型和代码.
+        </p>
+        <p>
+          <strong>远程：</strong> 您必须指定允许通过该规则的流量来源。可以通过以下两种方式实现：IP地址块(CIDR)或者来源地址组(安全组)。如果选择一个安全组作为来访源地址，则该安全组中的任何实例都被允许使用该规则访问任一其它实例。
+        </p>
       </a-form>
     </a-modal>
   </div>
@@ -326,6 +325,9 @@
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { addRule as fetchAPI, getGroupList } from '@/api/security/index';
 import { rulesObj } from '@/utils/util';
+
+import createFormVisible from "./createVisible.js";
+
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
@@ -357,23 +359,20 @@ export default {
         { value: 11, label : 'IMAPS' },
       ],
 
-      isICMP: false,
-      isOther: false,
-      portVisible: true,
-      directionVisible: true,
       remote: 'cidr',
       portType: 1,
       groupList: [],
       isFetchGroupList: false,
+
+      createFormVisible,
+      ruleType: 'custom',
     };
   },
   methods: {
     onShow () {
       this.fetchGroupList();
       Object.assign(this, {
-        isICMP: false,
-        portVisible: true,
-        directionVisible: true,
+        ruleType: 'custom',
         remote: 'cidr',
         portType: 1,
       });
@@ -381,23 +380,19 @@ export default {
     handleChangeRuleType (value) {
       if (value == 3) {
         // 其他协议
-        this.directionVisible = true;
-        this.portVisible = false;
-        this.isICMP = false;
-        this.isOther = true;
-        return;
+        this.ruleType = 'other';
+      } else if (value == 2) {
+        // ICMP
+        this.ruleType = 'icmp';
+      } else {
+        const arr = [
+          { reg: /定制/, type: 'custom' },
+          { reg: /ALL/, type: 'all' },
+          { reg: /./, type: 'assign' },
+        ]
+        const label = this.procotol.find(item => item.value === value).label;
+        this.ruleType = arr.find(item => item.reg.test(label))['type'];
       }
-      const arr = [
-        { reg: /定制/, type: 'custom' },
-        { reg: /ALL/, type: 'all' },
-        { reg: /./, type: 'assign' },
-      ]
-      const label = this.procotol.find(item => item.value === value).label;
-      const item = arr.find(item => item.reg.test(label));
-      this.directionVisible = ['custom', 'all'].includes(item.type);
-      this.portVisible = ['custom'].includes(item.type);
-      this.isICMP = value == 2;
-
     },
     handleChangeRemoteType (value) {
       this.remote = value;
@@ -417,7 +412,8 @@ export default {
       if (this.portType === 1 && !this.isICMP) {
         // 没有端口类型字段，端口范围对应的就是端口的最大最小值
         // 指定端口号的话把最大值最小值填写成一样的就行
-        this.formValues.portRangeMax = this.formValues.portRangeMin;
+        this.formValues.portRangeMax = this.formValues.portRangeMin = this.formValues.portNumber;
+        delete this.formValues.portNumber
       }
       delete this.formValues.remote;
       delete this.formValues.portType;
