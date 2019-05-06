@@ -409,11 +409,11 @@ export default {
       }
     },
     handleFormValues () {
-      if (this.portType === 1 && !this.isICMP) {
+      if (this.createFormVisible[this.ruleType].port && this.portType === 1) {
         // 没有端口类型字段，端口范围对应的就是端口的最大最小值
         // 指定端口号的话把最大值最小值填写成一样的就行
         this.formValues.portRangeMax = this.formValues.portRangeMin = this.formValues.portNumber;
-        delete this.formValues.portNumber
+        delete this.formValues.portNumber;
       }
       delete this.formValues.remote;
       delete this.formValues.portType;
