@@ -274,13 +274,11 @@ export default {
         return availableStatus.includes(status);
       })
 
-      // 绑定IP后，绑定公网IP按钮不显示;
-      // 未绑定时，解绑公网IP按钮不显示。
-      const id = ipAddress === '无' || !ipAddress ? 'bindIP' : 'unbindIP'
-      const temp = result.find(item => item.id === id);
-      const index = result.indexOf(temp);
+      // 绑定IP后，绑定公网IP按钮不显示，要删除绑定按钮;
+      // 未绑定时，解绑公网IP按钮不显示，要删除解绑按钮。
+      const id = ipAddress === '无' || ipAddress === '-' || !ipAddress ? 'unbindIP' : 'bindIP'
+      const index = result.findIndex(item => item.id === id);
       result.splice(index, 1);
-
       return result;
     },
     __handleTransformToZh (status) {
@@ -291,7 +289,7 @@ export default {
         item.loadingNetwork = true;
         const resp = await getInstanceNetwork(item.id);
         Object.assign(item, resp);
-        this.__handleFilterOptions(item)
+        item.singleMenuOptions = [ ...this.__handleFilterOptions(item) ]
       } catch (error) {
 
       } finally {
