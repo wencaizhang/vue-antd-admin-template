@@ -32,7 +32,10 @@
             v-decorator="[
               'description',
               {
-                rules: [{ message: '请填写描述' }]
+                rules: [
+                  { required: true, message: '请填写描述!' },
+                  rulesObj.desc,
+                ]
               }
             ]"
           />
@@ -71,10 +74,12 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { editImage as fetchAPI } from '@/api/compute/images';
+import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      rulesObj,
       fetchAPI,
       name: "allotIP",
       bandwidth: "1"

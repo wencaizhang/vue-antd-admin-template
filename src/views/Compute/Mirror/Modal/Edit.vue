@@ -20,7 +20,7 @@
               'name',
               {
                 initialValue: currRecord.name,
-                rules: [{ required: true, message: '请输入名称!' }] 
+                rules: [{ required: true, message: '请输入名称!' }]
               }
             ]"
           />
@@ -33,9 +33,12 @@
           <a-textarea
             v-decorator="[
               'description',
-              { 
+              {
                 initialValue: currRecord.description,
-                rules: [{ message: '请填写描述!' }]
+                rules: [
+                  { required: true, message: '请填写描述!' },
+                  rulesObj.desc,
+                ]
               }
             ]"
           />
@@ -50,7 +53,7 @@
             placeholder="选择镜像格式"
             v-decorator="[
               'imageFormat',
-              { 
+              {
                 initialValue: currRecord.imageFormat,
                 rules: [{ required: true, message: '请选择镜像格式!' }]
               }
@@ -76,7 +79,7 @@
             :parser="value => parser(value)"
             v-decorator="[
               'disk',
-              { 
+              {
                 initialValue: currRecord.capacity || 0,
                 rules: [{ required: true, message: '请填写最小磁盘!' }]
               }
@@ -95,7 +98,7 @@
             :parser="value => parser(value)"
             v-decorator="[
               'memory',
-              { 
+              {
                 initialValue: currRecord.memory || 0,
                 rules: [{ required: true, message: '请填写最低内存!' }]
               }
@@ -107,7 +110,7 @@
           <a-checkbox
             v-decorator="[
               'isPublic',
-              { 
+              {
                 initialValue: currRecord.isPublic,
               }
             ]"
@@ -122,10 +125,12 @@
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import mixins from './mixins'
 import { editImage as fetchAPI } from '@/api/compute/images';
+import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins, mixins],
   data() {
     return {
+      rulesObj,
       fetchAPI,
       name: "edit",
     };

@@ -37,7 +37,10 @@
             v-decorator="[
               'description',
               {
-                rules: [{ message: '请输入描述' }]
+                rules: [
+                  { required: true, message: '请填写描述!' },
+                  rulesObj.desc,
+                ]
               }
             ]"
           />

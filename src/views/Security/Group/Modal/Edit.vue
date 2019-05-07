@@ -39,7 +39,8 @@
               {
                 initialValue: currRecord.description,
                 rules: [
-                  { required: true, message: '请输入描述!' },
+                  { required: true, message: '请填写描述!' },
+                  rulesObj.desc,
                 ]
               }
             ]"

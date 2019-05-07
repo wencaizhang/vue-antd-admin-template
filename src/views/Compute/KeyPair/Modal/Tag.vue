@@ -33,7 +33,10 @@
             v-decorator="[
               'description',
               {
-                rules: [{ message: '请输入描述!' }]
+                rules: [
+                  { required: true, message: '请填写描述!' },
+                  rulesObj.desc,
+                ]
               }
             ]"
           />
@@ -45,10 +48,12 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { bindLabel as fetchAPI } from '@/api/compute/keypair';
+import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      rulesObj,
       fetchAPI,
       name: "bindTags"
     };

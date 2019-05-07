@@ -35,7 +35,11 @@
             v-decorator="[
               'description',
               {
-                rules: [{ message: '请输入描述' }]}
+                rules: [
+                  { required: true, message: '请填写描述!' },
+                  rulesObj.desc,
+                ]
+              }
             ]"
           />
         </a-form-item>
@@ -117,10 +121,12 @@
 
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
+import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      rulesObj,
       name: "cloneDisk",
       source: "",
       sourceOptions: [

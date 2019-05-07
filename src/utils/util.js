@@ -28,6 +28,11 @@ export const rulesObj = {
     pattern: /^(\w|_|-|!|#){8,12}$/,
     message: '请使用英文字母、数字、横杠和下划线的组合，8-12 个字符!'
   },
+
+  desc: {
+    pattern: /^.{1,50}$/,
+    message: '描述仅限 50 个字符!'
+  },
 }
 
 /**
@@ -52,7 +57,7 @@ export function getTimeDiff (timestamp) {
   if (timestamp > 1 * 10 ** 12) {
     timestamp = timestamp / 1000;
   }
-  
+
   var currentStamptime = Date.parse(new Date()) / 1000;
   var agoAt = '刚刚';
   var diff = currentStamptime - timestamp;
@@ -80,7 +85,7 @@ export function getTimeDiff (timestamp) {
  * 前端创建并下载文件
  * @param {String} content 文件内容
  * @param {String} filename 文件名称
- * @param {String} MIME 
+ * @param {String} MIME
  * MIME类型参考手册 http://www.w3school.com.cn/media/media_mimeref.asp
  */
 export function downloadFile (content, filename, MIME="application/octet-stream") {

@@ -37,17 +37,7 @@
             <a-select-option :value="0">关停</a-select-option>
           </a-select>
         </a-form-item>
-        <!-- <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="描述：">
-          <a-textarea
-            placeholder="请输入描述"
-            v-decorator="[
-              'description',
-              {
-                initialValue: currRecord.desc,
-                rules: [{ message: '请输入描述' }]}
-            ]"
-          />
-        </a-form-item> -->
+
       </a-form>
     </a-modal>
   </div>

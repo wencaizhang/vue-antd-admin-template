@@ -29,7 +29,11 @@
             v-decorator="[
               'description',
               {
-                rules: [{ required: true, message: '请输入镜像名称' }]}
+                rules: [
+                  { required: true, message: '请输入镜像名称' },
+                  rulesObj.desc,
+                ]
+              }
             ]"
           />
         </a-form-item>
@@ -39,10 +43,12 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
+import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      rulesObj,
       name: "upload"
     };
   },
