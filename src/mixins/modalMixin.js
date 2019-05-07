@@ -29,8 +29,8 @@ export const baseModalMixins = {
     visible (newVal, oldVal) {
       if (newVal) {
         this.currRecord = this.$parent.currRecord || {};
-        this.handleID();
         this.formValues = {};
+        this.handleID();
         this.onShow();
       } else {
         this.form && this.form.resetFields();

@@ -276,7 +276,7 @@ export default {
 
       // 绑定IP后，绑定公网IP按钮不显示;
       // 未绑定时，解绑公网IP按钮不显示。
-      const id = ipAddress === '无' ? 'unbindIP' : 'bindIP'
+      const id = ipAddress === '无' || !ipAddress ? 'bindIP' : 'unbindIP'
       const temp = result.find(item => item.id === id);
       const index = result.indexOf(temp);
       result.splice(index, 1);
@@ -291,6 +291,7 @@ export default {
         item.loadingNetwork = true;
         const resp = await getInstanceNetwork(item.id);
         Object.assign(item, resp);
+        this.__handleFilterOptions(item)
       } catch (error) {
 
       } finally {
@@ -315,7 +316,7 @@ export default {
         this._fetchGroup(item);
         item.securityGroups = [];
         item.network = [];
-        item.ipAddress = '-';
+        item.ipAddress = '';
       })
 
       // 处理从后台接收的数据格式

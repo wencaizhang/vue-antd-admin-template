@@ -26,6 +26,7 @@ import {
   Transfer,
   // Badge,
   // Popover,
+  Slider,
   Dropdown,
   List,
   Avatar,
@@ -69,6 +70,7 @@ Vue.use(Icon)
 Vue.use(Transfer)
 // Vue.use(Badge)
 // Vue.use(Popover)
+Vue.use(Slider)
 Vue.use(Dropdown)
 Vue.use(List)
 Vue.use(Avatar)
