@@ -14,24 +14,26 @@
           <a-input :value="currRecord.ipAddress" disabled />
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="选择待绑定端口：">
-          <a-select
-            placeholder="请选择待绑定端口！"
-            v-decorator="[
-              'portIp',
-              {
-                initialValue: '',
-                rules: [{ required: true, message: '请选择待绑定端口！' }]
-              }
-            ]"
-          >
-            <a-select-option
-              v-for="item in instanceList"
-              :key="item.network"
-              :value="item.network"
+          <a-spin :spinning="isFetchInstanceList">
+            <a-select
+              placeholder="请选择待绑定端口！"
+              v-decorator="[
+                'portIp',
+                {
+                  initialValue: '',
+                  rules: [{ required: true, message: '请选择待绑定端口！' }]
+                }
+              ]"
             >
-              {{ item.name }} {{item.network}}
-            </a-select-option>
-          </a-select>
+              <a-select-option
+                v-for="item in selectList"
+                :key="item.network"
+                :value="item.network"
+              >
+                {{ item.name }} {{item.network}}
+              </a-select-option>
+            </a-select>
+          </a-spin>
         </a-form-item>
       </a-form>
 
@@ -47,16 +49,19 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
-import { getinstanceList } from '@/api/compute/instance';
 import { bindIP as fetchAPI } from "@/api/network/ip";
-
+import { getinstanceList, getInstanceNetwork } from "@/api/compute/instance";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
       fetchAPI,
       name: "bind-ip",
-      instanceList: [],
+      selectList: [],
+      isFetchInstanceList: false,
+
+      count: 0,
+      len: 0,
     };
   },
   methods: {
@@ -64,29 +69,43 @@ export default {
       this.fetchIntanceList();
       this.formValues = { id: this.currRecord.id }
     },
+    async fetchNetwork (item) {
+      try {
+        const resp = await getInstanceNetwork(item.id);
+        resp.network.forEach(net => {
+          this.selectList.push({
+            network: net,
+            name: item.name,
+          });
+        });
+      } catch (error) {
+
+      } finally {
+        this.count++
+        if (this.count === this.len) {
+          this.isFetchInstanceList = false;
+        }
+      }
+    },
     async fetchIntanceList () {
+      this.isFetchInstanceList = true;
       try {
         const resp = await getinstanceList();
-        this.instanceList = resp.data;
-        const list = [];
 
-        resp.data.forEach(item => {
-          // 每个端口只能绑定一个 IP
-          // 需要过滤出可以使用的端口（未绑定过的端口）
-          if (!item.ipAddress) {
-            item.network.forEach(net => {
-              list.push({
-                network: net,
-                name: item.name,
-              });
-            });
-          }
-        });
-
-        this.instanceList = list;
-
+        const avaiableInstance = resp.data.filter(item => !item.ipAddress);
+        this.len = avaiableInstance.length;
+        this.count = 0;
+        if (this.len !== 0) {
+          avaiableInstance.forEach(item => {
+            // 每个端口只能绑定一个 IP
+            // 需要过滤出可以使用的端口（未绑定过的端口）
+            this.fetchNetwork(item);
+          });
+        }
       } catch (error) {
-        
+
+      } finally {
+
       }
     },
   }
