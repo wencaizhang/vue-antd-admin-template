@@ -78,7 +78,7 @@ export default {
     return {
       fetchAPI,
       name: "bindIP",
-      isRefreshParentTable: false, // 刷新父组件表格
+      // isRefreshParentTable: false, // 刷新父组件表格
     };
   },
   computed: {
@@ -91,9 +91,9 @@ export default {
       this.$parent.fetchIPList();
     },
 
-    openNotification (resp) {
-      this.$message.success('绑定成功，请手动刷新');
-    }
+    // openNotification (resp) {
+    //   this.$message.success('绑定成功，请手动刷新');
+    // }
   }
 };
 </script>
