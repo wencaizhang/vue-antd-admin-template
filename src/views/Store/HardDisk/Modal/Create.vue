@@ -118,8 +118,6 @@
         >
           <a-input-number
             :min="1"
-            :formatter="value => formatter('G', value)"
-            :parser="value => parser(value)"
             v-decorator="[
               'size',
               {
