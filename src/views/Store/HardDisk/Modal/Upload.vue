@@ -14,9 +14,9 @@
           <a-input
             :disabled="true"
             v-decorator="[
-              'name',
+              'hardDiskName',
               {
-                initialValue: 'web1',
+                initialValue: currRecord.name,
                 rules: [{ required: true, message: '请输入硬盘名称' }]
               }
             ]"
@@ -27,11 +27,11 @@
           <a-input
             placeholder="请输入镜像名称"
             v-decorator="[
-              'description',
+              'imageName',
               {
                 rules: [
                   { required: true, message: '请输入镜像名称' },
-                  rulesObj.desc,
+                  rulesObj.name,
                 ]
               }
             ]"
@@ -44,15 +44,21 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { rulesObj } from '@/utils/util';
+import { uploadDisk as fetchAPI  } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       rulesObj,
       name: "upload"
     };
   },
 
-  methods: {}
+  methods: {
+    onShow () {
+      this.formValues = { hardDiskId: this.currRecord.id }
+    },
+  }
 };
 </script>

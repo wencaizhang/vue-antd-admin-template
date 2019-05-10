@@ -19,7 +19,7 @@
             v-decorator="[
               'name',
               {
-                initialValue: 'db3-snap-201811020800(100G',
+                initialValue: currRecord.name,
                 rules: [{ required: true, message: '请输入名称' }]
               }
             ]"
@@ -36,6 +36,7 @@
             v-decorator="[
               'description',
               {
+                initialValue: currRecord.description,
                 rules: [
                   { required: true, message: '请填写描述!' },
                   rulesObj.desc,
@@ -51,15 +52,21 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { rulesObj } from '@/utils/util';
+import { editSnapshoot as fetchAPI } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       rulesObj,
       name: "edit"
     };
   },
 
-  methods: {}
+  methods: {
+    onShow () {
+      this.formValues = { snapshootId: this.currRecord.id }
+    },
+  }
 };
 </script>

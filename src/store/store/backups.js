@@ -7,20 +7,20 @@ const columns = [
   },
   {
     title: "描述",
-    dataIndex: "phone"
+    dataIndex: "description"
   },
 
   {
     title: "容量(G)",
-    dataIndex: "size"
+    dataIndex: "capacity"
   },
   {
     title: "状态",
-    dataIndex: "id"
+    dataIndex: "istatusd"
   },
   {
     title: "卷名称",
-    dataIndex: "name.last"
+    dataIndex: "volumeName"
   },
   {
     title: "操作",
@@ -35,16 +35,8 @@ export default {
 
     columns,
     menuOptions: [
-      {
-        visible: false,
-        id: "recover",
-        name: "恢复备份"
-      },
-      {
-        visible: false,
-        id: "delete",
-        name: "删除硬盘备份"
-      }
+      { visible: true, type: 'single', id: "recover", name: "恢复备份" },
+      { visible: false, type: 'single', id: "delete",  name: "删除硬盘备份" },
     ]
   },
   mutations: {

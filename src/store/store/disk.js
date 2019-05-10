@@ -6,32 +6,32 @@ const columns = [
   },
   {
     title: "描述",
-    dataIndex: "phone"
+    dataIndex: "description"
   },
 
   {
     title: "类型",
-    dataIndex: "id"
+    dataIndex: "type"
   },
   {
     title: "容量(G)",
-    dataIndex: "size"
+    dataIndex: "capacity"
   },
   {
     title: "状态",
-    dataIndex: "string"
+    dataIndex: "status"
   },
   {
     title: "挂载云主机/盘符",
-    dataIndex: "absolutePath"
+    dataIndex: "mountHostAndDrive"
   },
   {
     title: "可启动",
-    dataIndex: "regexp"
+    dataIndex: "bootable"
   },
   {
     title: "创建于",
-    dataIndex: "name.last"
+    dataIndex: "createDate"
   },
   {
     title: "操作",
@@ -47,53 +47,19 @@ export default {
     // 根据状态显示不同的操作选项
     // 状态为可用，则全部显示，状态为使用中，则显示 visible: true 的操作选项
     menuOptions: [
-      { id: "create", visible: false, name: "新建", menu: false },
-      { id: "edit", visible: false, name: "修改" },
-      {
-        id: "uninstall",
-        visible: false,
-        name: "卸载硬盘"
-      },
-      {
-        id: "dilatation",
-        visible: false,
-        name: "扩容"
-      },
-      {
-        id: "mount",
-        visible: false,
-        name: "加载硬盘到主机"
-      },
-      {
-        id: "createSnapshoot",
-        visible: false,
-        name: "创建快照"
-      },
-      {
-        id: "createBackups",
-        visible: false,
-        name: "创建备份"
-      },
-      {
-        id: "changeDiskType",
-        visible: false,
-        name: "修改硬盘类型"
-      },
-      {
-        id: "cloneDisk",
-        visible: false,
-        name: "克隆硬盘"
-      },
-      {
-        id: "upload",
-        visible: false,
-        name: "上传镜像"
-      },
-      {
-        id: "delete",
-        visible: false,
-        name: "删除硬盘"
-      }
+      { id: "create",          visible: false, type: 'none',   availableStatus: ['available'], name: "新建" },
+      { id: "multiDelete",     visible: false, type: 'none',   availableStatus: ['available'], name: "删除" },
+
+      { id: "edit",            visible: false, type: 'single', availableStatus: ['available'], name: "编辑" },
+      { id: "uninstall",       visible: false, type: 'single', availableStatus: ['available'], name: "卸载硬盘" },
+      { id: "dilatation",      visible: false, type: 'single', availableStatus: ['available'], name: "扩容" },
+      { id: "mount",           visible: false, type: 'single', availableStatus: ['available'], name: "加载硬盘到主机" },
+      { id: "createSnapshoot", visible: false, type: 'single', availableStatus: ['available'], name: "创建快照" },
+      { id: "createBackups",   visible: false, type: 'single', availableStatus: ['available'], name: "创建备份" },
+      { id: "changeDiskType",  visible: false, type: 'single', availableStatus: ['available'], name: "修改硬盘类型" },
+      { id: "cloneDisk",       visible: false, type: 'single', availableStatus: ['available'], name: "克隆硬盘" },
+      { id: "upload",          visible: false, type: 'single', availableStatus: ['available'], name: "上传镜像" },
+      { id: "delete",          visible: false, type: 'single', availableStatus: ['available'], name: "删除硬盘" }
     ]
   },
   mutations: {},

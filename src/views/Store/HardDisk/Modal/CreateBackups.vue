@@ -13,10 +13,12 @@
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="备份名称：">
           <a-input
             v-decorator="[
-              'name',
+              'backupName',
               {
-                initialValue: 'web1',
-                rules: [{ required: true, message: '请输入备份名称' }]
+                rules: [
+                  { required: true, message: '请输入备份名称' },
+                  rulesObj.name,
+                ]
               }
             ]"
             placeholder="请输入备份名称"
@@ -28,14 +30,22 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
+import { createBackup as fetchAPI  } from "@/api/store/disk";
+import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      rulesObj,
+      fetchAPI,
       name: "createBackups"
     };
   },
 
-  methods: {}
+  methods: {
+    onShow () {
+      this.formValues = { hardDiskId: this.currRecord.id }
+    },
+  }
 };
 </script>

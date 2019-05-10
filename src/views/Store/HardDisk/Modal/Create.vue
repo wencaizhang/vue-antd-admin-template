@@ -9,7 +9,7 @@
       title="创建硬盘"
       okText="保存"
     >
-      <a-form :form="form">
+      <a-form :form="form" class="create-modal-form">
         <a-form-item
           label="名称"
           :labelCol="formItemLayout.labelCol"
@@ -19,7 +19,10 @@
             v-decorator="[
               'name',
               {
-                rules: [{ required: true, message: '请输入名称' }]
+                rules: [
+                  { required: true, message: '请输入名称' },
+                  rulesObj.name
+                ]
               }
             ]"
             placeholder="请输入名称"
@@ -51,7 +54,7 @@
           <a-input-number
             :min="1"
             v-decorator="[
-              'num',
+              'number',
               {
                 rules: [{ required: true, message: '请输入数量' }]}
             ]"
@@ -63,37 +66,48 @@
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-select
-            @select="handleSelect"
+           :getPopupContainer="getPopupContainer"
+            @select="v => source = v"
             v-decorator="[
-              'source',
+              'resourceType',
               {
-                rules: [{ required: true, message: '请选择硬盘来源' }]}
+                initialValue: 0,
+                rules: [
+                  { required: true, message: '请选择硬盘来源' },
+                ]
+              }
             ]"
           >
             <a-select-option
-              v-for="item in sourceOptions"
+              v-for="item in resourceType"
               :key="item.id"
               :value="item.value"
-            >{{item.text}}</a-select-option>
+            >{{item.name}}</a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item
           v-if="source && source != 0"
-          :label="formItemData.label"
+          :label="'请选择' + formItemData.name"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <!-- 此 item 根据硬盘来源进行变化 -->
-          <a-select
-            v-decorator="[
-              formItemData.id,
-              {
-                initialValue: formItemData.option[0]
-              }
-            ]"
-          >
-            <a-select-option v-for="item in formItemData.option" :key="item" :value="item">{{item}}</a-select-option>
-          </a-select>
+          <a-spin :spinning="formItemData.loading">
+            <a-select
+             :getPopupContainer="getPopupContainer"
+              v-decorator="[
+                'resource',
+                {
+                  initialValue: formItemData.options[0] && formItemData.options[0].id,
+                  rules: [
+                    { required: true, message: `请选择${formItemData.name}` },
+                  ]
+                }
+              ]"
+            >
+              <a-select-option v-for="item in formItemData.options" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
+            </a-select>
+          </a-spin>
         </a-form-item>
         <a-form-item
           label="类型："
@@ -107,8 +121,9 @@
                 rules: [{ required: true, message: '请选择类型' }]}
             ]"
           >
-            <a-radio value="普通">普通</a-radio>
-            <a-radio value="SSD">SSD</a-radio>
+            <!-- 类型[0:普通 1:SSD] -->
+            <a-radio :value="0">普通</a-radio>
+            <a-radio :value="1">SSD</a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item
@@ -117,9 +132,10 @@
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-input-number
-            :min="1"
+            :min="formItemData.capacity.min"
+            :max="formItemData.capacity.max"
             v-decorator="[
-              'size',
+              'capacity',
               {
                 rules: [{ required: true, message: '请输入容量' }]}
             ]"
@@ -131,19 +147,20 @@
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-select
+            :getPopupContainer="getPopupContainer"
             v-decorator="[
-              'time',
+              'buyLength',
               {
                 rules: [{ required: true, message: '请选择购买时长' }]}
             ]"
           >
-            <a-select-option value="1">1个月</a-select-option>
-            <a-select-option value="2">2个月</a-select-option>
-            <a-select-option value="3">3个月</a-select-option>
-            <a-select-option value="6">半年</a-select-option>
-            <a-select-option value="12">1年</a-select-option>
-            <a-select-option value="24">2年</a-select-option>
-            <a-select-option value="36">3年</a-select-option>
+            <a-select-option :value="1">1个月</a-select-option>
+            <a-select-option :value="2">2个月</a-select-option>
+            <a-select-option :value="3">3个月</a-select-option>
+            <a-select-option :value="6">半年</a-select-option>
+            <a-select-option :value="12">1年</a-select-option>
+            <a-select-option :value="24">2年</a-select-option>
+            <a-select-option :value="36">3年</a-select-option>
           </a-select>
         </a-form-item>
       </a-form>
@@ -156,50 +173,71 @@
 
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
+
+import { createDisk as fetchAPI, getDiskList, getSnapshootList, getBackupList,  } from "@/api/store/disk";
+import { getImageList } from "@/api/compute/images";
 import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
       rulesObj,
+      fetchAPI,
       name: "create",
-      source: "",
-      sourceOptions: [
+      source: "0",
+      // 硬盘来源类型[0:空白硬盘 1:快照 2:备份 3:硬盘 4:镜像]
+      resourceType: [
         {
           value: 0,
-          text: "空白硬盘",
+          name: "空白硬盘",
           id: "blank",
-          option: ["web1-2018.10.11", "web1-2012.13.11"]
+          loading: false,
+          options: [],
+          capacity: {
+            min: 10,
+            max: 4000,
+          }
         },
         {
           value: 1,
-          text: "快照",
+          name: "快照",
           id: "snapshoot",
-          option: ["web1-2018.10.11", "web1-2012.13.11"]
+          loading: false,
+          options: [],
+          capacity: {
+            min: 100,
+          }
         },
         {
           value: 2,
-          text: "备份",
+          name: "备份",
           id: "backup",
-          option: ["db3-2018.11.10", "db3-2018.11.11"]
+          loading: false,
+          options: [],
+          capacity: {
+            min: 100,
+          }
         },
         {
           value: 3,
-          text: "硬盘",
+          name: "硬盘",
           id: "disk",
-          option: ["db3", "web1", "centos7.4"]
+          loading: false,
+          options: [],
+          capacity: {
+            min: 10,
+          }
         },
         {
           value: 4,
-          text: "镜像",
+          name: "镜像",
           id: "mirror",
-          option: [
-            "ubunt14.04",
-            "ubunt16.04",
-            "ubunt18.04",
-            "centos6.8",
-            "centos7.5"
-          ]
+          loading: false,
+          options: [],
+          capacity: {
+            min: 10,
+            max: 4000,
+          }
         }
       ]
     };
@@ -207,20 +245,40 @@ export default {
   computed: {
     formItemData() {
       const key = Number.parseInt(this.source);
-      const item = this.sourceOptions[key];
-      const data = {
-        id: item.id,
-        validateStatus: "success",
-        help: `请选择${item.text}`,
-        label: `选择${item.text}`,
-        option: item.option
-      };
-      return data;
-    }
+      return this.resourceType[key];
+    },
   },
   methods: {
-    handleSelect(v) {
-      this.source = v;
+    onShow () {
+      this.formValues = { configCost: 5 }
+      this.fetch();
+    },
+    async fetchItem (item) {
+      const re = this.resourceType.find(item2 => item2.id === item.id);
+      re.loading = true;
+      try {
+        const resp = await item.api();
+        re.options = resp.data;
+      } catch (error) {
+
+      } finally {
+        re.loading = false;
+      }
+    },
+    fetch () {
+      const apis = [
+        { id: 'disk', api: getDiskList },
+        { id: 'snapshoot', api: getSnapshootList },
+        { id: 'backup', api: getBackupList },
+        { id: 'mirror', api: getImageList },
+      ];
+      apis.forEach(item => {
+        this.fetchItem(item)
+      })
+    },
+    getPopupContainer() {
+      console.log(document.querySelector('.create-modal-form'))
+      return document.querySelector('.create-modal-form')
     }
   }
 };

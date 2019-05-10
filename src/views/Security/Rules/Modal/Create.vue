@@ -432,7 +432,6 @@ export default {
       });
     },
     getPopupContainer() {
-      console.log('document.querySelector', document.querySelector('.create-modal-form'))
       return document.querySelector('.create-modal-form')
     }
   },

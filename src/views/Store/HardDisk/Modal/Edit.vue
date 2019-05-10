@@ -15,8 +15,11 @@
             v-decorator="[
               'name',
               {
-                initialValue: 'web1',
-                rules: [{ required: true, message: '请输入名称' }]
+                initialValue: currRecord.name,
+                rules: [
+                  { required: true, message: '请输入名称' },
+                  rulesObj.name,
+                ]
               }
             ]"
             placeholder="请输入名称"
@@ -28,6 +31,7 @@
             v-decorator="[
               'description',
               {
+                initialValue: currRecord.description,
                 rules: [
                   { required: true, message: '请填写描述!' },
                   rulesObj.desc,
@@ -38,7 +42,7 @@
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14,offset:8 }" label>
           <a-checkbox v-decorator="[
-          'on',
+          'bootable',
           ]">可启动
             <a-tooltip>
               <template slot="title">“可启动”标记标明此硬盘可以被用来创建主机。</template>
@@ -53,15 +57,31 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { rulesObj } from '@/utils/util';
+import { editDisk as fetchAPI  } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       rulesObj,
       name: "edit"
     };
   },
 
-  methods: {}
+  methods: {
+    onShow () {
+      this.formValues = { hardDiskId: this.currRecord.id }
+    },
+    handleCreate() {
+      const self = this;
+      this.form.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          // 是否可启动[0:否 1:是]
+          Object.assign(self.formValues, values, { bootable: values.bootable ? 1 : 0 });
+          self.handleFetch();
+        }
+      });
+    },
+  }
 };
 </script>

@@ -12,32 +12,34 @@
       <a-form :form="form">
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="名称：">
           <a-input
+            disabled
             v-decorator="[
               'name',
               {
-                initialValue: 'web1',
-                rules: [{ required: true, message: '请输入名称' }]
+                initialValue: currRecord.name,
               }
             ]"
-            placeholder="请输入名称"
           />
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="当前容量：">
           <a-input-number
+            disabled
             v-decorator="[
-              'curr',
+              'currentCapacity',
               {
-                rules: [{ required: true, message: '请输入当前容量' }]}
+                initialValue: currRecord.capacity,
+              }
             ]"
           />
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="新容量：">
           <a-input-number
-            :min="20"
+            :min="currRecord.capacity"
             v-decorator="[
-              'new',
+              'newCapacity',
               {
-                rules: [{ required: true, message: '请输入新容量' }]}
+                rules: [{ required: true, message: '请输入新容量' }]
+              }
             ]"
           />
         </a-form-item>
@@ -47,14 +49,20 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
+import { dilatancyDisk as fetchAPI  } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       name: "dilatation"
     };
   },
 
-  methods: {}
+  methods: {
+    onShow () {
+      this.formValues = { hardDiskId: this.currRecord.id }
+    },
+  }
 };
 </script>

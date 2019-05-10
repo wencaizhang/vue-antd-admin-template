@@ -64,6 +64,7 @@ import DeleteModal from "./Modal/Delete";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
+import { getDiskList as getList, } from "@/api/store/disk";
 export default {
   mixins: [tablePageMixins],
   components: {
@@ -74,6 +75,7 @@ export default {
 
   data() {
     return {
+      getList,
       module: "store",
       id: "snapshoot",
       name: "快照",

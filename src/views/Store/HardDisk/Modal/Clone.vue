@@ -51,9 +51,9 @@
           <a-input
             :disabled="true"
             v-decorator="[
-              'disk',
+              'hardDiskName',
               {
-                initialValue: 'web1',
+                initialValue: currRecord.name,
                 rules: [{ required: true, message: '请选择硬盘来源' }]}
             ]"
           />
@@ -65,12 +65,14 @@
         >
           <a-radio-group
             v-decorator="[
-              'type',
+              'hardDiskType',
               {
-                rules: [{ required: true, message: '请选择类型' }]}
+                initialValue: currRecord.type,
+                rules: [{ required: true, message: '请选择类型' }]
+              }
             ]"
           >
-            <a-radio value="HHD">HHD</a-radio>
+            <a-radio :value="currRecord.type">{{ currRecord.type }}</a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item
@@ -79,14 +81,13 @@
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-input-number
-            :min="1"
-            :formatter="value => formatter('G', value)"
-            :parser="value => parser(value)"
+            :min="20"
             v-decorator="[
-              'size',
+              'capacity',
               {
                 initialValue: '1',
-                rules: [{ required: true, message: '请输入容量' }]}
+                rules: [{ required: true, message: '请输入容量' }]
+              }
             ]"
           />
         </a-form-item>
@@ -97,7 +98,7 @@
         >
           <a-select
             v-decorator="[
-              'time',
+              'buyLenght',
               {
                 rules: [{ required: true, message: '请选择购买时长' }]}
             ]"
@@ -122,71 +123,21 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { rulesObj } from '@/utils/util';
+import { cloneDisk as fetchAPI  } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       rulesObj,
       name: "cloneDisk",
-      source: "",
-      sourceOptions: [
-        {
-          value: 0,
-          text: "空白硬盘",
-          id: "blank",
-          option: ["web1-2018.10.11", "web1-2012.13.11"]
-        },
-        {
-          value: 1,
-          text: "快照",
-          id: "snapshoot",
-          option: ["web1-2018.10.11", "web1-2012.13.11"]
-        },
-        {
-          value: 2,
-          text: "备份",
-          id: "backup",
-          option: ["db3-2018.11.10", "db3-2018.11.11"]
-        },
-        {
-          value: 3,
-          text: "硬盘",
-          id: "disk",
-          option: ["db3", "web1", "centos7.4"]
-        },
-        {
-          value: 4,
-          text: "镜像",
-          id: "mirror",
-          option: [
-            "ubunt14.04",
-            "ubunt16.04",
-            "ubunt18.04",
-            "centos6.8",
-            "centos7.5"
-          ]
-        }
-      ]
     };
   },
-  computed: {
-    formItemData() {
-      const key = Number.parseInt(this.source);
-      const item = this.sourceOptions[key];
-      const data = {
-        id: item.id,
-        validateStatus: "success",
-        help: `请选择${item.text}`,
-        label: `选择${item.text}`,
-        option: item.option
-      };
-      return data;
-    }
-  },
+
   methods: {
-    handleSelect(v) {
-      this.source = v;
-    }
+    onShow () {
+      this.formValues = { hardDiskId: this.currRecord.id, configCost: 5 }
+    },
   }
 };
 </script>

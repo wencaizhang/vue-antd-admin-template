@@ -1,6 +1,6 @@
 export default {
   methods: {
-    handleID() {
+    bindId() {
       this.formValues = Object.assign({}, this.formValues, {
         secretKeyId: this.currRecord.id || ''
       });

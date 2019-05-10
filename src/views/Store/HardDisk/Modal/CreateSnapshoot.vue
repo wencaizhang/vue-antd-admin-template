@@ -19,10 +19,12 @@
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="快照名称：">
           <a-input
             v-decorator="[
-              'name',
+              'snapshootName',
               {
-                initialValue: 'web1',
-                rules: [{ required: true, message: '请输入快照名称' }]
+                rules: [
+                  { required: true, message: '请输入快照名称' },
+                  rulesObj.name,
+                ]
               }
             ]"
             placeholder="请输入快照名称"
@@ -34,14 +36,22 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
+import { createSnapshoot as fetchAPI  } from "@/api/store/disk";
+import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
+      rulesObj,
       name: "createSnapshoot"
     };
   },
 
-  methods: {}
+  methods: {
+    onShow () {
+      this.formValues = { hardDiskId: this.currRecord.id }
+    },
+  }
 };
 </script>

@@ -11,23 +11,26 @@
       okType="danger"
     >
       <a-alert message="注意：删除硬盘后数据不可恢复！" type="warning" showIcon/>
-      <p style="margin-top: 10px; text-align: center;">是否删除硬盘web1?</p>
+      <p style="margin-top: 10px; text-align: center;">
+        是否删除硬盘 <span class="primay-color">{{ currRecord.name }}</span>？</p>
     </a-modal>
   </div>
 </template>
 <script>
 import { baseModalMixins } from "@/mixins/modalMixin";
+import { deleteDisk as fetchAPI  } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins],
   data() {
     return {
+      fetchAPI,
       name: "delete"
     };
   },
 
   methods: {
-    handleCreate() {
-      this.handleCancel();
+    onShow () {
+      this.formValues = { hardDiskId: this.currRecord.id }
     }
   }
 };

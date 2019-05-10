@@ -51,9 +51,9 @@
           <a-input
             :disabled="true"
             v-decorator="[
-              'source',
+              'resource',
               {
-                initialValue: 'db3-snap-201811020800(100G',
+                initialValue: currRecord.id,
               }
             ]"
             placeholder="请输入名称"
@@ -68,11 +68,12 @@
             v-decorator="[
               'type',
               {
+                initialValue: currRecord.type,
                 rules: [{ required: true, message: '请选择类型' }]}
             ]"
           >
             <!-- <a-radio value="普通">普通</a-radio> -->
-            <a-radio value="SSD">SSD</a-radio>
+            <a-radio :value="currRecord.type">{{currRecord.type}}</a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item
@@ -82,10 +83,8 @@
         >
           <a-input-number
             :min="100"
-            :formatter="value => formatter('G', value)"
-            :parser="value => parser(value)"
             v-decorator="[
-              'size',
+              'capacity',
               {
                 rules: [{ required: true, message: '请输入容量' }]}
             ]"
@@ -98,7 +97,7 @@
         >
           <a-select
             v-decorator="[
-              'time',
+              'buyLength',
               {
                 rules: [{ required: true, message: '请选择购买时长' }]}
             ]"
@@ -123,15 +122,21 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { rulesObj } from '@/utils/util';
+import { createDisk as fetchAPI } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       rulesObj,
       name: "create"
     };
   },
 
-  methods: {}
+  methods: {
+    onShow () {
+      this.formValues = { snapshootId: this.currRecord.id, configCost: 5 }
+    },
+  }
 };
 </script>

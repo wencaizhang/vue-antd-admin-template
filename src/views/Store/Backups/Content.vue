@@ -63,6 +63,8 @@ import DeleteModal from "./Modal/Delete";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
+import { getBackupList as getList, } from "@/api/store/disk";
+
 export default {
   mixins: [tablePageMixins],
   components: {
@@ -72,6 +74,7 @@ export default {
 
   data() {
     return {
+      getList,
       module: "store",
       id: "backups",
       name: "硬盘备份",

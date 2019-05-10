@@ -20,7 +20,8 @@
             v-decorator="[
               'type',
               {
-                rules: [{ required: true, message: '请选择类型' }]}
+                rules: [{ required: true, message: '请选择类型' }]
+              }
             ]"
           >
             <a-radio value="0">覆盖原硬盘web1</a-radio>
@@ -35,10 +36,12 @@
           >
             <a-radio-group
               v-decorator="[
-              'diskTpe',
-              {
-                rules: [{ required: true, message: '请选择硬盘类型' }]}
-            ]"
+                'type',
+                {
+                  initialValue: '普通',
+                  rules: [{ required: true, message: '请选择硬盘类型' }]
+                }
+              ]"
             >
               <a-radio value="普通">普通</a-radio>
             </a-radio-group>
@@ -50,10 +53,8 @@
           >
             <a-input-number
               :min="20"
-            :formatter="value => formatter('G', value)"
-            :parser="value => parser(value)"
               v-decorator="[
-              'size',
+              'capacity',
               {
                 rules: [{ required: true, message: '请输入容量' }]}
             ]"
@@ -66,7 +67,7 @@
           >
             <a-select
               v-decorator="[
-              'time',
+              'buyLength',
               {
                 rules: [{ required: true, message: '请选择购买时长' }]}
             ]"
@@ -90,10 +91,12 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
+import { restoreBackup as fetchAPI } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      fetchAPI,
       name: "recover",
       type: "0"
     };
@@ -102,7 +105,10 @@ export default {
   methods: {
     onChange(e) {
       this.type = e.target.value;
-    }
-  }
+    },
+    onShow () {
+      this.formValues = { backupId: this.currRecord.id, configCost: 5 }
+    },
+  },
 };
 </script>

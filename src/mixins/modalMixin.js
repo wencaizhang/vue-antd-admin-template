@@ -30,7 +30,7 @@ export const baseModalMixins = {
       if (newVal) {
         this.currRecord = this.$parent.currRecord || {};
         this.formValues = {};
-        this.handleID();
+        this.bindId();
         this.onShow();
       } else {
         this.form && this.form.resetFields();
@@ -39,7 +39,7 @@ export const baseModalMixins = {
     }
   },
   methods: {
-    handleID () {
+    bindId () {
       // 不同模块下调用 api 时需要传递不同的 id
     },
     onShow () {

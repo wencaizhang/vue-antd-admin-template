@@ -11,7 +11,15 @@
               icon="plus"
               @click="handleSingleMenuClick('create')"
             >创建</a-button>
-            <a-button type="danger" @click="handleBatchDelete" style="margin-right: 10px;">删除</a-button>
+            <a-button type="danger"
+              :disabled="!selectedRowKeys.length"
+              @click="handleBatchDelete('multiDelete')"
+              style="margin-right: 10px;"
+            >删除</a-button>
+          </a-row>
+        </a-col>
+        <a-col>
+          <a-row type="flex" justify="space-between">
             <a-input-search
               placeholder=" "
               @search="getSearchData"
@@ -19,9 +27,6 @@
               enterButton
             />
           </a-row>
-        </a-col>
-        <a-col>
-          <a-row type="flex" justify="space-between"></a-row>
         </a-col>
       </a-row>
     </div>
@@ -67,6 +72,7 @@
     <CloneModal />
     <Upload />
     <Delete />
+    <MultiDelete />
     <ChangeDiskType />
   </div>
 </template>
@@ -80,11 +86,14 @@ import Mount from "./Modal/Mount";
 import CreateSnapshoot from "./Modal/CreateSnapshoot";
 import CreateBackups from "./Modal/CreateBackups";
 import Delete from "./Modal/Delete";
+import MultiDelete from "./Modal/MultiDelete";
 import CloneModal from "./Modal/Clone";
 import Upload from "./Modal/Upload";
 import ChangeDiskType from "./Modal/ChangeDiskType";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
+
+import { getDiskList as getList, } from "@/api/store/disk";
 
 export default {
   mixins: [tablePageMixins],
@@ -97,6 +106,7 @@ export default {
     CreateSnapshoot,
     CreateBackups,
     Delete,
+    MultiDelete,
     CloneModal,
     Upload,
     ChangeDiskType
@@ -108,6 +118,7 @@ export default {
   },
   data() {
     return {
+      getList,
       module: "store",
       id: "disk",
       name: "硬盘"
