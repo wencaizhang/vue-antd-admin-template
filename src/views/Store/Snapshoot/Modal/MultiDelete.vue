@@ -6,7 +6,7 @@
       @ok="handleCreate"
       :visible="visible"
       :confirmLoading="confirmLoading"
-      title="删除硬盘"
+      title="删除硬盘快照"
       okText="删除"
       okType="danger"
     >
@@ -17,14 +17,16 @@
 </template>
 <script>
 import { baseModalMixins } from "@/mixins/modalMixin";
+import { deleteSnapshoot as fetchAPI } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins],
   data() {
     return {
-      name: "multiDelete"
+      fetchAPI,
+      name: "multiDelete",
+      loop: true,
     };
   },
-
 
   methods: {
     onShow () {
@@ -36,7 +38,7 @@ export default {
     },
     async handleItemFetch (item) {
       try {
-        const payload = { hardDiskId: item.id };
+        const payload = { snapshootId: item.id };
         const resp = await this.fetchAPI(payload);
       }
       catch (err) {
@@ -50,5 +52,6 @@ export default {
       }
     },
   },
+
 };
 </script>

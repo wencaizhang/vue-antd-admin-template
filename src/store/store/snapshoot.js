@@ -15,7 +15,7 @@ const columns = [
   },
   {
     title: "状态",
-    dataIndex: "status"
+    dataIndex: "status_zh"
   },
   {
     title: "卷名称",
@@ -35,9 +35,9 @@ export default {
     columns,
 
     menuOptions: [
-      { id: "batchDelete", visible: false, type: 'none', name: "批量删除" },
+      { id: "multiDelete", visible: false, type: 'none', name: "批量删除" },
 
-      { id: "create",      visible: true, type: 'single', name: "创建硬盘" },
+      { id: "create",      visible: false, type: 'single', name: "创建硬盘" },
       { id: "edit",        visible: false, type: 'single', name: "编辑硬盘快照" },
       { id: "delete",      visible: false, type: 'single', name: "删除硬盘快照" },
     ]

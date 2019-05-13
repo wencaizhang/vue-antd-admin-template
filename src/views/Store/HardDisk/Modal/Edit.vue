@@ -31,7 +31,7 @@
             v-decorator="[
               'description',
               {
-                initialValue: currRecord.description,
+                initialValue: currRecord.description && currRecord.description.replace(/^无$/, ''),
                 rules: [
                   { required: true, message: '请填写描述!' },
                   rulesObj.desc,
@@ -42,7 +42,11 @@
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14,offset:8 }" label>
           <a-checkbox v-decorator="[
-          'bootable',
+            'bootable',
+            {
+              initialValue: currRecord.bootable,
+              valuePropName: 'checked',
+            }
           ]">可启动
             <a-tooltip>
               <template slot="title">“可启动”标记标明此硬盘可以被用来创建主机。</template>
@@ -76,8 +80,7 @@ export default {
       const self = this;
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          // 是否可启动[0:否 1:是]
-          Object.assign(self.formValues, values, { bootable: values.bootable ? 1 : 0 });
+          Object.assign(self.formValues, values);
           self.handleFetch();
         }
       });

@@ -15,7 +15,7 @@
             v-decorator="[
               'name',
               {
-                initialValue: 'web1',
+                initialValue: currRecord.name,
                 rules: [{ required: true, message: '请输入硬盘名称' }]
               }
             ]"

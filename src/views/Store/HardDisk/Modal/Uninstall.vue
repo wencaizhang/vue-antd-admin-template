@@ -17,7 +17,7 @@
 </template>
 <script>
 import { baseModalMixins } from "@/mixins/modalMixin";
-import { editDisk as fetchAPI  } from "@/api/store/disk";
+import { uninstallDisk as fetchAPI  } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins],
   data() {
@@ -31,9 +31,6 @@ export default {
     onShow () {
       this.formValues = { hardDiskId: this.currRecord.id }
     },
-    handleCreate() {
-      this.handleCancel();
-    }
   }
 };
 </script>

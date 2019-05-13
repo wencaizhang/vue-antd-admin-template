@@ -10,7 +10,7 @@
       okText="提交"
     >
       <a-alert
-        message="注意：如果需要在linux系统开机时自动挂载硬盘，请不要在/etc/fstab文件指定/dev/vd**的写法，因为有几率出现硬盘设备顺序编码变化，推荐使用命令blkid 分区获取UUID来挂载硬盘分区。"
+        message="注意：如果需要在 linux 系统开机时自动挂载硬盘，请不要在 /etc/fstab 文件指定 /dev/vd** 的写法，因为有几率出现硬盘设备顺序编码变化，推荐使用命令 blkid 分区获取 UUID 来挂载硬盘分区。"
         type="warning"
         showIcon
       />
@@ -18,7 +18,7 @@
         <a-spin :spinning="loading">
           <a-input-search
             placeholder=" "
-            @search="instanceList"
+            @search="handleSearch"
             style="width: 200px"
             enterButton
           />
@@ -39,7 +39,7 @@
 <script>
 import { baseModalMixins } from "@/mixins/modalMixin";
 import { mountDisk as fetchAPI  } from "@/api/store/disk";
-import { getinstanceList  } from "@/api/store/disk";
+import { getinstanceList  } from "@/api/compute/instance";
 export default {
   mixins: [baseModalMixins],
   data() {
@@ -59,7 +59,7 @@ export default {
       this.loading = true;
       try {
         const resp = await getinstanceList();
-        this.instanceId = resp.data;
+        this.instanceList = resp.data;
         this.loading = false;
       } catch (error) {
 
@@ -71,6 +71,9 @@ export default {
     onShow () {
       this.fetchInstance();
       this.initFormValues();
+    },
+    handleSearch () {
+
     },
   }
 };

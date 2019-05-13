@@ -24,6 +24,20 @@
             placeholder="请输入备份名称"
           />
         </a-form-item>
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="描述：">
+          <a-textarea
+            placeholder="请输入描述"
+            v-decorator="[
+              'description',
+              {
+                rules: [
+                  { required: true, message: '请填写描述!' },
+                  rulesObj.desc,
+                ]
+              }
+            ]"
+          />
+        </a-form-item>
       </a-form>
     </a-modal>
   </div>

@@ -3,19 +3,29 @@
     <div class="table-operator" style="margin-bottom: 16px;">
       <a-row type="flex" justify="space-between">
         <a-col>
-          <a-row type="flex" justify="space-between">
-            <a-button icon="sync" :disabled="loading" @click="handleRefresh" style="margin-right: 10px;" title="刷新"></a-button>
-            <a-button type="danger" @click="handleBatchDelete" style="margin-right: 10px;">删除</a-button>
-            <a-input-search
-              placeholder=" "
-              @search="getSearchData"
-              style="width: 200px"
-              enterButton
-            />
-          </a-row>
+          <a-button icon="sync" :disabled="loading" @click="handleRefresh" style="margin-right: 10px;" title="刷新"></a-button>
+          <a-button type="danger"
+            :disabled="!selectedRowKeys.length"
+            @click="handleMultiMenuClick('multiDelete')"
+            style="margin-right: 10px;"
+          >删除</a-button>
         </a-col>
         <a-col>
-          <a-row type="flex" justify="space-between"></a-row>
+          <span style="display: inline-flex;">
+            <a-input-group compact class="compact-search-input">
+              <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 90px!important;">
+                <a-select-option value="name">名称</a-select-option>
+              </a-select>
+              <a-input
+                style="width: 200px"
+                @pressEnter="handleDATA"
+                v-model="searchValues.inputValue"
+              />
+            </a-input-group>
+            <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
+              <a-icon type="search" />
+            </a-button>
+          </span>
         </a-col>
       </a-row>
     </div>
@@ -52,7 +62,7 @@
     </a-table>
 
     <RecoverModal />
-    <!-- <Recover2Modal /> -->
+    <MultiDelete />
     <DeleteModal />
   </div>
 </template>
@@ -60,16 +70,20 @@
 <script>
 import RecoverModal from "./Modal/Recover";
 import DeleteModal from "./Modal/Delete";
+import MultiDelete from "./Modal/MultiDelete";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
 import { getBackupList as getList, } from "@/api/store/disk";
+import backups from '@/i18n/zh/backups'
+const statusDicts = backups.backups.status;
 
 export default {
   mixins: [tablePageMixins],
   components: {
     RecoverModal,
-    DeleteModal
+    DeleteModal,
+    MultiDelete
   },
 
   data() {
@@ -78,11 +92,30 @@ export default {
       module: "store",
       id: "backups",
       name: "硬盘备份",
-      confirmLoading: false
+      searchValues: {
+        type: 'name',
+        inputValue: '',
+      },
     };
   },
   computed: {},
-  methods: {}
+  methods: {
+    __handleTransformToZh (status) {
+      return statusDicts[status] || status
+    },
+    handleParseData (data) {
+      const temp =  data.filter(item => item.status !== 'deleting');
+
+      temp.forEach(item => {
+        let status_zh = this.__handleTransformToZh(item.status)
+        Object.assign(item, {
+          status_zh,
+        })
+      })
+
+      return temp;
+    }
+  }
 };
 </script>
 

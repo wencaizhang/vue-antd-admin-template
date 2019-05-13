@@ -37,6 +37,23 @@
             ]"
           />
         </a-form-item>
+        <a-form-item
+          label="磁盘格式"
+          :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }"
+        >
+          <a-select
+            v-decorator="[
+              'diskFormatName',
+              {
+                rules: [
+                  { required: true, message: '请选择磁盘格式' },
+                ]
+              }
+            ]"
+          >
+            <a-select-option v-for="item in imageFormatList" :key="item.id" :value="item.id">{{item.desc}}</a-select-option>
+          </a-select>
+        </a-form-item>
       </a-form>
     </a-modal>
   </div>
@@ -44,14 +61,23 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { rulesObj } from '@/utils/util';
-import { uploadDisk as fetchAPI  } from "@/api/store/disk";
+import { uploadDisk as fetchAPI } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
       fetchAPI,
       rulesObj,
-      name: "upload"
+      name: "upload",
+
+      imageFormatList: [
+        { id: 'qcow2', desc: 'QCOW2 - QEMU模拟器' },
+        { id: 'raw', desc: '原始' },
+        { id: 'vdi', desc: 'VDI - VirtualBox虚拟磁盘镜像' },
+        { id: 'vhd', desc: 'VHD - Vmware虚拟硬盘' },
+        { id: 'vhdx', desc: 'VHDX - 大型虚拟硬盘' },
+        { id: 'vmdk', desc: 'VMDK - Vmware虚拟磁盘' },
+      ],
     };
   },
 

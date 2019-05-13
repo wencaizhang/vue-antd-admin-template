@@ -14,6 +14,10 @@
         <span>{{ currRecord[ item.dataIndex ] || '无'}}</span>
       </li>
     </ul>
+
+    <template slot="footer">
+      <a-button type="primary" @click="handleCancel">确定</a-button>
+    </template>
   </a-modal>
 </template>
 <script>
@@ -37,7 +41,7 @@ export default {
       },
       {
         title: "状态",
-        dataIndex: "status",
+        dataIndex: "status_zh",
       },
       {
         title: "系统盘",

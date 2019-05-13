@@ -13,20 +13,27 @@
             >创建</a-button>
             <a-button type="danger"
               :disabled="!selectedRowKeys.length"
-              @click="handleBatchDelete('multiDelete')"
+              @click="handleMultiMenuClick('multiDelete')"
               style="margin-right: 10px;"
             >删除</a-button>
           </a-row>
         </a-col>
         <a-col>
-          <a-row type="flex" justify="space-between">
-            <a-input-search
-              placeholder=" "
-              @search="getSearchData"
-              style="width: 200px"
-              enterButton
-            />
-          </a-row>
+          <span style="display: inline-flex;">
+            <a-input-group compact class="compact-search-input">
+              <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 90px!important;">
+                <a-select-option value="name">名称</a-select-option>
+              </a-select>
+              <a-input
+                style="width: 200px"
+                @pressEnter="handleDATA"
+                v-model="searchValues.inputValue"
+              />
+            </a-input-group>
+            <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
+              <a-icon type="search" />
+            </a-button>
+          </span>
         </a-col>
       </a-row>
     </div>
@@ -51,7 +58,7 @@
         <a-dropdown style="margin-right: 10px;">
           <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
             <a-menu-item
-              v-for="item in singleMenuOptions"
+              v-for="item in record.singleMenuOptions"
               :key="item.id"
             >{{ item.name }}</a-menu-item>
           </a-menu>
@@ -94,6 +101,8 @@ import ChangeDiskType from "./Modal/ChangeDiskType";
 import tablePageMixins from "@/mixins/tablePageMixins";
 
 import { getDiskList as getList, } from "@/api/store/disk";
+import disk from '@/i18n/zh/disk'
+const statusDicts = disk.disk.status;
 
 export default {
   mixins: [tablePageMixins],
@@ -121,11 +130,47 @@ export default {
       getList,
       module: "store",
       id: "disk",
-      name: "硬盘"
+      name: "硬盘",
+      searchValues: {
+        type: 'name',
+        inputValue: '',
+      },
     };
   },
   computed: {},
-  methods: {}
+  methods: {
+    __handleTransformToZh (status) {
+      return statusDicts[status] || status
+    },
+    __handleFilterOptions ({ status }) {
+      // 操作菜单权限过滤
+      const options = JSON.parse(JSON.stringify(this.singleMenuOptions))
+
+      // 只有当实例处于 availableStatus 中的状态时，对应的操作才可用
+      const result = options.filter(({ id, availableStatus=[]}, index) => {
+        if (availableStatus.length === 0) {
+          return true;
+        }
+        return availableStatus.includes(status);
+      })
+
+      return result;
+    },
+    handleParseData (data) {
+      const temp =  data;
+
+      temp.forEach(item => {
+        let status_zh = this.__handleTransformToZh(item.status)
+        Object.assign(item, {
+          status_zh,
+          bootable_zh: item.bootable ? '是' : '否',
+          singleMenuOptions: [ ...this.__handleFilterOptions(item) ],
+        })
+      })
+
+      return temp;
+    }
+  }
 };
 </script>
 

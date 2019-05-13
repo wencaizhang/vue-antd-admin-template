@@ -9,6 +9,10 @@ const columns = [
     dataIndex: 'name'
   },
   {
+    title: '类型',
+    dataIndex: 'type'
+  },
+  {
     title: '状态',
     dataIndex: 'status',
     // filters: [
@@ -21,6 +25,10 @@ const columns = [
     //   { text: '重启中', value: '重启中' }
     // ],
     // filterMultiple: false
+  },
+  {
+    title: '磁盘类型',
+    dataIndex: 'imageFormat'
   },
   {
     title: '容量（G)',

@@ -16,7 +16,7 @@ const columns = [
   },
   {
     title: "状态",
-    dataIndex: "istatusd"
+    dataIndex: "status_zh"
   },
   {
     title: "卷名称",
@@ -35,7 +35,9 @@ export default {
 
     columns,
     menuOptions: [
-      { visible: true, type: 'single', id: "recover", name: "恢复备份" },
+      { visible: false, type: 'none', id: "multiDelete", name: "删除" },
+
+      { visible: false, type: 'single', id: "recover", name: "恢复备份" },
       { visible: false, type: 'single', id: "delete",  name: "删除硬盘备份" },
     ]
   },

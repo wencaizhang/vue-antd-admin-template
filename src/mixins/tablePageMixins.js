@@ -145,7 +145,6 @@ export default {
             // 计算时间戳
             const createDate = item.createDate;
             item.timestamp = transToTimestamp(createDate);
-            item.createDate = createDate.substring(0, createDate.length - 3);
           }
           if (item.status) {
             // 保证状态永远是小写字母
@@ -213,6 +212,5 @@ export default {
     },
 
     getSearchData() {},
-    handleBatchDelete() {},
   }
 };

@@ -40,16 +40,16 @@ export const uploadDisk       = payload => POST('/storage/hardDisk/image/upload'
 export const getSnapshootList = payload => GET('/storage/snapshoot/list', payload);
 
 // 删除快照
-export const deleteSnapshoot  = payload => DELETE('/storage/snapshoot​/delete', payload);
+export const deleteSnapshoot  = payload => DELETE('/storage/snapshoot/delete', payload);
 
 // 编辑硬盘快照
-export const editSnapshoot    = payload => POST('/storage/snapshoot​/edit', payload);
+export const editSnapshoot    = payload => POST('/storage/snapshoot/edit', payload);
 
 // 备份列表
 export const getBackupList    = payload => GET('/storage/backup/list', payload);
 
 // 删除备份
-export const deleteBackup     = payload => DELETE('/storage​/backup​/delete', payload);
+export const deleteBackup     = payload => DELETE('/storage/backup/delete', payload);
 
 // 恢复备份
-export const restoreBackup    = payload => POST('/storage/backup​/restore', payload);
+export const restoreBackup    = payload => POST('/storage/backup/restore', payload);

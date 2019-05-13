@@ -24,7 +24,7 @@
               }
             ]"
           >
-            <a-radio value="0">覆盖原硬盘web1</a-radio>
+            <a-radio value="0">覆盖原硬盘{{ currRecord.volumeName }}</a-radio>
             <a-radio value="1">创建新硬盘</a-radio>
           </a-radio-group>
         </a-form-item>
