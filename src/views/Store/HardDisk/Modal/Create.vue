@@ -94,11 +94,11 @@
           <!-- 此 item 根据硬盘来源进行变化 -->
           <a-spin :spinning="formItemData.loading">
             <a-select
-             :getPopupContainer="getPopupContainer"
+              :getPopupContainer="getPopupContainer"
+              @select="selectResource"
               v-decorator="[
                 'resource',
                 {
-                  initialValue: formItemData.options[0] && formItemData.options[0].id,
                   rules: [
                     { required: true, message: `请选择${formItemData.name}` },
                   ]
@@ -116,14 +116,13 @@
         >
           <a-radio-group
             v-decorator="[
-              'type',
+              'volumeType',
               {
                 rules: [{ required: true, message: '请选择类型' }]}
             ]"
           >
-            <!-- 类型[0:普通 1:SSD] -->
-            <a-radio :value="0">普通</a-radio>
-            <a-radio :value="1">SSD</a-radio>
+            <a-radio value="hdd">普通</a-radio>
+            <a-radio value="ssd">SSD</a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item
@@ -258,6 +257,10 @@ export default {
       re.loading = true;
       try {
         const resp = await item.api();
+        if (item.id === 'mirror') {
+          // 镜像列表中容量字段以字节为单位，修改为以 G 为单位
+          resp.data.forEach(item => item.capacity = Math.ceil(item.capacity / 1024 / 1024 / 1024))
+        }
         re.options = resp.data;
       } catch (error) {
 
@@ -277,9 +280,14 @@ export default {
       })
     },
     getPopupContainer() {
-      console.log(document.querySelector('.create-modal-form'))
       return document.querySelector('.create-modal-form')
-    }
+    },
+    selectResource (id) {
+      const { options, capacity } = this.formItemData;
+      const currItem  = options.find(item => item.id === id);
+      capacity.min = currItem.capacity > capacity.min ? currItem.capacity : capacity.min;
+      console.log('capacity.min', capacity.min);
+    },
   }
 };
 </script>

@@ -81,11 +81,11 @@
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-input-number
-            :min="20"
+            :min="currRecord.capacity"
             v-decorator="[
               'capacity',
               {
-                initialValue: '1',
+                initialValue: currRecord.capacity,
                 rules: [{ required: true, message: '请输入容量' }]
               }
             ]"

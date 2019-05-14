@@ -62,7 +62,7 @@
               :key="item.id"
             >{{ item.name }}</a-menu-item>
           </a-menu>
-          <a-button style="margin-left: 8px">操作
+          <a-button :disabled="!record.singleMenuOptions.length" style="margin-left: 8px">操作
             <a-icon type="down"/>
           </a-button>
         </a-dropdown>
@@ -100,7 +100,7 @@ import ChangeDiskType from "./Modal/ChangeDiskType";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
-import { getDiskList as getList, } from "@/api/store/disk";
+import { getDiskList as getList, getDiskStatus } from "@/api/store/disk";
 import disk from '@/i18n/zh/disk'
 const statusDicts = disk.disk.status;
 
@@ -135,6 +135,7 @@ export default {
         type: 'name',
         inputValue: '',
       },
+      traceList: [],
     };
   },
   computed: {},
@@ -159,6 +160,15 @@ export default {
     handleParseData (data) {
       const temp =  data;
 
+      // 全部状态
+      // available, attaching, backing_up, creating, deleting,
+      // downloading, uploading, error, error_deleting, error_restoring,
+      // in_use, restoring_backup, detaching, unrecognized;
+
+      const traceList = data.filter(item => item.status.includes('ing'));
+      traceList.forEach(item => {
+        this.traceDiskStatus(item);
+      })
       temp.forEach(item => {
         let status_zh = this.__handleTransformToZh(item.status)
         Object.assign(item, {
@@ -166,10 +176,33 @@ export default {
           bootable_zh: item.bootable ? '是' : '否',
           singleMenuOptions: [ ...this.__handleFilterOptions(item) ],
         })
-      })
+      });
 
       return temp;
+    },
+    async traceDiskStatus (currItem) {
+      try {
+        const resp = await getDiskStatus(currItem.id);
+        const currStatus = resp.status;
+        if (currStatus.includes('ing')) {
+          this.traceDiskStatus(currItem);
+        } else {
+          const item = this.data.find(item2 => currItem.id === item2.id);
+          Object.assign(item, {
+            status: currStatus,
+            status_zh: this.__handleTransformToZh(currStatus),
+            singleMenuOptions: [ ...this.__handleFilterOptions({ status: currStatus}) ],
+          });
+        }
+      } catch (error) {
+        if (error.response.status === 404) {
+          this.$message.success(error.response.data.desc || '删除成功');
+          const index = this.data.findIndex(item2 => currItem.id === item2.id);
+          this.data.splice(index, 1);
+        }
+      }
     }
+
   }
 };
 </script>

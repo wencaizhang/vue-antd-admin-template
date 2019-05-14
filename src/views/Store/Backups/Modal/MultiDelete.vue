@@ -17,7 +17,7 @@
 </template>
 <script>
 import { baseModalMixins } from "@/mixins/modalMixin";
-import { deleteSnapshoot as fetchAPI } from "@/api/store/disk";
+import { deleteBackup as fetchAPI } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins],
   data() {

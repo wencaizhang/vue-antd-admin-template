@@ -44,19 +44,27 @@
           />
         </a-form-item>
         <a-form-item
+          label="数量："
+          :labelCol="formItemLayout.labelCol"
+          :wrapperCol="formItemLayout.wrapperCol"
+        >
+          <a-input-number
+            :min="1"
+            v-decorator="[
+              'number',
+              {
+                rules: [{ required: true, message: '请输入数量' }]}
+            ]"
+          />
+        </a-form-item>
+        <a-form-item
           label="快照来源："
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-input
+            :value="currRecord.name"
             :disabled="true"
-            v-decorator="[
-              'resource',
-              {
-                initialValue: currRecord.id,
-              }
-            ]"
-            placeholder="请输入名称"
           />
         </a-form-item>
         <a-form-item
@@ -66,14 +74,15 @@
         >
           <a-radio-group
             v-decorator="[
-              'type',
+              'volumeType',
               {
-                initialValue: currRecord.type,
-                rules: [{ required: true, message: '请选择类型' }]}
+                initialValue: currRecord.volumeType,
+                rules: [{ required: true, message: '请选择硬盘类型' }]
+              }
             ]"
           >
-            <!-- <a-radio value="普通">普通</a-radio> -->
-            <a-radio :value="currRecord.type">{{currRecord.type}}</a-radio>
+            <a-radio v-if="currRecord.volumeType === 'hdd'" value="hdd">普通</a-radio>
+            <a-radio v-if="currRecord.volumeType === 'ssd'" value="ssd">SSD</a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item
@@ -82,10 +91,11 @@
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-input-number
-            :min="100"
+            :min="Number.parseInt(currRecord.capacity)"
             v-decorator="[
               'capacity',
               {
+                initialValue: Number.parseInt(currRecord.capacity),
                 rules: [{ required: true, message: '请输入容量' }]}
             ]"
           />
@@ -102,13 +112,13 @@
                 rules: [{ required: true, message: '请选择购买时长' }]}
             ]"
           >
-            <a-select-option value="1">1个月</a-select-option>
-            <a-select-option value="2">2个月</a-select-option>
-            <a-select-option value="3">3个月</a-select-option>
-            <a-select-option value="6">半年</a-select-option>
-            <a-select-option value="12">1年</a-select-option>
-            <a-select-option value="24">2年</a-select-option>
-            <a-select-option value="36">3年</a-select-option>
+            <a-select-option :value="1">1个月</a-select-option>
+            <a-select-option :value="2">2个月</a-select-option>
+            <a-select-option :value="3">3个月</a-select-option>
+            <a-select-option :value="6">半年</a-select-option>
+            <a-select-option :value="12">1年</a-select-option>
+            <a-select-option :value="24">2年</a-select-option>
+            <a-select-option :value="36">3年</a-select-option>
           </a-select>
         </a-form-item>
       </a-form>
@@ -134,8 +144,11 @@ export default {
   },
 
   methods: {
+    initFormValues () {
+      this.formValues = { resource: this.currRecord.id, configCost: 5 }
+    },
     onShow () {
-      this.formValues = { snapshootId: this.currRecord.id, configCost: 5 }
+      this.initFormValues();
     },
   }
 };

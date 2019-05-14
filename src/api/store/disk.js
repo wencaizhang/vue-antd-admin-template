@@ -3,6 +3,9 @@ import { GET, POST, DELETE } from '@/utils/request';
 // 硬盘列表
 export const getDiskList      = payload => GET('/storage/hardDisk/list', payload);
 
+// 硬盘状态
+export const getDiskStatus    = volumeId => GET(`/storage/hardDisk/status/${volumeId}`)
+
 // 创建硬盘
 export const createDisk       = payload => POST('/storage/hardDisk/create', payload);
 
