@@ -251,8 +251,12 @@ export default {
     },
   },
   methods: {
-    onShow () {
+    initFormValues () {
+      this.source = '0';
       this.formValues = { configCost: 5 }
+    },
+    onShow () {
+      this.initFormValues();
       this.fetch();
     },
     async fetchItem (item) {

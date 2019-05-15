@@ -74,8 +74,8 @@ export default {
         { id: 'qcow2', desc: 'QCOW2 - QEMU模拟器' },
         { id: 'raw', desc: '原始' },
         { id: 'vdi', desc: 'VDI - VirtualBox虚拟磁盘镜像' },
-        { id: 'vhd', desc: 'VHD - Vmware虚拟硬盘' },
-        { id: 'vhdx', desc: 'VHDX - 大型虚拟硬盘' },
+        // { id: 'vhd', desc: 'VHD - Vmware虚拟硬盘' },
+        // { id: 'vhdx', desc: 'VHDX - 大型虚拟硬盘' },
         { id: 'vmdk', desc: 'VMDK - Vmware虚拟磁盘' },
       ],
     };
