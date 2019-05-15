@@ -67,7 +67,7 @@
         >
           <a-select
            :getPopupContainer="getPopupContainer"
-            @select="v => source = v"
+            @select="onSelectResourceType"
             v-decorator="[
               'resourceType',
               {
@@ -95,7 +95,7 @@
           <a-spin :spinning="formItemData.loading">
             <a-select
               :getPopupContainer="getPopupContainer"
-              @select="selectResource"
+              @select="onSelectResource"
               v-decorator="[
                 'resource',
                 {
@@ -118,11 +118,13 @@
             v-decorator="[
               'volumeType',
               {
-                rules: [{ required: true, message: '请选择类型' }]}
+                initialValue: volumeType,
+                rules: [{ required: true, message: '请选择硬盘类型' }]
+              }
             ]"
           >
-            <a-radio value="hdd">普通</a-radio>
-            <a-radio value="ssd">SSD</a-radio>
+            <a-radio v-if="!volumeType || volumeType === 'hdd'" value="hdd">普通</a-radio>
+            <a-radio v-if="!volumeType || volumeType === 'ssd'" value="ssd">SSD</a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item
@@ -184,6 +186,7 @@ export default {
       fetchAPI,
       name: "create",
       source: "0",
+      volumeType: '',
       // 硬盘来源类型[0:空白硬盘 1:快照 2:备份 3:硬盘 4:镜像]
       resourceType: [
         {
@@ -204,7 +207,7 @@ export default {
           loading: false,
           options: [],
           capacity: {
-            min: 100,
+            min: 20,
           }
         },
         {
@@ -224,7 +227,7 @@ export default {
           loading: false,
           options: [],
           capacity: {
-            min: 10,
+            min: 100,
           }
         },
         {
@@ -261,6 +264,10 @@ export default {
           // 镜像列表中容量字段以字节为单位，修改为以 G 为单位
           resp.data.forEach(item => item.capacity = Math.ceil(item.capacity / 1024 / 1024 / 1024))
         }
+        if (item.id === 'disk') {
+          // 硬盘列表中硬盘类型字段是 type，和其他列表保持一致改为 volumeType
+          resp.data.forEach(item => item.volumeType = item.type);
+        }
         re.options = resp.data;
       } catch (error) {
 
@@ -282,11 +289,18 @@ export default {
     getPopupContainer() {
       return document.querySelector('.create-modal-form')
     },
-    selectResource (id) {
+    onSelectResourceType (v) {
+      this.source = v;
+      this.volumeType = '';
+      this.form.setFieldsValue({
+        resource: '',
+      })
+    },
+    onSelectResource (id) {
       const { options, capacity } = this.formItemData;
       const currItem  = options.find(item => item.id === id);
+      this.volumeType = currItem.volumeType;
       capacity.min = currItem.capacity > capacity.min ? currItem.capacity : capacity.min;
-      console.log('capacity.min', capacity.min);
     },
   }
 };
