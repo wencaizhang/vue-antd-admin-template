@@ -66,7 +66,7 @@
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-select
-           :getPopupContainer="getPopupContainer"
+            :getPopupContainer="getPopupContainer"
             @select="onSelectResourceType"
             v-decorator="[
               'resourceType',
@@ -105,7 +105,11 @@
                 }
               ]"
             >
-              <a-select-option v-for="item in formItemData.options" :key="item.id" :value="item.id">{{item.name}}</a-select-option>
+              <a-select-option
+                v-for="item in formItemData.options"
+                :key="item.id"
+                :value="item.id"
+              >{{item.name}}</a-select-option>
             </a-select>
           </a-spin>
         </a-form-item>
@@ -175,9 +179,16 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 
-import { createDisk as fetchAPI, getDiskList, getSnapshootList, getBackupList,  } from "@/api/store/disk";
+import {
+  createDisk as fetchAPI,
+  getDiskList,
+  getSnapshootList,
+  getBackupList,
+  restoreBackup,
+  getDiskStatus
+} from "@/api/store/disk";
 import { getImageList } from "@/api/compute/images";
-import { rulesObj } from '@/utils/util';
+import { rulesObj } from "@/utils/util";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
@@ -186,7 +197,7 @@ export default {
       fetchAPI,
       name: "create",
       source: "0",
-      volumeType: '',
+      volumeType: "",
       // 硬盘来源类型[0:空白硬盘 1:快照 2:备份 3:硬盘 4:镜像]
       resourceType: [
         {
@@ -197,7 +208,7 @@ export default {
           options: [],
           capacity: {
             min: 10,
-            max: 4000,
+            max: 4000
           }
         },
         {
@@ -207,7 +218,7 @@ export default {
           loading: false,
           options: [],
           capacity: {
-            min: 20,
+            min: 20
           }
         },
         {
@@ -217,7 +228,7 @@ export default {
           loading: false,
           options: [],
           capacity: {
-            min: 100,
+            min: 100
           }
         },
         {
@@ -227,7 +238,7 @@ export default {
           loading: false,
           options: [],
           capacity: {
-            min: 100,
+            min: 100
           }
         },
         {
@@ -238,7 +249,7 @@ export default {
           options: [],
           capacity: {
             min: 10,
-            max: 4000,
+            max: 4000
           }
         }
       ]
@@ -248,64 +259,126 @@ export default {
     formItemData() {
       const key = Number.parseInt(this.source);
       return this.resourceType[key];
-    },
+    }
   },
   methods: {
-    initFormValues () {
-      this.source = '0';
-      this.formValues = { configCost: 5 }
+    initFormValues() {
+      this.source = "0";
+      this.formValues = { configCost: 5 };
     },
-    onShow () {
+    onShow() {
       this.initFormValues();
       this.fetch();
     },
-    async fetchItem (item) {
+    async fetchItem(item) {
       const re = this.resourceType.find(item2 => item2.id === item.id);
       re.loading = true;
       try {
         const resp = await item.api();
-        if (item.id === 'mirror') {
+        if (item.id === "mirror") {
           // 镜像列表中容量字段以字节为单位，修改为以 G 为单位
-          resp.data.forEach(item => item.capacity = Math.ceil(item.capacity / 1024 / 1024 / 1024))
+          resp.data.forEach(
+            item =>
+              (item.capacity = Math.ceil(item.capacity / 1024 / 1024 / 1024))
+          );
         }
-        if (item.id === 'disk') {
+        if (item.id === "disk") {
           // 硬盘列表中硬盘类型字段是 type，和其他列表保持一致改为 volumeType
-          resp.data.forEach(item => item.volumeType = item.type);
+          resp.data.forEach(item => (item.volumeType = item.type));
         }
         re.options = resp.data;
       } catch (error) {
-
       } finally {
         re.loading = false;
       }
     },
-    fetch () {
+    fetch() {
       const apis = [
-        { id: 'disk', api: getDiskList },
-        { id: 'snapshoot', api: getSnapshootList },
-        { id: 'backup', api: getBackupList },
-        { id: 'mirror', api: getImageList },
+        { id: "disk", api: getDiskList },
+        { id: "snapshoot", api: getSnapshootList },
+        { id: "backup", api: getBackupList },
+        { id: "mirror", api: getImageList }
       ];
       apis.forEach(item => {
-        this.fetchItem(item)
-      })
+        this.fetchItem(item);
+      });
     },
     getPopupContainer() {
-      return document.querySelector('.create-modal-form')
+      return document.querySelector(".create-modal-form");
     },
-    onSelectResourceType (v) {
+    onSelectResourceType(v) {
       this.source = v;
-      this.volumeType = '';
+      this.volumeType = "";
       this.form.setFieldsValue({
-        resource: '',
-      })
+        resource: "",
+      });
     },
-    onSelectResource (id) {
+    onSelectResource(id) {
       const { options, capacity } = this.formItemData;
-      const currItem  = options.find(item => item.id === id);
+      const currItem = options.find(item => item.id === id);
       this.volumeType = currItem.volumeType;
-      capacity.min = currItem.capacity > capacity.min ? currItem.capacity : capacity.min;
+      this.form.setFieldsValue({
+        volumeType: currItem.volumeType,
+      })
+      capacity.min =
+        currItem.capacity > capacity.min ? currItem.capacity : capacity.min;
     },
+    handleCreate() {
+      const self = this;
+      this.form.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          self.formValues = Object.assign({}, self.formValues, values);
+          if (self.formValues.resourceType !== 2) {
+            self.handleFetch();
+          } else {
+            self.formValues.resourceType = 0;
+            self.createEmptyDisk();
+          }
+        }
+      });
+    },
+
+    async createEmptyDisk() {
+      this.confirmLoading = true;
+      try {
+        const payload = Object.assign({}, this.formValues, {});
+        const resp = await fetchAPI(payload);
+        this.formValues.diskCount = this.formValues.number;
+        resp.data.forEach(item => {
+          this.traceDiskStatus(item);
+        });
+      } catch (error) {}
+    },
+    async traceDiskStatus(currItem) {
+      try {
+        const resp = await getDiskStatus(currItem.id);
+        const currStatus = resp.status;
+        if (currStatus.includes("ing")) {
+          this.traceDiskStatus(currItem);
+        } else {
+          // 将数据覆盖到新建硬盘上
+          const payload = {
+            backupId: this.formValues.resource,
+            volumeId: currItem.id
+          };
+          this.coverDisk(payload);
+        }
+      } catch (error) {}
+    },
+    async coverDisk(payload) {
+      try {
+        const resp = await restoreBackup(payload);
+        this.openNotification(resp);
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.formValues.diskCount--;
+        if (this.formValues.diskCount === 0) {
+          this.confirmLoading = false;
+          this.handleCancel();
+        }
+      }
+    }
   }
 };
 </script>

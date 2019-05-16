@@ -11,7 +11,8 @@ const columns = [
 
   {
     title: '类型',
-    dataIndex: 'type'
+    dataIndex: 'type',
+    sorter: (a, b) => { return a.type > b.type },
   },
   {
     title: '容量(G)',

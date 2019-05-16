@@ -20,7 +20,10 @@
               'name',
               {
                 initialValue: currRecord.name,
-                rules: [{ required: true, message: '请输入名称' }]
+                rules: [
+                  { required: true, message: '请输入名称' },
+                  rulesObj.editdName,
+                ]
               }
             ]"
             placeholder="请输入名称"

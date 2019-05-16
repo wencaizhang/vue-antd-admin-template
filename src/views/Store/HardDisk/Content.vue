@@ -165,7 +165,7 @@ export default {
       // downloading, uploading, error, error_deleting, error_restoring,
       // in_use, restoring_backup, detaching, unrecognized;
 
-      const traceList = data.filter(item => item.status.includes('ing'));
+      const traceList = data.filter(item => item.status.includes('ing') || item.status === 'unrecognized');
       traceList.forEach(item => {
         this.traceDiskStatus(item);
       })
@@ -184,7 +184,7 @@ export default {
       try {
         const resp = await getDiskStatus(currItem.id);
         const currStatus = resp.status;
-        if (currStatus.includes('ing')) {
+        if (currStatus.includes('ing')  || currStatus === 'unrecognized') {
           this.traceDiskStatus(currItem);
         } else {
           const item = this.data.find(item2 => currItem.id === item2.id);
