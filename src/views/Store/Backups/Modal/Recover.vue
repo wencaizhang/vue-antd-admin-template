@@ -94,7 +94,7 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
-import { restoreBackup, createDisk, getDiskStatus } from "@/api/store/disk";
+import { restoreBackup, createDisk, getDiskDetail } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
@@ -149,8 +149,8 @@ export default {
     },
     async traceDiskStatus (currItem) {
       try {
-        const resp = await getDiskStatus(currItem.id);
-        const currStatus = resp.status;
+        const resp = await getDiskDetail(currItem.id);
+        const currStatus = resp.hardDisk.status;
         if (currStatus.includes('ing')) {
           this.traceDiskStatus(currItem);
         } else {

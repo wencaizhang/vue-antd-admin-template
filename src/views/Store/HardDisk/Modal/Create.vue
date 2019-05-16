@@ -185,7 +185,7 @@ import {
   getSnapshootList,
   getBackupList,
   restoreBackup,
-  getDiskStatus
+  getDiskDetail
 } from "@/api/store/disk";
 import { getImageList } from "@/api/compute/images";
 import { rulesObj } from "@/utils/util";
@@ -310,7 +310,7 @@ export default {
       this.source = v;
       this.volumeType = "";
       this.form.setFieldsValue({
-        resource: "",
+        resource: ""
       });
     },
     onSelectResource(id) {
@@ -318,8 +318,8 @@ export default {
       const currItem = options.find(item => item.id === id);
       this.volumeType = currItem.volumeType;
       this.form.setFieldsValue({
-        volumeType: currItem.volumeType,
-      })
+        volumeType: currItem.volumeType
+      });
       capacity.min =
         currItem.capacity > capacity.min ? currItem.capacity : capacity.min;
     },
@@ -351,8 +351,8 @@ export default {
     },
     async traceDiskStatus(currItem) {
       try {
-        const resp = await getDiskStatus(currItem.id);
-        const currStatus = resp.status;
+        const resp = await getDiskDetail(currItem.id);
+        const currStatus = resp.hardDisk.status;
         if (currStatus.includes("ing")) {
           this.traceDiskStatus(currItem);
         } else {
@@ -370,15 +370,17 @@ export default {
         const resp = await restoreBackup(payload);
         this.openNotification(resp);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
         this.formValues.diskCount--;
+        console.log(this.formValues.diskCount)
         if (this.formValues.diskCount === 0) {
           this.confirmLoading = false;
           this.handleCancel();
         }
       }
-    }
+    },
+
   }
 };
 </script>

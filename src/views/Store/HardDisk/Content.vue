@@ -19,7 +19,7 @@
           </a-row>
         </a-col>
         <a-col>
-          <span style="display: inline-flex;">
+          <div style="display: inline-block; vertical-align: top;">
             <a-input-group compact class="compact-search-input">
               <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 90px!important;">
                 <a-select-option value="name">名称</a-select-option>
@@ -30,10 +30,15 @@
                 v-model="searchValues.inputValue"
               />
             </a-input-group>
-            <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
-              <a-icon type="search" />
-            </a-button>
-          </span>
+          </div>
+          <a-select @change="v => searchValues.status = v" v-model="searchValues.status" style="margin-left: 8px;">
+            <a-select-option key="all" value="all">全部</a-select-option>
+            <a-select-option key="available" value="available">可用</a-select-option>
+            <a-select-option key="in-use" value="in-use">使用中</a-select-option>
+          </a-select>
+          <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
+            <a-icon type="search" />
+          </a-button>
         </a-col>
       </a-row>
     </div>
@@ -100,7 +105,7 @@ import ChangeDiskType from "./Modal/ChangeDiskType";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
-import { getDiskList as getList, getDiskStatus } from "@/api/store/disk";
+import { getDiskList as getList, getDiskDetail } from "@/api/store/disk";
 import disk from '@/i18n/zh/disk'
 const statusDicts = disk.disk.status;
 
@@ -134,14 +139,18 @@ export default {
       searchValues: {
         type: 'name',
         inputValue: '',
+        status: 'all',
       },
       traceList: [],
+
+      // 短时间内不会发生变化的状态，无须轮询的状态
+      staticStatus: [ 'available', 'error-restoring', 'in-use', 'error_restoring'],
     };
   },
   computed: {},
   methods: {
     __handleTransformToZh (status) {
-      return statusDicts[status] || status
+      return statusDicts[status] || '等待中'
     },
     __handleFilterOptions ({ status }) {
       // 操作菜单权限过滤
@@ -165,7 +174,8 @@ export default {
       // downloading, uploading, error, error_deleting, error_restoring,
       // in_use, restoring_backup, detaching, unrecognized;
 
-      const traceList = data.filter(item => item.status.includes('ing') || item.status === 'unrecognized');
+      const traceList = data.filter(item => !this.staticStatus.includes(item.status));
+
       traceList.forEach(item => {
         this.traceDiskStatus(item);
       })
@@ -182,13 +192,13 @@ export default {
     },
     async traceDiskStatus (currItem) {
       try {
-        const resp = await getDiskStatus(currItem.id);
-        const currStatus = resp.status;
-        if (currStatus.includes('ing')  || currStatus === 'unrecognized') {
+        const resp = await getDiskDetail(currItem.id);
+        const currStatus = resp.hardDisk.status;
+        if (!this.staticStatus.includes(currStatus)) {
           this.traceDiskStatus(currItem);
         } else {
           const item = this.data.find(item2 => currItem.id === item2.id);
-          Object.assign(item, {
+          Object.assign(item, resp.hardDisk, {
             status: currStatus,
             status_zh: this.__handleTransformToZh(currStatus),
             singleMenuOptions: [ ...this.__handleFilterOptions({ status: currStatus}) ],
@@ -196,7 +206,7 @@ export default {
         }
       } catch (error) {
         if (error.response.status === 404) {
-          this.$message.success(error.response.data.desc || '删除成功');
+          // this.$message.success(error.response.data.desc || '删除成功');
           const index = this.data.findIndex(item2 => currItem.id === item2.id);
           this.data.splice(index, 1);
         }

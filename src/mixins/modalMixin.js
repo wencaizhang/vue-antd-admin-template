@@ -50,6 +50,13 @@ export const baseModalMixins = {
       // 自定义钩子函数～～
       // 隐藏 modal 之后触发，参见 watch.visible
     },
+    onInputNumberChange (v, key) {
+      const ob = {
+        [key]: parseInt(v),
+      }
+      console.log(ob)
+      this.form.setFieldsValue(ob)
+    },
     handleCancel() {
       this.$store.commit(`${this.$parent.id}/toggleModalVisible`, this.name);
     },

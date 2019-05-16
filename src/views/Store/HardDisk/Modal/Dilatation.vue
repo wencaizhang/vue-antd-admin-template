@@ -50,7 +50,7 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
-import { dilatancyDisk as fetchAPI  } from "@/api/store/disk";
+import { dilatancyDisk as fetchAPI } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
@@ -62,7 +62,7 @@ export default {
 
   methods: {
     onShow () {
-      this.formValues = { hardDiskId: this.currRecord.id }
+      this.formValues = { hardDiskId: this.currRecord.id };
     },
   }
 };

@@ -11,7 +11,7 @@
           >删除</a-button>
         </a-col>
         <a-col>
-          <span style="display: inline-flex;">
+          <div style="display: inline-block; vertical-align: top;">
             <a-input-group compact class="compact-search-input">
               <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 90px!important;">
                 <a-select-option value="name">名称</a-select-option>
@@ -22,10 +22,15 @@
                 v-model="searchValues.inputValue"
               />
             </a-input-group>
-            <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
-              <a-icon type="search" />
-            </a-button>
-          </span>
+          </div>
+          <a-select @change="v => searchValues.status = v" v-model="searchValues.status" style="margin-left: 8px;">
+            <a-select-option key="all" value="all">全部</a-select-option>
+            <a-select-option key="available" value="available">可用</a-select-option>
+            <a-select-option key="in-use" value="in-use">使用中</a-select-option>
+          </a-select>
+          <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
+            <a-icon type="search" />
+          </a-button>
         </a-col>
       </a-row>
     </div>
@@ -98,6 +103,7 @@ export default {
       searchValues: {
         type: 'name',
         inputValue: '',
+        status: 'all',
       },
     };
   },
