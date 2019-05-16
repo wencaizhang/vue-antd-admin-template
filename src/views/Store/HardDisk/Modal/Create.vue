@@ -9,8 +9,9 @@
       title="创建硬盘"
       okText="保存"
     >
-      <a-form :form="form" class="create-modal-form">
+      <a-form :form="form" >
         <a-form-item
+          class="the-form-item-for-position"
           label="名称"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
@@ -259,12 +260,13 @@ export default {
     formItemData() {
       const key = Number.parseInt(this.source);
       return this.resourceType[key];
-    }
+    },
   },
   methods: {
     initFormValues() {
       this.source = "0";
       this.formValues = { configCost: 5 };
+      this.confirmLoading = false;
     },
     onShow() {
       this.initFormValues();
@@ -304,7 +306,7 @@ export default {
       });
     },
     getPopupContainer() {
-      return document.querySelector(".create-modal-form");
+      return document.querySelector(".the-form-item-for-position");
     },
     onSelectResourceType(v) {
       this.source = v;
@@ -347,8 +349,11 @@ export default {
         resp.data.forEach(item => {
           this.traceDiskStatus(item);
         });
-      } catch (error) {}
+      } catch (error) {
+        this.confirmLoading = false;
+      }
     },
+
     async traceDiskStatus(currItem) {
       try {
         const resp = await getDiskDetail(currItem.id);
