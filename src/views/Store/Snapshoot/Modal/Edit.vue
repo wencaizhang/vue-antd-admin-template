@@ -22,7 +22,7 @@
                 initialValue: currRecord.name,
                 rules: [
                   { required: true, message: '请输入名称' },
-                  rulesObj.editdName,
+                  rulesObj.name,
                 ]
               }
             ]"
