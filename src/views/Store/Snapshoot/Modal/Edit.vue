@@ -41,7 +41,6 @@
               {
                 initialValue: currRecord.description && currRecord.description.replace(/^无$/, ''),
                 rules: [
-                  { required: true, message: '请填写描述!' },
                   rulesObj.desc,
                 ]
               }
