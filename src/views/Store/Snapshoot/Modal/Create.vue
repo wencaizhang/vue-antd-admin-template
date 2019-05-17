@@ -145,7 +145,7 @@ export default {
 
   methods: {
     initFormValues () {
-      this.formValues = { resource: this.currRecord.id, configCost: 5 }
+      this.formValues = { resource: this.currRecord.id, resourceType: 1, configCost: 5 }
     },
     onShow () {
       this.initFormValues();
