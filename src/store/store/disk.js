@@ -49,8 +49,9 @@ export default {
     // 根据状态显示不同的操作选项
     // 状态为可用，则全部显示，状态为使用中，则显示 visible: true 的操作选项
     menuOptions: [
-      { id: 'create',          name: '新建',          visible: false, type: 'none',   availableStatus: ['available'],  },
-      { id: 'multiDelete',     name: '删除',          visible: false, type: 'none',   availableStatus: ['available'],  },
+      { id: 'create',          name: '新建',          visible: false, type: 'none',  },
+      { id: 'multiDelete',     name: '删除',          visible: false, type: 'none',  },
+      { id: 'detail',          name: '详情',          visible: false, type: 'none',  },
 
       { id: 'edit',            name: '编辑',          visible: false, type: 'single', availableStatus: ['available', 'in-use'],  },
       { id: 'uninstall',       name: '卸载硬盘',      visible: false, type: 'single', availableStatus: ['in-use'],  },

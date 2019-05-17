@@ -2,7 +2,8 @@
 const columns = [
   {
     title: "名称",
-    dataIndex: "name",
+    dataIndex: 'name',
+    scopedSlots: { customRender: 'name' }
   },
   {
     title: "描述",
@@ -36,6 +37,7 @@ export default {
 
     menuOptions: [
       { id: "multiDelete", visible: false, type: 'none', name: "批量删除" },
+      { id: "detail",      visible: false, type: 'none', name: "详情" },
 
       { id: "create",      visible: false, type: 'single', name: "创建硬盘" },
       { id: "edit",        visible: false, type: 'single', name: "编辑硬盘快照" },

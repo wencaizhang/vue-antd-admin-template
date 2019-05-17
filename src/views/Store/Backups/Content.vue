@@ -50,7 +50,9 @@
       :loading="loading"
       @change="handleTableChange"
     >
-
+      <template slot="name" slot-scope="name, record">
+        <a title="点击查看详情" @click="handleSingleMenuClick('detail', record)">{{name}}</a>
+      </template>
       <template slot="operation" slot-scope="text, record">
         <a-dropdown style="margin-right: 10px;">
           <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
@@ -69,6 +71,7 @@
     <RecoverModal />
     <MultiDelete />
     <DeleteModal />
+    <Detail />
   </div>
 </template>
 
@@ -76,6 +79,7 @@
 import RecoverModal from "./Modal/Recover";
 import DeleteModal from "./Modal/Delete";
 import MultiDelete from "./Modal/MultiDelete";
+import Detail from "./Modal/Detail";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
@@ -88,7 +92,8 @@ export default {
   components: {
     RecoverModal,
     DeleteModal,
-    MultiDelete
+    MultiDelete,
+    Detail
   },
 
   data() {

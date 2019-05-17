@@ -59,6 +59,9 @@
       @change="handleTableChange"
     >
 
+      <template slot="name" slot-scope="name, record">
+        <a title="点击查看详情" @click="handleSingleMenuClick('detail', record)">{{name}}</a>
+      </template>
       <template slot="operation" slot-scope="text, record">
         <a-dropdown style="margin-right: 10px;">
           <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
@@ -86,6 +89,7 @@
     <Delete />
     <MultiDelete />
     <ChangeDiskType />
+    <Detail />
   </div>
 </template>
 
@@ -102,6 +106,7 @@ import MultiDelete from "./Modal/MultiDelete";
 import CloneModal from "./Modal/Clone";
 import Upload from "./Modal/Upload";
 import ChangeDiskType from "./Modal/ChangeDiskType";
+import Detail from "./Modal/Detail";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
@@ -123,7 +128,8 @@ export default {
     MultiDelete,
     CloneModal,
     Upload,
-    ChangeDiskType
+    ChangeDiskType,
+    Detail
   },
   mounted() {
     if (this.$route.matched.length === 4) {
