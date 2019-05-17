@@ -378,7 +378,6 @@ export default {
         console.log(error);
       } finally {
         this.formValues.diskCount--;
-        console.log(this.formValues.diskCount)
         if (this.formValues.diskCount === 0) {
           this.confirmLoading = false;
           this.handleCancel();
