@@ -25,7 +25,7 @@
               }
             ]"
           >
-            <a-radio :value="0">覆盖原硬盘“{{ currRecord.volumeName }}”</a-radio>
+            <a-radio v-if="currRecord.volumeName !== '无'" :value="0">覆盖原硬盘“{{ currRecord.volumeName }}”</a-radio>
             <a-radio :value="1">创建新硬盘</a-radio>
           </a-radio-group>
         </a-form-item>
@@ -106,8 +106,12 @@ export default {
 
   methods: {
     initFormValues () {
+      if (this.currRecord.volumeName === "无") {
+        this.type = 1;
+      } else {
+        this.type = 0;
+      }
       this.formValues = { backupId: this.currRecord.id, configCost: 5 }
-      this.type = 0
     },
     onChange(e) {
       this.type = e.target.value;
