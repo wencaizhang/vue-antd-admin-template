@@ -15,23 +15,17 @@
         showIcon
       />
       <div class="container">
+        <span>请选择一个主机：</span>
         <a-spin :spinning="loading">
-          <a-input-search
-            placeholder=" "
-            @search="handleSearch"
-            style="width: 200px"
-            enterButton
-          />
-          <br>
-          <a-radio-group v-model="formValues.instanceId">
-            <a-radio
+          <a-select defaultValue="lucy" style='width: 200px' v-model="formValues.instanceId">>
+            <a-select-option
               v-for="item in instanceList"
-              :style="radioStyle"
               :value="item.id"
               :key="item.id"
-            >{{ item.name }}</a-radio>
-          </a-radio-group>
+            >{{ item.name }}</a-select-option>
+          </a-select>
         </a-spin>
+
       </div>
     </a-modal>
   </div>
@@ -80,8 +74,9 @@ export default {
 </script>
 <style scoped>
 .container {
-  width: 200px;
-  text-align: left;
-  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin-top: 20px;
 }
 </style>

@@ -25,7 +25,7 @@
               }
             ]"
           >
-            <a-radio :value="0">覆盖原硬盘{{ currRecord.volumeName }}</a-radio>
+            <a-radio :value="0">覆盖原硬盘“{{ currRecord.volumeName }}”</a-radio>
             <a-radio :value="1">创建新硬盘</a-radio>
           </a-radio-group>
         </a-form-item>
@@ -44,8 +44,8 @@
                 }
               ]"
             >
-              <a-radio v-if="currRecord.volumeType === 'hdd'" value="hdd">普通</a-radio>
-              <a-radio v-if="currRecord.volumeType === 'ssd'" value="ssd">SSD</a-radio>
+              <a-radio v-if="currRecord.volumeType || currRecord.volumeType === 'hdd'" value="hdd">普通</a-radio>
+              <a-radio v-if="currRecord.volumeType || currRecord.volumeType === 'ssd'" value="ssd">SSD</a-radio>
             </a-radio-group>
           </a-form-item>
           <a-form-item
@@ -169,10 +169,11 @@ export default {
       try {
         const resp = await restoreBackup(payload);
         this.openNotification(resp);
-        this.confirmLoading = false;
         this.handleCancel();
       } catch (error) {
-
+        this.$message.error(error.response.data.desc)
+      } finally {
+        this.confirmLoading = false;
       }
     }
   },
