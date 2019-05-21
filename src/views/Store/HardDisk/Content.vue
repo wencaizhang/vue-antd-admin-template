@@ -185,10 +185,16 @@ export default {
       traceList.forEach(item => {
         this.traceDiskStatus(item);
       })
+      const diskTypes = {
+        ssd: 'ssd',
+        hdd: '普通'
+      }
       temp.forEach(item => {
         let status_zh = this.__handleTransformToZh(item.status)
+        let type_zh = diskTypes[ item.type ] || '无';
         Object.assign(item, {
           status_zh,
+          type_zh,
           bootable_zh: item.bootable ? '是' : '否',
           singleMenuOptions: [ ...this.__handleFilterOptions(item) ],
         })
