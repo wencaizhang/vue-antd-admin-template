@@ -147,7 +147,9 @@ export default {
           resourceType: 0, // 空白硬盘
         })
         const resp = await createDisk(payload);
-        this.traceDiskStatus(resp);
+        resp.data.forEach(item =>{
+          this.traceDiskStatus(item);
+        })
       } catch (error) {
 
       } finally {
