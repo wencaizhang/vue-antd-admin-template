@@ -38,7 +38,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/cmp': {
-        target: 'http://ci.cmp.cecpark.net',
+        target: 'http://ci.cmp.cecpark.net:81',
         ws: false,
         changeOrigin: true,
         // pathRewrite: {
