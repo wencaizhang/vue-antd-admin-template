@@ -144,6 +144,7 @@ export default {
         const payload = Object.assign({}, this.formValues, {
           name: this.currRecord.name,
           number: 1,
+          resourceType: 0, // 空白硬盘
         })
         const resp = await createDisk(payload);
         this.traceDiskStatus(resp);
