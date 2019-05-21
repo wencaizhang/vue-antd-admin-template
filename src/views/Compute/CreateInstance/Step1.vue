@@ -61,7 +61,7 @@
             @blur="handleSystemDiskBlur"
             v-decorator="[
             'systemDisk',
-            {  
+            {
               initialValue: 40,
               rules: [{ required: true, message: '请填写系统盘大小!' }]
             }
@@ -69,49 +69,16 @@
           />
           <span style="margin: 0 5px">G</span>
           <a-tooltip class="tooltip">
-            <template slot='title'>
-              可选大小40G-200G,步长为10G
-            </template>
-            <a-icon type="info-circle" />
+            <template slot="title">可选大小40G-200G,步长为10G</template>
+            <a-icon type="info-circle"/>
           </a-tooltip>
         </a-col>
-      </a-form-item>
-      <a-form-item
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
-        label="硬盘"
-        :fieldDecoratorOptions="{rules: [{  type: 'string', message: '请选择一个硬盘!' }]}"
-      >
-        <a-alert type="info" showIcon style="margin-bottom: 16px; text-align: left;">
-          <div slot="message">
-            已选择&nbsp;
-            <a style="font-weight: 600">{{ selectedNetworkRowKeys.length }}</a>&nbsp;&nbsp;项
-            <a style="margin-left: 24px" @click="selectedNetworkRowKeys = []">清空</a>
-          </div>
-        </a-alert>
-        <a-table
-          bordered
-          @change="handleTableChange"
-          :rowSelection="{selectedRowKeys: selectedNetworkRowKeys, onChange: onDiskSelectChange}"
-          :columns="columns"
-          :rowKey="record => record.id"
-          :dataSource="data"
-          :pagination="pagination"
-          :loading="loading"
-        >
-          <template slot="id" slot-scope="id">
-            {{ id.substring(0, 8) }}
-          </template>
-        </a-table>
       </a-form-item>
     </a-form>
   </div>
 </template>
 <script>
-import { getDiskList } from '@/api/store/disk'
-import disk from '@/i18n/zh/disk'
 
-const statusDicts = disk.disk.status
 const optionList = {
   memory: [
     { text: "1G", value: 1 },
@@ -132,122 +99,43 @@ const optionList = {
     { text: "12核", value: 12 },
     { text: "24核", value: 24 },
     { text: "32核", value: 32 }
-  ],
+  ]
 };
 
-const columns = [
-  {
-    title: "ID",
-    dataIndex: "id",
-    scopedSlots: { customRender: "id" }
-  },
-  {
-    title: "名称",
-    dataIndex: "name"
-  },
-  {
-    title: "容量(G)",
-    dataIndex: "capacity"
-  },
-  {
-    title: "类型",
-    dataIndex: "type"
-  },
-  {
-    title: "状态",
-    dataIndex: "status_zh"
-  }
-];
 export default {
-  mounted() {
-    this.fetch();
-  },
+
   data() {
     return {
       form: this.$form.createForm(this),
       labelCol: { span: 8 },
       wrapperCol: { span: 12 },
-      columns,
       loading: false,
       systemDisk: 1,
-      optionList,
-
-      data: [],
-      allData: [],
-      pagination: {},
-      initPagination: {
-        total: 0,     // 数据个数
-        current: 1,   // 当前页码
-        pageSize: 10, // 每页显示数量
-        showSizeChanger: true,
-        pageSizeOptions: ['10', '20', '30', '40', '50'],
-      },
-      selectedNetworkRowKeys: []
+      optionList
     };
   },
   methods: {
-    __handleTransformToZh (status) {
-      return statusDicts[status.toLowerCase()] || status
-    },
     handleSubmit() {
       return new Promise((resolve, reject) => {
         this.form.validateFieldsAndScroll((err, values) => {
-          err ? reject(err)
-              : resolve(Object.assign({}, values, {
-                  dataDisk: this.selectedNetworkRowKeys,
-                  memory: values.memory * 1024,
+          err
+            ? reject(err)
+            : resolve(
+                Object.assign({}, values, {
+                  memory: values.memory * 1024
                   // 接口需要内存单位为 M
-                }));
+                })
+              );
         });
-      })
+      });
     },
-    handleSliderChange(value) {
-      this.systemDisk = value;
-    },
-    handleInputChange(value) {
-      console.log("changed", value);
-    },
-    onDiskSelectChange(selectedRowKeys) {
-      this.selectedNetworkRowKeys = selectedRowKeys;
-    },
-    getCurrPageData () {
-      const { total, current, pageSize  } = this.pagination;
-      const begin = (current - 1) * pageSize;
-      const end = current * pageSize;
 
-      setTimeout(() => {
-        this.data = this.allData.slice( begin, end );
-        this.loading = false;
-      }, 100);
-    },
-    handleTableChange(pagination) {
-      this.loading = true;
-      this.pagination = Object.assign({}, this.pagination, pagination);
-      this.getCurrPageData();
-    },
-    async fetch (payload={}) {
-      this.loading = true;
-      try {
-        // status: 状态[0:使用中 1:可挂载]
-        const resp = await getDiskList(Object.assign(payload, { status: 1 }));
-        this.allData = resp.data.filter(item => item.status === 'available').map(item => {
-          return Object.assign({}, item, { status_zh: this.__handleTransformToZh(item.status)})
-        });
-
-        this.pagination = Object.assign({}, this.initPagination, { total: this.allData.length });
-        this.getCurrPageData();
-      } catch (error) {
-        
-      } finally {
-        this.loading = false;
-      }
-    },
-    handleSystemDiskBlur (e) {
+    handleSystemDiskBlur(e) {
       // 将系统盘转为 10 的倍数
       let v = e.target.value;
       this.form.setFieldsValue({
-        systemDisk: Math.ceil(parseInt(v) / 10 ) * 10
-      })
+        systemDisk: Math.ceil(parseInt(v) / 10) * 10
+      });
     }
   }
 };
