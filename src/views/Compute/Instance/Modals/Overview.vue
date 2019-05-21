@@ -141,8 +141,7 @@ export default {
       this.currRecord.securityGroupsList = this.currRecord.securityGroups.map(item2 => {
         return `<p>${item2}</p>`
       }).join('');
-
-      this.currRecord.cloudHost = '未连接云硬盘';
+      this.currRecord.cloudHost = this.currRecord.mountDisk !== '无' ? this.currRecord.mountDisk.map(item => `<p>${item}</p>`).join('') : '未连接硬盘';
       this.currRecord.ip = this.currRecord.network.join(', ');
       this.setTimeDiff()
     },
