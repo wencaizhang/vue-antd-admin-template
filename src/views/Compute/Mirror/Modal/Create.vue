@@ -38,7 +38,6 @@
               'description',
               {
                 rules: [
-                  { required: true, message: '请填写描述!' },
                   rulesObj.desc,
                 ]
               }
@@ -54,7 +53,7 @@
             @change="handleSelectSource"
             placeholder="请选择镜像源"
             v-decorator="[
-              'description',
+              'xxxx',
               {
                 initialValue: sourceType,
                 rules: [{ required: true, message: '请选择镜像源' }]

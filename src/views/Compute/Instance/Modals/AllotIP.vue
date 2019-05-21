@@ -33,7 +33,6 @@
               'description',
               {
                 rules: [
-                  { required: true, message: '请填写描述!' },
                   rulesObj.desc,
                 ]
               }

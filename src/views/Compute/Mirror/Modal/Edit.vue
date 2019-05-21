@@ -31,12 +31,12 @@
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-textarea
+            placeholder="请填写描述"
             v-decorator="[
               'description',
               {
                 initialValue: currRecord.description,
                 rules: [
-                  { required: true, message: '请填写描述!' },
                   rulesObj.desc,
                 ]
               }

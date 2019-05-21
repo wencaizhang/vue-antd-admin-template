@@ -35,13 +35,15 @@
           label="描述："
         >
           <a-textarea
+            placeholder="请填写描述"
             v-decorator="[
-            'description',
-            {
-              rules: [{ required: true, message: '请填写描述' }]
-            }
-          ]"
-            placeholder="描述"
+              'description',
+              {
+                rules: [
+                  rulesObj.desc,
+                ]
+              }
+            ]"
           />
         </a-form-item>
 
@@ -77,6 +79,7 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { assignIP as fetchAPI } from "@/api/network/ip";
+import { rulesObj } from '@/utils/util';
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
