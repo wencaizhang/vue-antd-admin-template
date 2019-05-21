@@ -149,6 +149,8 @@ export default {
         this.traceDiskStatus(resp);
       } catch (error) {
 
+      } finally {
+        this.confirmLoading = false;
       }
     },
     async traceDiskStatus (currItem) {
