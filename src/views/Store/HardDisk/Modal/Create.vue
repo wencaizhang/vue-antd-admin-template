@@ -379,6 +379,8 @@ export default {
         this.formValues.diskCount--;
         if (this.formValues.diskCount === 0) {
           this.confirmLoading = false;
+
+          this.handleRefreshParentTable();
           this.handleCancel();
         }
       }
