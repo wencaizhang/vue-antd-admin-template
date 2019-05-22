@@ -84,6 +84,7 @@ export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
     return {
+      rulesObj,
       fetchAPI,
       name: "create",
       bandwidth: 1

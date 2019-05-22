@@ -217,6 +217,10 @@ export default {
             status_zh: this.__handleTransformToZh(currStatus),
             singleMenuOptions: [ ...this.__handleFilterOptions({ status: currStatus}) ],
           });
+          Object.keys(item).forEach(key => {
+            item[key] = item[key] || '无';
+          })
+          console.log(item)
         }
       } catch (error) {
         if (error.response.status === 404) {
