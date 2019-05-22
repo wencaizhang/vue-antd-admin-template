@@ -151,6 +151,11 @@ export default {
 
       // 短时间内不会发生变化的状态，无须轮询的状态
       staticStatus: [ 'available', 'error-restoring', 'in-use', 'error_restoring'],
+
+      diskTypes: {
+        ssd: 'SSD',
+        hdd: '普通'
+      }
     };
   },
   computed: {},
@@ -185,13 +190,10 @@ export default {
       traceList.forEach(item => {
         this.traceDiskStatus(item);
       })
-      const diskTypes = {
-        ssd: 'ssd',
-        hdd: '普通'
-      }
+
       temp.forEach(item => {
         let status_zh = this.__handleTransformToZh(item.status)
-        let type_zh = diskTypes[ item.type ] || '无';
+        let type_zh = this.diskTypes[ item.type ] || '无';
         Object.assign(item, {
           status_zh,
           type_zh,

@@ -111,7 +111,12 @@
               <a-icon slot="indicator" type="loading-3-quarters" style="font-size: 12px" spin />
             </a-spin>
             <template v-else>
+              <template v-if="Array.isArray(network) && network.length">
               <p v-for="item in network" :key="item">{{ item }}</p>
+              </template>
+              <template v-else>
+                无
+              </template>
             </template>
           </template>
 
@@ -320,7 +325,7 @@ export default {
       // 处理从后台接收的数据格式
       const newData = data.map(item => {
         Object.keys(item).forEach(key => {
-          item[key] = item[key] || '-';
+          item[key] = item[key] || '';
         })
         let memory = item.memory >= 1024 ? `${item.memory / 1024}G` : `${item.memory}MB`;
         let vcpu = item.vcpu + '核';

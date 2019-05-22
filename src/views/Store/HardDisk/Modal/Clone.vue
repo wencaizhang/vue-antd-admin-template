@@ -71,7 +71,7 @@
               }
             ]"
           >
-            <a-radio :value="currRecord.type">{{ diskTypes[currRecord.type] }}</a-radio>
+            <a-radio :value="currRecord.type">{{ $parent.diskTypes[currRecord.type] }}</a-radio>
           </a-radio-group>
         </a-form-item>
         <a-form-item
@@ -131,10 +131,6 @@ export default {
       rulesObj,
       name: "cloneDisk",
 
-      diskTypes: {
-        ssd: 'ssd',
-        hdd: '普通'
-      }
     };
   },
 
