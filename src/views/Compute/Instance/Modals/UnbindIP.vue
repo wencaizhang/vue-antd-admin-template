@@ -24,7 +24,7 @@ export default {
     return {
       fetchAPI,
       name: "unbindIP",
-      isRefreshParentTable: false, // 刷新父组件表格
+      // isRefreshParentTable: false, // 刷新父组件表格
     };
   },
 
@@ -33,9 +33,9 @@ export default {
       const temp = this.$parent.ipList.find(item => item.ipAddress === this.currRecord.ipAddress);
       this.formValues = { id: temp && temp.id }
     },
-    openNotification (resp) {
-      this.$message.success('解绑成功，请手动刷新');
-    }
+    // openNotification (resp) {
+    //   this.$message.success('解绑成功，请手动刷新');
+    // }
   }
 };
 </script>
