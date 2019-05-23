@@ -80,7 +80,9 @@ function trimPayload (payload={}) {
   Object.keys(payload).forEach(key => {
     const value = payload[key];
     if ( Object.prototype.toString.call(value) === '[object String]') {
-      if (value === '' || value === undefined) {
+      if (key === 'description') {
+        // 描述字段跳过不处理
+      } else if (value === '' || value === undefined) {
         delete payload[key]
       }
     }
