@@ -45,6 +45,8 @@ npm run build
 |   |-- settings.js         # 一些项目配置，包含 vue-ls 的本地存储位置（localStorage)
 |   |-- store               # vuex 状态管理
 |   |-- utils               # 工具库
+|   |-- mixins              # mixins 文件
+|   |-- i18n                # 一些字段（状态）的中英文翻译
 |   `-- views               # 业务页面入口
 |-- vue.config.js           # vue-cli 配置文件
 `-- yarn.lock               #
