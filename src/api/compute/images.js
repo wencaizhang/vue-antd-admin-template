@@ -12,3 +12,6 @@ export const createImage  = payload => POST('/compute/image/create', payload);
 // 编辑镜像
 export const editImage    = payload => POST('/compute/image/edit', payload);
 
+// 删除镜像
+export const deleteImage    = payload => DELETE('/compute/image/delete', payload);
+

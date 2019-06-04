@@ -53,7 +53,7 @@ export default {
       },
       {
         title: "平台",
-        dataIndex: "platform",
+        dataIndex: "platform_zh",
       },
       {
         title: "持性支持",

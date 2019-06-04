@@ -2,7 +2,7 @@ const columns = [
   {
     title: 'ID',
     dataIndex: 'id',
-    scopedSlots: { customRender: 'operation' }
+    scopedSlots: { customRender: 'detail' }
   },
   {
     title: '名称',
@@ -10,25 +10,15 @@ const columns = [
   },
   {
     title: '类型',
-    dataIndex: 'type'
+    dataIndex: 'imageType_zh'
   },
   {
     title: '状态',
-    dataIndex: 'status',
-    // filters: [
-    //   { text: '状态', value: '状态' },
-    //   { text: '等待中', value: '等待中' },
-    //   { text: '运行中', value: '运行中' },
-    //   { text: '已暂停', value: '已暂停' },
-    //   { text: '已关闭', value: '已关闭' },
-    //   { text: '已删除', value: '已删除' },
-    //   { text: '重启中', value: '重启中' }
-    // ],
-    // filterMultiple: false
+    dataIndex: 'status_zh',
   },
   {
     title: '磁盘类型',
-    dataIndex: 'imageFormat'
+    dataIndex: 'imageFormat_zh'
   },
   {
     title: '容量（G)',
@@ -40,32 +30,21 @@ const columns = [
   },
   {
     title: '操作',
-    scopedSlots: { customRender: 'edit' }
-  },
+    dataIndex: 'operation',
+    scopedSlots: { customRender: 'operation' }
+  }
 ];
 export default {
   namespaced: true,
   state: {
     columns,
     menuOptions: [
-      {
-        visible: false,
-        id: 'create',
-        name: '创建',
-        menu: 'none'
-      },
-      {
-        visible: false,
-        id: 'edit',
-        name: '编辑',
-        menu: 'none'
-      },
-      {
-        visible: false,
-        id: 'detail',
-        name: '详情',
-        menu: 'none'
-      },
+      { visible: false, type: 'none',  name: '创建镜像',   id: 'create', },
+      { visible: false, type: 'none',  name: '详情',   id: 'detail', },
+
+      { visible: false, type: 'single', name: '编辑镜像',   id: 'edit',  },
+      { visible: false, type: 'single', name: '删除镜像',   id: 'delete', },
+      { visible: false, type: 'single', name: '更新元数据', id: 'update', },
     ]
   },
   mutations: {},

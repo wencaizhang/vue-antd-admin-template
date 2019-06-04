@@ -3,7 +3,7 @@ import Vue from 'vue';
 import Storage from 'vue-ls';
 // import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.css';
-
+import uploader from 'vue-simple-uploader'
 import './assets/styles.css';
 import router from './router';
 import store from './store';
@@ -15,8 +15,11 @@ import '@/permission' // 权限控制
 import '@/utils/util'
 import './components_use'
 
+// uploader 和 mock.js 不能同时使用
+Vue.use(uploader)
+
 // 只在开发模式下引入 mock.js，打包部署不引入 mock.js
-process.env.NODE_ENV === 'production' || require('./mock/index.js');
+// process.env.NODE_ENV === 'production' || require('./mock/index.js');
 
 Vue.prototype.$http = axios;
 

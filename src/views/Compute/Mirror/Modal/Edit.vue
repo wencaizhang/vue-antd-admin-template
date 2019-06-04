@@ -19,7 +19,6 @@
             v-decorator="[
               'name',
               {
-                initialValue: currRecord.name,
                 rules: [{ required: true, message: '请输入名称!' }]
               }
             ]"
@@ -35,7 +34,6 @@
             v-decorator="[
               'description',
               {
-                initialValue: currRecord.description,
                 rules: [
                   rulesObj.desc,
                 ]
@@ -54,17 +52,17 @@
             v-decorator="[
               'imageFormat',
               {
-                initialValue: currRecord.imageFormat,
                 rules: [{ required: true, message: '请选择镜像格式!' }]
               }
             ]"
           >
-            <a-select-option value="QCOW2-QEMU">QCOW2-QEMU</a-select-option>
-            <a-select-option value="Docker">Docker</a-select-option>
-            <a-select-option value="ISO-光盘镜像">ISO-光盘镜像</a-select-option>
-            <a-select-option value="Raw">Raw</a-select-option>
-            <a-select-option value="VMDK-Vmware虚拟磁盘">VMDK-Vmware虚拟磁盘</a-select-option>
-            <a-select-option value="VHD-Vmware虚拟硬盘">VHD-Vmware虚拟硬盘</a-select-option>
+            <a-select-option
+              v-for="item in imageFormatList"
+              :value="item.value"
+              :key="item.value"
+            >
+              {{ item.label }}
+            </a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item
@@ -75,12 +73,9 @@
           <a-input-number
             :min="40"
             :max="200"
-            :formatter="value => formatter('G', value)"
-            :parser="value => parser(value)"
             v-decorator="[
               'disk',
               {
-                initialValue: currRecord.capacity || 0,
                 rules: [{ required: true, message: '请填写最小磁盘!' }]
               }
             ]"
@@ -94,12 +89,9 @@
           <a-input-number
             :min="2"
             :max="100"
-            :formatter="value => formatter('G', value)"
-            :parser="value => parser(value)"
             v-decorator="[
               'memory',
               {
-                initialValue: currRecord.memory || 0,
                 rules: [{ required: true, message: '请填写最低内存!' }]
               }
             ]"
@@ -110,9 +102,6 @@
           <a-checkbox
             v-decorator="[
               'isPublic',
-              {
-                initialValue: currRecord.isPublic,
-              }
             ]"
           >公有</a-checkbox>
         </a-form-item>
@@ -133,10 +122,49 @@ export default {
       rulesObj,
       fetchAPI,
       name: "edit",
+
+      initialValues: {},
     };
   },
+  computed: {
+    imageFormatList () {
+      return this.$parent.imageFormatList;
+    }
+  },
   methods: {
-
+    onShow () {
+      const currRecord = this.currRecord;
+      this.initialValues = {
+        name: currRecord.name,
+        description: currRecord.description === '无' ? '' : currRecord.description,
+        imageFormat: currRecord.imageFormat,
+        disk: currRecord.minDisk || 0,
+        memory: currRecord.minMemory || 0,
+        isPublic: currRecord.isPublic === 'isPublic',
+      };
+      setTimeout(() => {
+        this.form.setFieldsValue(this.initialValues);
+      }, 10);
+    },
+    diff () {
+      Object.keys(this.formValues).forEach(key => {
+        if (key === 'description' && this.formValues[key] === '') {
+          delete this.formValues[key];
+        } else if (this.formValues[key] === this.initialValues[key]) {
+          delete this.formValues[key];
+        }
+      })
+      this.handleFetch();
+    },
+    handleCreate() {
+      const self = this;
+      this.form.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          self.formValues = Object.assign({}, self.formValues, values);
+          self.diff();
+        }
+      });
+    },
   }
 };
 </script>

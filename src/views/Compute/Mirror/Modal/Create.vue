@@ -37,9 +37,7 @@
             v-decorator="[
               'description',
               {
-                rules: [
-                  rulesObj.desc,
-                ]
+                rules: [{ message: '请输入描述' }]
               }
             ]"
           />
@@ -53,15 +51,16 @@
             @change="handleSelectSource"
             placeholder="请选择镜像源"
             v-decorator="[
-              'xxxx',
+              'imageSource',
               {
                 initialValue: sourceType,
                 rules: [{ required: true, message: '请选择镜像源' }]
               }
             ]"
           >
-            <a-select-option value="0">镜像文件</a-select-option>
-            <a-select-option value="1">镜像地址</a-select-option>
+            <!-- 镜像源[0:镜像文件 1:镜像路径] -->
+            <a-select-option :value="0">镜像文件</a-select-option>
+            <a-select-option :value="1">镜像地址</a-select-option>
           </a-select>
         </a-form-item>
 
@@ -71,22 +70,9 @@
           :wrapperCol="formItemLayout.wrapperCol"
           label="镜像文件："
         >
-          <a-upload
-            action="/"
-            :multiple="true"
-            :fileList="fileList"
-            @change="handleFileChange"
-            v-decorator="[
-              'file',
-              {
-                rules: [{ required: true, message: '请上传镜像文件' }]
-              }
-            ]"
-          >
-            <a-button>
-              <a-icon type="upload"/>上传
-            </a-button>
-          </a-upload>
+
+          <uploader ref="uploader"></uploader>
+
         </a-form-item>
         <a-form-item
           v-if="sourceType == 1"
@@ -114,12 +100,13 @@
               { rules: [{ required: true, message: '请选择镜像格式!' }] }
             ]"
           >
-            <a-select-option value="QCOW2-QEMU">QCOW2-QEMU</a-select-option>
-            <a-select-option value="Docker">Docker</a-select-option>
-            <a-select-option value="ISO-光盘镜像">ISO-光盘镜像</a-select-option>
-            <a-select-option value="Raw">Raw</a-select-option>
-            <a-select-option value="VMDK-Vmware虚拟磁盘">VMDK-Vmware虚拟磁盘</a-select-option>
-            <a-select-option value="VHD-Vmware虚拟硬盘">VHD-Vmware虚拟硬盘</a-select-option>
+            <a-select-option
+              v-for="item in imageFormatList"
+              :value="item.value"
+              :key="item.value"
+            >
+              {{ item.label }}
+            </a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item
@@ -127,12 +114,24 @@
           :wrapperCol="formItemLayout.wrapperCol"
           label="架构："
         >
-          <a-input
+          <a-select
+            placeholder="选择架构"
             v-decorator="[
               'architecture',
-              { rules: [{ required: true, message: '请填写架构!' }] }
+              {
+                initialValue: 'bare',
+                rules: [{ required: true, message: '请选择架构!' }]
+              }
             ]"
-          />
+          >
+            <a-select-option
+              v-for="item in containerFormatList"
+              :value="item"
+              :key="item"
+            >
+              {{ item }}
+            </a-select-option>
+          </a-select>
         </a-form-item>
         <a-form-item
           :labelCol="formItemLayout.labelCol"
@@ -142,8 +141,6 @@
           <a-input-number
             :min="40"
             :max="200"
-            :formatter="value => formatter('G', value)"
-            :parser="value => parser(value)"
             v-decorator="[
               'disk',
               { rules: [{ required: true, message: '请填写最小磁盘!' }] }
@@ -157,9 +154,7 @@
         >
           <a-input-number
             :min="2"
-            :max="100"
-            :formatter="value => formatter('G', value)"
-            :parser="value => parser(value)"
+            :max="64"
             v-decorator="[
               'memory',
               { rules: [{ required: true, message: '请填写最低内存!' }] }
@@ -171,9 +166,6 @@
          :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
           <a-checkbox v-decorator="[
               'isReplicaData',
-              {
-                initialValue: true,
-              }
             ]">数据复刻</a-checkbox>
         </a-form-item>
         <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
@@ -186,6 +178,7 @@
   </div>
 </template>
 <script>
+import uploader from "./Uploader";
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { createImage as fetchAPI } from '@/api/compute/images';
 import { rulesObj } from '@/utils/util';
@@ -197,55 +190,44 @@ export default {
       fetchAPI,
       name: "create",
       fileList: [],
-      sourceType: '1',
+      sourceType: 0,
       // 镜像源[0:镜像文件 1:镜像路径]
+
+      // 架构
+      containerFormatList: [
+        'bare', 'ami', 'ari', 'aki', 'docker', 'ova', 'ovf',
+      ],
     };
   },
-
+  components: {
+    uploader,
+  },
+  computed: {
+    imageFormatList () {
+      return this.$parent.imageFormatList;
+    }
+  },
   methods: {
     handleSelectSource(value) {
       this.sourceType = value;
-
-
-
-      // const { form } = this;
-      // // can use data-binding to get
-      // const keys = form.getFieldValue('keys');
-      // const nextKeys = keys.concat(++id);
-      // // can use data-binding to set
-      // // important! notify form to detect changes
-      // form.setFieldsValue({
-      //   keys: nextKeys,
-      // });
-
-
     },
-    handleFileChange(info) {
-      let fileList = info.fileList;
 
-      // 1. Limit the number of uploaded files
-      //    Only to show two recent uploaded files, and old ones will be replaced by the new
-      fileList = fileList.slice(-2);
-
-      // 2. read from response and show file link
-      fileList = fileList.map(file => {
-        if (file.response) {
-          // Component will show file.url as link
-          file.url = file.response.url;
+    handleCreate() {
+      const self = this;
+      this.form.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          self.formValues = Object.assign({}, self.formValues, values, {
+            memory: values.memory * 1024,
+            imageUrl: this.$refs.uploader.file.url
+          });
+          self.handleFetch();
         }
-        return file;
       });
-
-      // 3. filter successfully uploaded files according to response from server
-      fileList = fileList.filter(file => {
-        if (file.response) {
-          return file.response.status === "success";
-        }
-        return true;
-      });
-
-      this.fileList = fileList;
-    }
+    },
   }
 };
 </script>
+
+<style>
+
+</style>
