@@ -94,9 +94,9 @@ export default {
       { visible: false, type: 'none',  name: '启动',   id: 'launch',      availableStatus: ['shutoff'] },
       { visible: false, type: 'none',  name: '关机',   id: 'shutdown',    availableStatus: ['active', ] },
 
-      { visible: false, type: 'batch', name: '删除',   id: 'delete',      availableStatus: allInstanceStatus },
-      { visible: false, type: 'batch', name: '重启',   id: 'restart',     availableStatus: ['active', ] },
-      { visible: false, type: 'batch', name: '软重启', id: 'softRestart', availableStatus: ['active', ] },
+      { visible: false, type: 'multi', name: '删除',   id: 'delete',      availableStatus: allInstanceStatus },
+      { visible: false, type: 'multi', name: '重启',   id: 'restart',     availableStatus: ['active', ] },
+      { visible: false, type: 'multi', name: '软重启', id: 'softRestart', availableStatus: ['active', ] },
 
       // { visible: false, type: 'none', name: '分配公网IP', id: 'allotIP' },
       { visible: false, type: 'single', name: '创建快照',   id: 'createSnapshoot',  availableStatus: ['active', ] },

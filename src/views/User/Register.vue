@@ -12,7 +12,7 @@
           placeholder="设置登录名称"
           v-decorator="[
             'userName',
-            {rules: [{ required: true, message: '设置登录名称' }]}
+            {rules: [{ required: true, message: '请设置登录名称' }]}
           ]"
         >
           <a-icon slot="prefix" type="user" class="icon" />
@@ -20,32 +20,63 @@
       </a-form-item>
 
       <a-form-item>
-        <a-input
-          size="large"
-          type="password"
-          autocomplete="false"
-          placeholder="设置登录密码"
-          v-decorator="[
-            'password',
-            {rules: [{ required: true, message: '设置登录密码' }]}
-          ]"
+        <a-popover
+          :okText="false"
+          cancelText=""
+          placement="rightTop"
+          :visible="visiblepopover"
         >
-          <a-icon slot="prefix" type="lock" class="icon" />
-        </a-input>
+          <template slot="content">
+            <div :style="{ width: '240px' }" >
+              <div :class="['user-register', passwordLevelClass]">强度：<span>{{ passwordLevelName }}</span></div>
+              <a-progress :percent="state.percent" :showInfo="false" :strokeColor=" passwordLevelColor " />
+              <div style="margin-top: 10px;">
+                <p>请至少输入 8 个字符，且至少包含大小字母、数字、特殊字符(_,!,@,#)中的两项。</p>
+              </div>
+            </div>
+          </template>
+
+          <a-input
+            size="large"
+            :type="passwordType"
+            autocomplete="false"
+            placeholder="设置登录密码"
+            @blur="visiblepopover = false"
+            @focus="visiblepopover = true"
+            v-decorator="[
+              'password',
+              {
+                rules: [
+                  { required: true, message: '请设置登录密码' },
+                  { validator: this.handlePasswordLevel }
+                ]
+              }
+            ]"
+          >
+            <a-icon slot="prefix" type="lock" class="icon" />
+            <a-icon slot="suffix" class="suffix-eye"
+              :type="passwordType | eyeIcon"
+              @click="toggleType('passwordType')"
+            />
+          </a-input>
+        </a-popover>
       </a-form-item>
       <a-form-item>
         <a-input
           size="large"
-          type="password"
+          :type="password2Type"
           autocomplete="false"
           placeholder="再次确认密码"
           v-decorator="[
             'password2',
-            {rules: [{ required: true, message: '再次确认密码' }]}
+            {rules: [{ required: true, message: '请再次确认密码' }]}
           ]"
         >
           <a-icon slot="prefix" type="lock" class="icon" />
-          <a-icon v-if="userName" slot="suffix" type="eye" @click="emitEmpty" />
+          <a-icon slot="suffix" class="suffix-eye"
+            :type="password2Type | eyeIcon"
+            @click="toggleType('password2Type')"
+          />
         </a-input>
       </a-form-item>
       <a-form-item>
@@ -76,8 +107,8 @@
               autocomplete="false"
               placeholder="输入验证码"
               v-decorator="[
-                'code',
-                {rules: [{ required: true, message: '输入验证码' }]}
+                'smsCode',
+                {rules: [{ required: true, message: '请输入验证码' }]}
               ]"
             >
               <a-icon slot="prefix" type="mail" class="icon" />
@@ -126,6 +157,26 @@
 <script>
 import { sendCode, createUser } from "@/api/user";
 import { rulesObj } from '@/utils/util';
+
+const levelNames = {
+  0: '低',
+  1: '低',
+  2: '中',
+  3: '强'
+}
+const levelClass = {
+  0: 'error',
+  1: 'error',
+  2: 'warning',
+  3: 'success'
+}
+const levelColor = {
+  0: '#ff0000',
+  1: '#ff0000',
+  2: '#ff7e05',
+  3: '#52c41a'
+}
+
 export default {
   data() {
     return {
@@ -134,7 +185,18 @@ export default {
       state: {
         time: 60,
         loading: "" // pending resolve reject
-      }
+      },
+      passwordType: 'password',
+      password2Type: 'password',
+      visiblepopover: true,
+      state: {
+        time: 60,
+        smsSendBtn: false,
+        passwordLevel: 0,
+        passwordLevelChecked: false,
+        percent: 10,
+        progressColor: '#FF0000'
+      },
     };
   },
   computed: {
@@ -153,9 +215,57 @@ export default {
         return "发送失败";
       }
       return "获取验证码";
+    },
+    passwordLevelClass () {
+      return levelClass[this.state.passwordLevel]
+    },
+    passwordLevelName () {
+      return levelNames[this.state.passwordLevel]
+    },
+    passwordLevelColor () {
+      return levelColor[this.state.passwordLevel]
     }
   },
+  filters: {
+    eyeIcon (type) {
+      return type === 'password' ? 'eye-invisible' : 'eye';
+    },
+  },
+  watch: {
+    'state.passwordLevel' (level) {
+      if (level === 0) {
+        this.state.percent = 10
+      } else {
+        this.state.percent = level * 25
+      }
+    },
+  },
   methods: {
+    handlePasswordLevel (rule, value, callback) {
+      let level = 0
+
+      const msg = '密码长度不低于8位,必须包含大小字母,数字,特殊字符(!,@,#)其中的两项'
+      const minLen = /.{8,}/;
+      const maxLen = /.{12,}/;
+      const regs = [ /[a-zA-Z]/, /[0-9]/, /[_!@#]/ ];
+
+      const result = regs.filter(reg => reg.test(value));
+      level += result ? result.length : 0;
+
+      if (!minLen.test(value)) {
+        this.state.passwordLevel = level;
+        return callback('密码长度不低于8位');
+      }
+
+      console.log('level', level)
+      this.state.passwordLevel = level;
+
+      this.state.passwordLevel >= 3 ? callback() :  callback(msg);
+    },
+    toggleType(typeName) {
+      let type = this[typeName];
+      this[typeName] = type === 'password' ? 'text' : 'password';
+    },
     handleSubmit() {
       return new Promise((resolve, reject) => {
         this.form.validateFieldsAndScroll((err, values) => {
@@ -188,7 +298,7 @@ export default {
     },
 
     async getCaptcha() {
-      this.handleValidatePwd();
+      // this.handleValidatePwd();
       let that = this;
       try {
         const data = await this.handleValidateField(["phone"]);
@@ -196,12 +306,18 @@ export default {
       } catch (error) {}
     },
 
-    async requestCode() {
+    async requestCode(data) {
       this.state.loading = "pending";
 
       const loadingMsg = this.$message.loading("验证码发送中..", 0);
       // .then(() => this.$message.success("验证码发送成功", 1));
       const loadingMsgTimer = setInterval(loadingMsg);
+
+      const payload = {
+        phoneNumber: data.phone,
+        // 验证码类型[0:注册验证码 1:修改密码验证码 2:找回密码验证码 ]
+        smsType: 0
+      }
 
       try {
         const resp = await sendCode(payload);
@@ -232,6 +348,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.suffix-eye {
+  cursor: pointer;
+}
+.user-register {
+  &.error {
+    color: #ff0000;
+  }
+  &.warning {
+    color: #ff7e05;
+  }
+  &.success {
+    color: #52c41a;
+  }
+}
 .top {
   text-align: center;
   .header {

@@ -201,7 +201,7 @@ import tablePageMixins from "@/mixins/tablePageMixins";
 import { getinstanceList as getList, getInstanceStatus, getInstanceGroup, getInstanceNetwork } from "@/api/compute/instance";
 import { getIPList } from "@/api/network/ip";
 
-import { transToTimestamp } from "@/utils/util";
+import { getTimestamp } from "@/utils/util";
 
 import instance from '@/i18n/zh/instance'
 const statusDicts = instance.instance.status;

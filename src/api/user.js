@@ -26,4 +26,4 @@ export const logout      = payload => POST('/user/logout', payload);
 export const getUserList = payload => GET('/user/list', payload);
 
 // 发送验证码
-export const sendCode    = payload => POST('/sms​/sendCode', payload);
+export const sendCode    = payload => POST('/sms/sendCode', payload);

@@ -39,16 +39,21 @@ export const rulesObj = {
     pattern: /^.{1,50}$/,
     message: '描述仅限 50 个字符!'
   },
+
+  phone: {
+    pattern: /^\d{11}$/,
+    message: '请输入正确手机号码!'
+  },
 }
 
 /**
  * 将正常时间格式转化为时间戳
  * @param {String} time [正常时间格式，如：2019-04-01 13:10:10]
  */
-export function transToTimestamp (time=null) {
+export function getTimestamp (time=null) {
   // 没有对 time 做合法性校验
   // 假设传入的 time 都是合法的时间格式：2019-04-01 13:10:10
-  const date = new Date(time);
+  const date = time ? new Date(time.replace(/-/g, '/')) : new Date();
   const timestamp = date.getTime();  // 13 位数字，精确到毫秒
   return timestamp;
 }

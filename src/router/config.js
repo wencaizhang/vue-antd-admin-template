@@ -1,4 +1,6 @@
 import Login from "../views/User/Login.vue";
+import Register from "../views/User/Register.vue";
+import Forget from "../views/User/Forget.vue";
 
 import RouteView from "@/components/Layout/RouteView";
 import BasicLayout from "@/components/Layout/BasicLayout";
@@ -46,6 +48,18 @@ export const asyncRouterMap = [
     name: "login",
     meta: { title: "登录" },
     component: Login
+  },
+  {
+    path: "register",
+    name: "register",
+    meta: { title: "注册新用户" },
+    component: Register
+  },
+  {
+    path: "forget",
+    name: "forget",
+    meta: { title: "忘记密码" },
+    component: Forget
   },
   {
     path: "/",

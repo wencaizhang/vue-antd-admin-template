@@ -1,4 +1,4 @@
-import { transToTimestamp } from '@/utils/util'
+import { getTimestamp } from '@/utils/util'
 export default {
   data() {
     return {
@@ -39,7 +39,7 @@ export default {
       return this.$store.state[this.module][this.id].menuOptions;
     },
     multiMenuOptions () {
-      return this.menuOptions.filter(item => item.type === 'batch')
+      return this.menuOptions.filter(item => item.type === 'multi')
     },
     singleMenuOptions () {
       return this.menuOptions.filter(item => item.type === 'single')
@@ -144,7 +144,7 @@ export default {
           if (item.createDate) {
             // 计算时间戳
             const createDate = item.createDate;
-            item.timestamp = transToTimestamp(createDate);
+            item.timestamp = getTimestamp(createDate);
           }
           if (item.status) {
             // 保证状态永远是小写字母

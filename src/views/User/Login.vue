@@ -23,13 +23,13 @@
         </a-tab-pane>
       </a-tabs> -->
 
-      <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-        <a-checkbox class="com-unselect" v-model="formLogin.rememberMe">
+      <div style="display: flex; flex-direction: row-reverse; justify-content: space-between; margin-bottom: 10px;">
+        <!-- <a-checkbox class="com-unselect" v-model="formLogin.rememberMe">
           自动登录
-        </a-checkbox>
-        <router-link class="forge" :to="{ name: 'forget' }">
-          忘记密码
-        </router-link>
+        </a-checkbox> -->
+        <!-- <router-link class="forge" :to="{ name: 'forget' }">
+          找回密码
+        </router-link> -->
       </div>
       <a-button
         size="large"
@@ -45,14 +45,11 @@
       </a-button>
 
       <div class="user-login-other" style="display: flex; flex-direction: row-reverse; justify-content: space-between; margin-top: 10px;">
-        <!-- <div>
-            <span>其他登陆方式</span>
-            <a>
-              <a-icon class="item-icon" type="wechat" title="微信登录"></a-icon>
-            </a>
-        </div> -->
         <router-link class="register" :to="{ name: 'register' }">
           注册账户
+        </router-link>
+        <router-link class="forge" :to="{ name: 'forget' }">
+          找回密码
         </router-link>
       </div>
     </div>

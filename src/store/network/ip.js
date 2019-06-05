@@ -36,8 +36,8 @@ export default {
       { visible: false, type: 'none',   name: "申请IP", id: "create" },
 
       { visible: false, type: 'single', name: "绑定IP", id: "bind-ip" },
-      { visible: false, type: 'batch',  name: "解绑IP", id: "unbind-ip" },
-      { visible: false, type: 'batch',  name: "释放IP", id: "free-ip" },
+      { visible: false, type: 'multi',  name: "解绑IP", id: "unbind-ip" },
+      { visible: false, type: 'multi',  name: "释放IP", id: "free-ip" },
     ]
   },
   mutations: {},

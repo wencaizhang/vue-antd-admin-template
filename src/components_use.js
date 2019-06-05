@@ -25,7 +25,7 @@ import {
   Icon,
   Transfer,
   // Badge,
-  // Popover,
+  Popover,
   Slider,
   Dropdown,
   List,
@@ -42,7 +42,7 @@ import {
   // DatePicker,
   // TimePicker,
   Upload,
-  // Progress,
+  Progress,
   Skeleton,
   // Popconfirm,
   message,
@@ -69,7 +69,7 @@ Vue.use(Tabs)
 Vue.use(Icon)
 Vue.use(Transfer)
 // Vue.use(Badge)
-// Vue.use(Popover)
+Vue.use(Popover)
 Vue.use(Slider)
 Vue.use(Dropdown)
 Vue.use(List)
@@ -86,7 +86,7 @@ Vue.use(Tag)
 // Vue.use(DatePicker)
 // Vue.use(TimePicker)
 Vue.use(Upload)
-// Vue.use(Progress)
+Vue.use(Progress)
 Vue.use(Skeleton)
 // Vue.use(Popconfirm)
 // Vue.use(VueCropper)
