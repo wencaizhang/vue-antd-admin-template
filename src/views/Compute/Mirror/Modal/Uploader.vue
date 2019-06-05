@@ -61,6 +61,9 @@ export default {
     }
   },
   methods: {
+    clearFileList () {
+      this.uploader.fileList.forEach(item => this.uploader.removeFile(item));
+    },
     onFileAdded(file) {
       // 移除之前的文件，只保留当前文件
       this.uploader.fileList

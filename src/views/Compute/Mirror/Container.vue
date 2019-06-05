@@ -151,13 +151,13 @@ export default {
       // 小于0.1 MB，则转化成 KB
       // 小于0.1 GB，则转化成 MB
       // 其他转化成 GB
-      const obj = [
+      const map = [
         { suffix: 'B',  value: 1,                      maxValue: 0.1 * 1024,                },
         { suffix: 'KB', value: 1 * 1024,               maxValue: 0.1 * 1024 * 1024,         },
         { suffix: 'MB', value: 1 * 1024 * 1024,        maxValue: 0.1 * 1024 * 1024 * 1024,  },
         { suffix: 'GB', value: 1 * 1024 * 1024 * 1024, maxValue: Infinity,                  },
       ];
-      const item = obj.find(item => item.maxValue > limit);
+      const item = map.find(item => item.maxValue > limit);
       const ret = (limit / item.value).toFixed(2) + item.suffix;
 
       return ret;
@@ -173,7 +173,7 @@ export default {
         const imageFormat_zh = (imageFormatList.find(aaa => aaa.value === item.imageFormat) || {}).label;
         const status_zh = this.__handleTransformToZh(item.status)
         const imageType_zh = item.imageType === 'snapshoot' ? '快照' : '镜像';
-        const capacity_zh = this.transform(item.capacity)
+        const capacity_zh = this.transform(item.capacity == '无' ? 0 : item.capacity)
         Object.assign(item, {
           imageFormat_zh,
           status_zh,

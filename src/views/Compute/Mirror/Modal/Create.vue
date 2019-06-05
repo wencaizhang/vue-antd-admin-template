@@ -94,7 +94,6 @@
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
           label="镜像格式："
-          ref="imageFormatList"
         >
           <a-select
             :getPopupContainer="getPopupContainer"
@@ -201,6 +200,10 @@ export default {
     }
   },
   methods: {
+    onShow () {
+      this.sourceType = 1;
+      this.$refs.uploader && this.$refs.uploader.clearFileList();
+    },
     handleSelectSource(value) {
       this.sourceType = value;
     },
