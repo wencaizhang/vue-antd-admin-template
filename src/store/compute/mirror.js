@@ -22,7 +22,7 @@ const columns = [
   },
   {
     title: '容量（G)',
-    dataIndex: 'capacity'
+    dataIndex: 'capacity_zh'
   },
   {
     title: '平台',

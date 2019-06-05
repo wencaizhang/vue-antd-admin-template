@@ -51,6 +51,7 @@ export default {
 
       confirmDisabled: true,
       metaDatas: [],
+      metaDatas_back: [],
       inputValue: {
         key: '',
         value: '',
@@ -59,9 +60,10 @@ export default {
   },
   methods: {
     onShow() {
+      this.confirmDisabled = true;
       this.formValues = Object.assign({}, this.formValues, { id: this.currRecord.id })
       this.metaDatas = JSON.parse(JSON.stringify(this.currRecord.metaDatas === '无' ? [] : this.currRecord.metaDatas))
-      console.log(this.metaDatas)
+      this.metaDatas_back = JSON.parse(JSON.stringify(this.metaDatas));
     },
     handleCreate () {
       this.formValues = Object.assign(this.formValues, { metaDatas: this.metaDatas });
@@ -77,7 +79,7 @@ export default {
       // 以下两种情况禁止提交
       // 1. 和原来数据相同
       // 2. 有为空的 value
-      this.confirmDisabled = this.is(this.metaDatas, this.currRecord.metaDatas) || this.hasEmptyValue(this.metaDatas);
+      this.confirmDisabled = this.is(this.metaDatas, this.metaDatas_back) || this.hasEmptyValue(this.metaDatas);
     },
     handleChange (item, value) {
       item.value = value;
