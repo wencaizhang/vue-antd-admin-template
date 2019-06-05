@@ -133,7 +133,7 @@ export default {
     columns() {
       const data = this.$store.state[this.module][this.id].columns;
       // 系统镜像，没有操作列
-      return this.imageSource === 0 ? data.slice(0, -1) : data;
+      return this.imageSource == 0 ? data.slice(0, -1) : data;
     },
   },
   methods: {
@@ -146,21 +146,39 @@ export default {
     __handleTransformToZh (status) {
       return statusDicts[status.toLowerCase()] || status
     },
+    transform (limit) {
+      // 小于0.1 KB，则转化成 B
+      // 小于0.1 MB，则转化成 KB
+      // 小于0.1 GB，则转化成 MB
+      // 其他转化成 GB
+      const obj = [
+        { suffix: 'B',  value: 1,                      maxValue: 0.1 * 1024,                },
+        { suffix: 'KB', value: 1 * 1024,               maxValue: 0.1 * 1024 * 1024,         },
+        { suffix: 'MB', value: 1 * 1024 * 1024,        maxValue: 0.1 * 1024 * 1024 * 1024,  },
+        { suffix: 'GB', value: 1 * 1024 * 1024 * 1024, maxValue: Infinity,                  },
+      ];
+      const item = obj.find(item => item.maxValue > limit);
+      const ret = (limit / item.value).toFixed(2) + item.suffix;
+
+      return ret;
+
+    },
     handleParseData (data) {
       const ret = data.filter(item => {
         return this.imageSource == 0 && item.isPublic === 'public'
-          || this.imageSource == 1 && item.isPublic !== 'public'
+          || this.imageSource == 1 && item.isPublic !== 'public';
       })
       const { imageFormatList } = this;
       ret.forEach(item => {
         const imageFormat_zh = (imageFormatList.find(aaa => aaa.value === item.imageFormat) || {}).label;
         const status_zh = this.__handleTransformToZh(item.status)
         const imageType_zh = item.imageType === 'snapshoot' ? '快照' : '镜像';
-
+        const capacity_zh = this.transform(item.capacity)
         Object.assign(item, {
           imageFormat_zh,
           status_zh,
           imageType_zh,
+          capacity_zh,
         })
       })
       return ret;

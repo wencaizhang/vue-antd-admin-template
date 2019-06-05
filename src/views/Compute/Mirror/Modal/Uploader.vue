@@ -8,7 +8,6 @@
     @file-success="onFileSuccess"
     @file-progress="onFileProgress"
     @file-error="onFileError"
-    @complete="onComplete"
   >
     <uploader-unsupport></uploader-unsupport>
     <uploader-drop>
@@ -56,21 +55,26 @@ export default {
       }
     };
   },
+  computed: {
+    uploader () {
+      return this.$refs.uploader.uploader;
+    }
+  },
   methods: {
-    onComplete (...args) {
-
-      console.log('onComplete: ', args);
-
-    },
     onFileAdded(file) {
+      // 移除之前的文件，只保留当前文件
+      this.uploader.fileList
+        .filter(item => item !== file)
+        .forEach(item => this.uploader.removeFile(item));
+
       this.computeMD5(file);
     },
     onFileProgress(rootFile, file, chunk) {
-      console.log(
-        `上传中 ${file.name}，chunk：${chunk.startByte /
-          1024 /
-          1024} ~ ${chunk.endByte / 1024 / 1024}`
-      );
+      // console.log(
+      //   `上传中 ${file.name}，chunk：${chunk.startByte /
+      //     1024 /
+      //     1024} ~ ${chunk.endByte / 1024 / 1024}`
+      // );
     },
     onFileSuccess(rootFile, file, response, chunk) {
       // let res = JSON.parse(response);
@@ -90,6 +94,9 @@ export default {
       })
       .then(resp => {
         this.file.url = resp.data.filePath[0].url;
+      })
+      .catch(err => {
+        this.$message.error(err.response.data.desc)
       })
       return;
     },
@@ -121,7 +128,7 @@ export default {
         md5 = SparkMD5.ArrayBuffer.hash(e.target.result);
         this.file.md5 = md5;
         // 添加额外的参数
-        this.$refs.uploader.uploader.opts.query = ((md5, that)=>{
+        this.uploader.opts.query = ((md5, that)=>{
           return (uploader, chunk) => {
             const chunkMd5 = SparkMD5.ArrayBuffer.hash(chunk.bytes);
             return { chunkMd5, fileMd5: md5 }

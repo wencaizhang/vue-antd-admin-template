@@ -9,7 +9,7 @@
       title="创建镜像"
       okText="创建"
     >
-      <a-form :form="form">
+      <a-form class="mirror-create-form" :form="form">
         <a-form-item
           label="名称："
           :labelCol="formItemLayout.labelCol"
@@ -48,6 +48,7 @@
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-select
+            :getPopupContainer="getPopupContainer"
             @change="handleSelectSource"
             placeholder="请选择镜像源"
             v-decorator="[
@@ -59,8 +60,8 @@
             ]"
           >
             <!-- 镜像源[0:镜像文件 1:镜像路径] -->
-            <a-select-option :value="0">镜像文件</a-select-option>
             <a-select-option :value="1">镜像地址</a-select-option>
+            <a-select-option :value="0">镜像文件</a-select-option>
           </a-select>
         </a-form-item>
 
@@ -80,7 +81,8 @@
           :wrapperCol="formItemLayout.wrapperCol"
           label="镜像地址："
         >
-          <a-input placeholder="请输入镜像地址" v-decorator="[
+          <a-input placeholder="请输入镜像地址"
+            v-decorator="[
               'imageUrl',
               {
                 rules: [{ required: true, message: '请输入镜像地址' }]
@@ -92,8 +94,10 @@
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
           label="镜像格式："
+          ref="imageFormatList"
         >
           <a-select
+            :getPopupContainer="getPopupContainer"
             placeholder="选择镜像格式"
             v-decorator="[
               'imageFormat',
@@ -116,6 +120,7 @@
         >
           <a-select
             placeholder="选择架构"
+            :getPopupContainer="getPopupContainer"
             v-decorator="[
               'architecture',
               {
@@ -153,25 +158,13 @@
           label="最低内存(G)："
         >
           <a-input-number
-            :min="2"
+            :min="1"
             :max="64"
             v-decorator="[
               'memory',
               { rules: [{ required: true, message: '请填写最低内存!' }] }
             ]"
           />
-        </a-form-item>
-        <a-form-item
-          v-show="sourceType == 1"
-         :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
-          <a-checkbox v-decorator="[
-              'isReplicaData',
-            ]">数据复刻</a-checkbox>
-        </a-form-item>
-        <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
-          <a-checkbox v-decorator="[
-              'isPublic',
-            ]">公有</a-checkbox>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -190,7 +183,7 @@ export default {
       fetchAPI,
       name: "create",
       fileList: [],
-      sourceType: 0,
+      sourceType: 1,
       // 镜像源[0:镜像文件 1:镜像路径]
 
       // 架构
@@ -218,12 +211,17 @@ export default {
         if (!err) {
           self.formValues = Object.assign({}, self.formValues, values, {
             memory: values.memory * 1024,
-            imageUrl: this.$refs.uploader.file.url
-          });
+          })
+          if (self.sourceType === 0) {
+            self.formValues.imageUrl = self.$refs.uploader.file.url;
+          }
           self.handleFetch();
         }
       });
     },
+    getPopupContainer() {
+      return document.querySelector('.mirror-create-form')
+    }
   }
 };
 </script>
