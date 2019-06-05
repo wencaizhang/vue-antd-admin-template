@@ -17,15 +17,16 @@
       <div class="container">
         <span>请选择一个主机：</span>
         <a-spin :spinning="loading">
-          <a-select defaultValue="lucy" style='width: 200px' v-model="formValues.instanceId">>
+          <a-select defaultValue="lucy" style="width: 200px;" v-model="formValues.instanceId">
             <a-select-option
               v-for="item in instanceList"
               :value="item.id"
               :key="item.id"
-            >{{ item.name }}</a-select-option>
+            >
+              {{ item.name }}
+            </a-select-option>
           </a-select>
         </a-spin>
-
       </div>
     </a-modal>
   </div>

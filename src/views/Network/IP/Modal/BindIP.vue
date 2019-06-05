@@ -30,7 +30,7 @@
                 :key="item.network"
                 :value="item.network"
               >
-                {{ item.name }} {{item.network}}
+                {{ item.name }} {{ item.network }}
               </a-select-option>
             </a-select>
           </a-spin>

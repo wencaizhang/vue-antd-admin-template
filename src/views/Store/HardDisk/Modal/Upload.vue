@@ -39,7 +39,8 @@
         </a-form-item>
         <a-form-item
           label="磁盘格式"
-          :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }"
+          :labelCol="{ span: 8 }"
+          :wrapperCol="{ span: 14 }"
         >
           <a-select
             v-decorator="[
@@ -51,7 +52,7 @@
               }
             ]"
           >
-            <a-select-option v-for="item in imageFormatList" :key="item.id" :value="item.id">{{item.desc}}</a-select-option>
+            <a-select-option v-for="item in imageFormatList" :key="item.id" :value="item.id">{{ item.desc }}</a-select-option>
           </a-select>
         </a-form-item>
       </a-form>

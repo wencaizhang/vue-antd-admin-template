@@ -1,7 +1,6 @@
 <template>
   <div>
-    <PageLayout>
-
+    <page-layout>
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">
           <a-row type="flex" justify="space-between">
@@ -13,14 +12,18 @@
                   style="margin-right: 10px;"
                   icon="plus"
                   @click="handleSingleMenuClick('create')"
-                >添加规则</a-button>
+                >
+                  添加规则、
+                </a-button>
                 <a-button
                   type="danger"
                   style="margin-right: 10px;"
                   icon="delete"
                   :disabled="!selectedRowKeys.length"
                   @click="handleMultiMenuClick('multiDeleta')"
-                >删除规则</a-button>
+                >
+                  删除规则
+                </a-button>
               </a-row>
             </a-col>
             <a-col>
@@ -50,15 +53,17 @@
               style="margin-right: 10px;"
               icon="delete"
               @click="handleSingleMenuClick('delete', record)"
-            >删除规则</a-button>
+            >
+              删除规则
+            </a-button>
           </template>
         </a-table>
       </div>
-    </PageLayout>
+    </page-layout>
 
-    <CreateModal />
-    <DeleteModal />
-    <MultiDelete />
+    <create-modal />
+    <delete-modal />
+    <multi-delete />
   </div>
 </template>
 

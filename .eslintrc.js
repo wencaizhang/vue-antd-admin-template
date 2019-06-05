@@ -23,6 +23,12 @@ module.exports = {
         }
       }
     ],
+    "vue/component-name-in-template-casing": ["error", "kebab-case", {
+      "registeredComponentsOnly": true,
+      "ignores": []
+    }],
+    "vue/singleline-html-element-content-newline": "off",
+    "vue/no-parsing-error": "off",
     "vue/attribute-hyphenation": 0,
     "vue/html-self-closing": 0,
     "no-console": 0

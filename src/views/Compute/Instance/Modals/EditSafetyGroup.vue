@@ -17,9 +17,9 @@
         :render="item=>item.title"
         @change="handleChange"
         @selectChange="handleSelectChange"
-      ></a-transfer>
+      >
+      </a-transfer>
     </a-spin>
-
   </a-modal>
 </template>
 <script>
@@ -28,7 +28,6 @@ import { editSecuritygroup as fetchAPI } from "@/api/compute/instance";
 import { getGroupList } from "@/api/security/index";
 export default {
   mixins: [baseModalMixins],
-  props: ["record"],
   data() {
     return {
       fetchAPI,

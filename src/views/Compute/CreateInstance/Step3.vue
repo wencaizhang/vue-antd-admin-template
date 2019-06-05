@@ -150,7 +150,9 @@
               :key="item.name"
               :value="item.name"
               style="display: block;"
-            >{{ item.name }}</a-select-option>
+            >
+              {{ item.name }}
+            </a-select-option>
           </a-select>
         </a-spin>
         <a @click="createKeypair" style="margin-left: 8px;">新建</a>
@@ -196,9 +198,8 @@
         </a-col>
       </a-row>
     </a-form>
-    <create-keypair :visible="showCreateKeypairModal"/>
+    <create-keypair :visible="showCreateKeypairModal" />
     <download-keypair :visible="showDownloadKeypairModal" />
-    
   </div>
 </template>
 <script>
@@ -209,7 +210,12 @@ import { getKeyPairList } from "@/api/compute/keypair";
 import { rulesObj } from '@/utils/util';
 
 export default {
-  props: ['defaultUserName'],
+  props: {
+    defaultUserName: {
+      type: String,
+      default: ''
+    }
+  },
   components:  { DownloadKeypair, CreateKeypair },
   data() {
     return {

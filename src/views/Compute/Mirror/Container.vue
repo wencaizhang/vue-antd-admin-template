@@ -1,10 +1,10 @@
 <template>
   <div>
-    <PageLayout>
+    <page-layout>
       <div slot="header">
-        <p
-          style="margin: 0;"
-        >镜像（Image） 是基于主流的操作系统的进行定制，用于实例创建的模板。用户也可以基于己有镜像创建主机，也可以将自有主机捕获为新镜像，以备后用。</p>
+        <p style="margin: 0;">
+          镜像（Image） 是基于主流的操作系统的进行定制，用于实例创建的模板。用户也可以基于己有镜像创建主机，也可以将自有主机捕获为新镜像，以备后用。
+        </p>
         <a-tabs
           defaultActiveKey="imageSource"
           @change="handleTabChange"
@@ -29,7 +29,9 @@
                   style="margin-right: 10px;"
                   icon="plus"
                   @click="handleSingleMenuClick('create')"
-                >创建镜像</a-button>
+                >
+                  创建镜像
+                </a-button>
               </a-row>
             </a-col>
           </a-row>
@@ -51,7 +53,7 @@
           @change="handleTableChange"
         >
           <template slot="detail" slot-scope="text, record">
-            <a title="点击查看镜像属性" @click="handleSingleMenuClick('detail', record)">{{text}}</a>
+            <a title="点击查看镜像属性" @click="handleSingleMenuClick('detail', record)">{{ text.substring(0, 8) }}</a>
           </template>
 
           <template slot="operation" slot-scope="text, record">
@@ -60,22 +62,24 @@
                 <a-menu-item
                   v-for="item in singleMenuOptions"
                   :key="item.id"
-                >{{ item.name }}</a-menu-item>
+                >
+                  {{ item.name }}
+                </a-menu-item>
               </a-menu>
-              <a-button style="margin-left: 8px">操作
-                <a-icon type="down"/>
+              <a-button style="margin-left: 8px">
+                操作
+                <a-icon type="down" />
               </a-button>
             </a-dropdown>
           </template>
-
         </a-table>
       </div>
-    </PageLayout>
-    <CreateModal />
-    <EditModal />
-    <Delete />
-    <DetailModal />
-    <Update />
+    </page-layout>
+    <create-modal />
+    <edit-modal />
+    <delete />
+    <detail-modal />
+    <update />
   </div>
 </template>
 
@@ -147,14 +151,14 @@ export default {
       return statusDicts[status.toLowerCase()] || status
     },
     transform (limit) {
-      // 小于0.1 KB，则转化成 B
-      // 小于0.1 MB，则转化成 KB
-      // 小于0.1 GB，则转化成 MB
+      // 小于 1 KB，则转化成 B
+      // 小于 1 MB，则转化成 KB
+      // 小于 1 GB，则转化成 MB
       // 其他转化成 GB
       const map = [
-        { suffix: 'B',  value: 1,                      maxValue: 0.1 * 1024,                },
-        { suffix: 'KB', value: 1 * 1024,               maxValue: 0.1 * 1024 * 1024,         },
-        { suffix: 'MB', value: 1 * 1024 * 1024,        maxValue: 0.1 * 1024 * 1024 * 1024,  },
+        { suffix: 'B',  value: 1,                      maxValue: 1 * 1024,                },
+        { suffix: 'KB', value: 1 * 1024,               maxValue: 1 * 1024 * 1024,         },
+        { suffix: 'MB', value: 1 * 1024 * 1024,        maxValue: 1 * 1024 * 1024 * 1024,  },
         { suffix: 'GB', value: 1 * 1024 * 1024 * 1024, maxValue: Infinity,                  },
       ];
       const item = map.find(item => item.maxValue > limit);

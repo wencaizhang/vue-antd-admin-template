@@ -11,8 +11,7 @@
       okText="删除"
       okType="danger"
     >
-      <p style="margin-top: 10px;" >即将删除安全组“{{ groupName }}”的 {{ list.length }} 条规则，该操作不可逆，请确认你的操作。</p>
-
+      <p style="margin-top: 10px;">即将删除安全组“{{ groupName }}”的 {{ list.length }} 条规则，该操作不可逆，请确认你的操作。</p>
     </a-modal>
   </div>
 </template>

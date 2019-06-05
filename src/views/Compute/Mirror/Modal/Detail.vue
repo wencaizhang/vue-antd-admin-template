@@ -11,7 +11,7 @@
     <ul v-if="show">
       <li v-for="item in columns" :key="item.title">
         <span>{{ item.title }}</span>
-        <span>{{ currRecord[ item.dataIndex ] || '无'}}</span>
+        <span>{{ currRecord[ item.dataIndex ] || '无' }}</span>
       </li>
     </ul>
 
@@ -36,29 +36,49 @@ export default {
         dataIndex: "name",
       },
       {
-        title: "默认信息",
-        dataIndex: "",
-      },
-      {
-        title: "状态",
-        dataIndex: "status_zh",
-      },
-      {
-        title: "系统盘",
-        dataIndex: "",
-      },
-      {
-        title: "使用属性",
-        dataIndex: "",
+        title: "镜像类型",
+        dataIndex: "imageType_zh",
       },
       {
         title: "平台",
         dataIndex: "platform",
       },
       {
-        title: "持性支持",
+        title: "状态",
+        dataIndex: "status_zh",
+      },
+      {
+        title: "容量",
+        dataIndex: "capacity_zh",
+      },
+      {
+        title: "最小磁盘",
+        dataIndex: "minDisk",
+      },
+      {
+        title: "最小内存",
+        dataIndex: "minMemory",
+      },
+      {
+        title: "磁盘格式",
         dataIndex: "",
-      }
+      },
+      {
+        title: "容器格式",
+        dataIndex: "",
+      },
+      {
+        title: "创建时间",
+        dataIndex: "createDateTime",
+      },
+      {
+        title: "创建时登录用户间",
+        dataIndex: "ssh_uer",
+      },
+      {
+        title: "SSH端口",
+        dataIndex: "ssh_port",
+      },
     ];
     return {
       name: "detail",

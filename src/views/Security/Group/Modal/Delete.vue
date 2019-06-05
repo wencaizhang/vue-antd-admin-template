@@ -11,12 +11,10 @@
       okText="删除"
       okType="danger"
     >
-
-      <p style="margin-top: 10px;" >
+      <p style="margin-top: 10px;">
         您已经选择安全组“<span class="primay-color">{{ currRecord.name }}</span>”。
         请确认你的操作，该操作不能撤销。
       </p>
-
     </a-modal>
   </div>
 </template>

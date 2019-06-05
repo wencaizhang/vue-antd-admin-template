@@ -10,7 +10,7 @@
       okText="删除"
       okType="danger"
     >
-      <a-alert message="注意：删除硬盘后数据不可恢复！" type="warning" showIcon/>
+      <a-alert message="注意：删除硬盘后数据不可恢复！" type="warning" showIcon />
       <p>是否删除硬盘 {{ list.map(item => item.name).join(', ') }}，请确认你的操作。</p>
     </a-modal>
   </div>

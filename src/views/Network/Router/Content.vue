@@ -11,13 +11,17 @@
                 style="margin-right: 10px;"
                 icon="plus"
                 @click="handleSingleMenuClick('create')"
-              >创建</a-button>
+              >
+                创建
+              </a-button>
               <a-button
                 type="danger"
                 style="margin-right: 10px;"
                 icon="delete"
                 @click="handleMultiMenuClick('delete')"
-              >删除</a-button>
+              >
+                删除
+              </a-button>
             </span>
 
             <span style="display: inline-flex;">
@@ -28,11 +32,12 @@
                 </a-select>
                 <a-input
                   style="width: 200px"
-                  @pressEnter="handleDATA" 
+                  @pressEnter="handleDATA"
                   v-model="searchValues.inputValue"
                 />
               </a-input-group>
-              <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
+              <a-button type="primary" @click="handleDATA" style="margin-left: 8px">
+                搜索
                 <a-icon type="search" />
               </a-button>
             </span>
@@ -56,10 +61,9 @@
       :loading="loading"
       @change="handleTableChange"
     >
-
       <template slot="internal" slot-scope="internal">
         <p v-show="Array.isArray(internal)" v-for="item in internal" :key="item.id">
-          {{ item.name + ' : '}}{{ item.cidr}}
+          {{ item.name + ' : ' }}{{ item.cidr }}
         </p>
         <p v-show="!Array.isArray(internal)">{{ internal }}</p>
       </template>
@@ -69,23 +73,26 @@
             <a-menu-item
               v-for="item in record.singleMenuOptions"
               :key="item.id"
-            >{{ item.name }}</a-menu-item>
+            >
+              {{ item.name }}
+            </a-menu-item>
           </a-menu>
-          <a-button>操作
-            <a-icon type="down"/>
+          <a-button>
+            操作
+            <a-icon type="down" />
           </a-button>
         </a-dropdown>
       </template>
     </a-table>
 
-    <CreateModal />
-    <EditModal />
-    <ClearModal />
-    <DeleteModal />
-    <DeleteRouter />
-    <Gateway />
-    <Attach />
-    <Detach />
+    <create-modal />
+    <edit-modal />
+    <clear-modal />
+    <delete-modal />
+    <delete-router />
+    <gateway />
+    <attach />
+    <detach />
   </div>
 </template>
 
@@ -134,7 +141,7 @@ export default {
         type: 'name',
         inputValue: '',
       },
-      
+
     };
   },
   mounted () {
@@ -146,7 +153,7 @@ export default {
         const resp = await getNetworkList();
         this.networkList = resp.data.filter(item => item.isRouterExternal);
       } catch (error) {
-        
+
       }
     },
     __handleTransformToZh (status) {

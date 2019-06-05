@@ -2,23 +2,25 @@
   <div>
     <page-layout>
       <a-steps :current="currStepIndex">
-        <a-step v-for="item in steps" :key="item.title" :title="item.title"/>
+        <a-step v-for="item in steps" :key="item.title" :title="item.title" />
       </a-steps>
       <div class="steps-content">
-        <Step0
+        <step0
           v-show="currStepIndex === 0"
-          ref="content0" 
+          ref="content0"
           @setDefaultUserName="setDefaultUserName"
         />
-        <Step1
+        <step1
           v-show="currStepIndex === 1"
-          ref="content1" />
-        <Step2
+          ref="content1"
+        />
+        <step2
           v-show="currStepIndex === 2"
-          ref="content2" />
-        <Step3
+          ref="content2"
+        />
+        <step3
           v-show="currStepIndex === 3"
-          ref="content3" 
+          ref="content3"
           :defaultUserName="defaultUserName"
         />
       </div>
@@ -30,13 +32,17 @@
           type="primary"
           :loading="createLoading"
           @click="handleNextClick"
-        >创建</a-button>
+        >
+          创建
+        </a-button>
         <a-button
           v-if="currStepIndex < steps.length - 1"
           style="margin-left: 8px"
           type="primary"
           @click="handleNextClick"
-        >下一步</a-button>
+        >
+          下一步
+        </a-button>
       </div>
     </page-layout>
   </div>
@@ -74,7 +80,7 @@ export default {
         this.$message.success("创建成功！");
         this.$router.push({ name: "instance" });
       } catch (error) {
-        
+
       } finally {
         this.createLoading = false;
       }
@@ -85,7 +91,7 @@ export default {
         const currFormValues = await this.$refs["content" + this.currStepIndex].handleSubmit();
         console.log('currFormValues', currFormValues)
         Object.assign(this.formValueCollection, currFormValues);
-        
+
         if (this.steps.length === this.currStepIndex + 1) {
           this.handleCreateInstance();
         } else {
@@ -93,7 +99,7 @@ export default {
         }
 
       } catch (error) {
-        
+
       }
     },
     handlePrevClick() {

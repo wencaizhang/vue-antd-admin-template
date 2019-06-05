@@ -11,7 +11,7 @@
     <ul v-if="show">
       <li v-for="item in columns" :key="item.title">
         <span>{{ item.title }}</span>
-        <span>{{ currRecord[ item.dataIndex ] || '无'}}</span>
+        <span>{{ currRecord[ item.dataIndex ] || '无' }}</span>
       </li>
     </ul>
 

@@ -10,12 +10,17 @@
               style="margin-right: 10px;"
               icon="plus"
               @click="handleSingleMenuClick('create')"
-            >创建</a-button>
-            <a-button type="danger"
+            >
+              创建
+            </a-button>
+            <a-button
+              type="danger"
               :disabled="!selectedRowKeys.length"
               @click="handleMultiMenuClick('multiDelete')"
               style="margin-right: 10px;"
-            >删除</a-button>
+            >
+              删除
+            </a-button>
           </a-row>
         </a-col>
         <a-col>
@@ -36,7 +41,8 @@
             <a-select-option key="available" value="available">可用</a-select-option>
             <a-select-option key="in-use" value="in-use">使用中</a-select-option>
           </a-select>
-          <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
+          <a-button type="primary" @click="handleDATA" style="margin-left: 8px">
+            搜索
             <a-icon type="search" />
           </a-button>
         </a-col>
@@ -58,9 +64,10 @@
       :loading="loading"
       @change="handleTableChange"
     >
-
       <template slot="name" slot-scope="name, record">
-        <a title="点击查看详情" @click="handleSingleMenuClick('detail', record)">{{name}}</a>
+        <a title="点击查看详情" @click="handleSingleMenuClick('detail', record)">
+          {{ name }}
+        </a>
       </template>
       <template slot="operation" slot-scope="text, record">
         <a-dropdown style="margin-right: 10px;">
@@ -68,28 +75,31 @@
             <a-menu-item
               v-for="item in record.singleMenuOptions"
               :key="item.id"
-            >{{ item.name }}</a-menu-item>
+            >
+              {{ item.name }}
+            </a-menu-item>
           </a-menu>
-          <a-button :disabled="!record.singleMenuOptions.length" style="margin-left: 8px">操作
-            <a-icon type="down"/>
+          <a-button :disabled="!record.singleMenuOptions.length" style="margin-left: 8px">
+            操作
+            <a-icon type="down" />
           </a-button>
         </a-dropdown>
       </template>
     </a-table>
 
-    <CreateModal />
-    <EditModal />
-    <Uninstall />
-    <Dilatation />
-    <Mount />
-    <CreateSnapshoot />
-    <CreateBackups />
-    <CloneModal />
-    <Upload />
-    <Delete />
-    <MultiDelete />
-    <ChangeDiskType />
-    <Detail />
+    <create-modal />
+    <edit-modal />
+    <uninstall />
+    <dilatation />
+    <mount />
+    <create-snapshoot />
+    <create-backups />
+    <clone-modal />
+    <upload />
+    <delete />
+    <multi-delete />
+    <change-disk-type />
+    <detail />
   </div>
 </template>
 

@@ -1,15 +1,15 @@
 <template>
   <section>
-    <PageLayout>
+    <page-layout>
       <h1>资源配额使用明细</h1>
       <div class="container">
         <div class="card" v-for="item in sourceData" :key="item.text">
           <a-card :loading="loading" :title="item.text">
-            <Chart :data="item"/>
+            <chart :data="item" />
           </a-card>
         </div>
       </div>
-    </PageLayout>
+    </page-layout>
   </section>
 </template>
 
@@ -56,7 +56,7 @@ const sourceData = [
   }
 ];
 export default {
-  name: "dashboard",
+  name: "Dashboard",
   components: {
     PageLayout,
     Chart,

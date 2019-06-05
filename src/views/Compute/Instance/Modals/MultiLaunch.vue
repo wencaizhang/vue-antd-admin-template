@@ -11,10 +11,11 @@
       okType="danger"
     >
       <p v-if="some">即将启动下列云主机，请确认你的操作。</p>
-      <p style="color: #ccc;" >本操作只对
+      <p style="color: #ccc;">
+        <span>本操作只对</span>
         <span class="blue">{{ availableStatus.map(s=>$parent.__handleTransformToZh(s)).join('、') }}</span>
-        状态的云主机有效</p>
-
+        <span>状态的云主机有效</span>
+      </p>
       <table>
         <thead>
           <tr>
@@ -24,15 +25,16 @@
           </tr>
         </thead>
         <tbody>
-          
-        <tr v-for="item in list" :key="item.id">
-          <td>{{ item.id.substring(0,8) }}</td>
-          <td>{{ item.name }}</td>
-          <td >
-            <span class="blue" :class="{ 'status-disabled': item.taskState }">{{ item.status_zh }}</span>
-            <a-icon v-show="item.taskState" type="loading-3-quarters" style="font-size: 12px; margin-left: 5px; color: #1890ff;" spin />
-          </td>
-        </tr>
+          <tr v-for="item in list" :key="item.id">
+            <td>{{ item.id.substring(0,8) }}</td>
+            <td>{{ item.name }}</td>
+            <td>
+              <span class="blue" :class="{ 'status-disabled': item.taskState }">
+                {{ item.status_zh }}
+              </span>
+              <a-icon v-show="item.taskState" type="loading-3-quarters" style="font-size: 12px; margin-left: 5px; color: #1890ff;" spin />
+            </td>
+          </tr>
         </tbody>
       </table>
 
@@ -45,7 +47,6 @@
           <a-button @click="handleCancel">确定</a-button>
         </template>
       </template>
-
     </a-modal>
   </div>
 </template>

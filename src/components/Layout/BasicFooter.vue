@@ -1,14 +1,16 @@
 <template>
   <div class="footer">
-    <div class="copyright">Copyright
-      <a-icon type="copyright"/> 北京友普产品与研发部
+    <div class="copyright">
+      <span>Copyright</span>
+      <a-icon type="copyright" />
+      <span>北京友普产品与研发部</span>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "basic-footer"
+  name: "BasicFooter"
 };
 </script>
 

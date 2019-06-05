@@ -9,7 +9,6 @@
       okText="删除"
       okType="danger"
     >
-
       <template v-if="Array.isArray(currRecord.internal) && currRecord.internal.length">
         <p>该路由器下有关联的网络,请先执行"删除网络接口"操作,再执行删除路由器的操作</p>
         <template slot="footer">
@@ -17,10 +16,9 @@
         </template>
       </template>
       <template v-else>
-        <a-alert message="注意：删除路由器后数据不可恢复！" type="warning" showIcon/>
+        <a-alert message="注意：删除路由器后数据不可恢复！" type="warning" showIcon />
         <p>你已经选择了路由"{{ currRecord.name }}",即将删除该路由,请确认你的操作.</p>
       </template>
-      
     </a-modal>
   </div>
 </template>

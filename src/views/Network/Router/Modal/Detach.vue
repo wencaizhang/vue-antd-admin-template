@@ -10,7 +10,6 @@
       okText="删除"
       okType="danger"
     >
-
       <template v-if="currRecord.internal === '无'">
         <p>该路由尚未关联网络接口</p>
       </template>
@@ -25,7 +24,6 @@
         >
         </a-table>
       </template>
-
     </a-modal>
   </div>
 </template>

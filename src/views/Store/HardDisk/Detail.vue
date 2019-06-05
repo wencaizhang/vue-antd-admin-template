@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageLayout>
+    <page-layout>
       <div slot="header">
         <p>硬盘为主机提供块存储设备，它独立于主机的生命周期而存在，可以被连接到任意运行中的主机上。注意，硬盘附加到主机上后，您还需要登录到您的主机的操作系统中去加载该硬盘。当然，也可以从主机上卸载硬盘、并转至其他主机。注意，请先在您的主机的操作系统中卸载硬盘，然后再在友普云控制台上卸载。</p>
         <a-tabs
@@ -15,15 +15,15 @@
       <div class="content">
         <ul v-if="tabKey == 1" class="detail-container">
           <li v-for="item in data" :key="item.key">
-            <span class="key">{{item.name}}</span>
-            <span class="value">{{item.value}}</span>
+            <span class="key">{{ item.name }}</span>
+            <span class="value">{{ item.value }}</span>
           </li>
         </ul>
         <template v-else>
-          <Snapshoot />
+          <snapshoot />
         </template>
       </div>
-    </PageLayout>
+    </page-layout>
   </div>
 </template>
 

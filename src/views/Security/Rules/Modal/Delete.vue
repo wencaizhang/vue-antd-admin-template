@@ -11,8 +11,7 @@
       okText="删除"
       okType="danger"
     >
-      <p style="margin-top: 10px;" >即将删除规则 {{ currRecord.id }}，请确认你的操作。</p>
-
+      <p style="margin-top: 10px;">即将删除规则 {{ currRecord.id }}，请确认你的操作。</p>
     </a-modal>
   </div>
 </template>

@@ -10,7 +10,6 @@
       okText="添加"
     >
       <a-form :form="form" class="create-modal-form">
-
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="规则：">
           <a-select
             :getPopupContainer="getPopupContainer"
@@ -28,7 +27,9 @@
               v-for="item of procotol"
               :key="item.value"
               :value="item.value"
-            >{{ item.label }}</a-select-option>
+            >
+              {{ item.label }}
+            </a-select-option>
           </a-select>
         </a-form-item>
 
@@ -69,7 +70,7 @@
               ]"
             />
             &nbsp;
-            <a-tooltip placement="top" >
+            <a-tooltip placement="top">
               <template slot="title">
                 <span>请输入一个介于-1和255之间的整数（-1表示使用通配符）。</span>
               </template>
@@ -174,7 +175,7 @@
               ]"
             />
             &nbsp;
-            <a-tooltip placement="top" >
+            <a-tooltip placement="top">
               <template slot="title">
                 <span>请输入ICMP类型值范围 (-1: 255)</span>
               </template>
@@ -202,7 +203,7 @@
               ]"
             />
             &nbsp;
-            <a-tooltip placement="top" >
+            <a-tooltip placement="top">
               <template slot="title">
                 <span>请输入ICMP代码范围 (-1: 255)</span>
               </template>
@@ -211,7 +212,11 @@
           </div>
         </a-form-item>
 
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="远程：">
+        <a-form-item
+          :labelCol="{ span: 8 }"
+          :wrapperCol="{ span: 14 }"
+          label="远程："
+        >
           <div class="item-wrap">
             <a-select
               @change="handleChangeRemoteType"
@@ -228,7 +233,7 @@
               <a-select-option value="group">安全组</a-select-option>
             </a-select>
             &nbsp;
-            <a-tooltip placement="top" >
+            <a-tooltip placement="top">
               <template slot="title">
                 <span>选择"CIDR"以指定允许来访的IP地址范围。如欲允许来自另一安全组所有成员的访问，请选择"安全组"。</span>
               </template>
@@ -238,8 +243,10 @@
         </a-form-item>
         <a-form-item
           v-if="remote === 'group'"
-          :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="安全组：">
-
+          :labelCol="{ span: 8 }"
+          :wrapperCol="{ span: 14 }"
+          label="安全组："
+        >
           <a-spin :spinning="isFetchGroupList">
             <a-select
               placeholder="请选择安全组！"
@@ -254,13 +261,18 @@
                 v-for="item in groupList"
                 :value="item.id"
                 :key="item.id"
-              >{{ item.name }}</a-select-option>
+              >
+                {{ item.name }}
+              </a-select-option>
             </a-select>
           </a-spin>
         </a-form-item>
         <a-form-item
           v-if="remote === 'group'"
-          :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="IP类型：">
+          :labelCol="{ span: 8 }"
+          :wrapperCol="{ span: 14 }"
+          label="IP类型："
+        >
           <a-select
             placeholder="请选择IP类型！"
             v-decorator="[
@@ -294,7 +306,7 @@
               ]"
             />
             &nbsp;
-            <a-tooltip placement="top" >
+            <a-tooltip placement="top">
               <template slot="title">
                 <span>无类别域间路由标记(CIDR, 例如 192.168.0.0/24，或者2001:db8::/128)</span>
               </template>
@@ -303,9 +315,7 @@
           </div>
         </a-form-item>
 
-        <p>
-          <h4 style="font-weight: bold; font-size: 18px;">描述：</h4>
-        </p>
+        <h4 style="font-weight: bold; font-size: 18px;">描述：</h4>
         <p>
           实例可以关联安全组，组中的规则定义了允许哪些访问到达被关联的实例。安全组由以下三个主要组件组成：
         </p>

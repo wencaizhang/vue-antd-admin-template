@@ -3,7 +3,7 @@
     <!-- <Breadcrumb/> -->
     <div class="page-header-detail">
       <div class="title">
-        <h1>{{title}}</h1>
+        <h1>{{ title }}</h1>
       </div>
       <div class="desc">
         <slot></slot>

@@ -37,7 +37,6 @@
             <a-select-option :value="0">关停</a-select-option>
           </a-select>
         </a-form-item>
-
       </a-form>
     </a-modal>
   </div>

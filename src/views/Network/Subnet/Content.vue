@@ -11,15 +11,19 @@
                 style="margin-right: 10px;"
                 icon="plus"
                 @click="handleSingleMenuClick('create')"
-              >创建网络</a-button>
+              >
+                创建网络
+              </a-button>
               <a-button
                 type="danger"
                 style="margin-right: 10px;"
                 icon="delete"
                 @click="handleMultiMenuClick('delete')"
-              >删除</a-button>
+              >
+                删除
+              </a-button>
             </span>
-            
+
             <span style="display: inline-flex;">
               <a-input-group compact class="compact-search-input">
                 <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 90px!important;">
@@ -28,11 +32,12 @@
                 </a-select>
                 <a-input
                   style="width: 200px"
-                  @pressEnter="handleDATA" 
+                  @pressEnter="handleDATA"
                   v-model="searchValues.inputValue"
                 />
               </a-input-group>
-              <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
+              <a-button type="primary" @click="handleDATA" style="margin-left: 8px">
+                搜索
                 <a-icon type="search" />
               </a-button>
             </span>
@@ -56,7 +61,6 @@
       :loading="loading"
       @change="handleTableChange"
     >
-
       <template slot="operation" slot-scope="text, record">
         <a-button
           v-if="record.isRouterExternal !== true"
@@ -64,24 +68,28 @@
           style="margin-right: 10px;"
           icon="edit"
           @click="handleSingleMenuClick('edit', record)"
-        >编辑</a-button>
+        >
+          编辑
+        </a-button>
         <!-- <a-dropdown style="margin-right: 10px;">
           <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
             <a-menu-item
               v-for="item in singleMenuOptions"
               :key="item.id"
-            >{{ item.name }}</a-menu-item>
+            >
+              {{ item.name }}
+            </a-menu-item>
           </a-menu>
           <a-button style="margin-left: 8px">操作
-            <a-icon type="down"/>
+            <a-icon type="down" />
           </a-button>
         </a-dropdown> -->
       </template>
     </a-table>
 
-    <CreateModal />
-    <EditModal />
-    <DeleteModal />
+    <create-modal />
+    <edit-modal />
+    <delete-modal />
   </div>
 </template>
 

@@ -34,7 +34,7 @@
                 :key="item.id"
                 :value="item.id"
               >
-              {{ item.ipAddress }}
+                {{ item.ipAddress }}
               </a-select-option>
               <a-icon
                 slot="suffixIcon"
@@ -60,7 +60,8 @@
               v-for="item in (currRecord.network || [])"
               :key="item"
               :value="item"
-            >{{ currRecord.name }}:{{ item }}
+            >
+              {{ currRecord.name }}:{{ item }}
             </a-select-option>
           </a-select>
         </a-form-item>

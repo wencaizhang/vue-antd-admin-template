@@ -10,7 +10,7 @@
           {rules: [{ required: true, message: '请输入手机号!' }]}
         ]"
       >
-        <a-icon slot="prefix" type="mobile" class="icon"/>
+        <a-icon slot="prefix" type="mobile" class="icon" />
       </a-input>
     </a-form-item>
 
@@ -26,7 +26,7 @@
               {rules: [{ required: true, message: '请输入手机号!' }]}
             ]"
           >
-            <a-icon slot="prefix" type="mail" class="icon"/>
+            <a-icon slot="prefix" type="mail" class="icon" />
           </a-input>
         </a-form-item>
       </a-col>

@@ -12,22 +12,29 @@
             style="margin-right: 10px;"
             icon="play-circle"
             @click="handleMultiMenuClick('launch')"
-          >启动</a-button>
+          >
+            启动
+          </a-button>
           <a-button
             type="primary"
             style="margin-right: 10px;"
             icon="poweroff"
             class="shut-down"
             @click="handleMultiMenuClick('shutdown')"
-          >关机</a-button>
+          >
+            关机
+          </a-button>
           <a-dropdown style="margin-right: 10px;">
             <a-menu slot="overlay" @click="handleMultiMenuClick($event.key)">
               <a-menu-item
                 v-for="item in multiMenuOptions"
                 :key="item.id"
-              >{{item.name}}</a-menu-item>
+              >
+                {{ item.name }}
+              </a-menu-item>
             </a-menu>
-            <a-button style="margin-left: 8px">批量操作
+            <a-button style="margin-left: 8px">
+              批量操作
               <a-icon type="down" />
             </a-button>
           </a-dropdown>
@@ -54,11 +61,11 @@
               <a-select-option key="shutoff" value="shutoff">已关机</a-select-option>
               <a-select-option key="reboot" value="reboot">重启中</a-select-option>
             </a-select>
-            <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
+            <a-button type="primary" @click="handleDATA" style="margin-left: 8px">
+              搜索
               <a-icon type="search" />
             </a-button>
           </span>
-
         </div>
         <a-alert type="info" showIcon style="margin-bottom: 16px;">
           <div slot="message">
@@ -68,7 +75,9 @@
               v-show="selectedRowKeys.length"
               style="margin-left: 24px"
               @click="selectedRowKeys = []"
-            >清空</a>
+            >
+              清空
+            </a>
           </div>
         </a-alert>
         <a-table
@@ -112,7 +121,7 @@
             </a-spin>
             <template v-else>
               <template v-if="Array.isArray(network) && network.length">
-              <p v-for="item in network" :key="item">{{ item }}</p>
+                <p v-for="item in network" :key="item">{{ item }}</p>
               </template>
               <template v-else>
                 无
@@ -136,33 +145,35 @@
                   v-for="item in record.singleMenuOptions"
                   :key="item.id"
                   :disabled="item.disabled"
-                >{{ item.name }}</a-menu-item>
+                >
+                  {{ item.name }}
+                </a-menu-item>
               </a-menu>
-              <a-button style="margin-left: 8px" :disabled="!Boolean(record.singleMenuOptions.length)">操作
+              <a-button style="margin-left: 8px" :disabled="!Boolean(record.singleMenuOptions.length)">
+                操作
                 <a-icon type="down" />
               </a-button>
             </a-dropdown>
           </template>
-
         </a-table>
       </div>
     </page-layout>
 
-    <MultiLaunch />
-    <MultiShutdown />
-    <MultiDelete />
-    <MultiRestart />
-    <MultiSoftRestart />
+    <multi-launch />
+    <multi-shutdown />
+    <multi-delete />
+    <multi-restart />
+    <multi-soft-restart />
 
-    <CreateSnapshootModal />
-    <BindIPModal />
-    <UnbindIP />
-    <Delete />
+    <create-snapshoot-modal />
+    <bind-i-p-modal />
+    <unbind-i-p />
+    <delete />
     <!-- <allot-IP-modal /> -->
-    <RebuildCloudHostModal />
-    <EditSecurityGroupModal />
-    <OverviewModal />
-    <ConsolePanel />
+    <rebuild-cloud-host-modal />
+    <edit-security-group-modal />
+    <overview-modal />
+    <console-panel />
   </div>
 </template>
 

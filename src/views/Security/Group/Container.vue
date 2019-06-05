@@ -1,7 +1,7 @@
 <template>
   <div>
     <router-view v-if="$route.matched.length === 4"></router-view>
-    <PageLayout v-else>
+    <page-layout v-else>
       <div slot="header">
         <p>友普云系统为每个用户提供了一个缺省安全组default,其允许所有下行端口,拒绝所有上行端口.您可以创建自己的安全组。初始状态下安全组任何端口都是封闭的，您需要建立规则以打开相应的端口,达到正常访问的目的.</p>
       </div>
@@ -16,14 +16,18 @@
                   style="margin-right: 10px;"
                   icon="plus"
                   @click="handleSingleMenuClick('create')"
-                >创建安全组</a-button>
+                >
+                  创建安全组
+                </a-button>
                 <a-button
                   type="danger"
                   style="margin-right: 10px;"
                   icon="delete"
                   :disabled="!selectedRowKeys.length"
                   @click="handleMultiMenuClick('multiDeleta')"
-                >删除安全组</a-button>
+                >
+                  删除安全组
+                </a-button>
               </a-row>
             </a-col>
             <a-col>
@@ -47,29 +51,30 @@
           :loading="loading"
           @change="handleTableChange"
         >
-
           <template slot="operation" slot-scope="text, record">
             <a-dropdown>
               <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
                 <a-menu-item
                   v-for="item in record.singleMenuOptions"
                   :key="item.id"
-                >{{ item.name }}</a-menu-item>
+                >
+                  {{ item.name }}
+                </a-menu-item>
               </a-menu>
-              <a-button>操作
-                <a-icon type="down"/>
+              <a-button>
+                操作
+                <a-icon type="down" />
               </a-button>
             </a-dropdown>
           </template>
-
         </a-table>
       </div>
-    </PageLayout>
+    </page-layout>
 
-    <CreateModal />
-    <DeleteModal />
-    <EditModal />
-    <MultiDelete />
+    <create-modal />
+    <delete-modal />
+    <edit-modal />
+    <multi-delete />
   </div>
 </template>
 

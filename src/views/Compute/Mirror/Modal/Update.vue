@@ -7,14 +7,16 @@
     :visible="visible"
     :confirmLoading="confirmLoading"
   >
-
     <template slot="footer">
       <a-button @click="handleCancel">取消</a-button>
-      <a-button @click="handleCreate"
+      <a-button
+        @click="handleCreate"
         :disabled="confirmDisabled"
         :loading="confirmLoading"
         type="primary"
-      >确定</a-button>
+      >
+        确定
+      </a-button>
     </template>
 
     <div class="content">
@@ -22,19 +24,24 @@
       <a-input-group compact style="margin-bottom: 10px;">
         <a-input style="width: 40%" v-model="inputValue.key" />
         <a-input style="width: 50%" v-model="inputValue.value" />
-        <a-button style="width: 10%" :disabled="!inputValue.key || !inputValue.value"
-          @click="handleAdd" type="primary" icon="plus" title="添加"></a-button>
+        <a-button
+          style="width: 10%"
+          :disabled="!inputValue.key || !inputValue.value"
+          @click="handleAdd"
+          type="primary"
+          icon="plus"
+          title="添加"
+        ></a-button>
       </a-input-group>
 
       <p v-if="!metaDatas.length">暂无元数据</p>
       <p v-else style="margin-bottom: 5px;">已存在元数据</p>
       <a-input-group compact v-for="item in metaDatas" :key="item.key + item.value" style="margin-bottom: 10px;">
-        <a-input style="width: 40%" :defaultValue="item.key" disabled/>
+        <a-input style="width: 40%" :defaultValue="item.key" disabled />
         <a-input style="width: 50%" :defaultValue="item.value" @change="e => handleChange(item, e.target.value)" />
-        <a-button style="width: 10%"  @click="handleDelete(item)" type="danger" icon="minus" title="删除"></a-button>
+        <a-button style="width: 10%" @click="handleDelete(item)" type="danger" icon="minus" title="删除"></a-button>
       </a-input-group>
     </div>
-
   </a-modal>
 </template>
 <script>

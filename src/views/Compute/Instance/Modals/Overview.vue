@@ -10,11 +10,17 @@
   >
     <ul v-if="show" class="item-descr-list">
       <li v-for="item in columns" :key="item.title || item.dataIndex">
-        <span v-if="item.type === 'title'" class="item-descr-tit" style="color: #333; padding-top: 10px; font-weight: bold;">{{ item.title }}</span>
+        <span v-if="item.type === 'title'" class="item-descr-tit" style="color: #333; padding-top: 10px; font-weight: bold;">
+          {{ item.title }}
+        </span>
         <span v-else-if="item.type === 'html'" v-html="currRecord[item.dataIndex]"></span>
         <template v-else>
-          <span class="item-descr-tit">{{ item.title }}</span>
-          <span class="item-descr-txt">{{ currRecord[ item.dataIndex ] || '无'}}</span>
+          <span class="item-descr-tit">
+            {{ item.title }}
+          </span>
+          <span class="item-descr-txt">
+            {{ currRecord[ item.dataIndex ] || '无' }}
+          </span>
         </template>
       </li>
     </ul>

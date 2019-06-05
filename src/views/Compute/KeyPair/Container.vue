@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageLayout>
+    <page-layout>
       <div slot="header">
         <p>如果您使用的是 Linux 云主机，强烈建议使用 SSH 公钥/私钥 （Keypair）进行远程登录身份验证。您可以创建一个 SSH 密钥，并立刻下载其私钥。请保管好私钥，因为 YPCloud 是不保存您的私钥的。</p>
       </div>
@@ -15,20 +15,26 @@
                   style="margin-right: 10px;"
                   icon="plus"
                   @click="handleSingleMenuClick('create')"
-                >创建</a-button>
+                >
+                  创建
+                </a-button>
                 <a-button
                   type="primary"
                   style="margin-right: 10px;"
                   icon="upload"
                   @click="handleSingleMenuClick('import')"
-                >导入密钥对</a-button>
+                >
+                  导入密钥对
+                </a-button>
                 <a-button
                   type="danger"
                   style="margin-right: 10px;"
                   icon="delete"
                   :disabled="!selectedRowKeys.length"
                   @click="handleMultiMenuClick('batchDeleta')"
-                >删除</a-button>
+                >
+                  删除
+                </a-button>
                 <a-button
                   type="primary"
                   style="margin-right: 10px;"
@@ -36,7 +42,9 @@
                   :disabled="selectedRowKeys.length !== 1"
                   :title="selectedRowKeys.length !== 1 ? '您只能选择其中一项进行修改' : '修改密钥对属性'"
                   @click="handleMultiMenuClick('edit')"
-                >编辑</a-button>
+                >
+                  编辑
+                </a-button>
               </a-row>
             </a-col>
             <a-col>
@@ -62,7 +70,7 @@
         >
         </a-table>
       </div>
-    </PageLayout>
+    </page-layout>
 
     <create-modal />
     <import-modal />
@@ -76,7 +84,7 @@
 
 <script>
 import CreateModal from "./Modal/Create";
-import TagModal from "./Modal/Tag";
+// import TagModal from "./Modal/Tag";
 import DeleteModal from "./Modal/Delete";
 import ImportModal from "./Modal/Import";
 import EditModal from "./Modal/Edit";
@@ -90,7 +98,7 @@ export default {
   mixins: [tablePageMixins],
   components: {
     CreateModal,
-    TagModal,
+    // TagModal,
     DeleteModal,
     ImportModal,
     EditModal,

@@ -71,9 +71,7 @@
           :wrapperCol="formItemLayout.wrapperCol"
           label="镜像文件："
         >
-
           <uploader ref="uploader"></uploader>
-
         </a-form-item>
         <a-form-item
           v-if="sourceType == 1"
@@ -81,7 +79,8 @@
           :wrapperCol="formItemLayout.wrapperCol"
           label="镜像地址："
         >
-          <a-input placeholder="请输入镜像地址"
+          <a-input
+            placeholder="请输入镜像地址"
             v-decorator="[
               'imageUrl',
               {
@@ -143,7 +142,7 @@
           label="最小磁盘(G)："
         >
           <a-input-number
-            :min="40"
+            :min="1"
             :max="200"
             v-decorator="[
               'disk',

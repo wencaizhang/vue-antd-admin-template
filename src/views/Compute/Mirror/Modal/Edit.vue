@@ -41,30 +41,6 @@
             ]"
           />
         </a-form-item>
-
-        <a-form-item
-          :labelCol="formItemLayout.labelCol"
-          :wrapperCol="formItemLayout.wrapperCol"
-          label="镜像格式："
-        >
-          <a-select
-            placeholder="选择镜像格式"
-            v-decorator="[
-              'imageFormat',
-              {
-                rules: [{ required: true, message: '请选择镜像格式!' }]
-              }
-            ]"
-          >
-            <a-select-option
-              v-for="item in imageFormatList"
-              :value="item.value"
-              :key="item.value"
-            >
-              {{ item.label }}
-            </a-select-option>
-          </a-select>
-        </a-form-item>
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
@@ -97,14 +73,6 @@
             ]"
           />
         </a-form-item>
-        <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
-          <!-- 公有[0:否 1:是] 	integer($int32) -->
-          <a-checkbox
-            v-decorator="[
-              'isPublic',
-            ]"
-          >公有</a-checkbox>
-        </a-form-item>
       </a-form>
     </a-modal>
   </div>
@@ -126,11 +94,6 @@ export default {
       initialValues: {},
     };
   },
-  computed: {
-    imageFormatList () {
-      return this.$parent.imageFormatList;
-    }
-  },
   methods: {
     onShow () {
       const currRecord = this.currRecord;
@@ -139,8 +102,7 @@ export default {
         description: currRecord.description === '无' ? '' : currRecord.description,
         imageFormat: currRecord.imageFormat,
         disk: currRecord.minDisk || 0,
-        memory: currRecord.minMemory || 0,
-        isPublic: currRecord.isPublic === 'isPublic',
+        memory: currRecord.minMemory / 1024 || 0,
       };
       setTimeout(() => {
         this.form.setFieldsValue(this.initialValues);

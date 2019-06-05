@@ -10,7 +10,7 @@
       okText="删除"
       okType="danger"
     >
-      <a-alert message="注意：删除备份后数据不可恢复！" type="warning" showIcon/>
+      <a-alert message="注意：删除备份后数据不可恢复！" type="warning" showIcon />
       <p style="margin-top: 10px; text-align: center;">是否删除硬盘备份{{ currRecord.name }}?</p>
     </a-modal>
   </div>

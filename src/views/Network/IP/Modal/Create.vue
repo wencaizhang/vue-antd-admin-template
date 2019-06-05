@@ -25,7 +25,9 @@
                 v-for="item in $parent.networkList"
                 :value="item.id"
                 :key="item.id"
-              >{{item.name}}</a-select-option>
+              >
+                {{ item.name }}
+              </a-select-option>
             </a-select>
           </a-spin>
         </a-form-item>
@@ -51,12 +53,12 @@
           <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="带宽(Mbps)：">
             <a-slider
               v-decorator="[
-              'bandwidth',
-              {
-                initialValue: bandwidth,
-                rules: [{ required: true, message: '请填写带宽' }]
-              }
-            ]"
+                'bandwidth',
+                {
+                  initialValue: bandwidth,
+                  rules: [{ required: true, message: '请填写带宽' }]
+                }
+              ]"
               :min="1"
               :max="50"
               :tipFormatter="v => `${v}Mb`"

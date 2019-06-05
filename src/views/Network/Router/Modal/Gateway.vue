@@ -26,12 +26,15 @@
               :key="item.id" 
               :value="item.id"
             >
-            {{item.name}}
+              {{ item.name }}
             </a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="路由名称：">
-          <a-input :value="currRecord.name" disabled  placeholder="请输入名称"
+          <a-input
+            :value="currRecord.name"
+            disabled
+            placeholder="请输入名称"
           />
         </a-form-item>
       </a-form>

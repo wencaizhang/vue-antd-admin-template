@@ -46,7 +46,8 @@
             <template slot="content">
               <p>密钥对是用来登录您创建的云主机的式。为密钥对取一个方便您自己辨别的名字，然后在下方提供的空间内粘贴您的SSH公钥。</p>
 
-              <p>可以使用 ssh-keygen 命令来生成SSH密钥对：
+              <p>
+                <span>可以使用 ssh-keygen 命令来生成SSH密钥对：</span>
                 <pre class="code">ssh-keygen -t rsa -f cloud.key</pre>
               </p>
               <p>
@@ -59,8 +60,9 @@
               </p>
             </template>
 
-            <span class="more">了解更多
-              <a-icon style="margin-left: 5px;" type="question-circle-o"/>
+            <span class="more">
+              了解更多
+              <a-icon style="margin-left: 5px;" type="question-circle-o" />
             </span>
           </a-popover>
         </a-col>

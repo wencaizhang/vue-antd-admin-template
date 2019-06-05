@@ -1,7 +1,7 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger">
     <a-layout-sider :trigger="null" width="256px" collapsible v-model="collapsed">
-      <div class="logo"/>
+      <div class="logo" />
       <side-menu
         theme="dark"
         mode="inline"
@@ -12,14 +12,14 @@
     </a-layout-sider>
 
     <a-layout class="ant-layout-container">
-      <basic-header @collapseHandle="collapseHandle"/>
+      <basic-header @collapseHandle="collapseHandle" />
 
       <div class="ant-layout-content">
         <router-view></router-view>
       </div>
 
       <a-layout-footer style="padding: 0px">
-        <basic-footer/>
+        <basic-footer />
       </a-layout-footer>
     </a-layout>
   </a-layout>

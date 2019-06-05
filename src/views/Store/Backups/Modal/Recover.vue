@@ -56,11 +56,11 @@
             <a-input-number
               :min="Number.parseInt(currRecord.capacity)"
               v-decorator="[
-              'capacity',
-              {
-                initialValue: Number.parseInt(currRecord.capacity),
-                rules: [{ required: true, message: '请输入容量' }]}
-            ]"
+                'capacity',
+                {
+                  initialValue: Number.parseInt(currRecord.capacity),
+                  rules: [{ required: true, message: '请输入容量' }]}
+              ]"
             />
           </a-form-item>
           <a-form-item
@@ -70,10 +70,10 @@
           >
             <a-select
               v-decorator="[
-              'buyLength',
-              {
-                rules: [{ required: true, message: '请选择购买时长' }]}
-            ]"
+                'buyLength',
+                {
+                  rules: [{ required: true, message: '请选择购买时长' }]}
+              ]"
             >
               <a-select-option :value="1">1个月</a-select-option>
               <a-select-option :value="2">2个月</a-select-option>

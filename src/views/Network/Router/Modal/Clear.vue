@@ -10,7 +10,6 @@
       okText="清除"
       okType="danger"
     >
-      
       <template v-if="currRecord.extrannet === '无'">
         <template slot="footer">
           <a-button @click="handleCancel">取消</a-button>
@@ -21,8 +20,6 @@
         你已选择 {{ currRecord.name }} 。
         清除网关后将无法联通公网. 请确认您的选择。你可以通过使用网关配置动作稍后重置网关，但网关IP可能改变。
       </p>
-
-
     </a-modal>
   </div>
 </template>

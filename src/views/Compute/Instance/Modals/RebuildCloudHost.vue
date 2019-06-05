@@ -15,7 +15,7 @@
             <a-select
               v-decorator="[
                 'imageId',
-                { 
+                {
                   initialValue: imageList[0] && imageList[0].value,
                   rules: [{ required: true, message: '请选择镜像！!' }]
                 }
@@ -26,7 +26,9 @@
                 v-for="item in imageList"
                 :key="item.id"
                 :value="item.id"
-              >{{ item.name }}</a-select-option>
+              >
+                {{ item.name }}
+              </a-select-option>
             </a-select>
           </a-spin>
         </a-form-item>
@@ -64,7 +66,7 @@ export default {
         this.imageList = resp.data;
       } catch (err) {
         if (err.response.status === 404) {
-          
+
         }
       } finally {
         this.spinning = false;

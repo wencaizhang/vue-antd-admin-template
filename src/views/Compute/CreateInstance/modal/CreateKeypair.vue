@@ -63,9 +63,13 @@
 // import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { rulesObj } from '@/utils/util';
 export default {
-  name: 'create',
+  name: 'Create',
   // mixins: [baseModalMixins, formModalMixins],
-  props: [ 'visible' ],
+  props: {
+    visible: {
+      type: Boolean
+    }
+  },
   data() {
     return {
       rulesObj,

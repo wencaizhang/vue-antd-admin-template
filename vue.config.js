@@ -9,6 +9,7 @@ module.exports = {
   configureWebpack: {
 
   },
+  lintOnSave: process.env.NODE_ENV !== 'production',
   chainWebpack: (config) => {
     config.resolve.alias
       .set('@$', resolve('src'))

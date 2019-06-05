@@ -23,8 +23,12 @@ import { downloadFile } from '@/utils/util';
 import { createKeyPair as fetchAPI } from '@/api/compute/keypair';
 export default {
   // mixins: [baseModalMixins, formModalMixins],
-  props: [ 'visible' ],
-  name: 'download',
+  props: {
+    visible: {
+      type: Boolean
+    }
+  },
+  name: 'Download',
   data() {
     return {
       fetchAPI,

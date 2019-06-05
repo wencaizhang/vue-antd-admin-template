@@ -40,16 +40,19 @@
           />
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14,offset:8 }" label>
-          <a-checkbox v-decorator="[
-            'bootable',
-            {
-              initialValue: currRecord.bootable,
-              valuePropName: 'checked',
-            }
-          ]">可启动
+          <a-checkbox
+            v-decorator="[
+              'bootable',
+              {
+                initialValue: currRecord.bootable,
+                valuePropName: 'checked',
+              }
+            ]"
+          >
+            可启动
             <a-tooltip>
               <template slot="title">“可启动”标记标明此硬盘可以被用来创建主机。</template>
-              <a-icon type="info-circle"/>
+              <a-icon type="info-circle" />
             </a-tooltip>
           </a-checkbox>
         </a-form-item>

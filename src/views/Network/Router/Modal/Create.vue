@@ -17,9 +17,9 @@
         >
           <a-input
             v-decorator="[
-            'routerName',
-            {rules: [{ required: true, message: '请填写路由器名称!' }]}
-          ]"
+              'routerName',
+              {rules: [{ required: true, message: '请填写路由器名称!' }]}
+            ]"
             placeholder="路由器名称"
           />
         </a-form-item>
@@ -40,7 +40,7 @@
               :key="item.id" 
               :value="item.id"
             >
-            {{item.name}}
+              {{ item.name }}
             </a-select-option>
           </a-select>
         </a-form-item>

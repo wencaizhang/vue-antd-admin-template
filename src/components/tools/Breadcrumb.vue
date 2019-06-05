@@ -1,7 +1,7 @@
 <template>
   <a-breadcrumb class="breadcrumb">
     <a-breadcrumb-item v-for="item in matched" :key="item.path || 0">
-      <router-link :to="{ name: item.name }">{{item.meta.title}}</router-link>
+      <router-link :to="{ name: item.name }">{{ item.meta.title }}</router-link>
     </a-breadcrumb-item>
   </a-breadcrumb>
 </template>

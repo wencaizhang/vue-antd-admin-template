@@ -18,14 +18,14 @@
         >
           <a-input
             v-decorator="[
-            'networkName',
-            {
-              rules: [
-                { required: true, message: '请填写网络名称!' },
-                rulesObj.name,
-              ]
-            }
-          ]"
+              'networkName',
+              {
+                rules: [
+                  { required: true, message: '请填写网络名称!' },
+                  rulesObj.name,
+                ]
+              }
+            ]"
             placeholder="网络名称"
           />
         </a-form-item>
@@ -78,12 +78,11 @@
           />
 
           <a-tooltip style="position: absolute; top: 50%; right: -5px; transform: translate(100%, -50%);">
-            <template slot='title'>
+            <template slot="title">
               CIDR格式的网络地址 (例如 192.168.0.0/24, 2001:DB8::/48)
             </template>
-            <a-icon type="info-circle"/>
+            <a-icon type="info-circle" />
           </a-tooltip>
-
         </a-form-item>
 
         <a-row type="flex">
@@ -99,9 +98,14 @@
         <template v-if="showMore">
           <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
             <!-- <a-checkbox checked>禁用网关</a-checkbox> -->
-            <a-checkbox @change="onChangeDisableGateway" v-decorator="[
+            <a-checkbox
+              @change="onChangeDisableGateway"
+              v-decorator="[
                 'isDisableGateway',
-              ]">禁用网关</a-checkbox>
+              ]"
+            >
+              禁用网关
+            </a-checkbox>
           </a-form-item>
           <a-form-item :labelCol="formItemLayout.labelCol" :wrapperCol="{ span: 14,offset:8 }" label>
             <a-checkbox checked>激活DHCP</a-checkbox>

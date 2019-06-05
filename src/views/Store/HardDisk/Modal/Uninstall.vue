@@ -10,7 +10,7 @@
       okText="卸载"
       okType="danger"
     >
-      <a-alert message="注意：卸载硬盘请确保硬盘挂载到的主机已在操作系统卸载挂载。" type="warning" showIcon/>
+      <a-alert message="注意：卸载硬盘请确保硬盘挂载到的主机已在操作系统卸载挂载。" type="warning" showIcon />
       <p style="margin-top: 10px; text-align: center;">是否确定要卸载主机<span>{{ currRecord.mountHostAndDrive }}</span>挂载的硬盘<span>{{ currRecord.name }}</span>?</p>
     </a-modal>
   </div>

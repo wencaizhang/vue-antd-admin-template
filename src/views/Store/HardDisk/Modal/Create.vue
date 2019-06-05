@@ -9,7 +9,7 @@
       title="创建硬盘"
       okText="保存"
     >
-      <a-form :form="form" >
+      <a-form :form="form">
         <a-form-item
           class="the-form-item-for-position"
           label="名称"
@@ -82,7 +82,9 @@
               v-for="item in resourceType"
               :key="item.id"
               :value="item.value"
-            >{{item.name}}</a-select-option>
+            >
+              {{ item.name }}
+            </a-select-option>
           </a-select>
         </a-form-item>
         <a-form-item
@@ -109,7 +111,9 @@
                 v-for="item in formItemData.options"
                 :key="item.id"
                 :value="item.id"
-              >{{item.name}}</a-select-option>
+              >
+                {{ item.name }}
+              </a-select-option>
             </a-select>
           </a-spin>
         </a-form-item>

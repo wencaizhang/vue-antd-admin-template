@@ -4,25 +4,32 @@
       <div class="header">
         <!-- <a href="/" class="logo">友普云自服务</a> -->
       </div>
-      <div class="desc">友普云自服务</div>
+      <h1 style="text-align: center;">
+        友普云自服务
+      </h1>
     </div>
     <div class="main">
-      <UsernameForm ref="UsernameForm"/>
+      <username-form ref="UsernameForm" />
       <!-- <a-tabs
         :activeKey="customActiveKey"
         :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
         @change="key => customActiveKey = key"
       >
         <a-tab-pane key="UsernameForm" tab="账号密码登陆">
-          <UsernameForm ref="UsernameForm"/>
+          <UsernameForm ref="UsernameForm" />
         </a-tab-pane>
         <a-tab-pane key="PhoneForm" tab="手机号登陆">
-          <PhoneForm ref="PhoneForm"/>
+          <PhoneForm ref="PhoneForm" />
         </a-tab-pane>
       </a-tabs> -->
 
       <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-        <a-checkbox class="com-unselect" v-model="formLogin.rememberMe">自动登录</a-checkbox>
+        <a-checkbox class="com-unselect" v-model="formLogin.rememberMe">
+          自动登录
+        </a-checkbox>
+        <router-link class="forge" :to="{ name: 'forget' }">
+          忘记密码
+        </router-link>
       </div>
       <a-button
         size="large"
@@ -33,23 +40,20 @@
         :loading="loading"
         :disabled="loading"
         @click="handleSubmit"
-      >登录</a-button>
+      >
+        登录
+      </a-button>
 
-      <div class="user-login-other">
+      <div class="user-login-other" style="display: flex; flex-direction: row-reverse; justify-content: space-between; margin-top: 10px;">
         <!-- <div>
             <span>其他登陆方式</span>
             <a>
-              <a-icon class="item-icon" type="alipay-circle"></a-icon>
+              <a-icon class="item-icon" type="wechat" title="微信登录"></a-icon>
             </a>
-            <a>
-              <a-icon class="item-icon" type="taobao-circle"></a-icon>
-            </a>
-            <a>
-              <a-icon class="item-icon" type="weibo-circle"></a-icon>
-            </a>
-        </div>-->
-        <!-- <router-link :to="{ name: 'recover', params: { user: 'aaa'} }" class="forge-password">忘记密码</router-link>
-        <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>-->
+        </div> -->
+        <router-link class="register" :to="{ name: 'register' }">
+          注册账户
+        </router-link>
       </div>
     </div>
   </div>
@@ -59,7 +63,7 @@
 import Vue from "vue";
 import notification from "ant-design-vue/es/notification";
 
-import PhoneForm from "./Login/PhoneForm";
+// import PhoneForm from "./Login/PhoneForm";
 import UsernameForm from "./Login/UsernameForm";
 
 import { mapActions } from "vuex";
@@ -72,7 +76,7 @@ import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 export default {
   components: {
     UsernameForm,
-    PhoneForm
+    // PhoneForm
   },
   data() {
     return {
@@ -232,18 +236,19 @@ export default {
     margin-top: 24px;
     line-height: 22px;
 
-    .item-icon {
-      font-size: 24px;
-      color: rgba(0, 0, 0, 0.2);
-      margin-left: 16px;
-      vertical-align: middle;
-      cursor: pointer;
-      transition: color 0.3s;
 
-      &:hover {
-        color: #1890ff;
-      }
-    }
+  }
+}
+.item-icon {
+  font-size: 24px;
+  color: rgba(0, 0, 0, 0.2);
+  margin-left: 16px;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #1890ff;
   }
 }
 </style>

@@ -7,9 +7,9 @@
           :type="collapsed ? 'menu-unfold' : 'menu-fold'"
           @click="collapseHandle"
         />
-        <Breadcrumb/>
+        <breadcrumb />
       </div>
-      <header-user-menu/>
+      <header-user-menu />
     </div>
   </a-layout-header>
 </template>
@@ -18,7 +18,7 @@
 import HeaderUserMenu from "../tools/HeaderUserMenu";
 import Breadcrumb from "@/components/tools/Breadcrumb";
 export default {
-  name: "basic-header",
+  name: "BasicHeader",
   components: {
     HeaderUserMenu,Breadcrumb
   },

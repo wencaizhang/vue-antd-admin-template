@@ -31,7 +31,9 @@
             v-for="item in optionList.cpu"
             :key="item.value"
             :value="item.value"
-          >{{item.text}}</a-radio-button>
+          >
+            {{ item.text }}
+          </a-radio-button>
         </a-radio-group>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="内存">
@@ -49,7 +51,9 @@
             v-for="item in optionList.memory"
             :key="item.value"
             :value="item.value"
-          >{{item.text}}</a-radio-button>
+          >
+            {{ item.text }}
+          </a-radio-button>
         </a-radio-group>
       </a-form-item>
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="系统盘">
@@ -60,17 +64,17 @@
             :max="200"
             @blur="handleSystemDiskBlur"
             v-decorator="[
-            'systemDisk',
-            {
-              initialValue: 40,
-              rules: [{ required: true, message: '请填写系统盘大小!' }]
-            }
-          ]"
+              'systemDisk',
+              {
+                initialValue: 40,
+                rules: [{ required: true, message: '请填写系统盘大小!' }]
+              }
+            ]"
           />
           <span style="margin: 0 5px">G</span>
           <a-tooltip class="tooltip">
             <template slot="title">可选大小40G-200G,步长为10G</template>
-            <a-icon type="info-circle"/>
+            <a-icon type="info-circle" />
           </a-tooltip>
         </a-col>
       </a-form-item>

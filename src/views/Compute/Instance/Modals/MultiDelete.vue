@@ -11,7 +11,6 @@
       okType="danger"
     >
       <p>即将删除下列云主机，请确认你的操作。</p>
-
       <table>
         <thead>
           <tr>
@@ -21,25 +20,32 @@
           </tr>
         </thead>
         <tbody>
-          
-        <tr v-for="item in list" :key="item.id">
-          <td>{{ item.id.substring(0,8) }}</td>
-          <td>{{ item.name }}</td>
-          <td >
-            <span class="blue" :class="{ 'status-disabled': item.taskState }">{{ item.status_zh }}</span>
-            <a-icon v-show="item.taskState" type="loading-3-quarters" style="font-size: 12px; margin-left: 5px; color: #1890ff;" spin />
-          </td>
-        </tr>
+          <tr v-for="item in list" :key="item.id">
+            <td>{{ item.id.substring(0,8) }}</td>
+            <td>{{ item.name }}</td>
+            <td>
+              <span class="blue" :class="{ 'status-disabled': item.taskState }">
+                {{ item.status_zh }}
+              </span>
+              <a-icon v-show="item.taskState" type="loading-3-quarters" style="font-size: 12px; margin-left: 5px; color: #1890ff;" spin />
+            </td>
+          </tr>
         </tbody>
       </table>
 
       <template slot="footer">
         <template v-if="handleItemCount">
-          <a-button @click="handleCancel">取消</a-button>
-          <a-button @click="handleCreate" :loading="confirmLoading" type="danger">删除</a-button>
+          <a-button @click="handleCancel">
+            取消
+          </a-button>
+          <a-button @click="handleCreate" :loading="confirmLoading" type="danger">
+            删除
+          </a-button>
         </template>
         <template v-else>
-          <a-button @click="handleCancel">确定</a-button>
+          <a-button @click="handleCancel">
+            确定
+          </a-button>
         </template>
       </template>
     </a-modal>

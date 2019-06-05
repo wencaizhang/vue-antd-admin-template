@@ -11,16 +11,21 @@
                 style="margin-right: 10px;"
                 icon="plus"
                 @click="handleSingleMenuClick('create')"
-              >申请IP</a-button>
+              >
+                申请IP
+              </a-button>
               <a-dropdown style="margin-right: 10px;">
                 <a-menu slot="overlay" @click="handleMultiMenuClick($event.key)">
                   <a-menu-item
                     v-for="item in multiMenuOptions"
                     :key="item.id"
-                  >{{item.name}}</a-menu-item>
+                  >
+                    {{ item.name }}
+                  </a-menu-item>
                 </a-menu>
-                <a-button style="margin-left: 8px">批量操作
-                  <a-icon type="down"/>
+                <a-button style="margin-left: 8px">
+                  批量操作
+                  <a-icon type="down" />
                 </a-button>
               </a-dropdown>
             </span>
@@ -31,11 +36,12 @@
                 </a-select>
                 <a-input
                   style="width: 200px"
-                  @pressEnter="handleDATA" 
+                  @pressEnter="handleDATA"
                   v-model="searchValues.inputValue"
                 />
               </a-input-group>
-              <a-button type="primary" @click="handleDATA" style="margin-left: 8px">搜索
+              <a-button type="primary" @click="handleDATA" style="margin-left: 8px">
+                搜索
                 <a-icon type="search" />
               </a-button>
             </span>
@@ -59,32 +65,35 @@
       :loading="loading"
       @change="handleTableChange"
     >
-
       <template slot="operation" slot-scope="text, record">
         <a-button
           type="primary"
           style="margin-right: 10px;"
           icon="edit"
           @click="handleSingleMenuClick('bind-ip', record)"
-        >绑定IP</a-button>
+        >
+          绑定IP
+        </a-button>
         <!-- <a-dropdown style="margin-right: 10px;">
           <a-menu slot="overlay" @click="handleSingleMenuClick($event.key, record)">
             <a-menu-item
               v-for="item in singleMenuOptions"
               :key="item.id"
-            >{{ item.name }}</a-menu-item>
+            >
+              {{ item.name }}
+            </a-menu-item>
           </a-menu>
           <a-button style="margin-left: 8px">操作
-            <a-icon type="down"/>
+            <a-icon type="down" />
           </a-button>
         </a-dropdown> -->
       </template>
     </a-table>
 
-    <CreateModal />
-    <BindIP />
-    <FreeIP />
-    <UnbindIP />
+    <create-modal />
+    <bind-ip />
+    <free-ip />
+    <unbind-ip />
   </div>
 </template>
 
@@ -106,9 +115,9 @@ export default {
   mixins: [tablePageMixins],
   components: {
     CreateModal,
-    BindIP,
-    FreeIP,
-    UnbindIP
+    BindIp: BindIP,
+    FreeIp: FreeIP,
+    UnbindIp: UnbindIP
   },
 
   data() {
@@ -135,7 +144,7 @@ export default {
         const resp = await getNetworkList();
         this.networkList = resp.data.filter(item => item.isRouterExternal);
       } catch (error) {
-        
+
       } finally {
         this.fetchNetworkListLoading = false;
       }

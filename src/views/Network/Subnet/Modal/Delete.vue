@@ -10,7 +10,7 @@
       okText="删除"
       okType="danger"
     >
-      <a-alert message="注意：删除网络后数据不可恢复！" type="warning" showIcon/>
+      <a-alert message="注意：删除网络后数据不可恢复！" type="warning" showIcon />
 
       <p style="margin-top: 10px;">
         你已经选择了网络“{{ totalList.map(item => item.name).join(', ') }}”，
@@ -25,7 +25,6 @@
       <template v-if="bindInstanList.length" slot="footer">
         <a-button @click="handleCancel">取消</a-button>
       </template>
-
     </a-modal>
   </div>
 </template>

@@ -9,7 +9,7 @@
       title="分配公网IP"
       okText="确定"
     >
-      <a-alert message="说明：从指定的公网IP池中分配一个地址" type="info" style="margin-bottom: 10px;" showIcon/>
+      <a-alert message="说明：从指定的公网IP池中分配一个地址" type="info" style="margin-bottom: 10px;" showIcon />
       <a-form :form="form">
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="资源池：">
           <a-select
@@ -44,11 +44,11 @@
           <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="带宽(Mbps)：">
             <a-slider
               v-decorator="[
-              'bandwidth',
-              {
-                rules: [{ required: true, message: '请填写带宽' }]
-              }
-            ]"
+                'bandwidth',
+                {
+                  rules: [{ required: true, message: '请填写带宽' }]
+                }
+              ]"
               :min="1"
               :max="50"
               :tipFormatter="v => `${v}Mb`"

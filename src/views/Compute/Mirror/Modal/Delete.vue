@@ -10,7 +10,6 @@
       okType="danger"
     >
       <p>即将删除镜像“{{ currRecord.name }}”，请确认你的操作。</p>
-
     </a-modal>
   </div>
 </template>

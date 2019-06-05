@@ -10,7 +10,7 @@
       okText="删除"
       okType="danger"
     >
-      <a-alert message="注意：删除路由器后数据不可恢复！" type="warning" showIcon/>
+      <a-alert message="注意：删除路由器后数据不可恢复！" type="warning" showIcon />
       <p>
         你已经选择了路由器“{{ totalList.map(item => item.name).join(', ') }}”，
         <template v-if="internalList.length">
