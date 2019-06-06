@@ -16,6 +16,7 @@
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-input
+            placeholder="镜像名称"
             v-decorator="[
               'name',
               {

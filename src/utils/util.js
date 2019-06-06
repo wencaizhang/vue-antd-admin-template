@@ -45,7 +45,7 @@ export const rulesObj = {
     message: '请输入正确手机号码!'
   },
   http: {
-    pattern: /^http(s)?:\/\/$/,
+    pattern: /^http(s)?:\/\//,
     message: '请输入正确的url!'
   },
 
