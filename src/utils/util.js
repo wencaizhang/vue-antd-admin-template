@@ -44,6 +44,11 @@ export const rulesObj = {
     pattern: /^\d{11}$/,
     message: '请输入正确手机号码!'
   },
+  http: {
+    pattern: /^http(s)?:\/\/$/,
+    message: '请输入正确的url!'
+  },
+
 }
 
 /**

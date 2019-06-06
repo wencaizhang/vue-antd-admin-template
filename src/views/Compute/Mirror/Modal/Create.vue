@@ -84,7 +84,10 @@
             v-decorator="[
               'imageUrl',
               {
-                rules: [{ required: true, message: '请输入镜像地址' }]
+                rules: [
+                  { required: true, message: '请输入镜像地址' },
+                  rulesObj.http
+                ]
               }
             ]"
           />

@@ -48,7 +48,7 @@ export default {
         dataIndex: "status_zh",
       },
       {
-        title: "容量",
+        title: "大小",
         dataIndex: "capacity_zh",
       },
       {
@@ -61,23 +61,27 @@ export default {
       },
       {
         title: "磁盘格式",
-        dataIndex: "",
+        dataIndex: "imageFormat_zh",
       },
       {
         title: "容器格式",
-        dataIndex: "",
+        dataIndex: "containerFormat",
       },
       {
         title: "创建时间",
         dataIndex: "createDateTime",
       },
       {
-        title: "创建时登录用户间",
-        dataIndex: "ssh_uer",
+        title: "默认用户",
+        dataIndex: "sshUer",
       },
       {
-        title: "SSH端口",
-        dataIndex: "ssh_port",
+        title: "默认SSH端口",
+        dataIndex: "sshPort",
+      },
+      {
+        title: "源实例ID",
+        dataIndex: "instanceId",
       },
     ];
     return {
