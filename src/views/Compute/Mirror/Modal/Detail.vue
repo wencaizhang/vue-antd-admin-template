@@ -73,7 +73,7 @@ export default {
       },
       {
         title: "默认用户",
-        dataIndex: "sshUer",
+        dataIndex: "sshUser",
       },
       {
         title: "默认SSH端口",
