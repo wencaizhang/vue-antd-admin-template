@@ -183,6 +183,7 @@ export default {
           status_zh,
           imageType_zh,
           capacity_zh,
+          minMemory: item.minMemory / 1024
         })
       })
       return ret;

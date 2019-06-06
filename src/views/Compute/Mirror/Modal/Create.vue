@@ -215,9 +215,7 @@ export default {
       const self = this;
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          self.formValues = Object.assign({}, self.formValues, values, {
-            memory: values.memory * 1024,
-          })
+          self.formValues = Object.assign({}, self.formValues, values)
           if (self.sourceType === 0) {
             self.formValues.imageUrl = self.$refs.uploader.file.url;
           }

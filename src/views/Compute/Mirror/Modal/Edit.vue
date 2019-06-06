@@ -102,7 +102,7 @@ export default {
         description: currRecord.description === '无' ? '' : currRecord.description,
         imageFormat: currRecord.imageFormat,
         disk: currRecord.minDisk || 0,
-        memory: currRecord.minMemory / 1024 || 0,
+        memory: currRecord.minMemory || 0,
       };
       setTimeout(() => {
         this.form.setFieldsValue(this.initialValues);

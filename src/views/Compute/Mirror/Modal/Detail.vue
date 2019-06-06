@@ -52,11 +52,11 @@ export default {
         dataIndex: "capacity_zh",
       },
       {
-        title: "最小磁盘",
+        title: "最小磁盘(G)",
         dataIndex: "minDisk",
       },
       {
-        title: "最小内存",
+        title: "最小内存(G)",
         dataIndex: "minMemory",
       },
       {
