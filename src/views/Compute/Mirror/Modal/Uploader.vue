@@ -69,7 +69,8 @@ export default {
       this.uploader.fileList
         .filter(item => item !== file)
         .forEach(item => this.uploader.removeFile(item));
-
+      this.file.url = '';
+      this.file.MD5 = '';
       this.computeMD5(file);
     },
     onFileProgress(rootFile, file, chunk) {

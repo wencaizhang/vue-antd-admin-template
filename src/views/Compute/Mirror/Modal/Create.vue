@@ -218,6 +218,10 @@ export default {
           self.formValues = Object.assign({}, self.formValues, values)
           if (self.sourceType === 0) {
             self.formValues.imageUrl = self.$refs.uploader.file.url;
+            if (!self.formValues.imageUrl) {
+              this.$message.warn('请确认镜像文件上传完成！')
+              return;
+            }
           }
           self.handleFetch();
         }
