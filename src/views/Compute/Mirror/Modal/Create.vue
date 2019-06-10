@@ -38,7 +38,7 @@
             v-decorator="[
               'description',
               {
-                rules: [{ message: '请输入描述' }]
+                rules: [ rulesObj.desc, ]
               }
             ]"
           />
@@ -215,7 +215,9 @@ export default {
       const self = this;
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          self.formValues = Object.assign({}, self.formValues, values)
+          self.formValues = Object.assign({}, self.formValues, values, {
+            memory: values.memory * 1024,
+          });
           if (self.sourceType === 0) {
             self.formValues.imageUrl = self.$refs.uploader.file.url;
             if (!self.formValues.imageUrl) {

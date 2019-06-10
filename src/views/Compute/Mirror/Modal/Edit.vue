@@ -122,7 +122,9 @@ export default {
       const self = this;
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          self.formValues = Object.assign({}, self.formValues, values);
+          self.formValues = Object.assign({}, self.formValues, values, {
+            memory: values.memory * 1024,
+          });
           self.diff();
         }
       });
