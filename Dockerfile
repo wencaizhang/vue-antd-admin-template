@@ -1,11 +1,13 @@
 FROM node:8-slim as builder
 
-RUN npm config set registry https://registry.npm.taobao.org
+RUN npm install -g yarn --registry=https://registry.npm.taobao.org
 WORKDIR /app
 ADD package.json /app/package.json
-RUN npm install
+RUN chmod a+rwx  /usr/local/lib/node_modules/yarn/bin/yarn* \
+  && chmod a+rwx  /usr/local/bin/yarn* \
+  && yarn
 COPY . /app/
-RUN npm run build
+RUN yarn build
 
 FROM nginx:alpine
 RUN adduser -D -H -s /sbin/nologin www-data
