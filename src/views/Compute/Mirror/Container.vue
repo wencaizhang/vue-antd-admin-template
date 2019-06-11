@@ -176,7 +176,7 @@ export default {
       ret.forEach(item => {
         const imageFormat_zh = (imageFormatList.find(aaa => aaa.value === item.imageFormat) || {}).label;
         const status_zh = this.__handleTransformToZh(item.status)
-        const imageType_zh = item.imageType === 'snapshoot' ? '快照' : '镜像';
+        const imageType_zh = item.imageType === 'snapshot' ? '快照' : '镜像';
         const capacity_zh = this.transform(item.capacity == '无' ? 0 : item.capacity)
         Object.assign(item, {
           imageFormat_zh,
