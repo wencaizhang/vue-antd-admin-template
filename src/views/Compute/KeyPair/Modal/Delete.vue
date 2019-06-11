@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       fetchAPI,
-      name: "batchDeleta",
+      name: "multiDeleta",
       // showMyFooter: false,
       list: [],
       listLength: 0,

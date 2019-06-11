@@ -31,7 +31,7 @@
                   style="margin-right: 10px;"
                   icon="delete"
                   :disabled="!selectedRowKeys.length"
-                  @click="handleMultiMenuClick('batchDeleta')"
+                  @click="handleMultiMenuClick('multiDeleta')"
                 >
                   删除
                 </a-button>
