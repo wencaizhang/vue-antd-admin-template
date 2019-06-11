@@ -178,7 +178,7 @@
 </template>
 
 <script>
-import PageLayout from "@/components/Layout/PageLayout.vue";
+import PageLayout from "@/components/Layout/PageLayout";
 
 import MultiLaunch from "./Modals/MultiLaunch";
 import MultiShutdown from "./Modals/MultiShutdown";

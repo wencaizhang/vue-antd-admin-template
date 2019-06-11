@@ -89,7 +89,7 @@ import EditModal from "./Modal/Edit";
 import Delete from "./Modal/Delete";
 import DetailModal from "./Modal/Detail";
 import Update from "./Modal/Update";
-import PageLayout from "@/components/Layout/PageLayout.vue";
+import PageLayout from "@/components/Layout/PageLayout";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 

@@ -4,6 +4,7 @@
     ref="uploader"
     :options="options"
     :autoStart="true"
+    :file-status-text="statusText"
     @file-added="onFileAdded"
     @file-success="onFileSuccess"
     @file-progress="onFileProgress"
@@ -27,7 +28,7 @@ export default {
         // https://github.com/simple-uploader/Uploader/tree/develop/samples/Node.js
         target: "/cmp/v1/upload/chunk/mirrorimage",
         testChunks: false,
-        chunkSize: "2048000",
+        chunkSize: 2 * 1024 * 1000 + '',  // 单位 kb
         testMethod: "POST",
         fileParameterName: "file",
         // testChunks: true, //是否开启秒传
@@ -52,7 +53,14 @@ export default {
       },
       file: {
 
-      }
+      },
+      statusText: {
+        success: '合并中',  // 在合并文件接口成功之后重置状态
+        error: '出错了',
+        uploading: '上传中',
+        paused: '暂停中',
+        waiting: '等待中',
+      },
     };
   },
   computed: {
@@ -63,6 +71,7 @@ export default {
   methods: {
     clearFileList () {
       this.uploader.fileList.forEach(item => this.uploader.removeFile(item));
+      this.statusText.success = '合并中';
     },
     onFileAdded(file) {
       // 移除之前的文件，只保留当前文件
@@ -98,6 +107,7 @@ export default {
       })
       .then(resp => {
         this.file.url = resp.data.filePath[0].url;
+        this.statusText.success = '成功';
       })
       .catch(err => {
         this.$message.error(err.response.data.desc)
