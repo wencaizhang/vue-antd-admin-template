@@ -47,7 +47,7 @@
           label="最小磁盘(G)："
         >
           <a-input-number
-            :min="40"
+            :min="1"
             :max="200"
             v-decorator="[
               'disk',
