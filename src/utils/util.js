@@ -49,6 +49,10 @@ export const rulesObj = {
     message: '请输入正确的url!'
   },
 
+  maxLen100: {
+    pattern: /.{1,100}/,
+    message: '最多 100 个字符'
+  },
 }
 
 /**

@@ -71,7 +71,7 @@
 import CreateModal from "./Modal/Create";
 import DeleteModal from "./Modal/Delete";
 import MultiDelete from "./Modal/MultiDelete";
-import PageLayout from "@/components/Layout/PageLayout.vue";
+import PageLayout from "@/components/Layout/PageLayout";
 
 import rule from '@/i18n/zh/rule'
 

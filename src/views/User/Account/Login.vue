@@ -1,24 +1,24 @@
 <template>
-  <div class="container">
-    <div class="top">
-      <div class="header">
-        <!-- <a href="/" class="logo">友普云自服务</a> -->
-      </div>
-      <h1 style="text-align: center;">
-        友普云自服务
-      </h1>
-    </div>
+  <div class="container login-container">
     <div class="main">
+      <div class="top">
+        <div class="header">
+          <!-- <a href="/" class="logo">友普云自服务</a> -->
+        </div>
+        <h1 class="title">
+          友普云自服务
+        </h1>
+      </div>
       <username-form ref="UsernameForm" />
       <!-- <a-tabs
         :activeKey="customActiveKey"
         :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
         @change="key => customActiveKey = key"
       >
-        <a-tab-pane key="UsernameForm" tab="账号密码登陆">
+        <a-tab-pane key="UsernameForm" tab="账号密码登录">
           <UsernameForm ref="UsernameForm" />
         </a-tab-pane>
-        <a-tab-pane key="PhoneForm" tab="手机号登陆">
+        <a-tab-pane key="PhoneForm" tab="手机号登录">
           <PhoneForm ref="PhoneForm" />
         </a-tab-pane>
       </a-tabs> -->
@@ -53,6 +53,7 @@
         </router-link>
       </div>
     </div>
+    <Canvas />
   </div>
 </template>
 
@@ -66,15 +67,16 @@ import UsernameForm from "./Login/UsernameForm";
 import { mapActions } from "vuex";
 import { timeFix } from "@/utils/util";
 
-import { login } from "@/api/user";
+import { login } from "@/api/user/user";
 import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
-
-
+import Canvas from "./Canvas.vue";
 export default {
   components: {
     UsernameForm,
-    // PhoneForm
+    // PhoneForm,
+    Canvas,
   },
+
   data() {
     return {
       customActiveKey: "UsernameForm",
@@ -170,6 +172,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .top {
   text-align: center;
   .header {
@@ -193,7 +196,7 @@ export default {
 .container {
   width: 100%;
   min-height: 100%;
-  background: #f0f2f5 url("../../assets/background.svg") no-repeat 50%;
+  background: #f0f2f5 url("../../../assets/images/background.svg") no-repeat 50%;
   background-size: 100%;
   padding: 110px 0 144px;
   position: relative;
@@ -202,18 +205,30 @@ export default {
   color: rgba(0, 0, 0, 0.25);
 }
 .main {
-  width: 368px;
+  position: absolute;
+  z-index: 11;
+  top: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-sizing: content-box;
+  border-radius: 5px;
+  width: 300px;
+  // height: 465px;
   margin: 0 auto;
+  padding: 30px 460px 30px 30px;
+  background: #fff url("../../../assets/images/login.png") no-repeat right;
+  background-size: contain;
+  box-shadow: 4px 2px 10px 10px #e3e7f3;
+}
+.title {
+  text-align: left;
+  font-size: 20px;
+  margin-bottom: 40px;
+  font-weight: bold;
 }
 .user-layout-login {
   label {
     font-size: 14px;
-  }
-
-  .getCaptcha {
-    display: block;
-    width: 100%;
-    height: 40px;
   }
 
   .forge-password {
@@ -248,4 +263,5 @@ export default {
     color: #1890ff;
   }
 }
+
 </style>

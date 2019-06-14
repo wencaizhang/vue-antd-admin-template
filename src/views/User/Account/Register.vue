@@ -1,21 +1,25 @@
 <template>
-  <div class="container">
-    <h1 style="text-align: center;">
-      欢迎注册友普云服务
-    </h1>
-    <a-form :form="form" class="main user-layout-login">
-      <a-form-item>
+  <div class="container register-container">
+    <a-form
+      class="main user-layout-login"
+      :form="form"
+      :class="{ change: name !== 'register' }"
+    >
+      <h1 class="title">
+        {{ title }}
+      </h1>
+      <a-form-item v-if="name === 'register'">
         <a-input
-          size="large"
+          size="small"
           type="text"
-          autocomplete="false"
+          autocomplete="new-password"
           placeholder="设置登录名称"
           v-decorator="[
             'userName',
             {rules: [{ required: true, message: '请设置登录名称' }]}
           ]"
         >
-          <a-icon slot="prefix" type="user" class="icon" />
+          <!-- <a-icon slot="prefix" type="user" class="icon" /> -->
         </a-input>
       </a-form-item>
 
@@ -37,12 +41,12 @@
           </template>
 
           <a-input
-            size="large"
+            size="small"
             :type="passwordType"
-            autocomplete="false"
             placeholder="设置登录密码"
             @blur="visiblepopover = false"
             @focus="visiblepopover = true"
+            autocomplete="new-password"
             v-decorator="[
               'password',
               {
@@ -53,7 +57,7 @@
               }
             ]"
           >
-            <a-icon slot="prefix" type="lock" class="icon" />
+            <!-- <a-icon slot="prefix" type="lock" class="icon" /> -->
             <a-icon slot="suffix" class="suffix-eye"
               :type="passwordType | eyeIcon"
               @click="toggleType('passwordType')"
@@ -61,9 +65,9 @@
           </a-input>
         </a-popover>
       </a-form-item>
-      <a-form-item>
+      <a-form-item v-if="name === 'register'">
         <a-input
-          size="large"
+          size="small"
           :type="password2Type"
           autocomplete="false"
           placeholder="再次确认密码"
@@ -72,7 +76,7 @@
             {rules: [{ required: true, message: '请再次确认密码' }]}
           ]"
         >
-          <a-icon slot="prefix" type="lock" class="icon" />
+          <!-- <a-icon slot="prefix" type="lock" class="icon" /> -->
           <a-icon slot="suffix" class="suffix-eye"
             :type="password2Type | eyeIcon"
             @click="toggleType('password2Type')"
@@ -81,7 +85,7 @@
       </a-form-item>
       <a-form-item>
         <a-input
-          size="large"
+          size="small"
           type="text"
           autocomplete="false"
           placeholder="请输入手机号码"
@@ -95,14 +99,14 @@
             }
           ]"
         >
-          <a-icon slot="prefix" type="mobile" class="icon" />
+          <!-- <a-icon slot="prefix" type="mobile" class="icon" /> -->
         </a-input>
       </a-form-item>
       <a-form-item>
         <a-row :gutter="16">
           <a-col class="gutter-row" :span="16">
             <a-input
-              size="large"
+              size="small"
               type="text"
               autocomplete="false"
               placeholder="输入验证码"
@@ -111,11 +115,12 @@
                 {rules: [{ required: true, message: '请输入验证码' }]}
               ]"
             >
-              <a-icon slot="prefix" type="mail" class="icon" />
+              <!-- <a-icon slot="prefix" type="mail" class="icon" /> -->
             </a-input>
           </a-col>
           <a-col class="gutter-row" :span="8">
             <a-button
+              size="small"
               class="getCaptcha"
               tabindex="-1"
               :disabled="!!state.loading"
@@ -132,31 +137,27 @@
         @click="handleSubmit"
         type="primary"
         block
-        style="margin-top: 10px; height: 42px;"
+        style="margin-top: 10px; height: 36px;"
       >
-        注册
+        {{ submitText }}
       </a-button>
       <div
         class="user-login-other"
-        style="display: flex; justify-content: space-between; margin-top: 10px;"
+        style="display: flex; flex-direction: row-reverse; justify-content: space-between; margin-top: 10px;"
       >
-        <div>
-          <span>其他登陆方式</span>
-          <a title="微信登录">
-            <a-icon class="item-icon" type="wechat"></a-icon>
-          </a>
-        </div>
         <router-link class="register" :to="{ name: 'login' }">
           去登录
         </router-link>
       </div>
     </a-form>
+    <Canvas />
   </div>
 </template>
 
 <script>
-import { sendCode, createUser } from "@/api/user";
+import { sendCode, createUser } from "@/api/user/user";
 import { rulesObj } from '@/utils/util';
+import Canvas from "./Canvas.vue";
 
 const levelNames = {
   0: '低',
@@ -178,19 +179,22 @@ const levelColor = {
 }
 
 export default {
+  components: { Canvas, },
   data() {
     return {
       rulesObj,
+      name: '',
+      title: '',
+      submitText: '',
+
       form: this.$form.createForm(this),
+
+      passwordType: 'text',
+      password2Type: 'text',
+      visiblepopover: false,
       state: {
         time: 60,
-        loading: "" // pending resolve reject
-      },
-      passwordType: 'password',
-      password2Type: 'password',
-      visiblepopover: true,
-      state: {
-        time: 60,
+        loading: "", // pending resolve reject
         smsSendBtn: false,
         passwordLevel: 0,
         passwordLevelChecked: false,
@@ -198,6 +202,16 @@ export default {
         progressColor: '#FF0000'
       },
     };
+  },
+  mounted () {
+    // register or forget
+    // 根据路由来决定显示的文字和表单项目
+    const name = this.$route.name;
+    Object.assign(this, {
+      name,
+      title: name === 'register' ? '欢迎注册友普云服务' : '找回密码',
+      submitText: name === 'register' ? '注册' : '确定',
+    })
   },
   computed: {
     btnText() {
@@ -224,7 +238,7 @@ export default {
     },
     passwordLevelColor () {
       return levelColor[this.state.passwordLevel]
-    }
+    },
   },
   filters: {
     eyeIcon (type) {
@@ -242,9 +256,9 @@ export default {
   },
   methods: {
     handlePasswordLevel (rule, value, callback) {
-      let level = 0
+      let level = 0;
 
-      const msg = '密码长度不低于8位,必须包含大小字母,数字,特殊字符(!,@,#)其中的两项'
+      const msg = '密码长度不低于8位,必须包含大小字母,数字,特殊字符(!,@,#)其中的两项';
       const minLen = /.{8,}/;
       const maxLen = /.{12,}/;
       const regs = [ /[a-zA-Z]/, /[0-9]/, /[_!@#]/ ];
@@ -257,7 +271,7 @@ export default {
         return callback('密码长度不低于8位');
       }
 
-      console.log('level', level)
+      console.log('level', level);
       this.state.passwordLevel = level;
 
       this.state.passwordLevel >= 3 ? callback() :  callback(msg);
@@ -362,30 +376,11 @@ export default {
     color: #52c41a;
   }
 }
-.top {
-  text-align: center;
-  .header {
-    height: 44px;
-    line-height: 44px;
-    .logo {
-      display: inline-block;
-      height: 44px;
-      vertical-align: top;
-      margin-right: 16px;
-      border-style: none;
-    }
-  }
-  .desc {
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.45);
-    margin-top: 12px;
-    margin-bottom: 40px;
-  }
-}
+
 .container {
   width: 100%;
   min-height: 100%;
-  background: #f0f2f5 url("../../assets/background.svg") no-repeat 50%;
+  background: #f0f2f5 url("../../../assets/images/background.svg") no-repeat 50%;
   background-size: 100%;
   padding: 110px 0 144px;
   position: relative;
@@ -394,8 +389,28 @@ export default {
   color: rgba(0, 0, 0, 0.25);
 }
 .main {
-  width: 368px;
+  position: absolute;
+  z-index: 11;
+  top: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-sizing: content-box;
+  border-radius: 5px;
+  width: 340px;
   margin: 0 auto;
+  padding: 30px 620px 30px 30px;
+  background: #fff url("../../../assets/images/register.png") no-repeat right;
+  background-size: contain;
+  box-shadow: 4px 2px 10px 10px #e3e7f3;
+}
+.main.change {
+  background: #fff url("../../../assets/images/change.png") no-repeat right;
+}
+.title {
+  text-align: left;
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: bold;
 }
 .user-layout-login {
   label {
@@ -405,7 +420,7 @@ export default {
   .getCaptcha {
     display: block;
     width: 100%;
-    height: 40px;
+    // height: 40px;
   }
 
   .forge-password {

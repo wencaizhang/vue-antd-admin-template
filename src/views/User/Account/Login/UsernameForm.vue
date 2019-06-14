@@ -4,8 +4,8 @@
       <a-input
         size="large"
         type="text"
-        autocomplete="false"
-        placeholder="帐户名或邮箱地址 / demo"
+        autocomplete="new-password"
+        placeholder="帐户名或邮箱地址"
         v-decorator="[
           'userName',
           {rules: [{ required: true, message: '请输入帐户名!' }]}
@@ -19,8 +19,8 @@
       <a-input
         size="large"
         type="password"
-        autocomplete="false"
-        placeholder="密码 / demo2018"
+        autocomplete="new-password"
+        placeholder="密码"
         @keyup.enter="$parent.handleSubmit"
         v-decorator="[
           'password',

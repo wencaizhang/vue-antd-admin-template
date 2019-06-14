@@ -6,10 +6,10 @@ import { ACCESS_TOKEN } from "@/store/mutation-types"
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
 // 免登录白名单
-const whiteList = ['login', 'register']
+const whiteList = ['login', 'register', 'forget']
 
 router.beforeEach((to, from, next) => {
-  console.log(to.name, from.name);
+  // console.log(to.name, from.name);
   NProgress.start();
   // 未登录
   if (!Vue.ls.get(ACCESS_TOKEN)) {

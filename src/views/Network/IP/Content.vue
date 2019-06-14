@@ -32,13 +32,22 @@
             <span style="display: inline-flex;">
               <a-input-group compact class="compact-search-input">
                 <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 90px!important;">
-                  <a-select-option value="ipAddress">IP</a-select-option>
+                  <a-select-option
+                    v-for="(value, key) in types"
+                    :value="key"
+                    :key="key"
+                  >
+                    {{ value }}
+                  </a-select-option>
                 </a-select>
                 <a-input
                   style="width: 200px"
                   @pressEnter="handleDATA"
                   v-model="searchValues.inputValue"
-                />
+                  :placeholder="`请输入${types[searchValues.type]}信息`"
+                >
+                  <a-icon v-if="searchValues.inputValue" slot="suffix" type="close-circle" @click="searchValues.inputValue = ''" />
+                </a-input>
               </a-input-group>
               <a-button type="primary" @click="handleDATA" style="margin-left: 8px">
                 搜索
@@ -129,6 +138,9 @@ export default {
       searchValues: {
         type: 'ipAddress',
         inputValue: '',
+      },
+      types: {
+        ipAddress: 'IP'
       },
       networkList: [],
       fetchNetworkListLoading: false,

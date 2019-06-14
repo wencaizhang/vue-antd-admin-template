@@ -84,7 +84,7 @@ import DeleteModal from "./Modal/Delete";
 import EditModal   from "./Modal/Edit";
 import MultiDelete from './Modal/MultiDelete';
 
-import PageLayout from "@/components/Layout/PageLayout.vue";
+import PageLayout from "@/components/Layout/PageLayout";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 

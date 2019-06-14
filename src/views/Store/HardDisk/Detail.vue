@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import PageLayout from "@/components/Layout/PageLayout.vue";
+import PageLayout from "@/components/Layout/PageLayout";
 import Snapshoot from "../Snapshoot/Content";
 export default {
   components: {

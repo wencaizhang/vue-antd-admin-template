@@ -50,5 +50,6 @@ h1 {
 }
 .desc {
   margin-bottom: 16px;
+  color: #999;
 }
 </style>

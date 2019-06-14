@@ -27,13 +27,22 @@
           <div style="display: inline-block; vertical-align: top;">
             <a-input-group compact class="compact-search-input">
               <a-select @change="v => searchValues.type = v" v-model="searchValues.type" style="width: 90px!important;">
-                <a-select-option value="name">名称</a-select-option>
+                <a-select-option
+                  v-for="(value, key) in types"
+                  :value="key"
+                  :key="key"
+                >
+                  {{ value }}
+                </a-select-option>
               </a-select>
               <a-input
                 style="width: 200px"
                 @pressEnter="handleDATA"
                 v-model="searchValues.inputValue"
-              />
+                :placeholder="`请输入${types[searchValues.type]}信息`"
+              >
+                <a-icon v-if="searchValues.inputValue" slot="suffix" type="close-circle" @click="searchValues.inputValue = ''" />
+              </a-input>
             </a-input-group>
           </div>
           <a-select @change="v => searchValues.status = v" v-model="searchValues.status" style="margin-left: 8px;">
@@ -156,6 +165,9 @@ export default {
         type: 'name',
         inputValue: '',
         status: 'all',
+      },
+      types: {
+        name: '名称',
       },
       traceList: [],
 

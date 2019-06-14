@@ -54,7 +54,7 @@
                 这将生成一对密钥对：一个私钥
                 (cloud.key)和一个公钥(cloud.key.pub)。请妥善保存好您的私钥，并把公钥文件内容粘贴在这里。
               </p>
-              <p>创建云主机后，你使用私钥来登录云主机(登陆用户名取决您所用的镜像)：</p>
+              <p>创建云主机后，你使用私钥来登录云主机(登录用户名取决您所用的镜像)：</p>
               <p>
                 <pre class="code">ssh -i cloud.key &lt;username&gt;@&lt;instance_ip&gt;</pre>
               </p>

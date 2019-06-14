@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import PageLayout from "@/components/Layout/PageLayout.vue";
+import PageLayout from "@/components/Layout/PageLayout";
 export default {
   components: {
     PageLayout,

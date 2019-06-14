@@ -26,6 +26,7 @@ module.exports = {
         modifyVars: {
           /* less 变量覆盖，用于自定义 ant design 主题 */
 
+          'primary-color': '#5184f6',
           /*
           'primary-color': '#F5222D',
           'link-color': '#F5222D',
@@ -40,6 +41,7 @@ module.exports = {
     proxy: {
       '/cmp': {
         target: 'http://ci.cmp.cecpark.net:81',
+        // target: 'http://192.168.150.130:8081',
         ws: false,
         changeOrigin: true,
         // pathRewrite: {

@@ -2,7 +2,7 @@
   <div class="footer">
     <div class="copyright">
       <span>Copyright</span>
-      <a-icon type="copyright" />
+      <a-icon type="copyright" style="margin: 0 4px;" />
       <span>北京友普产品与研发部</span>
     </div>
   </div>

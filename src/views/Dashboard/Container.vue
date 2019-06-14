@@ -26,12 +26,12 @@ const sourceData = [
     id: 'compute',
     color: 'rgba(110,109,243,1)',
     children: [
-      { text: "云主机(个)", value: 10, },
-      { text: "CPU(核)", value: 1, },
-      { text: "内存(G)", value: 3, },
-      { text: "系统镜像(个)", value: 4, },
-      { text: "密钥对(个)", value: 6, },
-      { text: "防火墙策略(个)", value: 8, }
+      { text: "云主机(个)", value: 10, total: 110, },
+      { text: "CPU(核)", value: 1, total: 11, },
+      { text: "内存(G)", value: 3, total: 13, },
+      { text: "系统镜像(个)", value: 4, total: 14, },
+      { text: "密钥对(个)", value: 6, total: 16, },
+      { text: "防火墙策略(个)", value: 8, total: 18, }
     ]
   },
   {
@@ -39,12 +39,12 @@ const sourceData = [
     id: 'store',
     color: 'rgba(245,153,152,1)',
     children: [
-      { text: "性能型硬盘(个)", value: 1 },
-      { text: "性能型硬盘容量(G)", value: 2 },
-      { text: "SSD硬盘(个)", value: 3 },
-      { text: "SSD硬盘容量(G)", value: 4 },
-      { text: "对象存储(个)", value: 6 },
-      { text: "对象存储容量(G)", value: 8 }
+      { text: "性能型硬盘(个)", value: 1, total: 11 },
+      { text: "性能型硬盘容量(G)", value: 2, total: 12 },
+      { text: "SSD硬盘(个)", value: 3, total: 13 },
+      { text: "SSD硬盘容量(G)", value: 4, total: 14 },
+      { text: "对象存储(个)", value: 6, total: 16 },
+      { text: "对象存储容量(G)", value: 8, total: 18 }
     ]
   },
   {
@@ -52,12 +52,12 @@ const sourceData = [
     id: 'network',
     color: 'rgba(81,132,246,1)',
     children: [
-      { text: "路由器(个)", value: 1 },
-      { text: "私有网络(个)", value: 2 },
-      { text: "子网(个)", value: 3 },
-      { text: "公网IP(个)", value: 4 },
-      { text: "负载均衡器(个)", value: 6 },
-      { text: "带宽(MB)", value: 8 }
+      { text: "路由器(个)", value: 1, total: 11 },
+      { text: "私有网络(个)", value: 2, total: 12 },
+      { text: "子网(个)", value: 3, total: 13 },
+      { text: "公网IP(个)", value: 4, total: 14 },
+      { text: "负载均衡器(个)", value: 6, total: 16 },
+      { text: "带宽(MB)", value: 8, total: 18 }
     ]
   }
 ];
@@ -105,7 +105,7 @@ export default {
   width: 80%;
   height: 80%;
   margin: auto;
-  background: url('../../assets/chart-support.png');
+  background: url('../../assets/images/chart-support.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

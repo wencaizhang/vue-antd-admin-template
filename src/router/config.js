@@ -1,6 +1,5 @@
-import Login from "../views/User/Login.vue";
-import Register from "../views/User/Register.vue";
-import Forget from "../views/User/Forget.vue";
+import Login from "../views/User/Account/Login.vue";
+import Register from "../views/User/Account/Register.vue";
 
 import RouteView from "@/components/Layout/RouteView";
 import BasicLayout from "@/components/Layout/BasicLayout";
@@ -44,22 +43,22 @@ export const constantRouterMap = [
 
 export const asyncRouterMap = [
   {
-    path: "login",
+    path: "/login",
     name: "login",
     meta: { title: "登录" },
     component: Login
   },
   {
-    path: "register",
+    path: "/register",
     name: "register",
     meta: { title: "注册新用户" },
     component: Register
   },
   {
-    path: "forget",
+    path: "/forget",
     name: "forget",
     meta: { title: "忘记密码" },
-    component: Forget
+    component: Register
   },
   {
     path: "/",
@@ -238,44 +237,74 @@ export const asyncRouterMap = [
         ]
       },
 
-      // // 费用
-      // {
-      //   path: "expense",
-      //   name: "expense",
-      //   component: RouteView,
-      //   redirect: "expense/overview",
-      //   meta: { title: "费用", icon: "pay-circle", permission: ["dashboard"] },
-      //   children: [
-      //     {
-      //       path: "overview",
-      //       name: "overview",
-      //       component: () =>
-      //         import(/* webpackChunkName: "expense" */ "@/views/Expense/Overview/Container"),
-      //       meta: { title: "费用概览", permission: ["dashboard"] }
-      //     },
-      //     {
-      //       path: "record",
-      //       name: "record",
-      //       component: () =>
-      //         import(/* webpackChunkName: "expense" */ "@/views/Expense/Record/Container"),
-      //       meta: { title: "充值记录", permission: ["dashboard"] }
-      //     },
-      //     {
-      //       path: "order",
-      //       name: "order",
-      //       component: () =>
-      //         import(/* webpackChunkName: "expense" */ "@/views/Expense/Order/Container"),
-      //       meta: { title: "消费订单", permission: ["dashboard"] }
-      //     },
-      //     {
-      //       path: "bill-detail",
-      //       name: "bill-detail",
-      //       component: () =>
-      //         import(/* webpackChunkName: "expense" */ "@/views/Expense/BillDetail/Container"),
-      //       meta: { title: "账单明细", permission: ["dashboard"] }
-      //     }
-      //   ]
-      // }
+      // 用户
+      {
+        path: "user",
+        name: "user",
+        component: RouteView,
+        redirect: "user/info",
+        meta: { title: "用户", icon: "user", permission: ["dashboard"] },
+        children: [
+          {
+            path: "info",
+            name: "info",
+            redirect: "info/basic",
+            component: () =>
+              import(/* webpackChunkName: "user" */ "@/views/User/Container"),
+            meta: { title: "用户管理", permission: ["dashboard"] },
+            children: [
+              {
+                path: "auth",
+                name: "auth",
+                hidden: true,
+                component: () =>
+                  import(/* webpackChunkName: "user" */ "@/views/User/comm/auth"),
+                  meta: { title: "认证信息", permission: ["dashboard"] },
+              },
+              {
+                path: "basic",
+                name: "basic",
+                hidden: true,
+                component: () =>
+                  import(/* webpackChunkName: "user" */ "@/views/User/comm/basic"),
+                  meta: { title: "基本信息", permission: ["dashboard"] },
+              },
+              {
+                path: "security",
+                name: "security-setting",
+                hidden: true,
+                component: () =>
+                  import(/* webpackChunkName: "user" */ "@/views/User/comm/security"),
+                  meta: { title: "安全认证", permission: ["dashboard"] },
+              },
+            ],
+          },
+          {
+            path: "order",
+            name: "user-order",
+            component: () =>
+              import(/* webpackChunkName: "user" */ "@/views/User/Order/Container"),
+              meta: { title: "工单管理", permission: ["dashboard"] },
+          },
+        ]
+      },
+      // 管理员
+      {
+        path: "admin",
+        name: "admin",
+        component: RouteView,
+        redirect: "admin/order",
+        meta: { title: "管理员", icon: "user-add", permission: ["dashboard"] },
+        children: [
+          {
+            path: "order",
+            name: "admin-order",
+            component: () =>
+              import(/* webpackChunkName: "admin" */ "@/views/User/Order/Container"),
+              meta: { title: "工单管理", permission: ["dashboard"] },
+          },
+        ]
+      },
     ]
   },
   {
