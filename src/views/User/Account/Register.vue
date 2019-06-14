@@ -143,7 +143,7 @@
       </a-button>
       <div
         class="user-login-other"
-        style="display: flex; flex-direction: row-reverse; justify-content: space-between; margin-top: 10px;"
+        style="display: flex; justify-content: space-between; margin-top: 10px;"
       >
         <router-link class="register" :to="{ name: 'login' }">
           去登录
@@ -151,6 +151,7 @@
       </div>
     </a-form>
     <Canvas />
+    <BasicFooter class="footer-copyright"/>
   </div>
 </template>
 
@@ -159,6 +160,7 @@ import { sendCode, createUser } from "@/api/user/user";
 import { rulesObj } from '@/utils/util';
 import Canvas from "./Canvas.vue";
 
+import BasicFooter from "@/components/Layout/BasicFooter";
 const levelNames = {
   0: '低',
   1: '低',
@@ -179,7 +181,7 @@ const levelColor = {
 }
 
 export default {
-  components: { Canvas, },
+  components: { Canvas, BasicFooter, },
   data() {
     return {
       rulesObj,
@@ -405,6 +407,8 @@ export default {
 }
 .main.change {
   background: #fff url("../../../assets/images/change.png") no-repeat right;
+  background-size: contain;
+  padding-right: 460px;
 }
 .title {
   text-align: left;
@@ -453,5 +457,13 @@ export default {
       }
     }
   }
+}
+
+.footer-copyright {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
 }
 </style>

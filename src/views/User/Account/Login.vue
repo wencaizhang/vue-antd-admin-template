@@ -54,6 +54,7 @@
       </div>
     </div>
     <Canvas />
+    <BasicFooter class="footer-copyright"/>
   </div>
 </template>
 
@@ -70,11 +71,13 @@ import { timeFix } from "@/utils/util";
 import { login } from "@/api/user/user";
 import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 import Canvas from "./Canvas.vue";
+import BasicFooter from "@/components/Layout/BasicFooter";
 export default {
   components: {
     UsernameForm,
     // PhoneForm,
     Canvas,
+    BasicFooter,
   },
 
   data() {
@@ -263,5 +266,11 @@ export default {
     color: #1890ff;
   }
 }
-
+.footer-copyright {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
+}
 </style>
