@@ -5,8 +5,12 @@
       :form="form"
       :class="{ change: name !== 'register' }"
     >
+
       <h1 class="title">
-        {{ title }}
+        <img :src="logo" alt="logo"
+          style="height: 32px;"
+        >
+        <p style="display: inline-block; margin-left: 12px; height: 32px; line-height: 32px;">{{ title }}</p>
       </h1>
       <a-form-item v-if="name === 'register'">
         <a-input
@@ -145,9 +149,12 @@
         class="user-login-other"
         style="display: flex; justify-content: space-between; margin-top: 10px;"
       >
-        <router-link class="register" :to="{ name: 'login' }">
-          去登录
-        </router-link>
+        <span>
+          <span>有账号,</span>
+          <router-link class="register" :to="{ name: 'login' }">
+            去登录
+          </router-link>
+        </span>
       </div>
     </a-form>
     <Canvas />
@@ -161,6 +168,7 @@ import { rulesObj } from '@/utils/util';
 import Canvas from "./Canvas.vue";
 
 import BasicFooter from "@/components/Layout/BasicFooter";
+import logo from '@/assets/images/logo/3.png';
 const levelNames = {
   0: '低',
   1: '低',
@@ -184,6 +192,7 @@ export default {
   components: { Canvas, BasicFooter, },
   data() {
     return {
+      logo,
       rulesObj,
       name: '',
       title: '',
@@ -366,6 +375,7 @@ export default {
 <style lang="scss" scoped>
 .suffix-eye {
   cursor: pointer;
+  color: #d9d9d9;
 }
 .user-register {
   &.error {

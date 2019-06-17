@@ -1,7 +1,9 @@
 <template>
   <a-layout id="components-layout-demo-custom-trigger">
     <a-layout-sider :trigger="null" width="256px" collapsible v-model="collapsed">
-      <div class="logo" />
+      <div class="logo">
+        <img :src="collapsed ? logo2 : logo" alt="logo">
+      </div>
       <side-menu
         theme="dark"
         mode="inline"
@@ -30,6 +32,8 @@ import BasicHeader from "@/components/Layout/BasicHeader";
 import BasicFooter from "@/components/Layout/BasicFooter";
 import SideMenu from "@/components/menu/Sidebar";
 import { asyncRouterMap } from "@/router/config";
+import logo from '@/assets/images/logo/2.png';
+import logo2 from '@/assets/images/logo/4.png';
 
 export default {
   // name: "basic-layout",
@@ -42,7 +46,9 @@ export default {
   data() {
     return {
       collapsed: false,
-      menuData: []
+      menuData: [],
+      logo,
+      logo2,
     };
   },
   mounted() {
@@ -72,9 +78,15 @@ export default {
 }
 
 #components-layout-demo-custom-trigger .logo {
-  height: 32px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px;
+  height: 64px;
+  box-sizing: border-box;
+  background: #002140;
+  padding: 16px;
+  text-align: center;
+}
+#components-layout-demo-custom-trigger .logo img {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .ant-layout-container {

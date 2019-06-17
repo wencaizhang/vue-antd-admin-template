@@ -54,7 +54,7 @@
                     <a-icon v-if="searchValues.inputValue" slot="suffix" type="close-circle" @click="searchValues.inputValue = ''" />
                   </a-input>
                 </a-input-group>
-                <a-select @change="v => searchValues.status = v" v-model="searchValues.status" style="margin-left: 8px; width: 90px;">
+                <a-select @change="v => searchValues.status = v" v-model="searchValues.status" style="margin-left: 8px; width: 100px;">
                   <a-select-option key="all" value="all">全部</a-select-option>
                   <a-select-option key="0" value="0">个人认证</a-select-option>
                   <a-select-option key="1" value="1">企业认证</a-select-option>

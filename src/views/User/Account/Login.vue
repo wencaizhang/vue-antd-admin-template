@@ -5,9 +5,14 @@
         <div class="header">
           <!-- <a href="/" class="logo">友普云自服务</a> -->
         </div>
+
         <h1 class="title">
-          友普云自服务
+          <img :src="logo" alt="logo"
+            style="height: 32px;"
+          >
+          <p style="display: inline-block; margin-left: 12px; height: 32px; line-height: 32px;">{{ title }}</p>
         </h1>
+
       </div>
       <username-form ref="UsernameForm" />
       <!-- <a-tabs
@@ -44,13 +49,16 @@
         登录
       </a-button>
 
-      <div class="user-login-other" style="display: flex; flex-direction: row-reverse; justify-content: space-between; margin-top: 10px;">
-        <router-link class="register" :to="{ name: 'register' }">
-          注册账户
-        </router-link>
+      <div class="user-login-other" style="display: flex; justify-content: space-between; margin-top: 10px;">
         <router-link class="forge" :to="{ name: 'forget' }">
           找回密码
         </router-link>
+        <span>
+          <span>没账号?</span>
+          <router-link class="register" :to="{ name: 'register' }">
+            去注册
+          </router-link>
+        </span>
       </div>
     </div>
     <Canvas />
@@ -72,6 +80,7 @@ import { login } from "@/api/user/user";
 import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 import Canvas from "./Canvas.vue";
 import BasicFooter from "@/components/Layout/BasicFooter";
+import logo from '@/assets/images/logo/3.png';
 export default {
   components: {
     UsernameForm,
@@ -86,6 +95,9 @@ export default {
       loading: false,
       // login type: 0 email, 1 username, 2 telephone
       loginType: 0,
+
+      logo,
+      title: '友普云自服务',
 
       formLogin: {
         rememberMe: true
