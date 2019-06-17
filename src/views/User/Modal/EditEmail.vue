@@ -25,21 +25,11 @@
             placeholder="新邮箱地址"
           />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="验证码：">
-          <a-input
-            v-decorator="[
-              'email',
-              {
-                initialValue: currRecord.name,
-                rules: [
-                  { required: true, message: '请输入验证码' },
-                  rulesObj.editdName,
-                ]
-              }
-            ]"
-            placeholder="请输入验证码"
-          />
-        </a-form-item>
+        <verify-code
+          v-model="smsCode"
+          label="验证码"
+          @clickBtn="onClickBtn"
+        />
       </a-form>
     </a-modal>
   </div>
@@ -48,19 +38,32 @@
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { rulesObj } from '@/utils/util';
 import { editDisk as fetchAPI  } from "@/api/store/disk";
+import VerifyCode from "../VerifyCode";
 export default {
   mixins: [baseModalMixins, formModalMixins],
+  components: {
+    VerifyCode,
+  },
   data() {
     return {
       fetchAPI,
       rulesObj,
-      name: "editEmail"
+      name: "editEmail",
+      smsCode: '',
     };
   },
 
   methods: {
     onShow () {
       this.formValues = { hardDiskId: this.currRecord.id }
+    },
+    async handleValidateField(fields = null) {
+      return new Promise((resolve, reject) => {
+        this.form.validateFieldsAndScroll(
+          Array.isArray(fields) ? fields : [fields],
+          (err, values) => err ? reject(err) : resolve(values)
+        );
+      });
     },
     handleCreate() {
       const self = this;
@@ -71,6 +74,14 @@ export default {
         }
       });
     },
+    async onClickBtn (callback) {
+      try {
+        const resp = await this.handleValidateField('email')
+        callback && callback(resp);
+      } catch (error) {
+
+      }
+    }
   }
 };
 </script>

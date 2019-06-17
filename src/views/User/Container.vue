@@ -2,6 +2,7 @@
   <div>
     <page-layout class="user-info-container">
       <div class="page-header-index-wide">
+        <!-- <verify-code /> -->
         <a-card
           :bordered="false"
           :bodyStyle="{ padding: '16px 0', height: '100%' }"
@@ -42,12 +43,12 @@
 <script>
 import PageLayout from "@/components/Layout/PageLayout";
 
-import basic from "./comm/basic";
+// import VerifyCode from "./VerifyCode";
 
 export default {
   components: {
     PageLayout,
-    basic
+    // VerifyCode,
   },
   data() {
     return {
