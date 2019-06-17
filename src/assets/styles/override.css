@@ -25,3 +25,9 @@
 .compact-search-input .anticon-close-circle:active {
   color: #666;
 }
+
+/* 用户 */
+.ant-menu-item-selected:after {
+  opacity: 1!important;
+  transform: scaleY(1)!important;
+}

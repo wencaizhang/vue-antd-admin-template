@@ -1,45 +1,73 @@
 <template>
   <div class="account-settings-info-view">
-    <a-row :gutter="16">
-      <a-col :md="16" :lg="12">
-        <a-form layout="vertical">
-          <a-form-item label="原始密码">
-            <a-input value="xxx" />
-          </a-form-item>
-          <a-form-item label="设置新密码">
-            <a-input value="xxx"/>
-          </a-form-item>
+    <a-list itemLayout="horizontal" :dataSource="listData">
+      <a-list-item slot="renderItem" slot-scope="item">
+        <a-list-item-meta
+          :description="item.desc"
+        >
+          <a slot="title" >{{item.title}}</a>
 
-          <a-form-item label="手机号" :required="false">
-            <a-input placeholder="exp@admin.com"/>
-          </a-form-item>
+        </a-list-item-meta>
+          <a slot="actions" @click="handleClick(item)">修改</a>
+      </a-list-item>
+    </a-list>
 
-          <a-form-item label="输入验证码">
-            <a-input value="xxx"  />
-          </a-form-item>
-
-          <a-form-item>
-            <a-button type="primary">提交</a-button>
-            <a-button style="margin-left: 8px">保存</a-button>
-          </a-form-item>
-        </a-form>
-      </a-col>
-    </a-row>
+    <EditEmail />
+    <EditPhone />
+    <EditPwd />
   </div>
 </template>
 
 <script>
+import EditEmail from '../Modal/EditEmail'
+import EditPhone from '../Modal/EditPhone'
+import EditPwd from '../Modal/EditPwd'
 export default {
-  components: {},
+  components: {
+    EditEmail,
+    EditPhone,
+    EditPwd,
+  },
   data() {
     return {
 
+      module: "user",
+      id: "security",
+      name: "安全认证",
+
+      listData: [
+        {
+          id: 'editPwd',
+          title: "账户密码",
+          desc: "当前密码强度 : 强"
+        },
+        {
+          id: 'editPhone',
+          title: "密保手机",
+          desc: "已绑定手机 : 138****8293",
+        },
+        {
+          id: 'editEmail',
+          title: "备用邮箱",
+          desc: "已绑定邮箱 : ant***sign.com",
+        },
+      ]
     };
   },
-  methods: {}
+  methods: {
+    handleRefresh () {
+
+    },
+    handleShowModal (key) {
+      this.$store.commit(`${this.id}/toggleModalVisible`, key);
+    },
+    handleClick (item) {
+      console.log(item);
+      this.handleShowModal (item.id);
+    }
+  }
 };
 </script>
 
 <style scoped>
-
 </style>

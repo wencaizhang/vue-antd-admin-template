@@ -7,15 +7,19 @@
             <a-input :value="userInfo.id" disabled />
           </a-form-item>
           <a-form-item label="用户名">
-            <a-input v-model="userInfo.userName" @change="onChange"/>
+            <a-input v-model="userInfo.userName" disabled />
           </a-form-item>
 
           <a-form-item label="邮箱">
-            <a-input  v-model="userInfo.email" @change="onChange"/>
+            <a-input  v-model="userInfo.email" disabled />
           </a-form-item>
 
           <a-form-item label="注册时间">
             <a-input :value="userInfo.createTime" disabled />
+          </a-form-item>
+
+          <a-form-item label="联系地址">
+            <a-input v-model="userInfo.address" @change="onChange"/>
           </a-form-item>
 
           <a-form-item>
@@ -36,7 +40,8 @@ export default {
         id: '12342131',
         userName: 'wencaizhang',
         email: 'sss@qq.com',
-        createTime: '1990年'
+        createTime: '1990年',
+        address: '南京路22号'
       },
       snap: null,
       submitAble: true,

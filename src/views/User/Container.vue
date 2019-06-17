@@ -1,6 +1,6 @@
 <template>
   <div>
-    <page-layout>
+    <page-layout class="user-info-container">
       <div class="page-header-index-wide">
         <a-card
           :bordered="false"
@@ -15,10 +15,10 @@
                 type="inner"
                 @openChange="onOpenChange"
               >
-                <a-menu-item key="base">
+                <a-menu-item key="basic">
                   <router-link :to="{ name: 'basic' }">基本设置</router-link>
                 </a-menu-item>
-                <a-menu-item key="security">
+                <a-menu-item key="security-setting">
                   <router-link :to="{ name: 'security-setting' }">安全设置</router-link>
                 </a-menu-item>
                 <a-menu-item key="auth">
@@ -84,13 +84,16 @@ export default {
     },
     updateMenu() {
       const routes = this.$route.matched.concat();
-      this.defaultSelectedKeys = [routes.pop().path];
+      this.defaultSelectedKeys = [routes.pop().name];
     }
   }
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
+.user-info-container .page-content {
+  padding: 0;
+}
 .account-settings-info-main {
   width: 100%;
   display: flex;

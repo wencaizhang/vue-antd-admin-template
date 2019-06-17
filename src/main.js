@@ -14,7 +14,7 @@ import config from '@/settings'
 import '@/permission' // 权限控制
 
 import '@/utils/util'
-import './components_use'
+import './components_use'  // 按需引入 ant-design-vue 组件
 
 // uploader 和 mock.js 不能同时使用
 Vue.use(uploader)
@@ -25,7 +25,7 @@ Vue.use(uploader)
 Vue.prototype.$http = axios;
 
 Vue.use(Storage, config.storageOptions)
-// Vue.use(Antd);
+
 Vue.config.productionTip = false;
 
 new Vue({

@@ -2,6 +2,7 @@ import common from "../common";
 
 import order from "./order";
 import user  from './user';
+import security  from './security';
 
 const store = {
   state: {},
@@ -12,6 +13,7 @@ const store = {
   modules: {
     order,
     user,
+    security,
   }
 };
 

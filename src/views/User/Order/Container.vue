@@ -160,16 +160,22 @@ export default {
   watch: {
     '$route' (to, from) {
       // 对路由变化作出响应...
-      console.log('to: ', to)
+      const names = {
+        user_order: 'user-order',
+        admin_order: 'admin-order',
+      };
+
       const { name, params } = to;
       if (params.workOrderStatus) {
         this.workOrderStatus = workOrderStatus;
       }
-      if (name === "user-order") {
+      if (name === names.user_order) {
         this.isAdmin = false;
       } else {
         this.isAdmin = true;
       }
+
+      this.handleRefresh();
     }
   },
   methods: {
