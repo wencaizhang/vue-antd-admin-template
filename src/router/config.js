@@ -64,7 +64,7 @@ export const asyncRouterMap = [
     path: "/",
     name: "Index",
     meta: { title: "首页" },
-    redirect: "/compute",
+    redirect: "/dashboard",
     component: BasicLayout,
     children: [
       {
@@ -250,23 +250,15 @@ export const asyncRouterMap = [
             name: "info",
             redirect: "info/basic",
             component: () =>
-              import(/* webpackChunkName: "user" */ "@/views/User/Container"),
+              import(/* webpackChunkName: "user" */ "@/views/User/Base/Container"),
             meta: { title: "用户管理", permission: ["dashboard"] },
             children: [
-              {
-                path: "auth",
-                name: "auth",
-                hidden: true,
-                component: () =>
-                  import(/* webpackChunkName: "user" */ "@/views/User/comm/auth"),
-                  meta: { title: "认证信息", permission: ["dashboard"] },
-              },
               {
                 path: "basic",
                 name: "basic",
                 hidden: true,
                 component: () =>
-                  import(/* webpackChunkName: "user" */ "@/views/User/comm/basic"),
+                  import(/* webpackChunkName: "user" */ "@/views/User/Base/comm/basic"),
                   meta: { title: "基本信息", permission: ["dashboard"] },
               },
               {
@@ -274,8 +266,16 @@ export const asyncRouterMap = [
                 name: "security-setting",
                 hidden: true,
                 component: () =>
-                  import(/* webpackChunkName: "user" */ "@/views/User/comm/security"),
+                  import(/* webpackChunkName: "user" */ "@/views/User/Base/comm/security"),
                   meta: { title: "安全认证", permission: ["dashboard"] },
+              },
+              {
+                path: "auth",
+                name: "auth",
+                hidden: true,
+                component: () =>
+                  import(/* webpackChunkName: "user" */ "@/views/User/Base/comm/AuthContainer"),
+                  meta: { title: "认证信息", permission: ["dashboard"] },
               },
             ],
           },

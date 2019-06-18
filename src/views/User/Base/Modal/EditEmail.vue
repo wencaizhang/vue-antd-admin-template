@@ -38,7 +38,7 @@
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { rulesObj } from '@/utils/util';
 import { editDisk as fetchAPI  } from "@/api/store/disk";
-import VerifyCode from "../VerifyCode";
+import VerifyCode from "../../VerifyCode";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   components: {

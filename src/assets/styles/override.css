@@ -31,3 +31,10 @@
   opacity: 1!important;
   transform: scaleY(1)!important;
 }
+
+/* 禁用状态的 input button 的色值 */
+.ant-btn-primary[disabled],
+.ant-input-disabled {
+  background-color: #f4f7ff!important;
+  border-color: #e6edff!important;
+}

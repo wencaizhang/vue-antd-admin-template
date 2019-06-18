@@ -123,3 +123,24 @@ export function downloadFile (content, filename, MIME="application/octet-stream"
   eleLink.click();
   document.body.removeChild(eleLink);
 }
+
+
+export function memoize (func, hasher) {
+  var has = function(obj, path) {
+    return obj != null && Object.prototype.hasOwnProperty.call(obj, path);
+  }
+  hasher = hasher || function () {
+    var args = [].slice.call(arguments);
+    return JSON.stringify(args);
+  }
+  var memoize = function(key) {
+    var cache = memoize.cache;
+
+    var address = '' + (hasher ? hasher.apply(this, arguments) : key);
+
+    if (!has(cache, address)) cache[address] = func.apply(this, arguments);
+    return cache[address]
+  };
+  memoize.cache = {};
+  return memoize;
+};

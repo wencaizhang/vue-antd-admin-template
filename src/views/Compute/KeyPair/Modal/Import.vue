@@ -30,7 +30,7 @@
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-textarea
-            placeholder="请在此粘贴您的SSH公钥"
+            placeholder="格式：ssh-rsa AAAKedvs...."
             v-decorator="[
               'publicKey',
               {

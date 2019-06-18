@@ -40,7 +40,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/cmp': {
-        target: 'http://ci.cmp.cecpark.net:81',
+        target: 'http://ci.cmp.cecpark.net',
         // target: 'http://192.168.150.130:8081',
         ws: false,
         changeOrigin: true,

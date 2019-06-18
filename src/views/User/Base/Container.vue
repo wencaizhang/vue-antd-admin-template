@@ -12,7 +12,7 @@
             <div class="account-settings-info-left">
               <a-menu
                 :style="{ border: '0', width: 'auto'}"
-                :defaultSelectedKeys="defaultSelectedKeys"
+                :selectedKeys="menuSelectedKeys"
                 type="inner"
                 @openChange="onOpenChange"
               >
@@ -55,7 +55,7 @@ export default {
       // horizontal  inline
       mode: "inline",
       openKeys: [],
-      defaultSelectedKeys: ['base'],
+      menuSelectedKeys: ['basic'],
       // cropper
       preview: {},
       option: {
@@ -76,8 +76,13 @@ export default {
       pageTitle: ""
     };
   },
-  created() {
+  created () {
     this.updateMenu();
+  },
+  watch: {
+    $route (to, from) {
+      this.updateMenu();
+    }
   },
   methods: {
     onOpenChange(openKeys) {
@@ -85,7 +90,7 @@ export default {
     },
     updateMenu() {
       const routes = this.$route.matched.concat();
-      this.defaultSelectedKeys = [routes.pop().name];
+      this.menuSelectedKeys = [routes.pop().name];
     }
   }
 };
