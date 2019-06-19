@@ -89,7 +89,7 @@
             >
               <div v-if="idCardFront.length < 1">
                 <a-icon type="plus" />
-                <div class="ant-upload-text">Upload</div>
+                <div class="ant-upload-text">上传</div>
               </div>
             </a-upload>
             <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">

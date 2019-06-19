@@ -16,7 +16,7 @@
         showIcon
       />
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="快照名称：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="快照名称">
           <a-input
             v-decorator="[
               'snapshootName',
@@ -30,7 +30,7 @@
             placeholder="请输入快照名称"
           />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="描述：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="描述">
           <a-textarea
             placeholder="请输入描述"
             v-decorator="[

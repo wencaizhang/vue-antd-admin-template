@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-form :form="form">
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="计费方式：">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="计费方式">
         <a-radio-group
           buttonStyle="solid"
           v-decorator="[
@@ -17,7 +17,7 @@
           <a-radio :value="1">按量付费</a-radio>
         </a-radio-group>
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="云主机名称：">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="云主机名称">
         <a-input
           v-decorator="[
             'hostName',
@@ -32,7 +32,7 @@
           placeholder="请填写云主机名称"
         />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="云主机数量：">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="云主机数量">
         <a-input-number
           style="width: 250px"
           :min="1"
@@ -46,7 +46,7 @@
           ]"
         />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="登录方式：">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="登录方式">
         <a-radio-group
           buttonStyle="solid"
           @change="handleChangeLoginType"
@@ -62,7 +62,7 @@
           <a-radio :value="1">密码</a-radio>
         </a-radio-group>
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="云主机用户名：">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="云主机用户名">
         <a-select
           mode="tags"
           @change="handleSelectUserName"
@@ -84,7 +84,7 @@
         v-if="loginWay == 1"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        label="密码："
+        label="密码"
       >
         <a-input
           type="password"
@@ -106,7 +106,7 @@
         v-if="loginWay == 1"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        label="确认密码："
+        label="确认密码"
       >
         <a-input
           type="password"
@@ -128,7 +128,7 @@
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         v-if="loginWay == 0"
-        label="SSH密钥："
+        label="SSH密钥"
       >
         <!-- <div>
           <span style="margin-right: 3px;">选择已有密钥，或</span>
@@ -157,7 +157,7 @@
         </a-spin>
         <a @click="createKeypair" style="margin-left: 8px;">新建</a>
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="用户数据：" style="margin-bottom: 5px;">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="用户数据" style="margin-bottom: 5px;">
         <a-radio-group
           @change="e => userData = e.target.value"
           v-decorator="[

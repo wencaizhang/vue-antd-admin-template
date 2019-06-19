@@ -5,6 +5,10 @@ import router from '@/router';
 import { clearToken } from '@/utils/util'
 import notification from "ant-design-vue/es/notification";
 import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
+import settings from '@/settings'
+
+// 免登录白名单
+const whiteList = settings.whiteList;
 
 // 创建 axios 实例
 const service = axios.create({
@@ -47,7 +51,11 @@ service.interceptors.request.use(config => {
     config.headers["tokenId"] = token; // 让每个请求携带自定义 token 请根据实际情况自行修改
     config.headers["projectId"] = projectId; // 让每个请求携带自定义 token 请根据实际情况自行修改
   } else {
-    router.push({ name: 'login' })
+    const route = router.match(location);
+    const name = route.name;
+    if (whiteList.includes(name)) {
+      router.push({ name: 'login' })
+    }
   }
   // console.log('>>>>>>>>')
   // console.log(config)

@@ -30,7 +30,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="描述："
+          label="描述"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -47,7 +47,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="数量："
+          label="数量"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -61,7 +61,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="硬盘来源："
+          label="硬盘来源"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -118,7 +118,7 @@
           </a-spin>
         </a-form-item>
         <a-form-item
-          label="类型："
+          label="类型"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -136,7 +136,7 @@
           </a-radio-group>
         </a-form-item>
         <a-form-item
-          label="容量："
+          label="容量"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -151,7 +151,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="购买时长："
+          label="购买时长"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >

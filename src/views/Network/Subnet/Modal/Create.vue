@@ -14,7 +14,7 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="网络名称："
+          label="网络名称"
         >
           <a-input
             v-decorator="[
@@ -49,7 +49,7 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="IP版本："
+          label="IP版本"
         >
           <a-select
             v-decorator="[
@@ -67,7 +67,7 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="网络地址段："
+          label="网络地址段"
         >
           <a-input
             v-decorator="[
@@ -115,7 +115,7 @@
             v-if="!formValues.isDisableGateway"
             :labelCol="formItemLayout.labelCol"
             :wrapperCol="formItemLayout.wrapperCol"
-            label="网关IP："
+            label="网关IP"
           >
             <a-input
               v-decorator="[
@@ -128,7 +128,7 @@
             style="margin-top: 24px;"
             :labelCol="formItemLayout.labelCol"
             :wrapperCol="formItemLayout.wrapperCol"
-            label="分配地址池："
+            label="分配地址池"
           >
             <a-textarea
               :rows="4"
@@ -141,7 +141,7 @@
           <a-form-item
             :labelCol="formItemLayout.labelCol"
             :wrapperCol="formItemLayout.wrapperCol"
-            label="DNS服务器："
+            label="DNS服务器"
           >
             <a-textarea
               :rows="4"
@@ -154,7 +154,7 @@
           <a-form-item
             :labelCol="formItemLayout.labelCol"
             :wrapperCol="formItemLayout.wrapperCol"
-            label="主机路由："
+            label="主机路由"
           >
             <a-textarea
               :rows="4"

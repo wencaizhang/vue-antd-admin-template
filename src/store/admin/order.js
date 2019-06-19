@@ -25,7 +25,7 @@ const columns = [
   },
   {
     title: "工单处理人",
-    dataIndex: "createrName"
+    dataIndex: ""
   },
   {
     title: "工单提交人",

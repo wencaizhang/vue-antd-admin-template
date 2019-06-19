@@ -1,8 +1,5 @@
 <template>
   <div class="user-wrapper">
-    <!-- <span class="action">
-      <a-icon type="question-circle-o"></a-icon>
-    </span> -->
     <a-dropdown>
       <span class="action ant-dropdown-link user-dropdown-menu">
         <a-avatar class="avatar" size="small" :src="avatar" />
@@ -14,6 +11,12 @@
             <a-icon type="user" />
             <span>个人中心</span>
           </router-link>
+        </a-menu-item>
+        <a-menu-item key="0111">
+          <a href="javascript:;" @click="toggleLoginType">
+            <a-icon type="logout" />
+            <span>{{ actionText }}</span>
+          </a>
         </a-menu-item>
         <!-- <a-menu-item key="1">
           <router-link :to="{ name: 'settings' }">
@@ -35,7 +38,7 @@
 
 <script>
 
-import { clearToken } from '@/utils/util'
+import { clearToken, redirectToLogin } from '@/utils/util'
 import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 import avatar from '@/assets/images/avatar.png'
 export default {
@@ -50,11 +53,23 @@ export default {
       avatar,
     };
   },
+  computed: {
+    actionText () {
+      const isUser = this.$ls.get('isUser');
+      return isUser ? '切换为管理员' : '切换为用户';
+    }
+  },
   methods: {
     handleLogout() {
       clearToken();
-      this.$router.push({ name: 'login' })
-    }
+      redirectToLogin();
+    },
+    toggleLoginType () {
+      const isUser = this.$ls.get('isUser');
+      const name = !isUser ? 'login' : 'admin-login';
+      clearToken();
+      this.$router.push({ name })
+    },
   }
 };
 </script>

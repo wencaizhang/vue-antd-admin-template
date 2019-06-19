@@ -10,7 +10,7 @@
       okText="提交"
     >
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="名称：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="名称">
           <a-input
             disabled
             v-decorator="[
@@ -21,7 +21,7 @@
             ]"
           />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="当前容量：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="当前容量">
           <a-input-number
             disabled
             v-decorator="[
@@ -32,7 +32,7 @@
             ]"
           />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="新容量：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="新容量">
           <a-input-number
             :min="currRecord.capacity"
             :max="4000"

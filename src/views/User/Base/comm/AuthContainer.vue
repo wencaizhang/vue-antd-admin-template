@@ -4,7 +4,7 @@
     <a-tab-pane tab="个人认证" key="1">
       <Auth1 />
     </a-tab-pane>
-    <a-tab-pane v-if="authInfo.authType > 0" tab="企业认证" key="2">
+    <a-tab-pane :disabled="false" tab="企业认证" key="2">
       <Auth2 />
     </a-tab-pane>
   </a-tabs>

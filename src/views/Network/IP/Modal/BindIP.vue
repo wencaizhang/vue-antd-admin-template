@@ -10,10 +10,10 @@
       okText="确定"
     >
       <a-form :form="form" v-if="currRecord.mappedStaticIp === '无'">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="IP地址：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="IP地址">
           <a-input :value="currRecord.ipAddress" disabled />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="选择待绑定端口：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="选择待绑定端口">
           <a-spin :spinning="isFetchInstanceList">
             <a-select
               placeholder="请选择待绑定端口！"

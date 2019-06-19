@@ -10,7 +10,7 @@
       okText="确定"
     >
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="资源池：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="资源池">
           <a-spin :spinning="$parent.fetchNetworkListLoading">
             <a-select
               placeholder="请选择资源池！"
@@ -34,7 +34,7 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="描述："
+          label="描述"
         >
           <a-textarea
             placeholder="请填写描述"
@@ -50,7 +50,7 @@
         </a-form-item>
 
         <div class="form-item-container">
-          <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="带宽(Mbps)：">
+          <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="带宽(Mbps)">
             <a-slider
               v-decorator="[
                 'bandwidth',

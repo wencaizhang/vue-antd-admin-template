@@ -10,7 +10,7 @@
       okText="提交"
     >
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="名称：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="名称">
           <a-input
             v-decorator="[
               'name',
@@ -22,7 +22,7 @@
             placeholder="请输入名称"
           />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="管理状态：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="管理状态">
           <a-select
             v-decorator="[
               'bootable',

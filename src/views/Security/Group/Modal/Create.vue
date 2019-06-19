@@ -11,7 +11,7 @@
     >
       <a-form :form="form">
         <a-form-item
-          label="名称："
+          label="名称"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -28,7 +28,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="描述："
+          label="描述"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >

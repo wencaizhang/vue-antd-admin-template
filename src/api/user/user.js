@@ -2,7 +2,7 @@
 import { GET, POST } from '@/utils/request';
 
 // 用户登录
-export const login       = payload => POST('/user/login', payload);
+export const userLogin   = payload => POST('/user/login', payload);
 
 // 用户创建
 export const createUser  = payload => POST('/user/create', payload);

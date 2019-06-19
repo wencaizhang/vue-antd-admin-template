@@ -11,7 +11,7 @@
     >
       <a-alert message="说明：从指定的公网IP池中分配一个地址" type="info" style="margin-bottom: 10px;" showIcon />
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="资源池：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="资源池">
           <a-select
             placeholder="请选择资源池！"
             v-decorator="[
@@ -26,7 +26,7 @@
             <a-select-option value="external_IPV6">external_IPV6</a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="描述：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="描述">
           <a-textarea
             placeholder="请填写描述"
             v-decorator="[
@@ -41,7 +41,7 @@
         </a-form-item>
 
         <div class="form-item-container">
-          <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="带宽(Mbps)：">
+          <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="带宽(Mbps)">
             <a-slider
               v-decorator="[
                 'bandwidth',

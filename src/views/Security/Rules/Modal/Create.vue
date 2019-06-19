@@ -10,7 +10,7 @@
       okText="添加"
     >
       <a-form :form="form" class="create-modal-form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="规则：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="规则">
           <a-select
             :getPopupContainer="getPopupContainer"
             @change="handleChangeRuleType"
@@ -34,7 +34,7 @@
         </a-form-item>
 
         <template v-if="createFormVisible[ruleType]['direction']">
-          <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="方向：">
+          <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="方向">
             <a-select
               placeholder="请选择方向！"
               v-decorator="[
@@ -54,7 +54,7 @@
 
         <a-form-item
           v-if="createFormVisible[ruleType]['ipName']"
-          label="IP协议："
+          label="IP协议"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -80,7 +80,7 @@
         </a-form-item>
 
         <template v-if="createFormVisible[ruleType]['port']">
-          <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="端口类型：">
+          <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="端口类型">
             <a-select
               @change="v => portType = v"
               placeholder="请选择端口类型！"
@@ -98,7 +98,7 @@
           </a-form-item>
           <a-form-item
             v-if="portType === 1"
-            label="端口号："
+            label="端口号"
             :labelCol="formItemLayout.labelCol"
             :wrapperCol="formItemLayout.wrapperCol"
           >
@@ -117,7 +117,7 @@
           </a-form-item>
           <a-form-item
             v-if="portType === 2"
-            label="起始端口号："
+            label="起始端口号"
             :labelCol="formItemLayout.labelCol"
             :wrapperCol="formItemLayout.wrapperCol"
           >
@@ -136,7 +136,7 @@
           </a-form-item>
           <a-form-item
             v-if="portType === 2"
-            label="终止端口号："
+            label="终止端口号"
             :labelCol="formItemLayout.labelCol"
             :wrapperCol="formItemLayout.wrapperCol"
           >
@@ -157,7 +157,7 @@
 
         <a-form-item
           v-if="createFormVisible[ruleType]['type']"
-          label="类型："
+          label="类型"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -185,7 +185,7 @@
         </a-form-item>
         <a-form-item
           v-if="createFormVisible[ruleType]['encoding']"
-          label="编码："
+          label="编码"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -215,7 +215,7 @@
         <a-form-item
           :labelCol="{ span: 8 }"
           :wrapperCol="{ span: 14 }"
-          label="远程："
+          label="远程"
         >
           <div class="item-wrap">
             <a-select
@@ -245,7 +245,7 @@
           v-if="remote === 'group'"
           :labelCol="{ span: 8 }"
           :wrapperCol="{ span: 14 }"
-          label="安全组："
+          label="安全组"
         >
           <a-spin :spinning="isFetchGroupList">
             <a-select
@@ -271,7 +271,7 @@
           v-if="remote === 'group'"
           :labelCol="{ span: 8 }"
           :wrapperCol="{ span: 14 }"
-          label="IP类型："
+          label="IP类型"
         >
           <a-select
             placeholder="请选择IP类型！"
@@ -289,7 +289,7 @@
         </a-form-item>
         <a-form-item
           v-if="remote === 'cidr'"
-          label="CIDR："
+          label="CIDR"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
           class="a-form-item"

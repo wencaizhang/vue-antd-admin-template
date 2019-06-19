@@ -11,14 +11,14 @@
     >
       <a-form :form="form">
         <a-form-item
-          label="工单接收者："
+          label="工单接收者"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
           <a-input value="sxxx" disabled />
         </a-form-item>
         <a-form-item
-          label="工单标题："
+          label="工单标题"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -35,7 +35,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="工单内容："
+          label="工单内容"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -53,7 +53,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="相关资源ID："
+          label="相关资源ID"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >

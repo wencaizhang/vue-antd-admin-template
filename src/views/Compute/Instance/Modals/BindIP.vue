@@ -16,7 +16,7 @@
         showIcon
       />
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="IP地址：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="IP地址">
           <a-spin :spinning="$parent.isFetchIpList">
             <a-select
               class="container-----"
@@ -46,7 +46,7 @@
             </a-select>
           </a-spin>
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="待绑定的IP接口：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="待绑定的IP接口">
           <a-select
             placeholder="请选择一个接口"
             v-decorator="[

@@ -10,7 +10,7 @@
       okText="提交"
     >
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="新密码：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="新密码">
           <a-input
             v-decorator="[
               'password',
@@ -25,7 +25,7 @@
             placeholder="设置新密码"
           />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="再次确认新密码：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="再次确认新密码">
           <a-input
             v-decorator="[
               'password2',
@@ -40,7 +40,7 @@
             placeholder="再次确认新密码"
           />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="手机号：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="手机号">
           <a-input
             v-decorator="[
               'phone',
@@ -55,7 +55,7 @@
             placeholder="请输入注册时手机号"
           />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="验证码：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="验证码">
           <a-input
             v-decorator="[
               'code',

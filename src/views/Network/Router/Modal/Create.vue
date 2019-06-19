@@ -13,7 +13,7 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="路由器名称："
+          label="路由器名称"
         >
           <a-input
             v-decorator="[
@@ -24,7 +24,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="外部网络："
+          label="外部网络"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >

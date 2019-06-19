@@ -1,16 +1,19 @@
 import Vue from 'vue';
+import { asyncRouterMap, adminRouterMap } from "@/router/config";
+import router from '@/router/index';
+
 export function timeFix() {
   const time = new Date();
   const hour = time.getHours();
-  const timeObj = {
+  const timeMap = {
     9:  '早上好',
     11: '上午好',
     13: '中午好',
     20: '下午好',
     24: '晚上好',
   };
-  const key = Object.keys(timeObj).find(key => hour <= key);
-  return timeObj[key];
+  const key = Object.keys(timeMap).find(key => hour <= key);
+  return timeMap[key];
 }
 
 export function clearToken () {
@@ -136,7 +139,7 @@ export function memoize (func, hasher) {
   var memoize = function(key) {
     var cache = memoize.cache;
 
-    var address = '' + (hasher ? hasher.apply(this, arguments) : key);
+    var address = hasher.apply(this, arguments);
 
     if (!has(cache, address)) cache[address] = func.apply(this, arguments);
     return cache[address]
@@ -144,3 +147,15 @@ export function memoize (func, hasher) {
   memoize.cache = {};
   return memoize;
 };
+
+export function addRoutes () {
+  const isUser = Vue.ls.get('isUser');
+  const routerMap = isUser ? asyncRouterMap : adminRouterMap;
+  router.addRoutes(routerMap);
+}
+
+export function redirectToLogin (next) {
+  const isUser = Vue.ls.get('isUser');
+  const name = isUser ? 'login' : 'admin-login';
+  next ? next({ name }) : router.push({ name })
+}

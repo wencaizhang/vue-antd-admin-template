@@ -16,7 +16,7 @@
         showIcon
       />
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="快照名称：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="快照名称">
           <a-input
             v-decorator="[
               'snapshootName',

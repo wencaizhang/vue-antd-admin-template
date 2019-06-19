@@ -10,7 +10,7 @@
       okText="确定"
     >
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="外部网络：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="外部网络">
           <a-select
             placeholder="请选择外部网络"
             v-decorator="[
@@ -30,7 +30,7 @@
             </a-select-option>
           </a-select>
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="路由名称：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="路由名称">
           <a-input
             :value="currRecord.name"
             disabled

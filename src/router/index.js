@@ -5,10 +5,9 @@ import VueWechatTitle from 'vue-wechat-title'
 Vue.use(VueWechatTitle)
 Vue.use(Router);
 
-import { arr, constantRouterMap, asyncRouterMap } from "./config";
+import { constantRouterMap, adminRouterMap, asyncRouterMap } from "./config";
 
 export default new Router({
-  // mode: 'history',
   base: process.env.BASE_URL,
-  routes: asyncRouterMap
+  routes: [...constantRouterMap, ]
 })

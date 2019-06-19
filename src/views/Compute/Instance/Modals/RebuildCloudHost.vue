@@ -10,7 +10,7 @@
       okText="确定"
     >
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="选择镜像：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="选择镜像">
           <a-spin :spinning="spinning" tip="Loading...">
             <a-select
               v-decorator="[

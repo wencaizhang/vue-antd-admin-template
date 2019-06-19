@@ -28,10 +28,11 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import BasicHeader from "@/components/Layout/BasicHeader";
 import BasicFooter from "@/components/Layout/BasicFooter";
 import SideMenu from "@/components/menu/Sidebar";
-import { asyncRouterMap } from "@/router/config";
+import { adminRouterMap, asyncRouterMap } from "@/router/config";
 import logo from '@/assets/images/logo/2.png';
 import logo2 from '@/assets/images/logo/4.png';
 
@@ -52,7 +53,9 @@ export default {
     };
   },
   mounted() {
-    this.menuData = asyncRouterMap.find(item => item.path === "/").children;
+    const isUser = Vue.ls.get('isUser');
+    const routeMap = isUser ? asyncRouterMap : adminRouterMap;
+    this.menuData = routeMap.find(item => item.path === "/").children;
   },
   methods: {
     collapseHandle() {

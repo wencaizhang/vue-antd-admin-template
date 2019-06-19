@@ -11,7 +11,7 @@
     >
       <a-form class="mirror-create-form" :form="form">
         <a-form-item
-          label="名称："
+          label="名称"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -29,7 +29,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="描述："
+          label="描述"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -44,7 +44,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="镜像源："
+          label="镜像源"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -70,7 +70,7 @@
           v-if="sourceType == 0"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="镜像文件："
+          label="镜像文件"
         >
           <uploader ref="uploader"></uploader>
         </a-form-item>
@@ -78,7 +78,7 @@
           v-if="sourceType == 1"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="镜像地址："
+          label="镜像地址"
         >
           <a-input
             placeholder="请输入镜像地址"
@@ -96,7 +96,7 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="镜像格式："
+          label="镜像格式"
         >
           <a-select
             :getPopupContainer="getPopupContainer"
@@ -118,7 +118,7 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="架构："
+          label="架构"
         >
           <a-select
             placeholder="选择架构"
@@ -143,7 +143,7 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="最小磁盘(G)："
+          label="最小磁盘(G)"
         >
           <a-input-number
             :min="1"
@@ -157,7 +157,7 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="最低内存(G)："
+          label="最低内存(G)"
         >
           <a-input-number
             :min="1"

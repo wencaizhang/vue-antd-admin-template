@@ -29,12 +29,7 @@
       </a-tabs> -->
 
       <div style="display: flex; flex-direction: row-reverse; justify-content: space-between; margin-bottom: 10px;">
-        <!-- <a-checkbox class="com-unselect" v-model="formLogin.rememberMe">
-          自动登录
-        </a-checkbox> -->
-        <!-- <router-link class="forge" :to="{ name: 'forget' }">
-          找回密码
-        </router-link> -->
+
       </div>
       <a-button
         size="large"
@@ -49,7 +44,7 @@
         登录
       </a-button>
 
-      <div class="user-login-other" style="display: flex; justify-content: space-between; margin-top: 10px;">
+      <div v-if="isUser" class="user-login-other" style="display: flex; justify-content: space-between; margin-top: 10px;">
         <router-link class="forge" :to="{ name: 'forget' }">
           找回密码
         </router-link>
@@ -76,11 +71,16 @@ import UsernameForm from "./Login/UsernameForm";
 import { mapActions } from "vuex";
 import { timeFix } from "@/utils/util";
 
-import { login } from "@/api/user/user";
+import { userLogin } from "@/api/user/user";
+import { workerLogin } from "@/api/user/worker";
 import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 import Canvas from "./Canvas.vue";
 import BasicFooter from "@/components/Layout/BasicFooter";
 import logo from '@/assets/images/logo/3.png';
+
+
+import { addRoutes } from "@/utils/util";
+
 export default {
   components: {
     UsernameForm,
@@ -88,7 +88,22 @@ export default {
     Canvas,
     BasicFooter,
   },
+  beforeRouteEnter (to, from, next) {
+    // 在渲染该组件的对应路由被 confirm 前调用
+    // 不！能！获取组件实例 `this`
+    // 因为当守卫执行前，组件实例还没被创建
 
+    next(vm => {
+      // 通过 `vm` 访问组件实例
+      vm.isUser = to.name !== 'admin-login';
+      Vue.ls.set('isUser', vm.isUser);
+    });
+  },
+  watch: {
+    '$route' (to, from) {
+      // console.log(to, from)
+    }
+  },
   data() {
     return {
       customActiveKey: "UsernameForm",
@@ -99,67 +114,26 @@ export default {
       logo,
       title: '友普云自服务',
 
-      formLogin: {
-        rememberMe: true
-      }
+      isUser: true,
     };
   },
-
+  mounted () {
+    console.log('login mounted');
+    
+  },
   computed: {
-    validate4Username() {
-      console.log("this", this);
-      return {
-        rules: [
-          { required: true, message: "请输入帐户名或邮箱地址" },
-          { validator: this.handleUsernameOrEmail }
-        ],
-        validateTrigger: "change"
-      };
+    login () {
+      return userLogin;
+      return this.isUser ? userLogin : workerLogin;
     },
-    validate4Password() {
-      return {
-        rules: [{ required: true, message: "请输入密码" }],
-        validateTrigger: "blur"
-      };
-    },
-    validate4Mobile() {
-      return {
-        rules: [
-          {
-            required: true,
-            pattern: /^1[34578]\d{9}$/,
-            message: "请输入正确的手机号"
-          }
-        ],
-        validateTrigger: "change"
-      };
-    },
-    validate4Captcha() {
-      return {
-        rules: [{ required: true, message: "请输入验证码" }],
-        validateTrigger: "blur"
-      };
-    }
   },
   methods: {
-    // ...mapActions(["Login", "Logout"]),
-    // handler
-    handleUsernameOrEmail(rule, value, callback) {
-      const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
-      if (regex.test(value)) {
-        this.loginType = 0;
-      } else {
-        this.loginType = 1;
-      }
-      callback();
-    },
 
     async handleSubmit() {
-
       try {
         const payload = await this.$refs[this.customActiveKey].handleSubmit();
         this.loading = true;
-        const resp = await login(payload);
+        const resp = await this.login(payload);
         this.loginSuccess(resp);
       } catch (err) {
 
@@ -168,18 +142,16 @@ export default {
       } finally {
         this.loading = false;
       }
-      // const loginParams = {
-      //   remember_me: that.formLogin.rememberMe
-      // };
     },
     loginSuccess(resp) {
-
       // const expire = 1 * 60 * 60 * 1000;
       Vue.ls.set(ACCESS_TOKEN, resp.tokenId);
       Vue.ls.set(PROJECT_ID, resp.projectId[0]);
       Vue.ls.set('userInfo', resp);
 
-      this.$router.push({ name: "dashboard" });
+      addRoutes();
+
+      this.$router.push({ name: "Index" });
       this.$message.success(timeFix() + "，欢迎回来", 3);
     },
   }

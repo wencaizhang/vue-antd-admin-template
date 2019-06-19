@@ -11,7 +11,7 @@
     >
       <a-form :form="form">
         <a-form-item
-          label="类型："
+          label="类型"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -31,7 +31,7 @@
         </a-form-item>
         <template v-if="type == 1">
           <a-form-item
-            label="硬盘类型："
+            label="硬盘类型"
             :labelCol="formItemLayout.labelCol"
             :wrapperCol="formItemLayout.wrapperCol"
           >
@@ -49,7 +49,7 @@
             </a-radio-group>
           </a-form-item>
           <a-form-item
-            label="容量："
+            label="容量"
             :labelCol="formItemLayout.labelCol"
             :wrapperCol="formItemLayout.wrapperCol"
           >
@@ -64,7 +64,7 @@
             />
           </a-form-item>
           <a-form-item
-            label="购买时长："
+            label="购买时长"
             :labelCol="formItemLayout.labelCol"
             :wrapperCol="formItemLayout.wrapperCol"
           >

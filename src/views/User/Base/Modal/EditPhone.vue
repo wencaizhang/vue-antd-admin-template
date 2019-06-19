@@ -10,7 +10,7 @@
       okText="提交"
     >
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="新手机：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="新手机">
           <a-input
             v-decorator="[
               'phone',
@@ -25,7 +25,7 @@
             placeholder="新手机地址"
           />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="验证码：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="验证码">
           <a-input
             v-decorator="[
               'email',

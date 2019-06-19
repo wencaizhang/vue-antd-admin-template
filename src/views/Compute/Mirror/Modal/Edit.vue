@@ -11,7 +11,7 @@
     >
       <a-form :form="form">
         <a-form-item
-          label="名称："
+          label="名称"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -25,7 +25,7 @@
           />
         </a-form-item>
         <a-form-item
-          label="描述："
+          label="描述"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
@@ -44,7 +44,7 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="最小磁盘(G)："
+          label="最小磁盘(G)"
         >
           <a-input-number
             :min="1"
@@ -60,7 +60,7 @@
         <a-form-item
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
-          label="最低内存(G)："
+          label="最低内存(G)"
         >
           <a-input-number
             :min="2"

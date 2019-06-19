@@ -10,7 +10,7 @@
       okText="确定"
     >
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="选择子网：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="选择子网">
           <a-spin :spinning="fetchSubnetLoading">
             <a-select
               placeholder="请选择子网"
@@ -32,7 +32,7 @@
             </a-select>
           </a-spin>
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="路由名称：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="路由名称">
           <a-input
             :value="currRecord.name"
             disabled

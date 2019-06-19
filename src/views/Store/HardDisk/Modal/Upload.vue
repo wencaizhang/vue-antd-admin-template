@@ -10,7 +10,7 @@
       okText="提交"
     >
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="硬盘名称：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="硬盘名称">
           <a-input
             :disabled="true"
             v-decorator="[
@@ -23,7 +23,7 @@
             placeholder="请输入硬盘名称"
           />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="镜像名称：">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="镜像名称">
           <a-input
             placeholder="请输入镜像名称"
             v-decorator="[

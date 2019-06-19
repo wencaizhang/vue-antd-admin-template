@@ -55,6 +55,6 @@ export default {
 /*  */
 .breadcrumb {
   margin-bottom: 0px;
-  line-height: 60px;
+  line-height: 58px;
 }
 </style>

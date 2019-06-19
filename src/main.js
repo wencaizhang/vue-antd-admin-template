@@ -1,7 +1,6 @@
 import 'babel-polyfill';
 import Vue from 'vue';
 import Storage from 'vue-ls';
-// import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/antd.less';
 import uploader from 'vue-simple-uploader'
 import './assets/styles/styles.css';
@@ -13,8 +12,11 @@ import App from './App.vue';
 import config from '@/settings'
 import '@/permission' // 权限控制
 
-import '@/utils/util'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 import './components_use'  // 按需引入 ant-design-vue 组件
+
+import { addRoutes } from '@/utils/util';
+
 
 // uploader 和 mock.js 不能同时使用
 Vue.use(uploader)
@@ -33,3 +35,7 @@ new Vue({
   store,
   render: h => h(App),
 }).$mount('#app');
+
+if (Vue.ls.get(ACCESS_TOKEN)) {
+  addRoutes()
+}

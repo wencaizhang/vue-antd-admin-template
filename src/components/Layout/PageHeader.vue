@@ -30,7 +30,8 @@ export default {
   },
   methods: {
     getTitle() {
-      this.title = this.$route.meta.title;
+      const matched = this.$route.matched;
+      this.title = matched.length > 2 ? matched[2].meta.title : this.$route.meta.title;
     }
   }
 };

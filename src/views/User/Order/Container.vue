@@ -1,11 +1,7 @@
 <template>
   <div>
     <page-layout>
-      <div slot="header">
-        <p style="margin: 0;">
-          工单管理
-        </p>
-      </div>
+
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">
           <a-row type="flex" justify="space-between">
