@@ -1,6 +1,4 @@
 import Vue from 'vue';
-import { asyncRouterMap, adminRouterMap } from "@/router/config";
-import router from '@/router/index';
 
 export function timeFix() {
   const time = new Date();
@@ -14,10 +12,6 @@ export function timeFix() {
   };
   const key = Object.keys(timeMap).find(key => hour <= key);
   return timeMap[key];
-}
-
-export function clearToken () {
-  Vue.ls.clear();
 }
 
 export const rulesObj = {
@@ -147,15 +141,3 @@ export function memoize (func, hasher) {
   memoize.cache = {};
   return memoize;
 };
-
-export function addRoutes () {
-  const isUser = Vue.ls.get('isUser');
-  const routerMap = isUser ? asyncRouterMap : adminRouterMap;
-  router.addRoutes(routerMap);
-}
-
-export function redirectToLogin (next) {
-  const isUser = Vue.ls.get('isUser');
-  const name = isUser ? 'login' : 'admin-login';
-  next ? next({ name }) : router.push({ name })
-}

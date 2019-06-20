@@ -79,7 +79,7 @@ import BasicFooter from "@/components/Layout/BasicFooter";
 import logo from '@/assets/images/logo/3.png';
 
 
-import { addRoutes } from "@/utils/util";
+import { addRoutes } from "@/utils/role";
 
 export default {
   components: {

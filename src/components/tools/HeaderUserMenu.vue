@@ -38,7 +38,7 @@
 
 <script>
 
-import { clearToken, redirectToLogin } from '@/utils/util'
+import { clearToken, redirectToLogin } from '@/utils/role'
 import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 import avatar from '@/assets/images/avatar.png'
 export default {

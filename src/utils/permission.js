@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import NProgress from 'nprogress'  // 顶部进度条
 import 'nprogress/nprogress.css'
-import router from './router'
-import { redirectToLogin } from '@/utils/util'
+import router from '../router'
+import { redirectToLogin } from '@/utils/role'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
-import settings from '@/settings'
+import settings from '@/utils/settings'
 // 免登录白名单
 const whiteList = settings.whiteList;
 

@@ -2,10 +2,10 @@ import Vue from "vue";
 import axios from "axios";
 import store from "@/store";
 import router from '@/router';
-import { clearToken } from '@/utils/util'
+import { clearToken } from '@/utils/role'
 import notification from "ant-design-vue/es/notification";
 import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
-import settings from '@/settings'
+import settings from '@/utils/settings'
 
 // 免登录白名单
 const whiteList = settings.whiteList;
