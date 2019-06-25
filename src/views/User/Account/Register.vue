@@ -62,7 +62,9 @@
             ]"
           >
             <!-- <a-icon slot="prefix" type="lock" class="icon" /> -->
-            <a-icon slot="suffix" class="suffix-eye"
+            <a-icon
+              slot="suffix"
+              class="suffix-eye"
               :type="passwordType | eyeIcon"
               @click="toggleType('passwordType')"
             />
@@ -81,7 +83,9 @@
           ]"
         >
           <!-- <a-icon slot="prefix" type="lock" class="icon" /> -->
-          <a-icon slot="suffix" class="suffix-eye"
+          <a-icon
+            slot="suffix"
+            class="suffix-eye"
             :type="password2Type | eyeIcon"
             @click="toggleType('password2Type')"
           />
@@ -107,34 +111,24 @@
         </a-input>
       </a-form-item>
       <a-form-item>
-        <a-row :gutter="16">
-          <a-col class="gutter-row" :span="16">
-            <a-input
-              size="small"
-              type="text"
-              autocomplete="false"
-              placeholder="输入验证码"
-              v-decorator="[
-                'smsCode',
-                {rules: [{ required: true, message: '请输入验证码' }]}
-              ]"
-            >
-              <!-- <a-icon slot="prefix" type="mail" class="icon" /> -->
-            </a-input>
-          </a-col>
-          <a-col class="gutter-row" :span="8">
-            <a-button
-              size="small"
-              class="getCaptcha"
-              tabindex="-1"
-              :disabled="!!state.loading"
-              @click.stop.prevent="getCaptcha"
-              v-text="btnText"
-            >
-              获取验证码
-            </a-button>
-          </a-col>
-        </a-row>
+        <div style="display: flex;">
+          <a-input
+            size="small"
+            type="text"
+            autocomplete="false"
+            placeholder="输入验证码"
+            v-decorator="[
+              'smsCode',
+              {rules: [{ required: true, message: '请输入验证码' }]}
+            ]"
+          >
+            <!-- <a-icon slot="prefix" type="mail" class="icon" /> -->
+          </a-input>
+          <captcha-button
+            @clickBtn="getCaptcha"
+            size="small"
+          />
+        </div>
       </a-form-item>
 
       <a-button
@@ -157,14 +151,15 @@
         </span>
       </div>
     </a-form>
-    <Canvas />
-    <BasicFooter class="footer-copyright"/>
+    <my-canvas />
+    <basic-footer class="footer-copyright" />
   </div>
 </template>
 
 <script>
-import { sendCode, createUser } from "@/api/user/user";
-import { rulesObj } from '@/utils/util';
+import CaptchaButton from '@/components/tools/CaptchaButton'
+import { sendCode, createUser,  } from "@/api/user/user";
+import rulesObj from '@/utils/rules'
 import Canvas from "./Canvas.vue";
 
 import BasicFooter from "@/components/Layout/BasicFooter";
@@ -189,7 +184,7 @@ const levelColor = {
 }
 
 export default {
-  components: { Canvas, BasicFooter, },
+  components: { MyCanvas: Canvas, BasicFooter, CaptchaButton},
   data() {
     return {
       logo,
@@ -204,9 +199,6 @@ export default {
       password2Type: 'text',
       visiblepopover: false,
       state: {
-        time: 60,
-        loading: "", // pending resolve reject
-        smsSendBtn: false,
         passwordLevel: 0,
         passwordLevelChecked: false,
         percent: 10,
@@ -225,22 +217,6 @@ export default {
     })
   },
   computed: {
-    btnText() {
-      let { time, loading } = this.state;
-      if (loading === "") {
-        return "获取验证码";
-      }
-      if (loading === "pending") {
-        return "发送中";
-      }
-      if (loading === "resolve") {
-        return time + "S";
-      }
-      if (loading === "reject") {
-        return "发送失败";
-      }
-      return "获取验证码";
-    },
     passwordLevelClass () {
       return levelClass[this.state.passwordLevel]
     },
@@ -291,12 +267,14 @@ export default {
       let type = this[typeName];
       this[typeName] = type === 'password' ? 'text' : 'password';
     },
-    handleSubmit() {
-      return new Promise((resolve, reject) => {
-        this.form.validateFieldsAndScroll((err, values) => {
-          err ? reject(err) : resolve(values);
-        });
-      });
+    async handleSubmit() {
+      try {
+        const values = await this.handleValidateField();
+        const resp = await createUser(values);
+        const info = await this.$store.app.dispatch('fetchUserInfo')
+      } catch (error) {
+        
+      }
     },
     async handleValidatePwd () {
       const keys = ['password', 'password2'];
@@ -322,52 +300,20 @@ export default {
       });
     },
 
-    async getCaptcha() {
+    async getCaptcha(callback) {
       // this.handleValidatePwd();
-      let that = this;
       try {
         const data = await this.handleValidateField(["phone"]);
-        this.requestCode(data);
+        callback && callback({
+          payload: {
+            phoneNumber: data.phone,
+            // 验证码类型[0:注册验证码 1:修改密码验证码 2:找回密码验证码 ]
+            smsType: 0
+          },
+          api: sendCode,
+        });
       } catch (error) {}
     },
-
-    async requestCode(data) {
-      this.state.loading = "pending";
-
-      const loadingMsg = this.$message.loading("验证码发送中..", 0);
-      // .then(() => this.$message.success("验证码发送成功", 1));
-      const loadingMsgTimer = setInterval(loadingMsg);
-
-      const payload = {
-        phoneNumber: data.phone,
-        // 验证码类型[0:注册验证码 1:修改密码验证码 2:找回密码验证码 ]
-        smsType: 0
-      }
-
-      try {
-        const resp = await sendCode(payload);
-        this.state.loading = "resolve";
-        this.countDown();
-      } catch (error) {
-        this.state.loading = "reject";
-      } finally {
-        clearInterval(loadingMsgTimer);
-      }
-    },
-
-    // 倒计时
-    countDown(during = 60) {
-      const that = this;
-      let interval = window.setInterval(() => {
-        if (that.state.time-- <= 0) {
-          that.state = {
-            time: 60,
-            loading: ""
-          };
-          window.clearInterval(interval);
-        }
-      }, 1000);
-    }
   }
 };
 </script>

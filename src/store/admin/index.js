@@ -1,6 +1,6 @@
 import common from "../common";
 
-import order from "./order";
+import adminOrder from "./adminOrder";
 import auditors from "./auditors";
 import auth from "./auth";
 
@@ -11,7 +11,7 @@ const store = {
   getters: {},
 
   modules: {
-    order,
+    adminOrder,
     auditors,
     auth,
   }

@@ -51,7 +51,7 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { createGroup as fetchAPI } from '@/api/security/index';
-import { rulesObj } from '@/utils/util';
+import rulesObj from '@/utils/rules'
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {

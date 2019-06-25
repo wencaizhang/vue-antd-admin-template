@@ -16,7 +16,12 @@ export default {
   actions: {},
   getters: {
     getVisibleById: state => id => {
-      return state.menuOptions.find(item => item.id === id).visible;
+      const option = state.menuOptions.find(item => item.id === id);
+      if (!option) {
+        throw new Error(`在 menuOptions 中不存在 ${id} 项`);
+        return false;
+      }
+      return option.visible;
     }
   }
 };

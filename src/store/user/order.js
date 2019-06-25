@@ -34,6 +34,7 @@ export default {
     columns,
     menuOptions: [
       { visible: false, type: 'none',   name: "创建工单", id: "create" },
+      { visible: false, type: 'none',   name: "工单详情", id: "detail" },
     ]
   },
   mutations: {},

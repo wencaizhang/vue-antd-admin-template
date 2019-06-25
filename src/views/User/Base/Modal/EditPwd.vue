@@ -56,19 +56,24 @@
           />
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="验证码">
-          <a-input
-            v-decorator="[
-              'code',
-              {
-                initialValue: currRecord.name,
-                rules: [
-                  { required: true, message: '请输入验证码' },
-                  rulesObj.editdName,
-                ]
-              }
-            ]"
-            placeholder="请输入验证码"
-          />
+          <div style="display: flex;">
+            <a-input
+              v-decorator="[
+                'smsCode',
+                {
+                  initialValue: currRecord.name,
+                  rules: [
+                    { required: true, message: '请输入验证码' },
+                    rulesObj.editdName,
+                  ]
+                }
+              ]"
+              placeholder="请输入验证码"
+            />
+            <captcha-button
+              @clickBtn="onClickBtn"
+            />
+          </div>
         </a-form-item>
       </a-form>
     </a-modal>
@@ -76,10 +81,12 @@
 </template>
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
-import { rulesObj } from '@/utils/util';
+import rulesObj from '@/utils/rules'
 import { editDisk as fetchAPI  } from "@/api/store/disk";
+import CaptchaButton from '@/components/tools/CaptchaButton'
 export default {
   mixins: [baseModalMixins, formModalMixins],
+  components: { CaptchaButton },
   data() {
     return {
       fetchAPI,
@@ -101,6 +108,22 @@ export default {
         }
       });
     },
+    async handleValidateField(fields = null) {
+      return new Promise((resolve, reject) => {
+        this.form.validateFieldsAndScroll(
+          Array.isArray(fields) ? fields : [fields],
+          (err, values) => err ? reject(err) : resolve(values)
+        );
+      });
+    },
+    async onClickBtn (callback) {
+      try {
+        const resp = await this.handleValidateField('phone')
+        callback && callback(resp);
+      } catch (error) {
+
+      }
+    }
   }
 };
 </script>

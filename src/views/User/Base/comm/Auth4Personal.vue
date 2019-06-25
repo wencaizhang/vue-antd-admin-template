@@ -9,11 +9,12 @@
           <a-form-item v-bind="formItemLayout" label="真实姓名">
             <a-input
               :disabled="disabled"
+              placeholder="请输入真实姓名"
               v-decorator="[
                 'realName',
                 {
                   rules:[
-                    { required: true, message: 'Please input your name' }
+                    { required: true, message: '请输入真实姓名' }
                   ]
                 }
               ]"
@@ -21,11 +22,12 @@
           </a-form-item>
           <a-form-item v-bind="formItemLayout" label="邮箱地址">
             <a-input
+              placeholder="请输入邮箱地址"
               v-decorator="[
                 'name',
                 {
                   rules:[
-                    { required: true, message: 'Please input your name' }
+                    { required: true, message: '请输入邮箱地址' }
                   ]
                 }
               ]"
@@ -33,11 +35,12 @@
           </a-form-item>
           <a-form-item v-bind="formItemLayout" label="联系电话">
             <a-input
+              placeholder="请输入联系电话"
               v-decorator="[
                 'phone',
                 {
                   rules: [
-                    { required: true, message: 'Please input your phone' }
+                    { required: true, message: '请输入联系电话' }
                   ]
                 }
               ]"
@@ -45,11 +48,12 @@
           </a-form-item>
           <a-form-item v-bind="formItemLayout" label="身份证号" :required="false">
             <a-input
+              placeholder="请输入身份证号"
               v-decorator="[
                 'idCardNum',
                 {
                   rules: [
-                    { required: true, message: 'Please input your id' }
+                    { required: true, message: '请输入身份证号' }
                   ]
                 }
               ]"
@@ -57,11 +61,12 @@
           </a-form-item>
           <a-form-item v-bind="formItemLayout" label="联系地址">
             <a-input
+              placeholder="请输入联系地址"
               v-decorator="[
                 'address',
                 {
                   rules: [
-                    { required: true, message: 'Please input your address' }
+                    { required: true, message: '请输入联系地址' }
                   ]
                 }
               ]"
@@ -73,51 +78,54 @@
             label="身份证人像面"
           >
             <a-upload
-              v-decorator="['upload', {
-                valuePropName: 'file',
-                getValueFromEvent: normFile,
-                rules: [
-                  { required: true, message: 'Please input your address' }
-                ]
-              }]"
-              name="logo"
+              v-decorator="[
+                'idCardFront',
+                {
+                  getValueFromEvent: normFile,
+                  rules: [
+                    { required: true, message: '请上传身份证人像面' }
+                  ]
+                }
+              ]"
+              name="idCardFront"
               listType="picture-card"
               :action="uploadAction"
-              :fileList="idCardFront"
               @preview="handlePreview"
-              @change="handleChange"
+              @change="handleChange('idCardFront', $event)"
             >
               <div v-if="idCardFront.length < 1">
                 <a-icon type="plus" />
-                <div class="ant-upload-text">上传</div>
+                <div class="ant-upload-text">点击上传</div>
               </div>
             </a-upload>
             <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
               <img alt="example" style="width: 100%" :src="previewImage" />
             </a-modal>
           </a-form-item>
+
           <a-form-item
             v-bind="formItemLayout"
             label="身份证国徽面"
           >
             <a-upload
-              v-decorator="['upload', {
-                valuePropName: 'file',
-                getValueFromEvent: normFile,
-                rules: [
-                  { required: true, message: 'Please input your address' }
-                ]
-              }]"
-              name="logo"
+              v-decorator="[
+                'idCardBack',
+                {
+                  getValueFromEvent: normFile,
+                  rules: [
+                    { required: true, message: '请上传身份证国徽面' }
+                  ]
+                }
+              ]"
+              name="idCardBack"
               listType="picture-card"
               :action="uploadAction"
-              :fileList="idCardBack"
               @preview="handlePreview"
-              @change="handleChange"
+              @change="handleChange('idCardBack', $event)"
             >
               <div v-if="idCardBack.length < 1">
                 <a-icon type="plus" />
-                <div class="ant-upload-text">Upload</div>
+                <div class="ant-upload-text">点击上传</div>
               </div>
             </a-upload>
             <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
@@ -127,7 +135,7 @@
 
           <a-form-item v-bind="formItemLayout">
             <a-row>
-              <a-col :offset="16" >
+              <a-col :offset="16">
                 <a-button type="primary" @click="onSubmit">提交</a-button>
               </a-col>
             </a-row>
@@ -174,30 +182,33 @@ export default {
     onSubmit() {
       const self = this;
       this.form.validateFieldsAndScroll((err, values) => {
+        console.log(values)
         if (!err) {
           console.log(values)
         }
       });
     },
 
-
     handleCancel () {
       this.previewVisible = false
     },
+
     handlePreview (file) {
       this.previewImage = file.url || file.thumbUrl
       this.previewVisible = true
     },
-    handleChange ({ fileList }) {
-      this.fileList = fileList
+
+    handleChange (type, { fileList }) {
+      this[type] = fileList
     },
+
     normFile  (e) {
-      console.log('Upload event:', e);
       if (Array.isArray(e)) {
         return e;
       }
-      return e && e.fileList;
+      return e.file.status === 'done' && e.file.response.url
     },
+
   }
 };
 </script>

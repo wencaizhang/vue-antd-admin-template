@@ -15,7 +15,7 @@
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
         >
-          <a-input value="sxxx" disabled />
+          <a-input value="UR Cloud" disabled />
         </a-form-item>
         <a-form-item
           label="工单标题"
@@ -56,6 +56,7 @@
           label="相关资源ID"
           :labelCol="formItemLayout.labelCol"
           :wrapperCol="formItemLayout.wrapperCol"
+          extra="如果问题涉及到具体资源，请提供这些资源的 ID，形如 814a5d60，方便快速定位问题。"
         >
           <a-input
             v-decorator="[
@@ -68,7 +69,6 @@
             ]"
           />
         </a-form-item>
-        <p>如果问题涉及到具体资源，请提供这些资源的 ID，形如 814a5d60，方便快速定位问题。</p>
       </a-form>
     </a-modal>
   </div>
@@ -76,7 +76,7 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { createOrder as fetchAPI } from "@/api/user/order";
-import { rulesObj } from '@/utils/util';
+import rulesObj from '@/utils/rules'
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {

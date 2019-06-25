@@ -1,22 +1,20 @@
 import 'babel-polyfill'
-import Vue from 'vue'
-import Storage from 'vue-ls'
 import 'ant-design-vue/dist/antd.less'
-import uploader from 'vue-simple-uploader'
 import './assets/styles/styles.css'
 import './assets/styles/override.css'
-import router from './router'
-import store from './store'
-import axios from 'axios'
-import App from './App.vue'
+import Vue      from 'vue'
+import Storage  from 'vue-ls'
+import uploader from 'vue-simple-uploader'
+import router   from './router'
+import store    from './store'
+import axios    from 'axios'
+import App      from './App.vue'
 import settings from '@/utils/settings'
 import '@/utils/permission' // 权限控制
 import '@/utils/components_use'  // 按需引入 ant-design-vue 组件
 
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-
-import { addRoutes } from '@/utils/role'
-
+import { addRoutes }    from '@/utils/role'
 
 // uploader 和 mock.js 不能同时使用
 Vue.use(uploader)

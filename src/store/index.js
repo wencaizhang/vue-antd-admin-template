@@ -1,5 +1,7 @@
 import Vue  from 'vue';
 import Vuex from 'vuex';
+
+import app from './app';
 import compute from './compute/index';
 import store   from './store/index';
 import network from './network/index';
@@ -20,6 +22,7 @@ export default new Vuex.Store({
 
   },
   modules: {
+    app,
     admin,
     user,
     compute,

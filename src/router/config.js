@@ -55,21 +55,21 @@ export const adminRouterMap = [
             path: 'auth',
             name: 'admin-auth',
             component: () =>
-              import(/* webpackChunkName: 'admin' */ '@/views/User/Auth/Container'),
+              import(/* webpackChunkName: 'admin' */ '@/views/Admin/Auth/Container'),
             meta: { title: '身份认证审核', permission: ['admin'] },
           },
           {
             path: 'order',
             name: 'admin-order',
             component: () =>
-              import(/* webpackChunkName: 'admin' */ '@/views/User/Order/Container'),
+              import(/* webpackChunkName: 'admin' */ '@/views/Admin/Order/Container'),
             meta: { title: '工单管理', permission: ['admin'] },
           },
           {
             path: 'auditors',
             name: 'auditors',
             component: () =>
-              import(/* webpackChunkName: 'admin' */ '@/views/User/Auditors/Container'),
+              import(/* webpackChunkName: 'admin' */ '@/views/Admin/Auditors/Container'),
             meta: { title: '审核人员', permission: ['admin'] },
           },
         ]

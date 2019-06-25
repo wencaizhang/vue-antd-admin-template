@@ -335,7 +335,7 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { addRule as fetchAPI, getGroupList } from '@/api/security/index';
-import { rulesObj } from '@/utils/util';
+import rulesObj from '@/utils/rules'
 
 import createFormVisible from "./createVisible.js";
 

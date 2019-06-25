@@ -89,7 +89,6 @@ export default {
     async handleNextClick() {
       try {
         const currFormValues = await this.$refs["content" + this.currStepIndex].handleSubmit();
-        console.log('currFormValues', currFormValues)
         Object.assign(this.formValueCollection, currFormValues);
 
         if (this.steps.length === this.currStepIndex + 1) {

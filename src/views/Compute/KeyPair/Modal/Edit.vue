@@ -46,7 +46,7 @@
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import mixins from './mixins'
 import { editKeyPair as fetchAPI } from '@/api/compute/keypair';
-import { rulesObj } from '@/utils/util';
+import rulesObj from '@/utils/rules'
 export default {
   mixins: [baseModalMixins, formModalMixins, mixins],
   data() {

@@ -1,21 +1,28 @@
 <template>
   <div>
     <page-layout>
+
       <div class="content">
         <div class="table-operator" style="margin-bottom: 16px;">
           <a-row type="flex" justify="space-between">
             <a-col>
               <a-row type="flex" justify="space-between">
                 <a-button icon="sync" :disabled="loading" @click="handleRefresh" style="margin-right: 10px;" title="刷新"></a-button>
-                <a-button
-                  type="primary"
-                  style="margin-right: 10px;"
-                  icon="plus"
-                  @click="handleSingleMenuClick('create')"
+                <a-radio-group
+                  @change="onChange"
+                  v-model="workOrderStatus"
                 >
-                  创建工单
-                </a-button>
+                  <a-radio-button
+                    v-for="item in status"
+                    :key="item.value"
+                    :value="item.value"
+                  >
+                    {{ item.label }}
+                  </a-radio-button>
+                </a-radio-group>
               </a-row>
+            </a-col>
+            <a-col>
             </a-col>
           </a-row>
         </div>
@@ -35,9 +42,6 @@
           :loading="loading"
           @change="handleTableChange"
         >
-          <template slot="detail" slot-scope="text, record">
-            <a title="点击查看工单详情" @click="handleSingleMenuClick('detail', record)">{{ text.substring(0, 8) }}</a>
-          </template>
 
           <template slot="operation" slot-scope="text, record">
             <a-dropdown style="margin-right: 10px;">
@@ -58,35 +62,50 @@
         </a-table>
       </div>
     </page-layout>
-    <create />
-    <detail />
   </div>
 </template>
 <script>
 import PageLayout from "@/components/Layout/PageLayout";
 import tablePageMixins from "@/mixins/tablePageMixins";
-import create from './Modal/Create'
-import detail from './Modal/Detail'
 import { getOrderList as getList } from "@/api/user/order";
 export default {
   mixins: [tablePageMixins],
   components: {
     PageLayout,
-    create,
-    detail,
   },
   data() {
     return {
       getList,
-      module: "user",
-      id: "order",
-      name: "工单",
+      module: "admin",
+      id: "auth",
+      name: "身份认证审核",
 
+      workOrderStatus: "0",
+
+      searchValues: {
+        type: 'name',
+        inputValue: '',
+        status: 'all',
+      },
+      types: {
+        name: '姓名',
+      },
+
+      status: [
+        { value: '0', label: '等待审核', },
+        { value: '1', label: '已通过审核', },
+        { value: '2', label: '未通过认证', },
+      ],
     };
   },
-
   methods: {
+    onChange (e) {
+      const value = e.target.value;
+      // const { name } = this.$route;
+      // this.$router.push({ name, params: { workOrderStatus: this.workOrderStatus } })
+    },
     handleParseData (data) {
+
       data.forEach(item => {
         // 工单状态 [0:未处理 1:已解决 2:处理中]
         const mapStatus = ['未处理',  '已解决',  '处理中',];
@@ -95,6 +114,7 @@ export default {
           workOrderStatus_zh,
         })
       })
+
       return data;
     }
   }

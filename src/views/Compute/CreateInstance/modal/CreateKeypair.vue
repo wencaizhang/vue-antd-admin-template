@@ -61,7 +61,7 @@
 </template>
 <script>
 // import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
-import { rulesObj } from '@/utils/util';
+import rulesObj from '@/utils/rules'
 export default {
   name: 'Create',
   // mixins: [baseModalMixins, formModalMixins],

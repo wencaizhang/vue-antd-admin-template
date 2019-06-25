@@ -176,7 +176,7 @@
 import uploader from "./Uploader";
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { createImage as fetchAPI } from '@/api/compute/images';
-import { rulesObj } from '@/utils/util';
+import rulesObj from '@/utils/rules'
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {

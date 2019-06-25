@@ -121,7 +121,7 @@
 
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
-import { rulesObj } from '@/utils/util';
+import rulesObj from '@/utils/rules'
 import { cloneDisk as fetchAPI  } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins, formModalMixins],

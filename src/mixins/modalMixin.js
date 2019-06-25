@@ -56,7 +56,6 @@ export const baseModalMixins = {
       const ob = {
         [key]: parseInt(v),
       }
-      console.log(ob)
       this.form.setFieldsValue(ob)
     },
     handleCancel() {

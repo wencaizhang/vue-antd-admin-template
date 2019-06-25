@@ -76,7 +76,7 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import { createOrder as fetchAPI } from "@/api/user/order";
-import { rulesObj } from '@/utils/util';
+import rulesObj from '@/utils/rules'
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {

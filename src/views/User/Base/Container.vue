@@ -43,12 +43,9 @@
 <script>
 import PageLayout from "@/components/Layout/PageLayout";
 
-// import VerifyCode from "./VerifyCode";
-
 export default {
   components: {
     PageLayout,
-    // VerifyCode,
   },
   data() {
     return {

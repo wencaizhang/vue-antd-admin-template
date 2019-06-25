@@ -207,7 +207,7 @@ import CreateKeypair from './modal/CreateKeypair'
 import DownloadKeypair from './modal/DownloadKeypair'
 
 import { getKeyPairList } from "@/api/compute/keypair";
-import { rulesObj } from '@/utils/util';
+import rulesObj from '@/utils/rules'
 
 export default {
   props: {

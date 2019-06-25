@@ -3,10 +3,10 @@
     <a-dropdown>
       <span class="action ant-dropdown-link user-dropdown-menu">
         <a-avatar class="avatar" size="small" :src="avatar" />
-        <span style="margin-left: 10px;">{{ userInfo.name }}</span>
+        <span>{{ userInfo.name }}</span>
       </span>
       <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
-        <a-menu-item key="0">
+        <a-menu-item v-if="role === 'user'" key="0">
           <router-link :to="{ name: 'basic' }">
             <a-icon type="user" />
             <span>个人中心</span>
@@ -37,10 +37,10 @@
 </template>
 
 <script>
-
-import { clearToken, redirectToLogin } from '@/utils/role'
+import { clearToken, redirectToLogin } from '@/utils/role';
 import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
-import avatar from '@/assets/images/avatar.png'
+import avatar from '@/assets/images/avatar.png';
+
 export default {
   name: "",
   components: {},
@@ -57,6 +57,9 @@ export default {
     actionText () {
       const isUser = this.$ls.get('isUser');
       return isUser ? '切换为管理员' : '切换为用户';
+    },
+    role () {
+      return this.$store.state.app.role;
     }
   },
   methods: {
@@ -68,7 +71,8 @@ export default {
       const isUser = this.$ls.get('isUser');
       const name = !isUser ? 'login' : 'admin-login';
       clearToken();
-      this.$router.push({ name })
+      this.$router.push({ name });
+      location.reload();
     },
   }
 };
@@ -86,12 +90,12 @@ export default {
   transition: all 0.3s;
   height: 100%;
 }
-/* .avatar {
-  margin: 20px 8px 20px 0;
+.avatar {
+  margin: 20px 12px 20px 0;
   color: #1890ff;
   background: rgba(255, 255, 255, 0.85);
   vertical-align: middle;
-} */
+}
 .user-dropdown-menu-wrapper span {
   margin-left: 2px;
 }

@@ -56,8 +56,8 @@
         </span>
       </div>
     </div>
-    <Canvas />
-    <BasicFooter class="footer-copyright"/>
+    <my-canvas />
+    <basic-footer class="footer-copyright" />
   </div>
 </template>
 
@@ -69,7 +69,7 @@ import notification from "ant-design-vue/es/notification";
 import UsernameForm from "./Login/UsernameForm";
 
 import { mapActions } from "vuex";
-import { timeFix } from "@/utils/util";
+import { welcome } from "@/utils/util";
 
 import { userLogin } from "@/api/user/user";
 import { workerLogin } from "@/api/user/worker";
@@ -78,14 +78,13 @@ import Canvas from "./Canvas.vue";
 import BasicFooter from "@/components/Layout/BasicFooter";
 import logo from '@/assets/images/logo/3.png';
 
-
 import { addRoutes } from "@/utils/role";
 
 export default {
   components: {
     UsernameForm,
     // PhoneForm,
-    Canvas,
+    MyCanvas: Canvas,
     BasicFooter,
   },
   beforeRouteEnter (to, from, next) {
@@ -96,7 +95,6 @@ export default {
     next(vm => {
       // 通过 `vm` 访问组件实例
       vm.isUser = to.name !== 'admin-login';
-      Vue.ls.set('isUser', vm.isUser);
     });
   },
   watch: {
@@ -149,10 +147,19 @@ export default {
       Vue.ls.set(PROJECT_ID, resp.projectId[0]);
       Vue.ls.set('userInfo', resp);
 
+      // 管理员角色[1:普通管理员 110:超级管理员]
+      const roleMap = {
+        '0': 'user',
+        '1': 'admin',
+        '110': 'superAdmin',
+      }
+      const role = roleMap[resp.workerType || 0];
+      Vue.ls.set('isUser', this.isUser);
+      this.$store.commit('app/setRole', role);
       addRoutes();
 
       this.$router.push({ name: "Index" });
-      this.$message.success(timeFix() + "，欢迎回来", 3);
+      this.$message.success(welcome() + "，欢迎回来", 3);
     },
   }
 };

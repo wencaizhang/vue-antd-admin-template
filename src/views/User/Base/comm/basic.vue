@@ -11,7 +11,7 @@
           </a-form-item>
 
           <a-form-item label="邮箱">
-            <a-input  v-model="userInfo.email" disabled />
+            <a-input v-model="userInfo.email" disabled />
           </a-form-item>
 
           <a-form-item label="注册时间">
