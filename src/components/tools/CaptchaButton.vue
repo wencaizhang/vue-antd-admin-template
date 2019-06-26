@@ -6,8 +6,7 @@
     :loading="state.status === 'sending'"
     :disabled="state.disabled"
     @click.stop.prevent="onBtnClick"
-    v-text="btnText"
-  ></a-button>
+  >{{ btnText }}</a-button>
 </template>
 
 <script>
@@ -15,8 +14,9 @@ export default {
   name: "CaptchaButton",
   data() {
     return {
+      lsKey: 'sms',
       state: {
-        time: 60,
+        seconds: 60,
         status: "",
         disabled: false,
       },
@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     btnText() {
-      let { time, status } = this.state;
+      let { seconds, status } = this.state;
       let text;
 
       switch (status) {
@@ -40,7 +40,7 @@ export default {
           break;
         case "resolve":
           this.state.disabled = true;
-          text = time + "秒后重新获取";
+          text = `重新获取(${seconds} 秒)`;
           break;
         case "reject":
           this.state.disabled = false;
@@ -52,8 +52,12 @@ export default {
           text = "获取验证码";
           break;
       }
+      console.log(text)
       return text;
     }
+  },
+  mounted () {
+    this.init()
   },
   methods: {
     onBtnClick() {
@@ -63,21 +67,46 @@ export default {
       this.state.status = this.status.sending;
       try {
         const resp = await api(payload);
+        this.$message.success(resp.desc);
         this.state.status = this.status.resolve;
         this.countDown();
+        this.setRecord();
       } catch (error) {
         this.state.status = this.status.reject;
       }
     },
+    init () {
+      const timestamp = this.$ls.get(this.lsKey);
+      if (!timestamp) return;
+
+      const currTimestamp = this.getTimestamp();
+      const diff = this.state.seconds - (currTimestamp - timestamp) / 1000;
+      if (diff > 0) {
+        Object.assign(this.state, {
+          status: 'resolve',
+          seconds: diff,
+        });
+        this.countDown(diff)
+      }
+    },
+    getTimestamp () {
+      return Date.parse(new Date());
+    },
+    setRecord () {
+      let timestamp = this.getTimestamp();
+      this.$ls.set(this.lsKey, timestamp);
+    },
     countDown(during = 60) {
       // 倒计时
+      
       const that = this;
       let interval = window.setInterval(() => {
-        if (that.state.time-- <= 0) {
+        if (that.state.seconds-- <= 0) {
           that.state = {
-            time: 60,
+            seconds: 60,
             status: ""
           };
+          this.$ls.remove(this.lsKey)
           window.clearInterval(interval);
         }
       }, 1000);
@@ -86,7 +115,7 @@ export default {
 };
 </script>
 
-<style <style scoped>
+<style scoped>
 .btn {
   margin-left: 8px;
 }
