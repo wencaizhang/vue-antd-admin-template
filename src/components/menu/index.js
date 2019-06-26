@@ -1,5 +1,6 @@
 import Menu from 'ant-design-vue/es/menu'
 import Icon from 'ant-design-vue/es/icon'
+import store from '@/store'
 
 const { Item, SubMenu } = Menu
 
@@ -26,6 +27,7 @@ export default {
       default: false
     }
   },
+
   data() {
     return {
       openKeys: [],
@@ -33,16 +35,22 @@ export default {
       cachedOpenKeys: []
     }
   },
+
   computed: {
-    rootSubmenuKeys: (vm) => {
+    rootSubmenuKeys (vm) {
       let keys = []
       vm.menu.forEach(item => keys.push(item.path))
       return keys
+    },
+    role () {
+      return store.state.app.role;
     }
   },
+
   created() {
     this.updateMenu()
   },
+
   watch: {
     collapsed(val) {
       if (val) {
@@ -57,6 +65,24 @@ export default {
     }
   },
   methods: {
+
+    // filterMenuData (data) {
+    //   return data.filter(item => {
+    //     let bool = !item.hidden && item.meta.role.includes(this.role);
+    //     item.children =
+    //       bool && item.children && item.children.length
+    //       ? this.filterMenuData(item.children)
+    //       : null;
+    //     return bool;
+    //   })
+    // },
+    renderMenu(h, menuData) {
+      console.count('renderMenu'); // 无限次触发 renderMenu
+      this.filterMenuData(menuData)
+
+      return menuData.map((menu, i) => this.renderItem(h, menu, '0', i))
+    },
+    
     filterMenuData (data=this.menu) {
       // 将 hidden: true 的过滤掉，不展示在 sidebar 中
       data.forEach(item => {
@@ -69,68 +95,50 @@ export default {
           }
         }
       });
-
     },
     getKey (menu, pIndex, index) {
       return menu.name ? menu.name : 'item_' + pIndex + '_' + index
     },
     renderIcon(h, icon) {
-      return icon === 'none' || icon === undefined ? null
-        : h(Icon, { props: { type: icon !== undefined ? icon : '' } })
+      return icon === 'none' || icon == null
+        ? null
+        : <Icon type={icon}/>
     },
     renderMenuItem(h, menu, pIndex, index) {
-      return h(Item, { key: this.getKey (menu, pIndex, index) },
-        [
-          h(
-            'router-link',
-            { attrs: { to: { name: menu.name } } },
-            [
-              this.renderIcon(h, menu.meta.icon),
-              h('span', [menu.meta.title])
-            ]
-          )
-        ]
+      return (
+        <Item key={this.getKey (menu, pIndex, index)}>
+          <router-link to={{ name: menu.name }}>
+            {this.renderIcon(h, menu.meta.icon)}
+            <span>{menu.meta.title}</span>
+          </router-link>
+        </Item>
       )
     },
     renderSubMenu(h, menu, pIndex, index) {
-      let subItem = [h('span',
-        { slot: 'title' },
-        [
-          this.renderIcon(h, menu.meta.icon),
-          h('span', [menu.meta.title])
-        ]
-      )]
-      let itemArr = []
       let pIndex_ = pIndex + '_' + index
-      if (!menu.alwaysShow) {
-        menu.children.forEach((item, i) => {
-          itemArr.push(this.renderItem(h, item, pIndex_, i))
-        })
-      }
-      return h(
-        SubMenu,
-        { key: this.getKey (menu, pIndex, index) },
-        subItem.concat(itemArr)
+      let subItem = [
+        <span slot="title">
+          {this.renderIcon(h, menu.meta.icon)}
+          <span>{menu.meta.title}</span>
+        </span>
+      ]
+      let itemArr = menu.children
+        .filter(menu => !menu.alwaysShow)
+        .map((item, i) => this.renderItem(h, item, pIndex_, i))
+
+      return (
+        <SubMenu key={this.getKey(menu, pIndex, index)}>
+          { subItem.concat(itemArr) }
+        </SubMenu>
       )
     },
     renderItem(h, menu, pIndex, index) {
-      if (!menu.hidden) {
-        return menu.children && !menu.alwaysShow
-          ? this.renderSubMenu(h, menu, pIndex, index)
-          : this.renderMenuItem(h, menu, pIndex, index)
-      }
+      if (menu.hidden) return;
+      return menu.children && !menu.alwaysShow
+        ? this.renderSubMenu(h, menu, pIndex, index)
+        : this.renderMenuItem(h, menu, pIndex, index)
     },
-    renderMenu(h, menuTree) {
-      this.filterMenuData()
-      let menuArr = []
-      menuTree.forEach((menu, i) => {
-        if (!menu.hidden) {
-          menuArr.push(this.renderItem(h, menu, '0', i))
-        }
-      })
-      return menuArr
-    },
-    onOpenChange(openKeys) {
+    onOpenChange (openKeys) {
       const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
       if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
         this.openKeys = openKeys
@@ -138,8 +146,12 @@ export default {
         this.openKeys = latestOpenKey ? [latestOpenKey] : []
       }
     },
-    updateMenu() {
-
+    onSelect (obj) {
+      this.selectedKeys = obj.selectedKeys
+      this.$emit('select', obj)
+    },
+    updateMenu () {
+      // 设置菜单展开项和高亮项
       let routes = this.$route.matched.concat()
       if (routes.length >= 4 && this.$route.meta.hidden) {
         routes.pop()
@@ -158,24 +170,21 @@ export default {
       this.collapsed ? this.cachedOpenKeys = openKeys : this.openKeys = openKeys
     }
   },
-  render(h) {
-    return h(
-      Menu,
-      {
-        props: {
-          theme: this.$props.theme,
-          mode: this.$props.mode,
-          openKeys: this.openKeys,
-          selectedKeys: this.selectedKeys
-        },
-        on: {
-          openChange: this.onOpenChange,
-          select: (obj) => {
-            this.selectedKeys = obj.selectedKeys
-            this.$emit('select', obj)
-          }
-        }
-      }, this.renderMenu(h, this.menu)
+  render (h) {
+    const props = {
+      theme: this.$props.theme,
+      mode: this.$props.mode,
+      openKeys: this.openKeys,
+      selectedKeys: this.selectedKeys
+    }
+    return (
+      <Menu
+        props={props}
+        onOpenChange={this.onOpenChange}
+        onSelect={this.onSelect}
+      >
+        { this.renderMenu(h, this.menu) }
+      </Menu>
     )
   }
 }
