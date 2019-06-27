@@ -3,9 +3,14 @@
     <a-row :gutter="16">
       <a-col :md="20" :lg="16">
         <a-form  :form="form">
-          <a-form-item v-bind="formItemLayout" label="认证状态">
-            未认证
-          </a-form-item>
+          <a-alert
+            style="margin: 0 auto 24px; width: 67%;"
+            :message="authTypeItem.label"
+            :description="authInfo.authResultContent"
+            :type="authTypeItem.type"
+            showIcon
+          />
+
           <a-form-item v-bind="formItemLayout" label="企业名称">
             <a-input
               placeholder="请输入企业名称"
@@ -14,6 +19,33 @@
                 {
                   rules:[
                     { required: true, message: '请输入企业名称' }
+                  ]
+                }
+              ]"
+            />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" label="统一社会信用代码(18位）">
+            <a-input
+              placeholder="请输入信用代码"
+              v-decorator="[
+                'enterpriseName',
+                {
+                  rules:[
+                    { required: true, message: '请输入信用代码' },
+                    { len: 18, message: '请输入 18 位信用代码' },
+                  ]
+                }
+              ]"
+            />
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" label="注册地址">
+            <a-textarea
+              placeholder="请输入注册地址"
+              v-decorator="[
+                'registeredAddress',
+                {
+                  rules: [
+                    { required: true, message: '请输入注册地址' }
                   ]
                 }
               ]"
@@ -45,47 +77,6 @@
               ]"
             />
           </a-form-item>
-          <a-form-item v-bind="formItemLayout" label="注册地址">
-            <a-input
-              placeholder="请输入注册地址"
-              v-decorator="[
-                'registeredAddress',
-                {
-                  rules: [
-                    { required: true, message: '请输入注册地址' }
-                  ]
-                }
-              ]"
-            />
-          </a-form-item>
-          <a-form-item v-bind="formItemLayout" label="联系电话">
-            <a-input
-              placeholder="请输入联系电话"
-              v-decorator="[
-                'phone',
-                {
-                  rules: [{ required: true, message: '请输入联系电话' }],
-                }
-              ]"
-              style="width: 100%"
-            >
-              <a-select
-                slot="addonBefore"
-                v-decorator="[
-                  'prefix',
-                  { initialValue: '86' }
-                ]"
-                style="width: 70px"
-              >
-                <a-select-option value="86">
-                  手机
-                </a-select-option>
-                <a-select-option value="87">
-                  固话
-                </a-select-option>
-              </a-select>
-            </a-input>
-          </a-form-item>
           <a-form-item
             v-bind="formItemLayout"
             label="营业执照"
@@ -115,6 +106,33 @@
               <img alt="example" style="width: 100%" :src="previewImage" />
             </a-modal>
           </a-form-item>
+          <!-- <a-form-item v-bind="formItemLayout" label="手机号码">
+            <a-input
+              placeholder="请输入手机号码"
+              v-decorator="[
+                'phone',
+                {
+                  rules: [{ required: true, message: '请输入手机号码' }],
+                }
+              ]"
+              style="width: 100%"
+            >
+            </a-input>
+          </a-form-item>
+          <a-form-item v-bind="formItemLayout" label="固定电话">
+            <a-input-group>
+              <a-col :span="8">
+                <a-input
+                  placeholder="区号"
+                />
+              </a-col>
+              <a-col :span="16">
+                <a-input
+                  placeholder="电话号码"
+                />
+              </a-col>
+            </a-input-group>
+          </a-form-item> -->
           <a-form-item
             v-bind="formItemLayout"
             label="法人身份证人像面"
@@ -192,7 +210,7 @@ export default {
   created () {
     this.form = this.$form.createForm(this)
   },
-  components: {},
+
   data() {
     return {
       form: null,
@@ -207,9 +225,28 @@ export default {
       legalPersonIDCardFront: [],
       legalPersonIDCardBack: [],
 
-      uploadAction: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      uploadAction: '/cmp/v1/upload/batch/Certificates',
     };
   },
+
+  computed: {
+    authTypeItem () {
+      const authType = this.$store.getters['app/getAuthType'];
+      const authMap = [
+        // 2 是个人已认证，对于公司来讲，是未认证
+        { val: 2, label: '未认证', type: 'info', },
+        { val: 3, label: '已认证', type: 'success', },
+        { val: 6, label: '认证中', type: 'warning', },
+        { val: 7, label: '认证未通过', type: 'error', },
+        { val: null, label: `未知状态：${authType}`, type: 'error', },
+      ];
+      return authMap.find(item => item.val == authType) || authMap.slice(-1)[0];
+    },
+    authInfo () {
+      return this.$store.state.app.authInfo;
+    },
+  },
+
   methods: {
 
     onSubmit() {

@@ -32,7 +32,8 @@ import Vue from 'vue';
 import BasicHeader from "@/components/Layout/BasicHeader";
 import BasicFooter from "@/components/Layout/BasicFooter";
 import SideMenu from "@/components/menu/Sidebar";
-import { adminRouterMap, asyncRouterMap } from "@/router/config";
+import asyncRouterMap from "@/router/config";
+
 import logo from '@/assets/images/logo/2.png';
 import logo2 from '@/assets/images/logo/4.png';
 
@@ -53,8 +54,7 @@ export default {
     };
   },
   mounted() {
-    const isUser = Vue.ls.get('isUser');
-    const routeMap = isUser ? asyncRouterMap : adminRouterMap;
+    const routeMap = asyncRouterMap;
     this.menuData = routeMap.find(item => item.path === "/").children;
   },
   methods: {

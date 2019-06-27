@@ -7,7 +7,6 @@ import store   from './store/index';
 import network from './network/index';
 import security from './security/index';
 import user from './user/index';
-import admin from './admin/index';
 
 Vue.use(Vuex);
 
@@ -23,7 +22,6 @@ export default new Vuex.Store({
   },
   modules: {
     app,
-    admin,
     user,
     compute,
     store,

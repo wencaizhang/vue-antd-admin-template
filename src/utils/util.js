@@ -103,3 +103,7 @@ export function memoize (func, hasher) {
   memoize.cache = {};
   return memoize;
 };
+
+export function clearToken () {
+  Vue.ls.clear();
+}

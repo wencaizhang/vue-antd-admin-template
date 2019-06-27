@@ -38,14 +38,3 @@
   background-color: #f4f7ff!important;
   border-color: #e6edff!important;
 }
-
-
-.ant-form-item-label label::before {
-  display: inline-block;
-  margin-right: 4px;
-  content: '*';
-  font-family: SimSun;
-  line-height: 1;
-  font-size: 14px;
-  color: #f5222d;
-}

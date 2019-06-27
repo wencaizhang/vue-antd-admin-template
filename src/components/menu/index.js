@@ -76,8 +76,9 @@ export default {
     //     return bool;
     //   })
     // },
+    
     renderMenu(h, menuData) {
-      console.count('renderMenu'); // 无限次触发 renderMenu
+      // console.count('renderMenu'); // 无限次触发 renderMenu
       this.filterMenuData(menuData)
 
       return menuData.map((menu, i) => this.renderItem(h, menu, '0', i))

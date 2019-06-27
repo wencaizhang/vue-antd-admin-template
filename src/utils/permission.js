@@ -3,7 +3,6 @@ import NProgress from 'nprogress'  // 顶部进度条
 import 'nprogress/nprogress.css'
 import router from '../router'
 import store from '../store'
-import { redirectToLogin } from '@/utils/role'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
@@ -19,7 +18,7 @@ router.beforeEach((to, from, next) => {
     if (whiteList.includes(to.name)) {
       next()
     } else {
-      redirectToLogin(next)
+      router.push({ name: 'login' })
       NProgress.done()
     }
     return false;

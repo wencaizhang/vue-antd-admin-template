@@ -6,24 +6,12 @@
         <span>{{ userInfo.name }}</span>
       </span>
       <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
-        <a-menu-item v-if="role === 'user'" key="0">
+        <a-menu-item key="0">
           <router-link :to="{ name: 'basic' }">
             <a-icon type="user" />
             <span>个人中心</span>
           </router-link>
         </a-menu-item>
-        <a-menu-item key="0111">
-          <a href="javascript:;" @click="toggleLoginType">
-            <a-icon type="logout" />
-            <span>{{ actionText }}</span>
-          </a>
-        </a-menu-item>
-        <!-- <a-menu-item key="1">
-          <router-link :to="{ name: 'settings' }">
-            <a-icon type="setting" />
-            <span>账户设置</span>
-          </router-link>
-        </a-menu-item> -->
         <a-menu-divider/>
         <a-menu-item key="3">
           <a href="javascript:;" @click="handleLogout">
@@ -37,7 +25,7 @@
 </template>
 
 <script>
-import { clearToken, redirectToLogin } from '@/utils/role';
+import { clearToken } from '@/utils/util';
 import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 import avatar from '@/assets/images/avatar.png';
 
@@ -53,26 +41,11 @@ export default {
       avatar,
     };
   },
-  computed: {
-    actionText () {
-      const isUser = this.$ls.get('isUser');
-      return isUser ? '切换为管理员' : '切换为用户';
-    },
-    role () {
-      return this.$store.state.app.role;
-    }
-  },
+
   methods: {
     handleLogout() {
       clearToken();
-      redirectToLogin();
-    },
-    toggleLoginType () {
-      const isUser = this.$ls.get('isUser');
-      const name = !isUser ? 'login' : 'admin-login';
-      clearToken();
-      this.$router.push({ name });
-      location.reload();
+      this.$router.push({ name: 'login' })
     },
   }
 };

@@ -3,9 +3,13 @@
     <a-row :gutter="16">
       <a-col :md="20" :lg="16">
         <a-form  :form="form">
-          <a-form-item v-bind="formItemLayout" label="认证状态">
-
-          </a-form-item>
+          <a-alert
+            style="margin: 0 auto 24px; width: 67%;"
+            :message="authTypeItem.label"
+            :description="authInfo.authResultContent"
+            :type="authTypeItem.type"
+            showIcon
+          />
           <a-form-item v-bind="formItemLayout" label="真实姓名">
             <a-input
               :disabled="disabled"
@@ -20,34 +24,9 @@
               ]"
             />
           </a-form-item>
-          <a-form-item v-bind="formItemLayout" label="邮箱地址">
+          <a-form-item v-bind="formItemLayout" label="身份证号">
             <a-input
-              placeholder="请输入邮箱地址"
-              v-decorator="[
-                'name',
-                {
-                  rules:[
-                    { required: true, message: '请输入邮箱地址' }
-                  ]
-                }
-              ]"
-            />
-          </a-form-item>
-          <a-form-item v-bind="formItemLayout" label="联系电话">
-            <a-input
-              placeholder="请输入联系电话"
-              v-decorator="[
-                'phone',
-                {
-                  rules: [
-                    { required: true, message: '请输入联系电话' }
-                  ]
-                }
-              ]"
-            />
-          </a-form-item>
-          <a-form-item v-bind="formItemLayout" label="身份证号" :required="false">
-            <a-input
+              :disabled="disabled"
               placeholder="请输入身份证号"
               v-decorator="[
                 'idCardNum',
@@ -59,25 +38,13 @@
               ]"
             />
           </a-form-item>
-          <a-form-item v-bind="formItemLayout" label="联系地址">
-            <a-input
-              placeholder="请输入联系地址"
-              v-decorator="[
-                'address',
-                {
-                  rules: [
-                    { required: true, message: '请输入联系地址' }
-                  ]
-                }
-              ]"
-            />
-          </a-form-item>
 
           <a-form-item
             v-bind="formItemLayout"
             label="身份证人像面"
           >
             <a-upload
+              :disabled="disabled"
               v-decorator="[
                 'idCardFront',
                 {
@@ -87,7 +54,7 @@
                   ]
                 }
               ]"
-              name="idCardFront"
+              name="file"
               listType="picture-card"
               :action="uploadAction"
               @preview="handlePreview"
@@ -108,6 +75,7 @@
             label="身份证国徽面"
           >
             <a-upload
+              :disabled="disabled"
               v-decorator="[
                 'idCardBack',
                 {
@@ -117,7 +85,7 @@
                   ]
                 }
               ]"
-              name="idCardBack"
+              name="file"
               listType="picture-card"
               :action="uploadAction"
               @preview="handlePreview"
@@ -133,7 +101,7 @@
             </a-modal>
           </a-form-item>
 
-          <a-form-item v-bind="formItemLayout">
+          <a-form-item v-if="!disabled" v-bind="formItemLayout">
             <a-row>
               <a-col :offset="16">
                 <a-button type="primary" @click="onSubmit">提交</a-button>
@@ -147,19 +115,20 @@
 </template>
 
 <script>
+import ruleObj from '@/utils/rules';
+import { auth } from '@/api/user/user';
 export default {
   created () {
-    this.form = this.$form.createForm(this)
+    this.form = this.$form.createForm(this);
   },
-  components: {},
-  computed: {
-    authType () {
-      // 认证状态[0:未认证 1：个人已认证 2：企业已认证]
-      return this.$parent.authInfo.authType
-    }
+  mounted () {
+    const authInfo = this.$store.state.app.authInfo;
+    // console.log(authInfo)
+    // this.form.setFieldsValue(authInfo);
   },
   data() {
     return {
+      ruleObj,
       form: null,
 
       formItemLayout: {
@@ -167,24 +136,51 @@ export default {
         wrapperCol: { span: 12 },
       },
 
-      disabled: true,
-
       previewVisible: false,
       previewImage: '',
       idCardFront: [],
       idCardBack: [],
 
-      uploadAction: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      uploadAction: '/cmp/v1/upload/batch/Certificates',
     };
   },
+  computed: {
+    authTypeItem () {
+      const authType = this.$store.getters['app/getAuthType'];
+      const authMap = [
+        { val: 1, editAble: true, label: '未认证', type: 'info', },
+        { val: 2, editAble: false, label: '已认证', type: 'success', },
+        { val: 4, editAble: false, label: '认证中', type: 'warning', },
+        { val: 5, editAble: true, label: '认证未通过', type: 'error', },
+        { val: 0, editAble: true, label: `未知状态：${authType}`, type: 'error', },
+      ];
+      return authMap.find(item => item.val == authType) || authMap.slice(-1)[0];
+    },
+    disabled () {
+      return !this.authTypeItem.editAble;
+    },
+    authInfo () {
+      return this.$store.state.app.authInfo;
+    },
+  },
   methods: {
-
+    async submit (values) {
+      try {
+        const resp = await auth(values);
+        console.log(resp);
+        this.$store.commit('app/setAuthInfo', Object.assign(values, { authType: 4 }));
+        this.$message.success(resp.desc);
+      } catch (error) {
+        
+      }
+    },
     onSubmit() {
       const self = this;
       this.form.validateFieldsAndScroll((err, values) => {
-        console.log(values)
         if (!err) {
           console.log(values)
+          // 认证状态[1：个人认证 2：企业认证]
+          this.submit(Object.assign(values, { authType: 1 }));
         }
       });
     },
@@ -202,11 +198,11 @@ export default {
       this[type] = fileList
     },
 
-    normFile  (e) {
+    normFile (e) {
       if (Array.isArray(e)) {
         return e;
       }
-      return e.file.status === 'done' && e.file.response.url
+      return e.file.status === 'done' && e.file.response.filePath[0].url;
     },
 
   }

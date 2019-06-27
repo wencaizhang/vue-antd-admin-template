@@ -33,7 +33,12 @@ export default {
     message: '请输入正确手机号码!'
   },
   emial: {
-
+    pattern: /^\d{11}$/,
+    message: '请输入正确邮箱地址!'
+  },
+  idCard: {
+    pattern: /^\d{11}$/,
+    message: '请输入正确身份证号码!'
   },
 
   http: {

@@ -1,16 +1,11 @@
 <template>
   <div class="container register-container">
-    <a-form
-      class="main user-layout-login"
-      :form="form"
-      :class="{ change: name !== 'register' }"
-    >
-
+    <a-form class="main user-layout-login" :form="form" :class="{ change: name !== 'register' }">
       <h1 class="title">
-        <img :src="logo" alt="logo"
-          style="height: 32px;"
-        >
-        <p style="display: inline-block; margin-left: 12px; height: 32px; line-height: 32px;">{{ title }}</p>
+        <img :src="logo" alt="logo" style="height: 32px;">
+        <p
+          style="display: inline-block; margin-left: 12px; height: 32px; line-height: 32px;"
+        >{{ title }}</p>
       </h1>
       <a-form-item v-if="name === 'register'">
         <a-input
@@ -23,21 +18,22 @@
             {rules: [{ required: true, message: '请设置登录名称' }]}
           ]"
         >
-          <!-- <a-icon slot="prefix" type="user" class="icon" /> -->
         </a-input>
       </a-form-item>
 
-      <a-form-item>
-        <a-popover
-          :okText="false"
-          cancelText=""
-          placement="rightTop"
-          :visible="visiblepopover"
-        >
+      <!-- <a-form-item>
+        <a-popover :okText="false" cancelText placement="rightTop" :visible="visiblepopover">
           <template slot="content">
-            <div :style="{ width: '240px' }" >
-              <div :class="['user-register', passwordLevelClass]">强度：<span>{{ passwordLevelName }}</span></div>
-              <a-progress :percent="state.percent" :showInfo="false" :strokeColor=" passwordLevelColor " />
+            <div :style="{ width: '240px' }">
+              <div :class="['user-register', pwdLevel[state.passwordLevel].class]">
+                强度：
+                <span>{{ pwdLevel[state.passwordLevel].text }}</span>
+              </div>
+              <a-progress
+                :percent="state.percent"
+                :showInfo="false"
+                :strokeColor="pwdLevel[state.passwordLevel].color "
+              />
               <div style="margin-top: 10px;">
                 <p>请至少输入 8 个字符，且至少包含大小字母、数字、特殊字符(_,!,@,#)中的两项。</p>
               </div>
@@ -56,12 +52,11 @@
               {
                 rules: [
                   { required: true, message: '请设置登录密码' },
-                  { validator: this.handlePasswordLevel }
+                  { validator: handlePasswordLevel }
                 ]
               }
             ]"
           >
-            <!-- <a-icon slot="prefix" type="lock" class="icon" /> -->
             <a-icon
               slot="suffix"
               class="suffix-eye"
@@ -70,6 +65,31 @@
             />
           </a-input>
         </a-popover>
+      </a-form-item> -->
+      
+      <a-form-item>
+        <a-input
+          size="small"
+          :type="passwordType"
+          autocomplete="new-password"
+          placeholder="设置登录密码"
+          v-decorator="[
+            'password',
+            {
+              rules: [
+                { required: true, message: '请设置登录密码' },
+                { validator: handlePasswordLevel },
+              ]
+            }
+          ]"
+        >
+          <a-icon
+            slot="suffix"
+            class="suffix-eye"
+            :type="passwordType | eyeIcon"
+            @click="toggleType('passwordType')"
+          />
+        </a-input>
       </a-form-item>
       <a-form-item v-if="name === 'register'">
         <a-input
@@ -82,7 +102,6 @@
             {rules: [{ required: true, message: '请再次确认密码' }]}
           ]"
         >
-          <!-- <a-icon slot="prefix" type="lock" class="icon" /> -->
           <a-icon
             slot="suffix"
             class="suffix-eye"
@@ -107,7 +126,6 @@
             }
           ]"
         >
-          <!-- <a-icon slot="prefix" type="mobile" class="icon" /> -->
         </a-input>
       </a-form-item>
       <a-form-item>
@@ -122,12 +140,8 @@
               {rules: [{ required: true, message: '请输入验证码' }]}
             ]"
           >
-            <!-- <a-icon slot="prefix" type="mail" class="icon" /> -->
           </a-input>
-          <captcha-button
-            @clickBtn="getCaptcha"
-            size="small"
-          />
+          <captcha-button @clickBtn="getCaptcha" size="small"/>
         </div>
       </a-form-item>
 
@@ -136,161 +150,156 @@
         type="primary"
         block
         style="margin-top: 10px; height: 36px;"
-      >
-        {{ submitText }}
-      </a-button>
+      >{{ submitText }}</a-button>
       <div
         class="user-login-other"
         style="display: flex; justify-content: space-between; margin-top: 10px;"
       >
         <span>
           <span>有账号,</span>
-          <router-link class="register" :to="{ name: 'login' }">
-            去登录
-          </router-link>
+          <router-link class="register" :to="{ name: 'login' }">去登录</router-link>
         </span>
       </div>
     </a-form>
-    <my-canvas />
-    <basic-footer class="footer-copyright" />
+    <my-canvas/>
+    <basic-footer class="footer-copyright"/>
   </div>
 </template>
 
 <script>
-import CaptchaButton from '@/components/tools/CaptchaButton'
-import { sendCode, createUser,  } from "@/api/user/user";
-import rulesObj from '@/utils/rules'
+import CaptchaButton from "@/components/tools/CaptchaButton";
+import { sendCode, createUser } from "@/api/user/user";
+import rulesObj from "@/utils/rules";
 import Canvas from "./Canvas.vue";
 
 import BasicFooter from "@/components/Layout/BasicFooter";
-import logo from '@/assets/images/logo/3.png';
-const levelNames = {
-  0: '低',
-  1: '低',
-  2: '中',
-  3: '强'
-}
-const levelClass = {
-  0: 'error',
-  1: 'error',
-  2: 'warning',
-  3: 'success'
-}
-const levelColor = {
-  0: '#ff0000',
-  1: '#ff0000',
-  2: '#ff7e05',
-  3: '#52c41a'
-}
+import logo from "@/assets/images/logo/3.png";
 
 export default {
-  components: { MyCanvas: Canvas, BasicFooter, CaptchaButton},
+  components: { MyCanvas: Canvas, BasicFooter, CaptchaButton },
   data() {
     return {
       logo,
       rulesObj,
-      name: '',
-      title: '',
-      submitText: '',
+      name: "",
+      title: "",
+      submitText: "",
 
-      form: this.$form.createForm(this),
+      form: null,
 
-      passwordType: 'text',
-      password2Type: 'text',
+      passwordType: "password",
+      password2Type: "password",
       visiblepopover: false,
       state: {
         passwordLevel: 0,
         passwordLevelChecked: false,
         percent: 10,
-        progressColor: '#FF0000'
+        progressColor: "#FF0000"
       },
+      pwdLevel: [
+        { text: "低", class: "error",   color: "#ff0000" },
+        { text: "低", class: "error",   color: "#ff0000" },
+        { text: "中", class: "warning", color: "#ff7e05" },
+        { text: "中", class: "warning", color: "#ff7e05" },
+        { text: "强", class: "success", color: "#52c41a" },
+      ],
     };
   },
-  mounted () {
+  created () {
+
     // register or forget
     // 根据路由来决定显示的文字和表单项目
     const name = this.$route.name;
     Object.assign(this, {
       name,
-      title: name === 'register' ? '欢迎注册友普云服务' : '找回密码',
-      submitText: name === 'register' ? '注册' : '确定',
-    })
+      title: name === "register" ? "欢迎注册友普云服务" : "找回密码",
+      submitText: name === "register" ? "注册" : "确定"
+    });
+    this.form = this.$form.createForm(this);
   },
-  computed: {
-    passwordLevelClass () {
-      return levelClass[this.state.passwordLevel]
-    },
-    passwordLevelName () {
-      return levelNames[this.state.passwordLevel]
-    },
-    passwordLevelColor () {
-      return levelColor[this.state.passwordLevel]
-    },
-  },
+  // mounted() {
+  //   // register or forget
+  //   // 根据路由来决定显示的文字和表单项目
+  //   const name = this.$route.name;
+  //   Object.assign(this, {
+  //     name,
+  //     title: name === "register" ? "欢迎注册友普云服务" : "找回密码",
+  //     submitText: name === "register" ? "注册" : "确定"
+  //   });
+  //   this.form = this.$form.createForm(this);
+  // },
+
   filters: {
-    eyeIcon (type) {
-      return type === 'password' ? 'eye-invisible' : 'eye';
-    },
+    eyeIcon(type) {
+      return type === "password" ? "eye-invisible" : "eye";
+    }
   },
   watch: {
-    'state.passwordLevel' (level) {
+    "state.passwordLevel"(level) {
       if (level === 0) {
-        this.state.percent = 10
+        this.state.percent = 10;
       } else {
-        this.state.percent = level * 25
+        this.state.percent = level * 20;
       }
-    },
+    }
   },
   methods: {
-    handlePasswordLevel (rule, value, callback) {
+    handlePasswordLevel(rule, value, callback) {
       let level = 0;
 
-      const msg = '密码长度不低于8位,必须包含大小字母,数字,特殊字符(!,@,#)其中的两项';
-      const minLen = /.{8,}/;
-      const maxLen = /.{12,}/;
-      const regs = [ /[a-zA-Z]/, /[0-9]/, /[_!@#]/ ];
-
-      const result = regs.filter(reg => reg.test(value));
-      level += result ? result.length : 0;
-
-      if (!minLen.test(value)) {
-        this.state.passwordLevel = level;
-        return callback('密码长度不低于8位');
-      }
-
-      console.log('level', level);
+      const msg =
+        "密码长度不低于8位,必须包含大小字母,数字,特殊字符(!,@,#)其中的两项";
+      const rules = [
+        {
+          pattern: /.{8,20}/,
+          message: "密码长度长度8-20位"
+        }
+      ];
+      const regsGroup = [/[a-z]/, /[A-Z]/, /[0-9]/, /[_!@#]/];
+      const ret = regsGroup.filter(reg => reg.test(value));
+      level += ret.length;
+      rules.forEach(rule => {
+        if (!rule.pattern.test(value)) {
+          return callback(rule.message);
+        }
+        level++;
+      });
       this.state.passwordLevel = level;
 
-      this.state.passwordLevel >= 3 ? callback() :  callback(msg);
+      // 包含组合中的两项即可
+      ret.length >= 2 ? callback() : callback(msg);
     },
     toggleType(typeName) {
       let type = this[typeName];
-      this[typeName] = type === 'password' ? 'text' : 'password';
+      this[typeName] = type === "password" ? "text" : "password";
     },
     async handleSubmit() {
       try {
+        await this.handleValidatePwd();
         const values = await this.handleValidateField();
         const resp = await createUser(values);
-        const info = await this.$store.app.dispatch('fetchUserInfo')
-      } catch (error) {
-        
-      }
+        this.$router.push({ name: "login" });
+      } catch (error) {}
     },
-    async handleValidatePwd () {
-      const keys = ['password', 'password2'];
+    async handleValidatePwd() {
+      const keys = ["password", "password2"];
       const data = await this.handleValidateField(keys);
-      if (data.password !== data.password2) {
-        this.form.setFields({
-          password2: {
-            value: data.password2,
-            errors: [
-              {
-                "message": "两次密码输入不一致!",
-              }
-            ]
-          }
-        })
-      }
+      return new Promise((resolve, reject) => {
+        if (data.password !== data.password2) {
+          this.form.setFields({
+            password2: {
+              value: data.password2,
+              errors: [
+                {
+                  message: "两次密码输入不一致!"
+                }
+              ]
+            }
+          });
+          reject('两次密码输入不一致');
+        }
+        resolve();
+      })
     },
     async handleValidateField(fields = null) {
       return new Promise((resolve, reject) => {
@@ -301,19 +310,19 @@ export default {
     },
 
     async getCaptcha(callback) {
-      // this.handleValidatePwd();
       try {
         const data = await this.handleValidateField(["phone"]);
-        callback && callback({
-          payload: {
-            phoneNumber: data.phone,
-            // 验证码类型[0:注册验证码 1:修改密码验证码 2:找回密码验证码 ]
-            smsType: 0
-          },
-          api: sendCode,
-        });
+        callback &&
+          callback({
+            api: sendCode,
+            payload: {
+              phoneNumber: data.phone,
+              // 验证码类型[0:注册验证码 1:修改密码验证码 2:找回密码验证码 ]
+              smsType: 0
+            },
+          });
       } catch (error) {}
-    },
+    }
   }
 };
 </script>
@@ -337,8 +346,8 @@ export default {
 
 .container {
   width: 100%;
-  min-height: 100%;
-  background: #f0f2f5 url("../../../assets/images/background.svg") no-repeat 50%;
+  min-height: 100vh;
+  background: #f0f2f5 url("../../assets/images/background.svg") no-repeat 50%;
   background-size: 100%;
   padding: 110px 0 144px;
   position: relative;
@@ -357,12 +366,12 @@ export default {
   width: 340px;
   margin: 0 auto;
   padding: 30px 620px 30px 30px;
-  background: #fff url("../../../assets/images/register.png") no-repeat right;
+  background: #fff url("../../assets/images/register.png") no-repeat right;
   background-size: contain;
   box-shadow: 4px 2px 10px 10px #e3e7f3;
 }
 .main.change {
-  background: #fff url("../../../assets/images/change.png") no-repeat right;
+  background: #fff url("../../assets/images/change.png") no-repeat right;
   background-size: contain;
   padding-right: 460px;
 }

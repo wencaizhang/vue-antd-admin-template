@@ -13,9 +13,6 @@ import settings from '@/utils/settings'
 import '@/utils/permission' // 权限控制
 import '@/utils/components_use'  // 按需引入 ant-design-vue 组件
 
-import { ACCESS_TOKEN } from '@/store/mutation-types'
-import { addRoutes }    from '@/utils/role'
-
 // uploader 和 mock.js 不能同时使用
 Vue.use(uploader)
 
@@ -33,7 +30,3 @@ new Vue({
   store,
   render: h => h(App),
 }).$mount('#app')
-
-if (Vue.ls.get(ACCESS_TOKEN)) {
-  addRoutes()
-}

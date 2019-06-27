@@ -14,7 +14,7 @@ export default {
     },
     AppLoading () {
       return !this.$store.state.app.authInfo
-    }
+    },
   },
   render (h) {
     return (

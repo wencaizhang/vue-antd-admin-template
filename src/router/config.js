@@ -1,84 +1,8 @@
-import Login from '../views/User/Account/Login.vue';
-import Register from '../views/User/Account/Register.vue';
 
 import RouteView from '@/components/Layout/RouteView';
 import BasicLayout from '@/components/Layout/BasicLayout';
 
-/**
- * 基础路由
- * @type { *[] }
- */
-export const constantRouterMap = [
-  {
-    path: '/login',
-    name: 'login',
-    meta: { title: '登录' },
-    component: Login
-  },
-  {
-    path: '/admin-login',
-    name: 'admin-login',
-    meta: { title: '登录' },
-    component: Login
-  },
-  {
-    path: '/register',
-    name: 'register',
-    meta: { title: '注册新用户' },
-    component: Register
-  },
-  {
-    path: '/forget',
-    name: 'forget',
-    meta: { title: '忘记密码' },
-    component: Register
-  },
-];
-
-export const adminRouterMap = [
-  {
-    path: '/',
-    name: 'Index',
-    meta: { title: '首页' },
-    redirect: '/admin',
-    component: BasicLayout,
-    children: [
-      // 管理员
-      {
-        path: 'admin',
-        name: 'admin',
-        component: RouteView,
-        redirect: 'admin/auth',
-        meta: { title: '管理员', icon: 'user-add', permission: ['admin'] },
-        children: [
-          {
-            path: 'auth',
-            name: 'admin-auth',
-            component: () =>
-              import(/* webpackChunkName: 'admin' */ '@/views/Admin/Auth/Container'),
-            meta: { title: '身份认证审核', permission: ['admin'] },
-          },
-          {
-            path: 'order',
-            name: 'admin-order',
-            component: () =>
-              import(/* webpackChunkName: 'admin' */ '@/views/Admin/Order/Container'),
-            meta: { title: '工单管理', permission: ['admin'] },
-          },
-          {
-            path: 'auditors',
-            name: 'auditors',
-            component: () =>
-              import(/* webpackChunkName: 'admin' */ '@/views/Admin/Auditors/Container'),
-            meta: { title: '审核人员', permission: ['admin'] },
-          },
-        ]
-      },
-    ]
-  }
-]
-
-export const asyncRouterMap = [
+export default [
   {
     path: '/',
     name: 'Index',
@@ -90,7 +14,7 @@ export const asyncRouterMap = [
         path: 'dashboard',
         name: 'dashboard',
         component: () => import(/* webpackChunkName: 'dashboard' */ '@/views/Dashboard/Container'),
-        meta: { title: '总览', icon: 'dashboard', permission: ['user'] }
+        meta: { title: '总览', icon: 'dashboard', role: ['user'], permission: [ 'authed' ] }
       },
 
       // 计算
@@ -99,14 +23,14 @@ export const asyncRouterMap = [
         name: 'compute',
         component: RouteView,
         redirect: 'compute/instance',
-        meta: { title: '计算', icon: 'calculator', permission: ['user'] },
+        meta: { title: '计算', icon: 'calculator', role: ['user'], permission: [ 'authed' ] },
         children: [
           {
             path: 'instance',
             name: 'instance',
             component: () =>
               import(/* webpackChunkName: 'compute' */ '@/views/Compute/Instance/Container'),
-            meta: { title: '实例', permission: ['user'] }
+            meta: { title: '实例', role: ['user'], permission: [ 'authed' ] }
           },
           {
             path: 'instance/create',
@@ -114,21 +38,21 @@ export const asyncRouterMap = [
             hidden: true,
             component: () =>
               import(/* webpackChunkName: 'compute' */ '@/views/Compute/CreateInstance/Container'),
-            meta: { title: '创建实例', permission: ['user'] }
+            meta: { title: '创建实例', role: ['user'], permission: [ 'authed' ] }
           },
           {
             path: 'mirror',
             name: 'mirror',
             component: () =>
               import(/* webpackChunkName: 'compute' */ '@/views/Compute/Mirror/Container'),
-            meta: { title: '镜像', permission: ['user'] }
+            meta: { title: '镜像', role: ['user'], permission: [ 'authed' ] }
           },
           {
             path: 'key-pair',
             name: 'key-pair',
             component: () =>
               import(/* webpackChunkName: 'compute' */ '@/views/Compute/KeyPair/Container'),
-            meta: { title: '密钥对', permission: ['user'] }
+            meta: { title: '密钥对', role: ['user'], permission: [ 'authed' ] }
           }
         ]
       },
@@ -139,14 +63,14 @@ export const asyncRouterMap = [
         name: 'store',
         component: RouteView,
         redirect: 'store/harddisk',
-        meta: { title: '存储', icon: 'save', permission: ['user'] },
+        meta: { title: '存储', icon: 'save', role: ['user'], permission: [ 'authed' ] },
         children: [
           {
             path: 'harddisk',
             name: 'harddisk',
             component: () =>
               import(/* webpackChunkName: 'store' */ '@/views/Store/HardDisk/Container'),
-            meta: { title: '硬盘', permission: ['user'] },
+            meta: { title: '硬盘', role: ['user'], permission: [ 'authed' ] },
             children: [
               {
                 path: ':id',
@@ -154,7 +78,7 @@ export const asyncRouterMap = [
                 hidden: true,
                 component: () =>
                   import(/* webpackChunkName: 'store' */ '@/views/Store/HardDisk/Detail'),
-                meta: { title: '硬盘', permission: ['user'] }
+                meta: { title: '硬盘', role: ['user'], permission: [ 'authed' ] }
               }
             ]
           },
@@ -164,7 +88,7 @@ export const asyncRouterMap = [
             name: 'snapshoot',
             component: () =>
               import(/* webpackChunkName: 'store' */ '@/views/Store/Snapshoot/Container'),
-            meta: { title: '快照', permission: ['user'] },
+            meta: { title: '快照', role: ['user'], permission: [ 'authed' ] },
             children: [
               {
                 path: ':id',
@@ -172,7 +96,7 @@ export const asyncRouterMap = [
                 hidden: true,
                 component: () =>
                   import(/* webpackChunkName: 'store' */ '@/views/Store/Snapshoot/Detail'),
-                meta: { title: '快照', permission: ['user'] }
+                meta: { title: '快照', role: ['user'], permission: [ 'authed' ] }
               }
             ]
           },
@@ -181,7 +105,7 @@ export const asyncRouterMap = [
             name: 'backups',
             component: () =>
               import(/* webpackChunkName: 'store' */ '@/views/Store/Backups/Container'),
-            meta: { title: '备份', permission: ['user'] },
+            meta: { title: '备份', role: ['user'], permission: [ 'authed' ] },
             children: [
               {
                 path: ':id',
@@ -189,7 +113,7 @@ export const asyncRouterMap = [
                 hidden: true,
                 component: () =>
                   import(/* webpackChunkName: 'store' */ '@/views/Store/Backups/Detail'),
-                meta: { title: '备份', permission: ['user'] }
+                meta: { title: '备份', role: ['user'], permission: [ 'authed' ] }
               }
             ]
           }
@@ -201,28 +125,28 @@ export const asyncRouterMap = [
         name: 'network',
         component: RouteView,
         redirect: 'network/router',
-        meta: { title: '网络', icon: 'wifi', permission: ['user'] },
+        meta: { title: '网络', icon: 'wifi', role: ['user'], permission: [ 'authed' ] },
         children: [
           {
             path: 'router',
             name: 'router',
             component: () =>
               import(/* webpackChunkName: 'network' */ '@/views/Network/Router/Container'),
-            meta: { title: '路由器', permission: ['user'] }
+            meta: { title: '路由器', role: ['user'], permission: [ 'authed' ] }
           },
           {
             path: 'subnet',
             name: 'subnet',
             component: () =>
               import(/* webpackChunkName: 'network' */ '@/views/Network/Subnet/Container'),
-            meta: { title: '网络', permission: ['user'] }
+            meta: { title: '网络', role: ['user'], permission: [ 'authed' ] }
           },
           {
             path: 'ip',
             name: 'ip',
             component: () =>
               import(/* webpackChunkName: 'network' */ '@/views/Network/IP/Container'),
-            meta: { title: '公网IP', permission: ['user'] }
+            meta: { title: '公网IP', role: ['user'], permission: [ 'authed' ] }
           }
         ]
       },
@@ -233,14 +157,14 @@ export const asyncRouterMap = [
         name: 'security',
         component: RouteView,
         redirect: 'security/group',
-        meta: { title: '安全', icon: 'safety-certificate', permission: ['user'] },
+        meta: { title: '安全', icon: 'safety-certificate', role: ['user'], permission: [ 'authed' ] },
         children: [
           {
             path: 'group',
             name: 'group',
             component: () =>
               import(/* webpackChunkName: 'expense' */ '@/views/Security/Group/Container'),
-            meta: { title: '安全组', permission: ['user'] },
+            meta: { title: '安全组', role: ['user'], permission: [ 'authed' ] },
             children: [
               {
                 path: 'rules/:id',
@@ -248,7 +172,7 @@ export const asyncRouterMap = [
                 hidden: true,
                 component: () =>
                   import(/* webpackChunkName: 'expense' */ '@/views/Security/Rules/Container'),
-                meta: { title: '管理安全组规则', permission: ['user'] }
+                meta: { title: '管理安全组规则', role: ['user'], permission: [ 'authed' ] }
               },
             ]
           },
@@ -261,51 +185,38 @@ export const asyncRouterMap = [
         path: 'user',
         name: 'user',
         component: RouteView,
-        redirect: 'user/info',
-        meta: { title: '用户', icon: 'user', permission: ['user'] },
+        redirect: 'user/basic',
+        meta: { title: '用户', icon: 'user', role: ['user'], permission: [ 'authed' ] },
         children: [
           {
-            path: 'info',
-            name: 'info',
-            redirect: 'info/basic',
+            path: 'basic',
+            name: 'basic',
             component: () =>
-              import(/* webpackChunkName: 'user' */ '@/views/User/Base/Container'),
-            meta: { title: '用户中心', permission: ['user'] },
-            children: [
-              {
-                path: 'basic',
-                name: 'basic',
-                hidden: true,
-                component: () =>
-                  import(/* webpackChunkName: 'user' */ '@/views/User/Base/comm/basic'),
-                meta: { title: '基本信息', permission: ['user'] },
-              },
-              {
-                path: 'security',
-                name: 'security-setting',
-                hidden: true,
-                component: () =>
-                  import(/* webpackChunkName: 'user' */ '@/views/User/Base/comm/security'),
-                meta: { title: '安全认证', permission: ['user'] },
-              },
-              {
-                path: 'auth',
-                name: 'auth',
-                hidden: true,
-                component: () =>
-                  import(/* webpackChunkName: 'user' */ '@/views/User/Base/comm/AuthContainer'),
-                meta: { title: '认证信息', permission: ['user'] },
-              },
-            ],
+              import(/* webpackChunkName: 'user' */ '@/views/User/Basic'),
+            meta: { title: '基本信息', role: ['user'], permission: [ 'authed' ] },
           },
           {
-            path: 'order',
-            name: 'user-order',
+            path: 'security',
+            name: 'security-setting',
             component: () =>
-              import(/* webpackChunkName: 'user' */ '@/views/User/Order/Container'),
-            meta: { title: '工单管理', permission: ['user'] },
+              import(/* webpackChunkName: 'user' */ '@/views/User/Security'),
+            meta: { title: '安全认证', role: ['user'], permission: [ 'authed' ] },
           },
-        ]
+          {
+            path: 'auth',
+            name: 'auth',
+            component: () =>
+              import(/* webpackChunkName: 'user' */ '@/views/User/Auth/Container'),
+            meta: { title: '认证信息', role: ['user'], permission: [  ] },
+          },
+        ],
+      },
+      {
+        path: 'order',
+        name: 'order',
+        component: () =>
+          import(/* webpackChunkName: 'user' */ '@/views/Order/Container'),
+        meta: { title: '工单管理', role: ['user'], permission: [ 'authed' ] },
       },
     ]
   },

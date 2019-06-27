@@ -1,17 +1,18 @@
 <template>
-  <div class="account-settings-info-view">
-    <a-list itemLayout="horizontal" :dataSource="listData">
-      <a-list-item slot="renderItem" slot-scope="item">
-        <a-list-item-meta
-          :description="item.desc"
-        >
-          <a slot="title" >{{item.title}}</a>
+  <div>
+    <page-layout>
+      <a-list itemLayout="horizontal" :dataSource="listData">
+        <a-list-item slot="renderItem" slot-scope="item">
+          <a-list-item-meta
+            :description="item.desc"
+          >
+            <a slot="title" >{{item.title}}</a>
 
-        </a-list-item-meta>
-          <a slot="actions" @click="handleClick(item)">修改</a>
-      </a-list-item>
-    </a-list>
-
+          </a-list-item-meta>
+            <a slot="actions" @click="handleClick(item)">修改</a>
+        </a-list-item>
+      </a-list>
+    </page-layout>
     <EditEmail />
     <EditPhone />
     <EditPwd />
@@ -19,11 +20,13 @@
 </template>
 
 <script>
-import EditEmail from '../Modal/EditEmail'
-import EditPhone from '../Modal/EditPhone'
-import EditPwd from '../Modal/EditPwd'
+import EditEmail from './Modal/EditEmail'
+import EditPhone from './Modal/EditPhone'
+import EditPwd from './Modal/EditPwd'
+import PageLayout from "@/components/Layout/PageLayout";
 export default {
   components: {
+    PageLayout,
     EditEmail,
     EditPhone,
     EditPwd,

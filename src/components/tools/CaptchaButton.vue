@@ -52,7 +52,6 @@ export default {
           text = "获取验证码";
           break;
       }
-      console.log(text)
       return text;
     }
   },
