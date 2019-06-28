@@ -65,6 +65,7 @@ export default {
       rulesObj,
       name: "editEmail",
       smsCode: '',
+
     };
   },
 

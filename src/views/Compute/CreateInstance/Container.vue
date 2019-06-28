@@ -66,7 +66,7 @@ export default {
         { title: "选择镜像", name: "step1" },
         { title: "配置选择", name: "step2" },
         { title: "网络设置", name: "step3" },
-        { title: "基本信息", name: "step4" },
+        { title: "基本资料", name: "step4" },
       ],
       formValueCollection: {},
       defaultUserName: '',

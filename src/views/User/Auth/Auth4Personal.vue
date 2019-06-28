@@ -2,9 +2,9 @@
   <div class="account-settings-info-view">
     <a-row :gutter="16">
       <a-col :md="20" :lg="16">
-        <a-form  :form="form">
+        <a-form :form="form">
           <a-alert
-            style="margin: 0 auto 24px; width: 67%;"
+            style="margin: 0 0 24px; width: 66.7%;"
             :message="authTypeItem.label"
             :description="authInfo.authResultContent"
             :type="authTypeItem.type"
@@ -103,8 +103,16 @@
 
           <a-form-item v-if="!disabled" v-bind="formItemLayout">
             <a-row>
-              <a-col :offset="16">
-                <a-button type="primary" @click="onSubmit">提交</a-button>
+              <a-col :offset="8" :span="8">
+                <a-button
+                  block
+                  :loading="loading"
+                  :disabled="loading"
+                  type="primary"
+                  @click="onSubmit"
+                >
+                  提交
+                </a-button>
               </a-col>
             </a-row>
           </a-form-item>
@@ -130,9 +138,10 @@ export default {
     return {
       ruleObj,
       form: null,
+      loading: false,
 
       formItemLayout: {
-        labelCol: { span: 8 },
+        labelCol: { span: 4 },
         wrapperCol: { span: 12 },
       },
 
@@ -152,9 +161,8 @@ export default {
         { val: 2, editAble: false, label: '已认证', type: 'success', },
         { val: 4, editAble: false, label: '认证中', type: 'warning', },
         { val: 5, editAble: true, label: '认证未通过', type: 'error', },
-        { val: 0, editAble: true, label: `未知状态：${authType}`, type: 'error', },
       ];
-      return authMap.find(item => item.val == authType) || authMap.slice(-1)[0];
+      return authMap.find(item => item.val == authType) || authMap[0];
     },
     disabled () {
       return !this.authTypeItem.editAble;
@@ -164,25 +172,27 @@ export default {
     },
   },
   methods: {
-    async submit (values) {
+    async onSubmit (values) {
+      this.loading = true;
       try {
-        const resp = await auth(values);
-        console.log(resp);
+        const values = await this._validate();
+        // 认证状态[1：个人认证 2：企业认证]
+        const resp = await auth(values, { authType: 1 });
+        // 提交之后，默认进入 认证中 状态
         this.$store.commit('app/setAuthInfo', Object.assign(values, { authType: 4 }));
         this.$message.success(resp.desc);
       } catch (error) {
         
+      } finally {
+        this.loading = false;
       }
     },
-    onSubmit() {
-      const self = this;
-      this.form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
-          console.log(values)
-          // 认证状态[1：个人认证 2：企业认证]
-          this.submit(Object.assign(values, { authType: 1 }));
-        }
-      });
+    _validate () {
+      return new Promise ((reslove, reject) => {
+        this.form.validateFieldsAndScroll((err, values) => {
+          err ? reject() : reslove(values);
+        });
+      })
     },
 
     handleCancel () {
@@ -210,5 +220,7 @@ export default {
 </script>
 
 <style scoped>
-
+.account-settings-info-view {
+  padding-left: 20px;
+}
 </style>

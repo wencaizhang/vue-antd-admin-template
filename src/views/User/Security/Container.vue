@@ -13,9 +13,10 @@
         </a-list-item>
       </a-list>
     </page-layout>
-    <EditEmail />
-    <EditPhone />
-    <EditPwd />
+
+    <edit-email />
+    <edit-phone />
+    <edit-pwd />
   </div>
 </template>
 
@@ -36,7 +37,7 @@ export default {
 
       module: "user",
       id: "security",
-      name: "安全认证",
+      name: "安全设置",
 
       listData: [
         {

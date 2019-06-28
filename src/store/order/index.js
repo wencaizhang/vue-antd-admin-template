@@ -1,7 +1,6 @@
 import common from "../common";
 
-import user  from './user';
-import security  from './security';
+import order from "./order";
 
 const store = {
   state: {},
@@ -10,8 +9,7 @@ const store = {
   getters: {},
 
   modules: {
-    user,
-    security,
+    order,
   }
 };
 

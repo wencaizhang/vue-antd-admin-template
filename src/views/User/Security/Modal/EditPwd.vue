@@ -6,44 +6,54 @@
       @ok="handleCreate"
       :visible="visible"
       :confirmLoading="confirmLoading"
-      title="修改手机号"
+      title="修改密码"
       okText="提交"
     >
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="新手机">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="新密码">
           <a-input
             v-decorator="[
-              'phone',
+              'oldPassword',
               {
                 initialValue: currRecord.name,
                 rules: [
-                  { required: true, message: '新手机地址' },
+                  { required: true, message: '旧密码' },
                   rulesObj.editdName,
                 ]
               }
             ]"
-            placeholder="新手机地址"
+            placeholder="设置新密码"
           />
         </a-form-item>
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="验证码">
-          <div style="display: flex;">
-            <a-input
-              v-decorator="[
-                'smsCode',
-                {
-                  initialValue: currRecord.name,
-                  rules: [
-                    { required: true, message: '请输入验证码' },
-                    rulesObj.editdName,
-                  ]
-                }
-              ]"
-              placeholder="请输入验证码"
-            />
-            <captcha-button
-              @clickBtn="onClickBtn"
-            />
-          </div>
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="新密码">
+          <a-input
+            v-decorator="[
+              'password',
+              {
+                initialValue: currRecord.name,
+                rules: [
+                  { required: true, message: '设置新密码' },
+                  rulesObj.editdName,
+                ]
+              }
+            ]"
+            placeholder="设置新密码"
+          />
+        </a-form-item>
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="再次确认新密码">
+          <a-input
+            v-decorator="[
+              'password2',
+              {
+                initialValue: currRecord.name,
+                rules: [
+                  { required: true, message: '再次确认新密码' },
+                  rulesObj.editdName,
+                ]
+              }
+            ]"
+            placeholder="再次确认新密码"
+          />
         </a-form-item>
       </a-form>
     </a-modal>
@@ -53,8 +63,7 @@
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import rulesObj from '@/utils/rules'
 import { editDisk as fetchAPI  } from "@/api/store/disk";
-import CaptchaButton from '@/components/tools/CaptchaButton';
-import { sendCode, } from "@/api/user/user";
+import CaptchaButton from '@/components/tools/CaptchaButton'
 export default {
   mixins: [baseModalMixins, formModalMixins],
   components: { CaptchaButton },
@@ -62,7 +71,7 @@ export default {
     return {
       fetchAPI,
       rulesObj,
-      name: "editPhone"
+      name: "editPwd"
     };
   },
 
@@ -90,18 +99,11 @@ export default {
     async onClickBtn (callback) {
       try {
         const resp = await this.handleValidateField('phone')
-        callback && callback({
-          payload: {
-            phoneNumber: data.phone,
-            // 验证码类型[0:注册验证码 1:修改密码验证码 2:找回密码验证码 ]
-            smsType: 0
-          },
-          api: sendCode,
-        });
+        callback && callback(resp);
       } catch (error) {
 
       }
-    },
+    }
   }
 };
 </script>

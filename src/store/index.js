@@ -7,6 +7,7 @@ import store   from './store/index';
 import network from './network/index';
 import security from './security/index';
 import user from './user/index';
+import order from './order/order';
 
 Vue.use(Vuex);
 
@@ -27,5 +28,6 @@ export default new Vuex.Store({
     store,
     network,
     security,
+    order
   }
 });

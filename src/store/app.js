@@ -6,7 +6,7 @@ export default {
     // 'admin'
     // 'superAdmin'
     authed: false,
-    userInfo: null,
+    userInfo: {},
     authInfo: {
       authType: '1',
       fetched: false,
@@ -48,13 +48,8 @@ export default {
 
   },
   actions: {
-    async fetchUserInfo (context) {
-      try {
-        const resp = await getBaseInfo();
-        context.commit('setUserInfo', resp);
-      } catch (error) {
-        
-      }
+    fetchUserInfo (context) {
+      return getBaseInfo();
     },
     fetchAuthInfo (context) {
       return getAuthInfo();

@@ -150,7 +150,11 @@ export default {
     __handleTransformToZh (status) {
       return statusDicts[status.toLowerCase()] || status
     },
-    transform (limit) {
+
+    /**
+     * limit 应当是以 b 位单位的
+     */
+    formatStorageSpace (limit) {
       // 小于 1 KB，则转化成 B
       // 小于 1 MB，则转化成 KB
       // 小于 1 GB，则转化成 MB
@@ -167,6 +171,7 @@ export default {
       return ret;
 
     },
+
     handleParseData (data) {
       const ret = data.filter(item => {
         return this.imageSource == 0 && item.isPublic === 'public'
@@ -177,7 +182,7 @@ export default {
         const imageFormat_zh = (imageFormatList.find(aaa => aaa.value === item.imageFormat) || {}).label;
         const status_zh = this.__handleTransformToZh(item.status)
         const imageType_zh = item.imageType === 'snapshot' ? '快照' : '镜像';
-        const capacity_zh = this.transform(item.capacity == '无' ? 0 : item.capacity)
+        const capacity_zh = this.formatStorageSpace(item.capacity == '无' ? 0 : item.capacity)
         Object.assign(item, {
           imageFormat_zh,
           status_zh,

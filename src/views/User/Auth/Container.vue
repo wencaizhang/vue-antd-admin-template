@@ -1,39 +1,21 @@
 <template>
-  <page-layout>
-    <!-- <div slot="header">
-      <a-tabs
-        :defaultActiveKey="formValues.authType"
-        @change="handleTabChange"
-        style="position:relative; top: 17px;"
+  <page-layout class="auth-container">
+    <a-tabs
+      :defaultActiveKey="formValues.authType"
+      @change="handleTabChange"
+    >
+      <a-tab-pane tab="个人认证" key="1">
+        <Auth1 />
+      </a-tab-pane>
+      <a-tab-pane
+        v-if="showTab2"
+        :disabled="false"
+        key="2"
+        tab="企业认证"
       >
-        <a-tab-pane tab="个人认证" key="1">
-        </a-tab-pane>
-        <a-tab-pane
-          v-if="showTab2"
-          :disabled="false"
-          key="2"
-          tab="企业认证"
-        >
-        </a-tab-pane>
-      </a-tabs>
-    </div> -->
-    <!-- <div> -->
-      <a-tabs
-        :defaultActiveKey="formValues.authType"
-        @change="handleTabChange"
-      >
-        <a-tab-pane tab="个人认证" key="1">
-          <Auth1 />
-        </a-tab-pane>
-        <a-tab-pane
-          v-if="showTab2"
-          :disabled="false"
-          key="2"
-          tab="企业认证"
-        >
-          <Auth2 />
-        </a-tab-pane>
-      </a-tabs>
+        <Auth2 />
+      </a-tab-pane>
+    </a-tabs>
     <!-- </div> -->
   </page-layout>
 </template>
@@ -102,3 +84,12 @@ export default {
   },
 }
 </script>
+
+<style>
+.auth-container .ant-form-item-label label {
+  display: inline-block;
+  text-align: left;
+  width: 100%;
+  padding-left: 5px;
+}
+</style>

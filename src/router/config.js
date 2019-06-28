@@ -189,25 +189,25 @@ export default [
         meta: { title: '用户', icon: 'user', role: ['user'], permission: [ 'authed' ] },
         children: [
           {
+            path: 'auth',
+            name: 'auth',
+            component: () =>
+              import(/* webpackChunkName: 'user' */ '@/views/User/Auth/Container'),
+            meta: { title: '实名认证', role: ['user'], permission: [  ] },
+          },
+          {
             path: 'basic',
             name: 'basic',
             component: () =>
               import(/* webpackChunkName: 'user' */ '@/views/User/Basic'),
-            meta: { title: '基本信息', role: ['user'], permission: [ 'authed' ] },
+            meta: { title: '基本资料', role: ['user'], permission: [ 'authed' ] },
           },
           {
             path: 'security',
             name: 'security-setting',
             component: () =>
-              import(/* webpackChunkName: 'user' */ '@/views/User/Security'),
-            meta: { title: '安全认证', role: ['user'], permission: [ 'authed' ] },
-          },
-          {
-            path: 'auth',
-            name: 'auth',
-            component: () =>
-              import(/* webpackChunkName: 'user' */ '@/views/User/Auth/Container'),
-            meta: { title: '认证信息', role: ['user'], permission: [  ] },
+              import(/* webpackChunkName: 'user' */ '@/views/User/Security/Container'),
+            meta: { title: '安全设置', role: ['user'], permission: [ 'authed' ] },
           },
         ],
       },
@@ -216,7 +216,7 @@ export default [
         name: 'order',
         component: () =>
           import(/* webpackChunkName: 'user' */ '@/views/Order/Container'),
-        meta: { title: '工单管理', role: ['user'], permission: [ 'authed' ] },
+        meta: { title: '工单管理', icon: 'file-text', role: ['user'], permission: [ 'authed' ] },
       },
     ]
   },

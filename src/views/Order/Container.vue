@@ -78,7 +78,7 @@ export default {
   data() {
     return {
       getList,
-      module: "user",
+      module: "order",
       id: "order",
       name: "工单",
 

@@ -31,7 +31,7 @@ router.beforeEach((to, from, next) => {
     return false;
   }
 
-  // 如果已经登录，必须获取认证信息
+  // 如果已经登录，必须获取实名认证
   if (!store.state.app.authInfo.fetched) {
     store
       .dispatch('app/fetchAuthInfo')
@@ -59,13 +59,15 @@ router.beforeEach((to, from, next) => {
     if (Object.keys(authMap).includes(authType)) {
       // 无权限查看其他页面
       
-      if (to.name === 'auth') {
-        next();
-      } else {
-        next(false);
-        NProgress.done()
-        return;
-      }
+      next();
+      // if (to.name === 'auth') {
+      //   next();
+      // } else {
+      //   next(false);
+      //   Vue.prototype.$message.info('请先进行实名认证！')
+      //   NProgress.done()
+      //   return;
+      // }
     }
   }
 
