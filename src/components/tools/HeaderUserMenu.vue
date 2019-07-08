@@ -26,18 +26,19 @@
 
 <script>
 import { clearToken } from '@/utils/util';
-import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 import avatar from '@/assets/images/avatar.png';
 
 export default {
   name: "",
   components: {},
-  mounted () {
-    this.userInfo = this.$ls.get('userInfo') || {};
+
+  computed: {
+    userInfo () {
+      return this.$store.getters['app/getLogInfo'] || {};
+    }
   },
   data() {
     return {
-      userInfo: {},
       avatar,
     };
   },

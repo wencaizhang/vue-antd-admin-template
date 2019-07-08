@@ -57,7 +57,7 @@ export default {
       { id: 'uninstall',       name: '卸载硬盘',      visible: false, type: 'single', availableStatus: ['in-use'],  },
       { id: 'dilatation',      name: '扩容',          visible: false, type: 'single', availableStatus: ['available'],  },
       { id: 'mount',           name: '加载硬盘到主机', visible: false, type: 'single', availableStatus: ['available'],  },
-      { id: 'createSnapshoot', name: '创建快照',      visible: false, type: 'single', availableStatus: ['available', 'in-use'],  },
+      { id: 'createSnapshot', name: '创建快照',      visible: false, type: 'single', availableStatus: ['available', 'in-use'],  },
       { id: 'createBackups',   name: '创建备份',      visible: false, type: 'single', availableStatus: ['available'],  },
       { id: 'changeDiskType',  name: '修改硬盘类型',   visible: false, type: 'single', availableStatus: ['available'],  },
       { id: 'cloneDisk',       name: '克隆硬盘',      visible: false, type: 'single', availableStatus: ['available'],  },

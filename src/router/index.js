@@ -5,7 +5,6 @@ import VueWechatTitle from 'vue-wechat-title'
 import Login from '../views/Account/Login.vue';
 import Register from '../views/Account/Register.vue';
 
-
 Vue.use(VueWechatTitle)
 Vue.use(Router);
 

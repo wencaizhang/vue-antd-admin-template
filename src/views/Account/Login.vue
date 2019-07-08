@@ -72,7 +72,7 @@ import { mapActions } from "vuex";
 import { welcome } from "@/utils/util";
 
 import { userLogin } from "@/api/user/user";
-import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
+import { LOGINFO } from "@/store/mutation-types";
 import Canvas from "./Canvas.vue";
 import BasicFooter from "@/components/Layout/BasicFooter";
 import logo from '@/assets/images/logo/3.png';
@@ -119,9 +119,7 @@ export default {
     loginSuccess(resp) {
       
       // const expire = 1 * 60 * 60 * 1000;
-      Vue.ls.set(ACCESS_TOKEN, resp.tokenId);
-      Vue.ls.set(PROJECT_ID, resp.projectId && resp.projectId[0] || '');
-      Vue.ls.set('userInfo', resp);
+      Vue.ls.set(LOGINFO, resp);
 
       this.$router.push({ name: "Index" });
       this.$message.success(welcome() + "，欢迎回来", 3);

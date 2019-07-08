@@ -20,7 +20,7 @@
           </li>
         </ul>
         <template v-else>
-          <snapshoot />
+          <snapshot />
         </template>
       </div>
     </page-layout>
@@ -29,11 +29,11 @@
 
 <script>
 import PageLayout from "@/components/Layout/PageLayout";
-import Snapshoot from "../Snapshoot/Content";
+import Snapshot from "../Snapshot/Content";
 export default {
   components: {
     PageLayout,
-    Snapshoot
+    Snapshot
   },
   data() {
     return {

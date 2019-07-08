@@ -186,7 +186,7 @@ import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import {
   createDisk as fetchAPI,
   getDiskList,
-  getSnapshootList,
+  getSnapshotList,
   getBackupList,
   restoreBackup,
   getDiskDetail
@@ -218,7 +218,7 @@ export default {
         {
           value: 1,
           name: "快照",
-          id: "snapshoot",
+          id: "snapshot",
           loading: false,
           options: [],
           capacity: {
@@ -300,7 +300,7 @@ export default {
     fetch() {
       const apis = [
         { id: "disk", api: getDiskList },
-        { id: "snapshoot", api: getSnapshootList },
+        { id: "snapshot", api: getSnapshotList },
         { id: "backup", api: getBackupList },
         { id: "mirror", api: getImageList }
       ];

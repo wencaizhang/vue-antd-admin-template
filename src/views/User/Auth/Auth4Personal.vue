@@ -2,121 +2,139 @@
   <div class="account-settings-info-view">
     <a-row :gutter="16">
       <a-col :md="20" :lg="16">
-        <a-form :form="form">
-          <a-alert
-            style="margin: 0 0 24px; width: 66.7%;"
-            :message="authTypeItem.label"
-            :description="authInfo.authResultContent"
-            :type="authTypeItem.type"
-            showIcon
-          />
-          <a-form-item v-bind="formItemLayout" label="真实姓名">
-            <a-input
-              :disabled="disabled"
-              placeholder="请输入真实姓名"
-              v-decorator="[
-                'realName',
-                {
-                  rules:[
-                    { required: true, message: '请输入真实姓名' }
-                  ]
-                }
-              ]"
+        <a-spin size="large" :spinning="spinning">
+          <a-form :form="form">
+            <a-alert
+              style="margin: 0 0 24px; width: 66.7%;"
+              :message="authTypeItem.label"
+              :description="authInfo && authInfo.authResultContent"
+              :type="authTypeItem.type"
+              showIcon
             />
-          </a-form-item>
-          <a-form-item v-bind="formItemLayout" label="身份证号">
-            <a-input
-              :disabled="disabled"
-              placeholder="请输入身份证号"
-              v-decorator="[
-                'idCardNum',
-                {
-                  rules: [
-                    { required: true, message: '请输入身份证号' }
-                  ]
-                }
-              ]"
-            />
-          </a-form-item>
+            <a-form-item v-bind="formItemLayout" label="真实姓名">
+              <a-input
+                :disabled="disabled"
+                placeholder="请输入真实姓名"
+                v-decorator="[
+                  'realName',
+                  {
+                    rules:[
+                      { required: true, message: '请输入真实姓名' }
+                    ]
+                  }
+                ]"
+              />
+            </a-form-item>
+            <a-form-item v-bind="formItemLayout" label="身份证号">
+              <a-input
+                :disabled="disabled"
+                placeholder="请输入身份证号"
+                v-decorator="[
+                  'idCardNum',
+                  {
+                    rules: [
+                      { required: true, message: '请输入身份证号' }
+                    ]
+                  }
+                ]"
+              />
+            </a-form-item>
 
-          <a-form-item
-            v-bind="formItemLayout"
-            label="身份证人像面"
-          >
-            <a-upload
-              :disabled="disabled"
-              v-decorator="[
-                'idCardFront',
-                {
-                  getValueFromEvent: normFile,
-                  rules: [
-                    { required: true, message: '请上传身份证人像面' }
-                  ]
-                }
-              ]"
-              name="file"
-              listType="picture-card"
-              :action="uploadAction"
-              @preview="handlePreview"
-              @change="handleChange('idCardFront', $event)"
+            <a-form-item
+              v-bind="formItemLayout"
+              label="身份证人像面"
             >
-              <div v-if="idCardFront.length < 1">
-                <a-icon type="plus" />
-                <div class="ant-upload-text">点击上传</div>
-              </div>
-            </a-upload>
-            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-              <img alt="example" style="width: 100%" :src="previewImage" />
-            </a-modal>
-          </a-form-item>
+              <template v-if="authInfo">
+                <a-image
+                  v-for="item in idCardFront"
+                  :src="item.url"
+                  :key="item.src"
+                />
+              </template>
+              <a-upload
+                v-else
+                :disabled="disabled"
+                v-decorator="[
+                  'idCardFront',
+                  {
+                    getValueFromEvent: normFile,
+                    rules: [
+                      { required: true, message: '请上传身份证人像面' }
+                    ]
+                  }
+                ]"
+                name="file"
+                listType="picture-card"
+                :action="uploadAction"
+                @preview="handlePreview"
+                @change="handleChange('idCardFront', $event)"
+              >
+                <div v-if="idCardFront.length < 1">
+                  <a-icon type="plus" />
+                  <div class="ant-upload-text">点击上传</div>
+                </div>
+              </a-upload>
+              <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+                <img alt="example" style="width: 100%" :src="previewImage" />
+              </a-modal>
+            </a-form-item>
 
-          <a-form-item
-            v-bind="formItemLayout"
-            label="身份证国徽面"
-          >
-            <a-upload
-              :disabled="disabled"
-              v-decorator="[
-                'idCardBack',
-                {
-                  getValueFromEvent: normFile,
-                  rules: [
-                    { required: true, message: '请上传身份证国徽面' }
-                  ]
-                }
-              ]"
-              name="file"
-              listType="picture-card"
-              :action="uploadAction"
-              @preview="handlePreview"
-              @change="handleChange('idCardBack', $event)"
+            <a-form-item
+              v-bind="formItemLayout"
+              label="身份证国徽面"
             >
-              <div v-if="idCardBack.length < 1">
-                <a-icon type="plus" />
-                <div class="ant-upload-text">点击上传</div>
-              </div>
-            </a-upload>
-            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-              <img alt="example" style="width: 100%" :src="previewImage" />
-            </a-modal>
-          </a-form-item>
+              <template v-if="authInfo">
+                <a-image
+                  v-for="item in idCardBack"
+                  :src="item.url"
+                  :key="item.src"
+                />
+              </template>
+              <a-upload
+                v-else
+                :disabled="disabled"
+                v-decorator="[
+                  'idCardBack',
+                  {
+                    getValueFromEvent: normFile,
+                    rules: [
+                      { required: true, message: '请上传身份证国徽面' }
+                    ]
+                  }
+                ]"
+                name="file"
+                listType="picture-card"
+                :action="uploadAction"
+                @preview="handlePreview"
+                @change="handleChange('idCardBack', $event)"
+              >
+                <div v-if="idCardBack.length < 1">
+                  <a-icon type="plus" />
+                  <div class="ant-upload-text">点击上传</div>
+                </div>
+              </a-upload>
+              <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+                <img alt="example" style="width: 100%" :src="previewImage" />
+              </a-modal>
+            </a-form-item>
 
-          <a-form-item v-if="!disabled" v-bind="formItemLayout">
-            <a-row>
-              <a-col :offset="8" :span="8">
-                <a-button
-                  block
-                  :loading="loading"
-                  :disabled="loading"
-                  type="primary"
-                  @click="onSubmit"
-                >
-                  提交
-                </a-button>
-              </a-col>
-            </a-row>
-          </a-form-item>
-        </a-form>
+            <a-form-item v-if="!disabled" v-bind="formItemLayout">
+              <a-row>
+                <a-col :offset="8" :span="8">
+                  <a-button
+                    block
+                    :loading="loading"
+                    :disabled="loading"
+                    type="primary"
+                    @click="onSubmit"
+                  >
+                    提交
+                  </a-button>
+                </a-col>
+              </a-row>
+            </a-form-item>
+          </a-form>
+        </a-spin>
       </a-col>
     </a-row>
   </div>
@@ -125,20 +143,23 @@
 <script>
 import ruleObj from '@/utils/rules';
 import { auth } from '@/api/user/user';
+import AImage from './AImage'
 export default {
+  components: { AImage },
   created () {
     this.form = this.$form.createForm(this);
   },
   mounted () {
-    const authInfo = this.$store.state.app.authInfo;
-    // console.log(authInfo)
-    // this.form.setFieldsValue(authInfo);
+    this.fetchAuthInfo();
   },
   data() {
     return {
       ruleObj,
       form: null,
       loading: false,
+      spinning: false,
+
+      authInfo: null,
 
       formItemLayout: {
         labelCol: { span: 4 },
@@ -167,17 +188,40 @@ export default {
     disabled () {
       return !this.authTypeItem.editAble;
     },
-    authInfo () {
-      return this.$store.state.app.authInfo;
-    },
   },
   methods: {
+    fetchAuthInfo () {
+      this.spinning = true;
+      this.$store
+        .dispatch('app/fetchAuthInfo')
+        .then(resp => {
+          this.spinning = false;
+          this.$store.commit('app/setAuthInfo', resp);
+          this.authInfo = resp;
+
+          const values = {
+            realName: resp.realName,
+            idCardNum: resp.idCardNum,
+          }
+          this.form.setFieldsValue(values);
+          this.idCardFront = [{
+            url: resp.idCardFront
+          }]
+          this.idCardBack = [{
+            url: resp.idCardBack
+          }]
+        })
+        .catch(err => {
+          this.spinning = false;
+        })
+    },
     async onSubmit (values) {
+
       this.loading = true;
       try {
         const values = await this._validate();
         // 认证状态[1：个人认证 2：企业认证]
-        const resp = await auth(values, { authType: 1 });
+        const resp = await auth(Object.assign(values, { authType: 1 }));
         // 提交之后，默认进入 认证中 状态
         this.$store.commit('app/setAuthInfo', Object.assign(values, { authType: 4 }));
         this.$message.success(resp.desc);

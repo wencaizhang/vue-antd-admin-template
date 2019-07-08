@@ -103,7 +103,7 @@ import Detail from "./Modal/Detail";
 
 import tablePageMixins from "@/mixins/tablePageMixins";
 
-import { getSnapshootList as getList, } from "@/api/store/disk";
+import { getSnapshotList as getList, } from "@/api/store/disk";
 import snap from '@/i18n/zh/snap'
 const statusDicts = snap.snap.status;
 
@@ -121,7 +121,7 @@ export default {
     return {
       getList,
       module: "store",
-      id: "snapshoot",
+      id: "snapshot",
       name: "快照",
       searchValues: {
         type: 'name',

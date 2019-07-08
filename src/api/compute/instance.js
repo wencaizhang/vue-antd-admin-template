@@ -37,7 +37,7 @@ export const restart         = payload => POST('/compute/instance/restart', payl
 export const softreboot      = payload => POST('/compute/instance/softreboot', payload);
 
 // 创建快照
-export const createSnapshoot = payload => POST('/compute/instance/snapshoot/create', payload);
+export const createSnapshot = payload => POST('/compute/instance/snapshot/create', payload);
 
 // 重建云主机
 export const rebuild         = payload => POST('/compute/instance/rebuild', payload);

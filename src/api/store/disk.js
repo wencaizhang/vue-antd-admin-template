@@ -25,7 +25,7 @@ export const dilatancyDisk    = payload => POST('/storage/hardDisk/dilatancy', p
 export const mountDisk        = payload => POST('/storage/hardDisk/mount', payload);
 
 // 创建快照
-export const createSnapshoot  = payload => POST('/storage/hardDisk/snapshoot/create', payload);
+export const createSnapshot  = payload => POST('/storage/hardDisk/snapshot/create', payload);
 
 // 创建硬盘备份
 export const createBackup     = payload => POST('/storage/hardDisk/backup/create', payload);
@@ -40,13 +40,13 @@ export const cloneDisk        = payload => POST('/storage/hardDisk/clone', paylo
 export const uploadDisk       = payload => POST('/storage/hardDisk/image/upload', payload);
 
 // 快照列表
-export const getSnapshootList = payload => GET('/storage/snapshoot/list', payload);
+export const getSnapshotList = payload => GET('/storage/snapshot/list', payload);
 
 // 删除快照
-export const deleteSnapshoot  = payload => DELETE('/storage/snapshoot/delete', payload);
+export const deleteSnapshot  = payload => DELETE('/storage/snapshot/delete', payload);
 
 // 编辑硬盘快照
-export const editSnapshoot    = payload => POST('/storage/snapshoot/edit', payload);
+export const editSnapshot    = payload => POST('/storage/snapshot/edit', payload);
 
 // 备份列表
 export const getBackupList    = payload => GET('/storage/backup/list', payload);

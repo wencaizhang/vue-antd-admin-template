@@ -172,7 +172,7 @@
     <multi-restart />
     <multi-soft-restart />
 
-    <create-snapshoot-modal />
+    <create-snapshot-modal />
     <bind-i-p-modal />
     <unbind-i-p />
     <delete />
@@ -193,7 +193,7 @@ import MultiRestart from "./Modals/MultiRestart";
 import MultiDelete from "./Modals/MultiDelete";
 import MultiSoftRestart from "./Modals/MultiSoftRestart";
 
-import CreateSnapshootModal from "./Modals/CreateSnapshoot";
+import CreateSnapshotModal from "./Modals/CreateSnapshot";
 import BindIPModal from "./Modals/BindIP";
 import UnbindIP from "./Modals/UnbindIP";
 import Delete from "./Modals/Delete";
@@ -223,7 +223,7 @@ export default {
     MultiDelete,
     MultiSoftRestart,
 
-    CreateSnapshootModal,
+    CreateSnapshotModal,
     BindIPModal,
     UnbindIP,
     Delete,

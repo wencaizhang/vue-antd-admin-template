@@ -4,7 +4,7 @@ import store from "@/store";
 import router from '@/router';
 import { clearToken } from '@/utils/util'
 import notification from "ant-design-vue/es/notification";
-import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
+import { LOGINFO, ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 import settings from '@/utils/settings'
 
 // 免登录白名单
@@ -26,7 +26,7 @@ const errHandle = error => {
       case 404:
         break;
       case 403:
-        const token = Vue.ls.get(ACCESS_TOKEN);
+        const token = Vue.ls.get(LOGINFO)[ACCESS_TOKEN];
         if (token) {
           // 避免同时请求多个接口时 token 失效导致多个提示同时出现
           notification.error({ message: "请登录", description: "" });
@@ -44,8 +44,10 @@ const errHandle = error => {
 
 // request 拦截器
 service.interceptors.request.use(config => {
-  const token = Vue.ls.get(ACCESS_TOKEN);
-  const projectId = Vue.ls.get(PROJECT_ID)
+  const logInfo = Vue.ls.get(LOGINFO) || {}
+  const projectId = logInfo[PROJECT_ID] && logInfo[PROJECT_ID][0] || ''
+  const token = logInfo[ACCESS_TOKEN]
+
   if (token) {
     // 每个请求添加自定义 headers
     config.headers["tokenId"] = token; // 让每个请求携带自定义 token 请根据实际情况自行修改

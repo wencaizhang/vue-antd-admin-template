@@ -6,6 +6,15 @@ export default {
     message: '请使用英文字母、数字、横杠和下划线的组合，且不超过 12 个字符!'
   },
 
+  userName: {
+    pattern: /^[a-zA-Z0-9!-_#@]+$/,
+    message: '请使用英文字母、数字和特殊字符!-_#@的组合!'
+  },
+  letterStart: {
+    pattern: /^[a-zA-Z]/,
+    message: '请使用英文字母开头!'
+  },
+
   // 真实姓名
   realName: {
     pattern: /^(\w|_|-){1,12}$/,
@@ -49,5 +58,10 @@ export default {
   maxLen100: {
     pattern: /.{1,100}/,
     message: '最多 100 个字符'
+  },
+
+  number: {
+    pattern: /^\d+$/,
+    message: '只允许输入数字'
   },
 }

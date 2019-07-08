@@ -1,3 +1,5 @@
+import Vue from 'vue';
+import { LOGINFO } from "@/store/mutation-types";
 import { getBaseInfo, getAuthInfo, } from "@/api/user/user";
 export default {
   namespaced: true,
@@ -7,18 +9,17 @@ export default {
     // 'superAdmin'
     authed: false,
     userInfo: {},
-    authInfo: {
-      authType: '1',
-      fetched: false,
-    },
+    authInfo: {},
   },
   getters: {
     getRole () {
       return 'user'
     },
-    getAuthType (state) {
-      const { authInfo={} } = state;
-      return authInfo.authType;
+    getLogInfo () {
+      return Vue.ls.get(LOGINFO)
+    },
+    getAuthType (state, getters) {
+      return state.authInfo.authType || getters.getLogInfo.status
     },
     getAuthed (state) {
       const { authInfo={} } = state;

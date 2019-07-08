@@ -99,7 +99,7 @@ export default {
       { visible: false, type: 'multi', name: '软重启', id: 'softRestart', availableStatus: ['active', ] },
 
       // { visible: false, type: 'none', name: '分配公网IP', id: 'allotIP' },
-      { visible: false, type: 'single', name: '创建快照',   id: 'createSnapshoot',  availableStatus: ['active', ] },
+      { visible: false, type: 'single', name: '创建快照',   id: 'createSnapshot',  availableStatus: ['active', ] },
       { visible: false, type: 'single', name: '绑定公网IP', id: 'bindIP',           availableStatus: ['active', ] },
       { visible: false, type: 'single', name: '解绑公网IP', id: 'unbindIP',         availableStatus: ['active', 'shutoff', 'paused'] },
       { visible: false, type: 'single', name: '进入控制台', id: 'console',          availableStatus: [ 'active' ] },

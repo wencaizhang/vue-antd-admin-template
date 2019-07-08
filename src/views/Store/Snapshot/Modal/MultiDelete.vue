@@ -17,7 +17,7 @@
 </template>
 <script>
 import { baseModalMixins } from "@/mixins/modalMixin";
-import { deleteSnapshoot as fetchAPI } from "@/api/store/disk";
+import { deleteSnapshot as fetchAPI } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins],
   data() {
@@ -38,7 +38,7 @@ export default {
     },
     async handleItemFetch (item) {
       try {
-        const payload = { snapshootId: item.id };
+        const payload = { snapshotId: item.id };
         const resp = await this.fetchAPI(payload);
       }
       catch (err) {

@@ -17,7 +17,7 @@
 </template>
 <script>
 import { baseModalMixins } from "@/mixins/modalMixin";
-import { deleteSnapshoot as fetchAPI } from "@/api/store/disk";
+import { deleteSnapshot as fetchAPI } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins],
   data() {
@@ -29,7 +29,7 @@ export default {
 
   methods: {
     onShow () {
-      this.formValues = { snapshootId: this.currRecord.id }
+      this.formValues = { snapshotId: this.currRecord.id }
     },
   },
 

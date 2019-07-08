@@ -54,7 +54,7 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import rulesObj from '@/utils/rules'
-import { editSnapshoot as fetchAPI } from "@/api/store/disk";
+import { editSnapshot as fetchAPI } from "@/api/store/disk";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   data() {
@@ -67,7 +67,7 @@ export default {
 
   methods: {
     onShow () {
-      this.formValues = { snapshootId: this.currRecord.id }
+      this.formValues = { snapshotId: this.currRecord.id }
     },
   }
 };

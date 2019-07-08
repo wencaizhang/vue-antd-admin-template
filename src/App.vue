@@ -13,7 +13,7 @@ export default {
       return `${this.$route.meta.title} - 云管平台`
     },
     AppLoading () {
-      return !this.$store.state.app.authInfo
+      return false;
     },
   },
   render (h) {

@@ -101,7 +101,7 @@
     <uninstall />
     <dilatation />
     <mount />
-    <create-snapshoot />
+    <create-snapshot />
     <create-backups />
     <clone-modal />
     <upload />
@@ -118,7 +118,7 @@ import EditModal from "./Modal/Edit";
 import Uninstall from "./Modal/Uninstall";
 import Dilatation from "./Modal/Dilatation";
 import Mount from "./Modal/Mount";
-import CreateSnapshoot from "./Modal/CreateSnapshoot";
+import CreateSnapshot from "./Modal/CreateSnapshot";
 import CreateBackups from "./Modal/CreateBackups";
 import Delete from "./Modal/Delete";
 import MultiDelete from "./Modal/MultiDelete";
@@ -141,7 +141,7 @@ export default {
     Uninstall,
     Dilatation,
     Mount,
-    CreateSnapshoot,
+    CreateSnapshot,
     CreateBackups,
     Delete,
     MultiDelete,

@@ -255,6 +255,7 @@
                   ]
                 }
               ]"
+              :defaultFileList="fileList"
               name="file"
               listType="picture-card"
               :action="uploadAction"
@@ -319,6 +320,13 @@ export default {
       idCardBack: [],
 
       uploadAction: '/cmp/v1/upload/batch/Certificates',
+
+      fileList: [{
+        uid: '-1',
+        name: 'xxx.png',
+        status: 'done',
+        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
+      }],
     };
   },
 

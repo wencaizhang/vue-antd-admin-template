@@ -1,7 +1,7 @@
 import common from "../common";
 
 import disk from "./disk";
-import snapshoot from "./snapshoot";
+import snapshot from "./snapshot";
 import backups from "./backups";
 
 const store = {
@@ -12,7 +12,7 @@ const store = {
 
   modules: {
     disk,
-    snapshoot,
+    snapshot,
     backups
   }
 };

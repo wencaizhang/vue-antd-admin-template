@@ -84,18 +84,18 @@ export default [
           },
 
           {
-            path: 'snapshoot',
-            name: 'snapshoot',
+            path: 'snapshot',
+            name: 'snapshot',
             component: () =>
-              import(/* webpackChunkName: 'store' */ '@/views/Store/Snapshoot/Container'),
+              import(/* webpackChunkName: 'store' */ '@/views/Store/Snapshot/Container'),
             meta: { title: '快照', role: ['user'], permission: [ 'authed' ] },
             children: [
               {
                 path: ':id',
-                name: 'snapshoot-instance',
+                name: 'snapshot-instance',
                 hidden: true,
                 component: () =>
-                  import(/* webpackChunkName: 'store' */ '@/views/Store/Snapshoot/Detail'),
+                  import(/* webpackChunkName: 'store' */ '@/views/Store/Snapshot/Detail'),
                 meta: { title: '快照', role: ['user'], permission: [ 'authed' ] }
               }
             ]

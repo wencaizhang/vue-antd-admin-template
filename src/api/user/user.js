@@ -10,6 +10,9 @@ export const createUser  = payload => POST('/user/create', payload);
 // 修改密码
 export const modifyPwd   = payload => POST('/user/modifyPwd', payload);
 
+// 忘记密码
+export const forgotPwd   = payload => POST('/user/forgotPwd', payload);
+
 // 用户基本资料
 export const getBaseInfo = payload => GET('/user/base', payload);
 
