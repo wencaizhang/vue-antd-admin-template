@@ -19,6 +19,7 @@
             <a-form-item v-bind="formItemLayout" label="联系地址">
               <a-textarea
                 placeholder="请输入联系地址"
+                :autosize="{ minRows: 2, maxRows: 6 }"
                 v-decorator="[
                   'address',
                   {

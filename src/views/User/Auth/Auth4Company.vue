@@ -3,23 +3,25 @@
     <a-row :gutter="16">
       <a-col :md="20" :lg="16">
         <a-form :form="form">
-
           <a-alert
             style="margin: 0 0 24px; width: 75%;"
             :message="authTypeItem.label"
-            :description="authInfo.authResultContent"
+            :description="authInfo && authInfo.authResultContent"
             :type="authTypeItem.type"
             showIcon
           />
 
           <a-form-item v-bind="formItemLayout" label="企业名称">
-            <a-input
+            <a-textarea
               placeholder="请输入企业名称"
+              :autosize="{ minRows: 2, maxRows: 6 }"
               v-decorator="[
                 'enterpriseName',
                 {
                   rules:[
-                    { required: true, message: '请输入企业名称' }
+                    { required: true, message: '请输入企业名称' },
+                    { max: 100, message: '最多允许100个字符' },
+                    ruleObj.HanziAndLetter,
                   ]
                 }
               ]"
@@ -30,11 +32,12 @@
             <a-input
               placeholder="请输入信用代码"
               v-decorator="[
-                'enterpriseName',
+                'creditCode',
                 {
                   rules:[
                     { required: true, message: '请输入 18 位信用代码' },
                     { len: 18, message: '请输入 18 位信用代码' },
+                    ruleObj.enterpriseName,
                   ]
                 }
               ]"
@@ -44,11 +47,13 @@
           <a-form-item v-bind="formItemLayout" label="注册地址">
             <a-textarea
               placeholder="请输入注册地址"
+              :autosize="{ minRows: 2, maxRows: 6 }"
               v-decorator="[
-                'registeredAddress',
+                'registerAddress',
                 {
                   rules: [
-                    { required: true, message: '请输入注册地址' }
+                    { required: true, message: '请输入注册地址' },
+                    { max: 100, message: '最多允许100个字符' },
                   ]
                 }
               ]"
@@ -61,7 +66,7 @@
           >
             <a-upload
               v-decorator="[
-                'legalPersonIDCardFront',
+                'businessLicense',
                 {
                   getValueFromEvent: normFile,
                   rules: [
@@ -69,13 +74,15 @@
                   ]
                 }
               ]"
-              name="legalPersonIDCardFront"
+              :defaultFileList="businessLicense"
+              name="file"
+              :accept="acceptFileTypes"
               listType="picture-card"
               :action="uploadAction"
               @preview="handlePreview"
-              @change="handleChange('legalPersonIDCardFront', $event)"
+              @change="handleChange('businessLicense', $event)"
             >
-              <div v-if="legalPersonIDCardFront.length < 1">
+              <div v-if="businessLicense.length < 1">
                 <a-icon type="plus" />
                 <div class="ant-upload-text">点击上传</div>
               </div>
@@ -92,7 +99,9 @@
                 'legalPersonName',
                 {
                   rules:[
-                    { required: true, message: '请输入企业法人名称' }
+                    { required: true, message: '请输入企业法人名称' },
+                    { max: 20, message: '最多允许20个字符' },
+                    ruleObj.HanziAndLetter,
                   ]
                 }
               ]"
@@ -102,7 +111,7 @@
             <a-input
               placeholder="请输入法人身份证号"
               v-decorator="[
-                'legalPersonIDCardNum	',
+                'legalPersonIDCardNum',
                 {
                   rules: [
                     { required: true, message: '请输入法人身份证号' }
@@ -126,7 +135,9 @@
                   ]
                 }
               ]"
-              name="legalPersonIDCardFront"
+              :defaultFileList="legalPersonIDCardFront"
+              name="file"
+              :accept="acceptFileTypes"
               listType="picture-card"
               :action="uploadAction"
               @preview="handlePreview"
@@ -156,7 +167,9 @@
                   ]
                 }
               ]"
-              name="legalPersonIDCardBack"
+              :defaultFileList="legalPersonIDCardBack"
+              name="file"
+              :accept="acceptFileTypes"
               listType="picture-card"
               :action="uploadAction"
               @preview="handlePreview"
@@ -181,13 +194,14 @@
           
           <a-form-item v-bind="formItemLayout" label="联系人姓名">
             <a-input
-              :disabled="disabled"
               placeholder="请输入联系人姓名"
               v-decorator="[
                 'realName',
                 {
                   rules:[
-                    { required: true, message: '请输入联系人姓名' }
+                    { required: true, message: '请输入联系人姓名' },
+                    { max: 20, message: '最多允许20个字符' },
+                    ruleObj.HanziAndLetter,
                   ]
                 }
               ]"
@@ -196,7 +210,6 @@
 
           <a-form-item v-bind="formItemLayout" label="联系人身份证号">
             <a-input
-              :disabled="disabled"
               placeholder="请输入联系人身份证号"
               v-decorator="[
                 'idCardNum',
@@ -214,7 +227,6 @@
             label="联系人身份证人像面"
           >
             <a-upload
-              :disabled="disabled"
               v-decorator="[
                 'idCardFront',
                 {
@@ -225,6 +237,8 @@
                 }
               ]"
               name="file"
+              :accept="acceptFileTypes"
+              :defaultFileList="idCardFront"
               listType="picture-card"
               :action="uploadAction"
               @preview="handlePreview"
@@ -245,7 +259,6 @@
             label="联系人身份证国徽面"
           >
             <a-upload
-              :disabled="disabled"
               v-decorator="[
                 'idCardBack',
                 {
@@ -255,8 +268,9 @@
                   ]
                 }
               ]"
-              :defaultFileList="fileList"
+              :defaultFileList="idCardBack"
               name="file"
+              :accept="acceptFileTypes"
               listType="picture-card"
               :action="uploadAction"
               @preview="handlePreview"
@@ -295,17 +309,15 @@
 </template>
 
 <script>
+import ruleObj from '@/utils/rules';
+import comm from './comm';
+import { auth } from '@/api/user/user';
+import AImage from '@/components/tools/AImage'
 export default {
-  created () {
-    this.form = this.$form.createForm(this)
-  },
-
+  mixins: [comm],
   data() {
     return {
-      form: null,
-      loading: false,
-      disabled: false,
-
+      ruleObj,
       formItemLayout: {
         labelCol: { span: 6 },
         wrapperCol: { span: 12 },
@@ -313,26 +325,19 @@ export default {
 
       previewVisible: false,
       previewImage: '',
+      businessLicense: [],
       legalPersonIDCardFront: [],
       legalPersonIDCardBack: [],
 
       idCardFront: [],
       idCardBack: [],
 
-      uploadAction: '/cmp/v1/upload/batch/Certificates',
-
-      fileList: [{
-        uid: '-1',
-        name: 'xxx.png',
-        status: 'done',
-        url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-      }],
     };
   },
 
   computed: {
     authTypeItem () {
-      const authType = this.$store.getters['app/getAuthType'];
+      const authType = this.$store.state.app.authStatus;
       const authMap = [
         // 2 是个人已认证，对于公司来讲，是未认证
         { val: 2, label: '未认证', type: 'info', },
@@ -342,41 +347,60 @@ export default {
       ];
       return authMap.find(item => item.val == authType) || authMap[0];
     },
-    authInfo () {
-      return this.$store.state.app.authInfo;
-    },
   },
 
   methods: {
+    fetchSuccess (resp) {
+      const values = {
+        enterpriseName:    resp.enterpriseName,
+        creditCode:        resp.creditCode,
+        registerAddress: resp.registerAddress,
+        businessLicense:   resp.businessLicense,
+        legalPersonName:   resp.legalPersonName,
+        legalPersonIDCardNum:   resp.legalPersonIDCardNum,
+        legalPersonIDCardFront: resp.legalPersonIDCardFront,
+        legalPersonIDCardBack:  resp.legalPersonIDCardBack,
 
-    onSubmit() {
-      const self = this;
-      this.form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
-          console.log(values)
-        }
-      });
-    },
-
-    handleCancel () {
-      this.previewVisible = false
-    },
-
-    handlePreview (file) {
-      this.previewImage = file.url || file.thumbUrl
-      this.previewVisible = true
-    },
-
-    handleChange (type, { fileList }) {
-      this[type] = fileList
-    },
-
-    normFile  (e) {
-      if (Array.isArray(e)) {
-        return e;
+        realName:    resp.realName,
+        idCardNum:   resp.idCardNum,
+        idCardFront: resp.idCardFront,
+        idCardBack:  resp.idCardBack,
       }
-      return e.file.status === 'done' && e.file.response.url
+
+      this.form.setFieldsValue(values);
+
+      const arr = [
+        'businessLicense',
+        'legalPersonIDCardFront',
+        'legalPersonIDCardBack',
+        'idCardFront',
+        'idCardBack',
+      ]
+      arr.forEach(item => {
+        resp[item] && this[item].push({
+          uid: '-1',
+          name: item,
+          status: 'done',
+          url: resp[item],
+        })
+      })
     },
+    async onSubmit (values) {
+      try {
+        const values = await this._validate();
+        this.loading = true;
+        // 认证状态[1：个人认证 2：企业认证]
+        const resp = await auth(Object.assign(values, { authType: 2 }));
+        // 提交之后，默认进入 企业认证中 状态 6
+        this.$store.commit('app/setAuthInfo', Object.assign(values, { authType: 6 }));
+        this.$message.success('提交成功，请等待审核结果');
+      } catch (error) {
+        
+      } finally {
+        this.loading = false;
+      }
+    },
+
   }
 };
 </script>

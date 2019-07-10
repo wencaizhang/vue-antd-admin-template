@@ -1,10 +1,21 @@
 <template>
   <div>
     <div class="img-wrapper">
-      <div class="mask">
+      <div v-if="!loading && !error" class="mask">
         <a-icon @click="handlePreview" class="action" type="eye" />
       </div>
-      <img :src="src" alt="">
+
+      <slot v-if="loading" name="placeholder">
+        <a-spin />
+      </slot>
+
+      <slot v-else-if="error" name="error">
+        <div class="error-wrapper">
+          <a-icon type="picture" />
+        </div>
+      </slot>
+
+      <img v-else :src="src" alt="">
     </div>
     <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
       <img alt="example" style="width: 100%" :src="previewImage" />
@@ -18,15 +29,44 @@ export default {
     src: {
       type: String,
       required: true
-    }
+    },
+    alt: String,
   },
   data () {
     return {
       previewVisible: false,
       previewImage: '',
+
+      loading: false,
+      error: false,
     }
   },
+  mounted () {
+    this.loadImage();
+  },
   methods: {
+    loadImage () {
+      this.loading = true;
+      this.error = false;
+      const img = new Image();
+      img.onload = e => this.handleLoad(e, img);
+      img.onerror = this.handleError.bind(this);
+
+      img.src = this.src;
+    },
+    handleLoad (e, img) {
+      this.imageWidth = img.width;
+      this.imageHeight = img.height;
+      this.loading = false;
+    },
+    handleError (e) {
+      debugger
+      this.loading = false;
+      this.error = true;
+      this.$emit('error', e);
+      console.log(e);
+    },
+
     handleCancel () {
       this.previewVisible = false
     },
@@ -40,8 +80,10 @@ export default {
 
 <style scoped>
 .img-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 1px solid #d9d9d9;
-  display: inline-block;
   width: 100px;
   height: 100px;
   border-radius: 4px;
@@ -81,5 +123,11 @@ export default {
   font-size: 16px;
   color: rgba(255, 255, 255, 0.85);
   margin: 0 4px;
+}
+
+.error-wrapper {
+  display: inline-block;
+  text-align: center;
+  color: #ccc;
 }
 </style>

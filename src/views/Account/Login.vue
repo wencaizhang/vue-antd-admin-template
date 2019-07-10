@@ -109,7 +109,6 @@ export default {
         this.loading = true;
         const resp = await userLogin(payload);
         this.loginSuccess(resp);
-        const info = await this.$store.app.dispatch('fetchUserInfo');
       } catch (err) {
 
       } finally {
@@ -120,6 +119,7 @@ export default {
       
       // const expire = 1 * 60 * 60 * 1000;
       Vue.ls.set(LOGINFO, resp);
+      this.$store.commit('app/setAuthType', resp.status);
 
       this.$router.push({ name: "Index" });
       this.$message.success(welcome() + "，欢迎回来", 3);

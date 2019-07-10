@@ -15,10 +15,9 @@ export default {
     message: '请使用英文字母开头!'
   },
 
-  // 真实姓名
-  realName: {
-    pattern: /^(\w|_|-){1,12}$/,
-    message: '长度 1-20位，允许汉字，大小写字母不允许数字、特殊字符及空格!'
+  HanziAndLetter: {
+    pattern: /^[a-zA-Z\u4e00-\u9fa5]+$/,
+    message: '只允许汉字和英文字母!'
   },
 
   // 修改名称的时候最多允许 20 个字符
@@ -64,4 +63,9 @@ export default {
     pattern: /^\d+$/,
     message: '只允许输入数字'
   },
+
+  enterpriseName: {
+    pattern: /^[^_IOZSVa-z\W]{2}\d{6}[^_IOZSVa-z\W]{10}$/g,
+    message: '请填写正确的信用代码'
+  }
 }

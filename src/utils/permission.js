@@ -41,7 +41,7 @@ router.afterEach(() => {
 })
 
 function authPermission (to, from, next) {
-  const authType = store.getters['app/getAuthType'];
+  const authType = store.state.app.authStatus;
   const authMap = {
     1: '未认证用户',
     // 2: '已认证个人用户',

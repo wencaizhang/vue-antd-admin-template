@@ -4,22 +4,13 @@ import { getBaseInfo, getAuthInfo, } from "@/api/user/user";
 export default {
   namespaced: true,
   state: {
-    role: 'user',
-    // 'admin'
-    // 'superAdmin'
-    authed: false,
+    authStatus: 1,
     userInfo: {},
     authInfo: {},
   },
   getters: {
-    getRole () {
-      return 'user'
-    },
     getLogInfo () {
-      return Vue.ls.get(LOGINFO)
-    },
-    getAuthType (state, getters) {
-      return state.authInfo.authType || getters.getLogInfo.status
+      return Vue.ls.get(LOGINFO) || {}
     },
     getAuthed (state) {
       const { authInfo={} } = state;
@@ -37,16 +28,17 @@ export default {
     },
   },
   mutations: {
-    setRole (state, role) {
-      state.role = role;
-    },
     setUserInfo (state, info) {
       state.userInfo = Object.assign(state.userInfo, info);
     },
     setAuthInfo (state, info) {
       Object.assign(state.authInfo, info, { fetched: true });
     },
-
+    setAuthType (state, type) {
+      // 登录时，首次获取认证状态
+      // 在认证页面再次获取最新认证状态
+      state.authStatus = type;
+    }
   },
   actions: {
     fetchUserInfo (context) {
