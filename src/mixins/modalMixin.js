@@ -84,6 +84,9 @@ export const baseModalMixins = {
         // this.handleCancel();
       }
     },
+    handleFetchSuccess (resp) {
+      // 请求成功处理函数
+    },
     handleFetchFailed (err) {
       // 请求失败处理函数
     },
