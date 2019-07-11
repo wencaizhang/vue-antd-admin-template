@@ -11,7 +11,8 @@
 
       <slot v-else-if="error" name="error">
         <div class="error-wrapper">
-          <a-icon type="picture" />
+          <a-icon class="icon" type="picture" />
+          <p>加载失败</p>
         </div>
       </slot>
 
@@ -60,7 +61,6 @@ export default {
       this.loading = false;
     },
     handleError (e) {
-      debugger
       this.loading = false;
       this.error = true;
       this.$emit('error', e);
@@ -87,10 +87,15 @@ export default {
   width: 100px;
   height: 100px;
   border-radius: 4px;
+  line-height: 1em;
 }
 .img-wrapper img {
   max-width: 100%;
   max-height: 100%;
+}
+.img-wrapper .icon {
+  font-size: 20px;
+  margin-bottom: 4px;
 }
 .img-wrapper .mask {
   display: flex;
