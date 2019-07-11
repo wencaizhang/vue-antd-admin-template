@@ -22,6 +22,22 @@ export default {
 
       acceptFileTypes: '.png,.jpg,.bmp,.gif',
       uploadAction: '/cmp/v1/upload/batch/Certificates',
+
+      // 认证状态
+      authStatus: [
+        { val: 1,  editAble: true,  type: 'info',    label: '未认证' },
+        { val: 2,  editAble: true,  type: 'success', label: '个人认证完成' },
+        { val: 3,  editAble: true,  type: 'success', label: '企业认证完成' },
+        { val: 4,  editAble: false, type: 'warning', label: '个人认证中' },
+        { val: 5,  editAble: true,  type: 'error',   label: '个人认证未通过' },
+        { val: 6,  editAble: false, type: 'warning', label: '企业认证中' },
+        { val: 7,  editAble: true,  type: 'error',   label: '企业认证未通过' },
+        { val: 8,  editAble: false, type: 'warning', label: '个人认证修改中' },
+        { val: 9,  editAble: false, type: 'warning', label: '企业认证修改中' },
+        { val: 10, editAble: true,  type: 'error',   label: '企业认证修改失败' },
+        { val: 11, editAble: true,  type: 'error',   label: '个人认证修改失败' },
+        { val: 12, editAble: false, type: 'info',    label: '企业未认证' },
+      ],
     };
   },
   computed: {
@@ -31,15 +47,14 @@ export default {
     disabled () {
       return !this.authTypeItem.editAble;
     },
-    authTypeItem () {
-      const authType = this.$store.state.app.authStatus;
-      const authMap = [
-        { val: 1, editAble: true, label: '未认证', type: 'info', },
-        { val: 2, editAble: false, label: '已认证', type: 'success', },
-        { val: 4, editAble: false, label: '认证中', type: 'warning', },
-        { val: 5, editAble: true, label: '认证未通过', type: 'error', },
-      ];
-      return authMap.find(item => item.val == authType) || authMap[0];
+    authType () {
+      return this.$store.state.app.authStatus;
+    },
+    status4P () {
+      return this.authStatus.filter(item => item.label.includes('个人'));
+    },
+    status4C () {
+      return this.authStatus.filter(item => item.label.includes('企业'));
     },
   },
   methods: {
@@ -64,7 +79,7 @@ export default {
       this.previewImage = file.url || file.thumbUrl
       this.previewVisible = true
     },
-
+    
     handleChange (type, e) {
       const { file, fileList } = e;
       if (file.status === 'error') {
@@ -72,15 +87,21 @@ export default {
         let index = fileList.findIndex(item => item.uid === file.uid);
         fileList.splice(index, 1);
       }
-      this[type] = fileList
+      this[type] = fileList;
     },
 
     normFile (e) {
-      console.log(e);
       if (Array.isArray(e)) {
         return e;
       }
-      return e.file.status === 'done' && e.file.response.filePath[0].url;
+      if (e.file.status === 'done') {
+        // 上传成功
+        return e.file.response.filePath[0].url;
+      }
+      if (e.file.status === 'removed') {
+        // 删除文件
+        return;
+      }
     },
 
   }

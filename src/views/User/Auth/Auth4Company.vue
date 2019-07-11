@@ -13,6 +13,7 @@
 
           <a-form-item v-bind="formItemLayout" label="企业名称">
             <a-textarea
+              :disabled="disabled"
               placeholder="请输入企业名称"
               :autosize="{ minRows: 2, maxRows: 6 }"
               v-decorator="[
@@ -30,6 +31,7 @@
 
           <a-form-item v-bind="formItemLayout" label="统一社会信用代码">
             <a-input
+              :disabled="disabled"
               placeholder="请输入信用代码"
               v-decorator="[
                 'creditCode',
@@ -46,6 +48,7 @@
 
           <a-form-item v-bind="formItemLayout" label="注册地址">
             <a-textarea
+              :disabled="disabled"
               placeholder="请输入注册地址"
               :autosize="{ minRows: 2, maxRows: 6 }"
               v-decorator="[
@@ -64,7 +67,15 @@
             v-bind="formItemLayout"
             label="营业执照"
           >
+            <template v-if="disabled">
+              <a-image
+                v-for="item in businessLicense"
+                :src="item.url"
+                :key="item.src"
+              />
+            </template>
             <a-upload
+              v-else
               v-decorator="[
                 'businessLicense',
                 {
@@ -94,6 +105,7 @@
 
           <a-form-item v-bind="formItemLayout" label="企业法人">
             <a-input
+              :disabled="disabled"
               placeholder="请输入企业法人名称"
               v-decorator="[
                 'legalPersonName',
@@ -109,6 +121,7 @@
           </a-form-item>
           <a-form-item v-bind="formItemLayout" label="法人身份证号">
             <a-input
+              :disabled="disabled"
               placeholder="请输入法人身份证号"
               v-decorator="[
                 'legalPersonIDCardNum',
@@ -125,7 +138,15 @@
             v-bind="formItemLayout"
             label="法人身份证人像面"
           >
+            <template v-if="disabled">
+              <a-image
+                v-for="item in legalPersonIDCardFront"
+                :src="item.url"
+                :key="item.src"
+              />
+            </template>
             <a-upload
+              v-else
               v-decorator="[
                 'legalPersonIDCardFront',
                 {
@@ -157,7 +178,15 @@
             v-bind="formItemLayout"
             label="法人身份证国徽面"
           >
+            <template v-if="disabled">
+              <a-image
+                v-for="item in legalPersonIDCardBack"
+                :src="item.url"
+                :key="item.src"
+              />
+            </template>
             <a-upload
+              v-else
               v-decorator="[
                 'legalPersonIDCardBack',
                 {
@@ -194,6 +223,7 @@
           
           <a-form-item v-bind="formItemLayout" label="联系人姓名">
             <a-input
+              :disabled="disabled"
               placeholder="请输入联系人姓名"
               v-decorator="[
                 'realName',
@@ -210,6 +240,7 @@
 
           <a-form-item v-bind="formItemLayout" label="联系人身份证号">
             <a-input
+              :disabled="disabled"
               placeholder="请输入联系人身份证号"
               v-decorator="[
                 'idCardNum',
@@ -226,7 +257,15 @@
             v-bind="formItemLayout"
             label="联系人身份证人像面"
           >
+            <template v-if="disabled">
+              <a-image
+                v-for="item in idCardFront"
+                :src="item.url"
+                :key="item.src"
+              />
+            </template>
             <a-upload
+              v-else
               v-decorator="[
                 'idCardFront',
                 {
@@ -258,7 +297,15 @@
             v-bind="formItemLayout"
             label="联系人身份证国徽面"
           >
+            <template v-if="disabled">
+              <a-image
+                v-for="item in idCardBack"
+                :src="item.url"
+                :key="item.src"
+              />
+            </template>
             <a-upload
+              v-else
               v-decorator="[
                 'idCardBack',
                 {
@@ -286,20 +333,17 @@
             </a-modal>
           </a-form-item>
 
-          <a-form-item v-bind="formItemLayout">
-            <a-row>
-              <a-col :offset="12" :span="8">
-                <a-button
-                  block
-                  :loading="loading"
-                  :disabled="loading"
-                  type="primary"
-                  @click="onSubmit"
-                >
-                  提交
-                </a-button>
-              </a-col>
-            </a-row>
+          <a-form-item v-if="!disabled">
+            <a-button
+              class="submit-btn"
+              :loading="loading"
+              :disabled="loading"
+              type="primary"
+              @click="onSubmit"
+            >
+              {{ pass ? '修改' : '提交' }}
+            </a-button>
+            <span v-if="pass" class="tip">(每年只能修改 3 次认证信息)</span>
           </a-form-item>
 
         </a-form>
@@ -337,16 +381,11 @@ export default {
 
   computed: {
     authTypeItem () {
-      const authType = this.$store.state.app.authStatus;
-      const authMap = [
-        // 2 是个人已认证，对于公司来讲，是未认证
-        { val: 2, label: '未认证', type: 'info', },
-        { val: 3, label: '已认证', type: 'success', },
-        { val: 6, label: '认证中', type: 'warning', },
-        { val: 7, label: '认证未通过', type: 'error', },
-      ];
-      return authMap.find(item => item.val == authType) || authMap[0];
+      return this.status4P.find(item => item.val == this.authType) || this.authStatus[0];
     },
+    pass () {
+      return this.authType == 3;
+    }
   },
 
   methods: {
@@ -408,5 +447,13 @@ export default {
 <style scoped>
 .account-settings-info-view {
   padding-left: 20px;
+}
+.submit-btn {
+  width: 140px;
+  margin-left: 25%;
+  margin-right: 16px;
+}
+.tip {
+  color: #666;
 }
 </style>

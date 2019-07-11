@@ -47,7 +47,6 @@ export default {
   },
   computed: {
     authType () {
-      return '1';
       // 展示个人认账 1 / 展示企业认证 2
       const authMap = {
         // 1: '未认证用户',

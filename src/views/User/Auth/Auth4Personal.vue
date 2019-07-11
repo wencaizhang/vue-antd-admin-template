@@ -130,20 +130,17 @@
             </a-modal>
           </a-form-item>
 
-          <a-form-item v-if="!disabled" v-bind="formItemLayout">
-            <a-row>
-              <a-col :offset="8" :span="8">
-                <a-button
-                  block
-                  :loading="loading"
-                  :disabled="loading"
-                  type="primary"
-                  @click="onSubmit"
-                >
-                  提交
-                </a-button>
-              </a-col>
-            </a-row>
+          <a-form-item v-if="!disabled">
+            <a-button
+              class="submit-btn"
+              :loading="loading"
+              :disabled="loading"
+              type="primary"
+              @click="onSubmit"
+            >
+              {{ pass ? '修改' : '提交' }}
+            </a-button>
+            <span v-if="pass" class="tip">(每年只能修改 3 次认证信息)</span>
           </a-form-item>
         </a-form>
       </a-col>
@@ -170,17 +167,11 @@ export default {
   },
   computed: {
     authTypeItem () {
-      const authType = this.authInfo.authStatus;
-      const authMap = [
-        { val: 1, editAble: true, label: '未认证', type: 'info', },
-        { val: 2, editAble: false, label: '已认证', type: 'success', },
-        { val: 4, editAble: false, label: '认证中', type: 'warning', },
-        { val: 5, editAble: true, label: '认证未通过', type: 'error', },
-      ];
-      return authMap.find(item => item.val == authType) || authMap[0];
+      return this.status4P.find(item => item.val == this.authType) || this.authStatus[0];
     },
-    disabled () {
-      return !this.authTypeItem.editAble;
+    pass () {
+      // 认证通过 2，或者 个人认证修改失败 11
+      return this.authType == 2 || this.authType == 11;
     },
   },
   methods: {
@@ -193,18 +184,19 @@ export default {
         idCardBack: resp.idCardBack,
       }
       this.form.setFieldsValue(values);
-      this.idCardFront.push({
-        uid: '-1',
-        name: 'xxx.png',
-        status: 'done',
-        url: resp.idCardFront
-      })
-      this.idCardBack.push({
-        uid: '-1',
-        name: 'xxx.png',
-        status: 'done',
-        url: resp.idCardBack
-      })
+
+      const arr = [
+        'idCardFront',
+        'idCardBack',
+      ]
+      arr.forEach(item => {
+        resp[item] && this[item].push({
+          uid: '-1',
+          name: item,
+          status: 'done',
+          url: resp[item],
+        })
+      });
     },
 
     async onSubmit (values) {
@@ -235,5 +227,13 @@ export default {
 <style scoped>
 .account-settings-info-view {
   padding-left: 20px;
+}
+.submit-btn {
+  width: 140px;
+  margin-left: 16.6666%;
+  margin-right: 16px;
+}
+.tip {
+  color: #666;
 }
 </style>

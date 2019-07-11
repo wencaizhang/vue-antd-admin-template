@@ -43,13 +43,9 @@ router.afterEach(() => {
 function authPermission (to, from, next) {
   const authType = store.state.app.authStatus;
   const authMap = {
-    1: '未认证用户',
-    // 2: '已认证个人用户',
-    // 3: '已认证企业用户',
+    1: '未认证',
     4: '个人认证中',
     5: '个人认证未通过',
-    // 6: '企业认证中',
-    // 7: '企业认证未通过',
   }
   // 无权限查看其他页面
   if (!Object.keys(authMap).includes(authType)) {
