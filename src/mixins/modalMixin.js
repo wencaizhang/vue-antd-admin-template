@@ -72,9 +72,7 @@ export const baseModalMixins = {
       this.confirmLoading = true;
       try {
         const resp = await this.fetchAPI(this.formValues);
-        this.handleCancel();
-        this.openNotification(resp);
-        this.handleRefreshParentTable();
+        this.handleFetchSuccess(resp);
       }
       catch (err) {
         this.handleFetchFailed (err);
@@ -86,6 +84,9 @@ export const baseModalMixins = {
     },
     handleFetchSuccess (resp) {
       // 请求成功处理函数
+      this.handleCancel();
+      this.openNotification(resp);
+      this.handleRefreshParentTable();
     },
     handleFetchFailed (err) {
       // 请求失败处理函数
