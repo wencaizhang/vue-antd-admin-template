@@ -1,13 +1,11 @@
 FROM node:8-slim as builder
 
-# RUN npm install -g yarn --registry=https://registry.npm.taobao.org
+RUN npm install -g yarn --registry=https://registry.npm.taobao.org
 WORKDIR /app
 ADD package.json /app/package.json
-ADD package-lock.json /app/package-lock.json
-RUN npm install
-# RUN chmod a+rwx  /usr/local/lib/node_modules/yarn/bin/yarn* \
-#   && chmod a+rwx  /usr/local/bin/yarn* \
-#   && yarn
+RUN chmod a+rwx  /usr/local/lib/node_modules/yarn/bin/yarn* \
+  && chmod a+rwx  /usr/local/bin/yarn* \
+  && yarn
 COPY . /app/
 RUN npm build
 
