@@ -7,7 +7,7 @@ RUN chmod a+rwx  /usr/local/lib/node_modules/yarn/bin/yarn* \
   && chmod a+rwx  /usr/local/bin/yarn* \
   && yarn
 COPY . /app/
-RUN npm build
+RUN yarn build
 
 FROM nginx:alpine
 RUN adduser -D -H -s /sbin/nologin www-data
