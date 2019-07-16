@@ -366,29 +366,30 @@ export default {
 
   computed: {
     authTypeItem () {
-      return this.status4C.find(item => item.val == this.authType) || this.authStatus[0];
+      return this.status4C.find(item => item.val == this.authStatus) || this.authStatusMap[0];
     },
     pass () {
-      return this.authType == 3;
+      return this.authStatus == 3;
     }
   },
 
   methods: {
-    fetchSuccess (resp) {
+    fetchSuccess () {
+      const authInfo = this.authInfo;
       const values = {
-        enterpriseName:    resp.enterpriseName,
-        creditCode:        resp.creditCode,
-        registerAddress:   resp.registerAddress,
-        businessLicense:   resp.businessLicense,
-        legalPersonName:   resp.legalPersonName,
-        legalPersonIDCardNum:   resp.legalPersonIDCardNum,
-        legalPersonIDCardFront: resp.legalPersonIDCardFront,
-        legalPersonIDCardBack:  resp.legalPersonIDCardBack,
+        enterpriseName:    authInfo.enterpriseName,
+        creditCode:        authInfo.creditCode,
+        registerAddress:   authInfo.registerAddress,
+        businessLicense:   authInfo.businessLicense,
+        legalPersonName:   authInfo.legalPersonName,
+        legalPersonIDCardNum:   authInfo.legalPersonIDCardNum,
+        legalPersonIDCardFront: authInfo.legalPersonIDCardFront,
+        legalPersonIDCardBack:  authInfo.legalPersonIDCardBack,
 
-        realName:    resp.realName,
-        idCardNum:   resp.idCardNum,
-        idCardFront: resp.idCardFront,
-        idCardBack:  resp.idCardBack,
+        realName:    authInfo.realName,
+        idCardNum:   authInfo.idCardNum,
+        idCardFront: authInfo.idCardFront,
+        idCardBack:  authInfo.idCardBack,
       }
 
       this.form.setFieldsValue(values);
@@ -401,11 +402,11 @@ export default {
         'idCardBack',
       ]
       arr.forEach(item => {
-        resp[item] && this[item].push({
+        authInfo[item] && this[item].push({
           uid: '-1',
           name: item,
           status: 'done',
-          url: resp[item],
+          url: authInfo[item],
         })
       })
     },
@@ -415,9 +416,8 @@ export default {
         this.loading = true;
         // 认证状态[1：个人认证 2：企业认证]
         const resp = await auth(Object.assign(values, { authType: 2 }));
-        // 提交之后，默认进入 企业认证中 状态 6
-        this.$store.commit('app/setAuthInfo', Object.assign(values, { authType: 6 }));
         this.$message.success('提交成功，请等待审核结果');
+        this.$emit('refresh');
       } catch (error) {
         
       } finally {

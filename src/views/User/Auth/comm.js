@@ -1,11 +1,14 @@
 
 import { LOGINFO, ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 export default {
+  props: {
+    authInfo: Object,
+  },
   created () {
     this.form = this.$form.createForm(this);
   },
   mounted () {
-    this.fetchSuccess(this.authInfo);
+    this.fetchSuccess();
   },
   data() {
     return {
@@ -26,7 +29,7 @@ export default {
       uploadAction: '/cmp/v1/upload/batch/Certificates',
 
       // 认证状态
-      authStatus: [
+      authStatusMap: [
         { val: 1,  editAble: true,  type: 'info',    label: '未认证' },
         { val: 2,  editAble: true,  type: 'success', label: '个人认证完成' },
         { val: 3,  editAble: true,  type: 'success', label: '企业认证完成' },
@@ -43,20 +46,17 @@ export default {
     };
   },
   computed: {
-    authInfo () {
-      return this.$store.state.app.authInfo;
-    },
     disabled () {
       return !this.authTypeItem.editAble;
     },
-    authType () {
-      return this.$store.state.app.authStatus;
+    authStatus () {
+      return this.authInfo.authStatus;
     },
     status4P () {
-      return this.authStatus.filter(item => item.label.includes('个人'));
+      return this.authStatusMap.filter(item => item.label.includes('个人'));
     },
     status4C () {
-      return this.authStatus.filter(item => item.label.includes('企业'));
+      return this.authStatusMap.filter(item => item.label.includes('企业'));
     },
 
     props () {

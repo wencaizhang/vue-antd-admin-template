@@ -7,7 +7,7 @@
         @change="handleTabChange"
       >
         <a-tab-pane v-if="!upgrade && authType == 1" tab="个人认证" key="1">
-          <Auth1 @upgrade="onUpgrade"/>
+          <Auth1 @upgrade="onUpgrade" :authInfo.sync="authInfo" @refresh="fetchAuthInfo"/>
         </a-tab-pane>
         <a-tab-pane v-else tab="企业认证" key="2">
           <Auth2 />
@@ -42,8 +42,8 @@ export default {
       upgrade: false,
     };
   },
-  created() {
-    this.fetchAuthInfo();
+  created () {
+    this.fetchAuthInfo()
   },
   computed: {
     authType () {
@@ -61,21 +61,16 @@ export default {
     }
   },
   methods: {
-    fetchAuthInfo() {
+    async fetchAuthInfo() {
       this.spinning = true;
-      this.form = this.$form.createForm(this);
-
-      this.$store
-        .dispatch("app/fetchAuthInfo")
-        .then(resp => {
-          this.$store.commit("app/setAuthInfo", resp);
-          this.$store.commit("app/setAuthType", resp.authStatus);
-          this.authInfo = resp;
-          this.spinning = false;
-        })
-        .catch(err => {
-          this.spinning = false;
-        });
+      try {
+        const resp = await getAuthInfo();
+        Object.assign(this.authInfo, resp);
+      } catch (error) {
+        
+      } finally {
+        this.spinning = false;
+      }
     },
 
     handleTabChange(key) {

@@ -8,7 +8,7 @@
             :type="authTypeItem.type"
             showIcon
           >
-            <div v-if="authInfo.authStatus == 2" slot="message">
+            <div v-if="authInfo.authStatusMap == 2" slot="message">
               {{ authTypeItem.label }}，
               <a @click="upgrade">升级为企业认证</a>
             </div>
@@ -159,21 +159,21 @@ export default {
   },
   computed: {
     authTypeItem () {
-      return this.status4P.find(item => item.val == this.authType) || this.authStatus[0];
+      return this.status4P.find(item => item.val == this.authStatus) || this.authStatusMap[0];
     },
     pass () {
       // 认证通过 2，或者 个人认证修改失败 11
-      return this.authType == 2 || this.authType == 11;
+      return this.authStatus == 2 || this.authStatus == 11;
     },
   },
   methods: {
-
-    fetchSuccess (resp) {
+    fetchSuccess () {
+      const authInfo = this.authInfo;
       const values = {
-        realName: resp.realName,
-        idCardNum: resp.idCardNum,
-        idCardFront: resp.idCardFront,
-        idCardBack: resp.idCardBack,
+        realName: authInfo.realName,
+        idCardNum: authInfo.idCardNum,
+        idCardFront: authInfo.idCardFront,
+        idCardBack: authInfo.idCardBack,
       }
       this.form.setFieldsValue(values);
 
@@ -182,11 +182,11 @@ export default {
         'idCardBack',
       ]
       arr.forEach(item => {
-        resp[item] && this[item].push({
+        authInfo[item] && this[item].push({
           uid: '-1',
           name: item,
           status: 'done',
-          url: resp[item],
+          url: authInfo[item],
         })
       });
     },
@@ -198,9 +198,8 @@ export default {
         const values = await this._validate();
         // 认证状态[1：个人认证 2：企业认证]
         const resp = await auth(Object.assign(values, { authType: 1 }));
-        // 提交之后，默认进入 认证中 状态
-        this.$store.commit('app/setAuthInfo', Object.assign(values, { authType: 4 }));
         this.$message.success('提交成功，请等待审核结果');
+        this.$emit('refresh');
       } catch (error) {
         
       } finally {
