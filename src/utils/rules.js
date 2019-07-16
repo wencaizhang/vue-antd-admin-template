@@ -40,8 +40,8 @@ export default {
     pattern: /^\d{11}$/,
     message: '请输入正确手机号码!'
   },
-  emial: {
-    pattern: /^\d{11}$/,
+  email: {
+    pattern: /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/,
     message: '请输入正确邮箱地址!'
   },
   idCard: {
