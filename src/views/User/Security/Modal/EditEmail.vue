@@ -6,19 +6,20 @@
       @ok="handleCreate"
       :visible="visible"
       :confirmLoading="confirmLoading"
-      title="修改邮箱"
+      :title="userInfo.email ? '修改邮箱' : '绑定邮箱'"
       okText="提交"
     >
       <a-form :form="form">
-        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="新邮箱">
+        <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" 
+          :label="userInfo.email ? '邮箱地址' : '绑定邮箱'"
+        >
           <a-input
             v-decorator="[
-              'email',
+              'emailAddress',
               {
                 initialValue: currRecord.name,
                 rules: [
                   { required: true, message: '新邮箱地址' },
-                  rulesObj.editdName,
                 ]
               }
             ]"
@@ -29,12 +30,13 @@
           <div style="display: flex;">
             <a-input
               v-decorator="[
-                'smsCode',
+                'emailCode',
                 {
                   initialValue: currRecord.name,
                   rules: [
-                    { required: true, message: '请输入验证码' },
-                    rulesObj.editdName,
+                    { required: true, message: '请输入 6 位数字验证码' },
+                    { len: 6, message: '请输入 6 位数字验证码' },
+                    rulesObj.number,
                   ]
                 }
               ]"
@@ -52,7 +54,7 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import rulesObj from '@/utils/rules'
-import { editDisk as fetchAPI  } from "@/api/store/disk";
+import { modifyEmail as fetchAPI, sendEmailCode } from "@/api/user/user";
 import CaptchaButton from '@/components/tools/CaptchaButton'
 export default {
   mixins: [baseModalMixins, formModalMixins],
@@ -64,11 +66,17 @@ export default {
       fetchAPI,
       rulesObj,
       name: "editEmail",
-      smsCode: '',
 
+      formValues: {
+        emailType: 'NEW',
+      }
     };
   },
-
+  computed: {
+    userInfo () {
+      return this.$parent.userInfo;
+    }
+  },
   methods: {
     onShow () {
       this.formValues = { hardDiskId: this.currRecord.id }
@@ -92,14 +100,13 @@ export default {
     },
     async onClickBtn (callback) {
       try {
-        const resp = await this.handleValidateField('email')
+        const data = await this.handleValidateField('email')
         callback && callback({
-          // payload: {
-          //   phoneNumber: data.phone,
-          //   // 验证码类型[0:注册验证码 1:修改密码验证码 2:找回密码验证码 ]
-          //   smsType: 0
-          // },
-          // api: sendCode,
+          payload: {
+            email: data.emailAddress,
+            codeType: '1',
+          },
+          api: sendEmailCode,
         });
       } catch (error) {
 

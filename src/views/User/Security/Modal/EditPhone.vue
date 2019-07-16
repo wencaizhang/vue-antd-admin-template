@@ -13,40 +13,29 @@
         <a-button @click="handleCancel">
           取消
         </a-button>
-        <a-button v-if="step == 1" @click="handleNextStep" :loading="confirmLoading">
+        <a-button v-if="step == 1" @click="handleNextStep('form1')" :loading="confirmLoading">
           下一步
         </a-button>
-        <a-button v-else @click="handleCreate" :loading="confirmLoading">
+        <a-button v-else @click="handleNextStep('form2')" :loading="confirmLoading">
           提交
         </a-button>
       </template>
 
       <a-form v-if="step == 1" :form="form1">
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" :label="`已绑定${type}`">
-          <a-input
-            v-decorator="[
-              'phone',
-              {
-                initialValue: currRecord.name,
-                rules: [
-                  { required: true, message: `请输入已绑定${type}` },
-                  rulesObj.editdName,
-                ]
-              }
-            ]"
-            :placeholder="`请输入已绑定${type}`"
-          />
+          {{ userInfo[currItem.key] }}
         </a-form-item>
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" label="验证码">
           <div style="display: flex;">
             <a-input
               v-decorator="[
-                'smsCode',
+                currItem.key === 'phone' ? 'smsCode' : 'emailCode',
                 {
-                  initialValue: currRecord.name,
+                  initialValue: userInfo.name,
                   rules: [
-                    { required: true, message: '请输入验证码' },
-                    rulesObj.editdName,
+                    { required: true, message: '请输入 6 位数字验证码' },
+                    { len: 6, message: '请输入 6 位数字验证码' },
+                    rulesObj.number,
                   ]
                 }
               ]"
@@ -63,12 +52,12 @@
         <a-form-item :labelCol="{ span: 8 }" :wrapperCol="{ span: 14 }" :label="`绑定新${type}`">
           <a-input
             v-decorator="[
-              'phone',
+              currItem.key === 'phone' ? 'phoneNumber' : 'emailAddress',
               {
-                initialValue: currRecord.name,
+                initialValue: userInfo.name,
                 rules: [
                   { required: true, message: `请输入新${type}` },
-                  rulesObj.editdName,
+                  rulesObj[currItem.key],
                 ]
               }
             ]"
@@ -79,12 +68,13 @@
           <div style="display: flex;">
             <a-input
               v-decorator="[
-                'smsCode',
+                currItem.key === 'phone' ? 'smsCode' : 'emailCode',
                 {
-                  initialValue: currRecord.name,
+                  initialValue: userInfo.name,
                   rules: [
-                    { required: true, message: '请输入验证码' },
-                    rulesObj.editdName,
+                    { required: true, message: '请输入 6 位数字验证码' },
+                    { len: 6, message: '请输入 6 位数字验证码' },
+                    rulesObj.number,
                   ]
                 }
               ]"
@@ -102,15 +92,17 @@
 <script>
 import { baseModalMixins, formModalMixins } from "@/mixins/modalMixin";
 import rulesObj from '@/utils/rules'
-import { editDisk as fetchAPI  } from "@/api/store/disk";
 import CaptchaButton from '@/components/tools/CaptchaButton';
-import { sendCode, } from "@/api/user/user";
+import { modifyPhone, modifyEmail, sendCode, sendEmailCode, } from "@/api/user/user";
 export default {
   mixins: [baseModalMixins, formModalMixins],
   components: { CaptchaButton },
+  props: {
+    currItem: Object,
+  },
   data() {
     return {
-      fetchAPI,
+      fetchAPI: null,
       rulesObj,
       name: "editPhone",
 
@@ -119,17 +111,36 @@ export default {
       form1: null,
       form2: null,
 
-      type: '邮箱',
     };
   },
-  created () {
-    this.form1 = this.$form.createForm(this);
-    this.form2 = this.$form.createForm(this);
+  
+  computed: {
+    userInfo () {
+      return this.$parent.userInfo;
+    },
+    type () {
+      return this.currItem.key === 'phone' ? '手机' : '邮箱';
+    },
+
+    fetchCode () {
+      return this.currItem.key === 'phone' ? sendCode : sendEmailCode;
+    },
   },
   methods: {
     onShow () {
       this.step = 1;
-      this.formValues = { hardDiskId: this.currRecord.id }
+      this.fetchAPI = this.currItem.key === 'phone' ? modifyPhone : modifyEmail,
+
+      this.form1 = this.$form.createForm(this);
+      this.form2 = this.$form.createForm(this);
+    },
+    setFormValues () {
+      let k1 = this.currItem.key === 'phone' ? 'phoneNumberType' : 'emailType';
+      let k2 = this.currItem.key === 'phone' ? 'phoneNumber' : 'emailAddress';
+      let v1 = this.step == 1 ? 'OLD' : 'NEW';
+      let v2 = this.userInfo[this.currItem.key];
+
+      this.formValues = Object.assign(this.formValues, { [k1]: v1, [k2]: v2 });
     },
     _validateForm (form) {
       return new Promise((resolve, reject) => {
@@ -139,49 +150,32 @@ export default {
       })
     },
 
-    async handleNextStep () {
+    async handleNextStep (formName) {
       try {
-        const values = await this._validateForm(this.form1);
-        this.confirmLoading = true;
-        const resp = await sendCode();
-        this.step++;
-        this.confirmLoading = true;
+        const values = await this._validateForm(this[formName]);
+        this.setFormValues();
+        Object.assign(this.formValues, values);
+        this.handleFetch();
       } catch (error) {
         
       }
     },
-
-    handleCreate() {
-      const self = this;
-      this.form.validateFieldsAndScroll((err, values) => {
-        if (!err) {
-          Object.assign(self.formValues, values);
-          self.handleFetch();
-        }
-      });
-    },
-    async handleValidateField(fields = null) {
-      return new Promise((resolve, reject) => {
-        this.form.validateFieldsAndScroll(
-          Array.isArray(fields) ? fields : [fields],
-          (err, values) => err ? reject(err) : resolve(values)
-        );
-      });
-    },
-    async onClickBtn (callback) {
-      try {
-        const resp = await this.handleValidateField('phone')
-        callback && callback({
-          payload: {
-            phoneNumber: data.phone,
-            // 验证码类型[0:注册验证码 1:修改密码验证码 2:找回密码验证码 ]
-            smsType: 0
-          },
-          api: sendCode,
-        });
-      } catch (error) {
-
+    handleFetchSuccess (resp) {
+      // 请求成功处理函数
+      if (this.step === 1) {
+        this.step++;
+        return;
       }
+      this.handleCancel();
+      this.openNotification(resp);
+      this.handleRefreshParentTable();
+    },
+    onClickBtn (callback) {
+      const value = this.userInfo[this.currItem.key];
+      const payload = this.currItem.key === 'phone' 
+        ? { phoneNumber: value, smsType: 0 }
+        : { email: value, codeType: '1', };
+      callback && callback({ payload, api: this.fetchCode });
     },
   }
 };

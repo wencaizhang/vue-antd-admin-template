@@ -6,8 +6,9 @@
           <a-form :form="form">
 
             <a-form-item v-bind="formItemLayout" label="账户类型">
-              个人
+              {{ userInfo.userType === '1' ? '个人' : '企业' }}
             </a-form-item>
+
             <a-form-item v-bind="formItemLayout" label="账号名称">
               {{ userInfo.userName }}
             </a-form-item>
@@ -19,6 +20,7 @@
             <a-form-item v-bind="formItemLayout" label="联系地址">
               <a-textarea
                 placeholder="请输入联系地址"
+                @change="onChange($event, 'address')"
                 :autosize="{ minRows: 2, maxRows: 6 }"
                 v-decorator="[
                   'address',
@@ -34,11 +36,12 @@
 
             <a-form-item v-bind="formItemLayout" label="联系电话">
               <a-input
+                @change="onChange($event, 'contactNumber')"
                 placeholder="请输入联系电话"
                 v-decorator="[
-                  'phone',
+                  'contactNumber',
                   {
-                    initialValue: userInfo.phone,
+                    initialValue: userInfo.contactNumber,
                     rules:[
                       { required: true, message: '请输入联系电话' }
                     ]
@@ -53,7 +56,7 @@
                   <a-button
                     block
                     :loading="loading"
-                    :disabled="loading"
+                    :disabled="submitAble"
                     type="primary"
                     @click="onSubmit"
                   >
@@ -72,6 +75,7 @@
 
 <script>
 import PageLayout from "@/components/Layout/PageLayout";
+import { updateUserInfo } from '@/api/user/user'
 export default {
   components: {
     PageLayout,
@@ -95,7 +99,6 @@ export default {
     };
   },
   mounted () {
-    this.createSnap();
     this.fetch();
   },
   methods: {
@@ -108,16 +111,21 @@ export default {
         
       }
     },
-    createSnap () {
-      this.snap = JSON.parse(JSON.stringify(this.userInfo));
-    },
-    onChange () {
-      this.submitAble = JSON.stringify(this.snap) === JSON.stringify(this.userInfo);
+    onChange (e, field) {
+      this.submitAble = e.target.value == this.userInfo[field];
     },
     onSubmit() {
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log(values)
+          this.loading = true;
+          updateUserInfo(values)
+            .then(resp => {
+              this.userInfo = resp;
+              this.loading = false;
+            })
+            .catch(err => {
+              this.loading = false;
+            })
         }
       });
     },

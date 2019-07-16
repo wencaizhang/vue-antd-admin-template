@@ -381,7 +381,7 @@ export default {
 
   computed: {
     authTypeItem () {
-      return this.status4P.find(item => item.val == this.authType) || this.authStatus[0];
+      return this.status4C.find(item => item.val == this.authType) || this.authStatus[0];
     },
     pass () {
       return this.authType == 3;
@@ -393,7 +393,7 @@ export default {
       const values = {
         enterpriseName:    resp.enterpriseName,
         creditCode:        resp.creditCode,
-        registerAddress: resp.registerAddress,
+        registerAddress:   resp.registerAddress,
         businessLicense:   resp.businessLicense,
         legalPersonName:   resp.legalPersonName,
         legalPersonIDCardNum:   resp.legalPersonIDCardNum,
