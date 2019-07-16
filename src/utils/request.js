@@ -50,7 +50,7 @@ service.interceptors.request.use(config => {
 
   if (token) {
     // 每个请求添加自定义 headers
-    config.headers["tokenId"] = token; // 让每个请求携带自定义 token 请根据实际情况自行修改
+    config.headers["X-Token"] = token; // 让每个请求携带自定义 token 请根据实际情况自行修改
     config.headers["projectId"] = projectId; // 让每个请求携带自定义 token 请根据实际情况自行修改
   } else {
     const route = router.match(location);
