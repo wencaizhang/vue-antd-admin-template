@@ -23,8 +23,7 @@ const errHandle = error => {
     const msg = data.desc || data.exception;
 
     switch (error.response.status) {
-      case 404:
-        break;
+      case 401:
       case 403:
         const token = Vue.ls.get(LOGINFO)[ACCESS_TOKEN];
         if (token) {
@@ -33,6 +32,9 @@ const errHandle = error => {
           clearToken();
         }
         router.push({ name: 'login' })
+        break;
+
+      case 404:
         break;
       default:
         notification.error({ message: 'Error', description: msg });
