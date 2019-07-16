@@ -10,11 +10,16 @@
 </template>
 
 <script>
+let seed = 0;
+
+function getUuid() {
+  return 'sms_' + (seed++);
+}
 export default {
   name: "CaptchaButton",
   data() {
     return {
-      lsKey: 'sms',
+      lsKey: getUuid(),
       state: {
         seconds: 60,
         status: "",
