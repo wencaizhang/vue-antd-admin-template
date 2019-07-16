@@ -61,8 +61,10 @@
             </template>
             <a-upload
               v-else
+              v-bind="props"
               :defaultFileList="idCardFront"
-              :disabled="disabled"
+              @preview="handlePreview"
+              @change="handleChange('idCardFront', $event)"
               v-decorator="[
                 'idCardFront',
                 {
@@ -72,12 +74,6 @@
                   ]
                 }
               ]"
-              name="file"
-              :accept="acceptFileTypes"
-              listType="picture-card"
-              :action="uploadAction"
-              @preview="handlePreview"
-              @change="handleChange('idCardFront', $event)"
             >
               <div v-if="idCardFront.length < 1">
                 <a-icon type="plus" />
@@ -102,8 +98,10 @@
             </template>
             <a-upload
               v-else
-              :disabled="disabled"
+              v-bind="props"
               :defaultFileList="idCardBack"
+              @preview="handlePreview"
+              @change="handleChange('idCardBack', $event)"
               v-decorator="[
                 'idCardBack',
                 {
@@ -113,12 +111,6 @@
                   ]
                 }
               ]"
-              name="file"
-              :accept="acceptFileTypes"
-              listType="picture-card"
-              :action="uploadAction"
-              @preview="handlePreview"
-              @change="handleChange('idCardBack', $event)"
             >
               <div v-if="idCardBack.length < 1">
                 <a-icon type="plus" />

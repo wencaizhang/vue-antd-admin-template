@@ -1,3 +1,5 @@
+
+import { LOGINFO, ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 export default {
   created () {
     this.form = this.$form.createForm(this);
@@ -56,11 +58,22 @@ export default {
     status4C () {
       return this.authStatus.filter(item => item.label.includes('企业'));
     },
+
+    props () {
+      let token = this.$ls.get(LOGINFO)[ACCESS_TOKEN];
+      return {
+        name:"file",
+        listType:"picture-card",
+        headers: { 'X-Token': token },
+        accept: this.acceptFileTypes,
+        action: this.uploadAction,
+      }
+    }
   },
   methods: {
 
     fetchSuccess (resp) {
-      
+
     },
 
     _validate () {

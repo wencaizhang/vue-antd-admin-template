@@ -76,6 +76,10 @@
             </template>
             <a-upload
               v-else
+              v-bind="props"
+              :defaultFileList="businessLicense"
+              @preview="handlePreview"
+              @change="handleChange('businessLicense', $event)"
               v-decorator="[
                 'businessLicense',
                 {
@@ -85,13 +89,6 @@
                   ]
                 }
               ]"
-              :defaultFileList="businessLicense"
-              name="file"
-              :accept="acceptFileTypes"
-              listType="picture-card"
-              :action="uploadAction"
-              @preview="handlePreview"
-              @change="handleChange('businessLicense', $event)"
             >
               <div v-if="businessLicense.length < 1">
                 <a-icon type="plus" />
@@ -147,6 +144,10 @@
             </template>
             <a-upload
               v-else
+              v-bind="props"
+              :defaultFileList="legalPersonIDCardFront"
+              @preview="handlePreview"
+              @change="handleChange('legalPersonIDCardFront', $event)"
               v-decorator="[
                 'legalPersonIDCardFront',
                 {
@@ -156,13 +157,6 @@
                   ]
                 }
               ]"
-              :defaultFileList="legalPersonIDCardFront"
-              name="file"
-              :accept="acceptFileTypes"
-              listType="picture-card"
-              :action="uploadAction"
-              @preview="handlePreview"
-              @change="handleChange('legalPersonIDCardFront', $event)"
             >
               <div v-if="legalPersonIDCardFront.length < 1">
                 <a-icon type="plus" />
@@ -187,6 +181,10 @@
             </template>
             <a-upload
               v-else
+              v-bind="props"
+              :defaultFileList="legalPersonIDCardBack"
+              @preview="handlePreview"
+              @change="handleChange('legalPersonIDCardBack', $event)"
               v-decorator="[
                 'legalPersonIDCardBack',
                 {
@@ -196,13 +194,6 @@
                   ]
                 }
               ]"
-              :defaultFileList="legalPersonIDCardBack"
-              name="file"
-              :accept="acceptFileTypes"
-              listType="picture-card"
-              :action="uploadAction"
-              @preview="handlePreview"
-              @change="handleChange('legalPersonIDCardBack', $event)"
             >
               <div v-if="legalPersonIDCardBack.length < 1">
                 <a-icon type="plus" />
@@ -266,6 +257,10 @@
             </template>
             <a-upload
               v-else
+              v-bind="props"
+              :defaultFileList="idCardFront"
+              @preview="handlePreview"
+              @change="handleChange('idCardFront', $event)"
               v-decorator="[
                 'idCardFront',
                 {
@@ -275,13 +270,6 @@
                   ]
                 }
               ]"
-              name="file"
-              :accept="acceptFileTypes"
-              :defaultFileList="idCardFront"
-              listType="picture-card"
-              :action="uploadAction"
-              @preview="handlePreview"
-              @change="handleChange('idCardFront', $event)"
             >
               <div v-if="idCardFront.length < 1">
                 <a-icon type="plus" />
@@ -306,6 +294,10 @@
             </template>
             <a-upload
               v-else
+              v-bind="props"
+              :defaultFileList="idCardBack"
+              @preview="handlePreview"
+              @change="handleChange('idCardBack', $event)"
               v-decorator="[
                 'idCardBack',
                 {
@@ -315,13 +307,6 @@
                   ]
                 }
               ]"
-              :defaultFileList="idCardBack"
-              name="file"
-              :accept="acceptFileTypes"
-              listType="picture-card"
-              :action="uploadAction"
-              @preview="handlePreview"
-              @change="handleChange('idCardBack', $event)"
             >
               <div v-if="idCardBack.length < 1">
                 <a-icon type="plus" />
