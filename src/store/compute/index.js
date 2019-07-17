@@ -1,5 +1,6 @@
 import common from "../common";
 
+import createInstance from "./createInstance";
 import instance from "./instance";
 import mirror from "./mirror";
 import keypair from "./keypair";
@@ -11,6 +12,7 @@ const store = {
   getters: {},
 
   modules: {
+    createInstance,
     instance,
     mirror,
     keypair

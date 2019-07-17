@@ -2,7 +2,7 @@
   <div>
     <div class="table-operator" style="margin-bottom: 16px; margin-left: 16px; text-align: left;">
       <span style="margin-bottom: 16px; ">私有网络：保证租户之间 100% 隔离的专属网络，推荐使用。</span>
-      <a-button type="primary" style="margin-right: 10px;" icon="plus">新建</a-button>
+      <a-button type="primary" @click="handleCreate" style="margin-right: 10px;" icon="plus">新建</a-button>
     </div>
     <a-alert type="info" showIcon style="margin-bottom: 16px; text-align: left;">
       <div slot="message">
@@ -25,11 +25,14 @@
         {{ id.substring(0, 8) }}
       </template>
     </a-table>
+    
+    <create-network  />
   </div>
 </template>
 <script>
 import { getNetworkList } from '@/api/network/network'
 import subnet from '@/i18n/zh/subnet';
+import CreateNetwork from '@/views/Network/Subnet/Modal/Create';
 const statusDicts = subnet.subnet.status
 
 const columns = [
@@ -56,13 +59,17 @@ const columns = [
   },
 ];
 export default {
+  components: { CreateNetwork },
   mounted() {
     this.fetch();
   },
   data() {
     return {
       columns,
+      module: 'compute',
+      id: 'createInstance',
       loading: false,
+      showCreateNetwork: false,
 
       data: [],
       allData: [],
@@ -78,6 +85,12 @@ export default {
     };
   },
   methods: {
+    handleRefresh () {
+      this.fetch();
+    },
+    handleCreate () {
+      this.$store.commit(`${this.id}/toggleModalVisible`, 'create');
+    },
     __handleTransformToZh (status) {
       return statusDicts[status.toLowerCase()] || status
     },
