@@ -3,6 +3,8 @@
 import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN';
 
 import { getAuthInfo } from "@/api/user/user";
+import { whiteList } from '@/utils/settings'
+
 export default {
   data() {
     return {
@@ -11,7 +13,10 @@ export default {
     };
   },
   created () {
-    this.fetchAuthInfo();
+    let name = this.$route.name;
+    if (!whiteList.includes(name)) {
+      this.fetchAuthInfo();
+    }
   },
   methods: {
     async fetchAuthInfo() {
