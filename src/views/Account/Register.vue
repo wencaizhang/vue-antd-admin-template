@@ -337,6 +337,7 @@ export default {
             })
           }
           const resp = await this.fetchAPI(payload);
+          this.$message.success('注册成功，请登录');
           this.$router.push({ name: "login" });
         } else {
           this.form.setFields({
