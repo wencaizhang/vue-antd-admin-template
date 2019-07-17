@@ -124,7 +124,8 @@
                 'legalPersonIDCardNum',
                 {
                   rules: [
-                    { required: true, message: '请输入法人身份证号' }
+                    { required: true, message: '请输入法人身份证号码' },
+                    { len: 18, message: '请输入 18 位身份证号码' },
                   ]
                 }
               ]"
@@ -237,7 +238,8 @@
                 'idCardNum',
                 {
                   rules: [
-                    { required: true, message: '请输入联系人身份证号' }
+                    { required: true, message: '请输入联系人身份证号' },
+                    { len: 18, message: '请输入 18 位身份证号码' },
                   ]
                 }
               ]"

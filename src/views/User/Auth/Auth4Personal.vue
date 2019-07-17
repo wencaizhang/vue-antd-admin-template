@@ -41,7 +41,8 @@
                 'idCardNum',
                 {
                   rules: [
-                    { required: true, message: '请输入身份证号' }
+                    { required: true, message: '请输入身份证号' },
+                    { len: 18, message: '请输入 18 位身份证号码' },
                   ]
                 }
               ]"

@@ -44,10 +44,6 @@ export default {
     pattern: /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/,
     message: '请输入正确邮箱地址!'
   },
-  idCard: {
-    pattern: /^\d{11}$/,
-    message: '请输入正确身份证号码!'
-  },
 
   http: {
     pattern: /^http(s)?:\/\//,
