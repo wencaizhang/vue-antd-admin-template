@@ -19,8 +19,11 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import SparkMD5 from "spark-md5";
 import qs from 'qs'
+import { LOGINFO, ACCESS_TOKEN } from "@/store/mutation-types";
+let token = Vue.ls.get(LOGINFO)[ACCESS_TOKEN];
 export default {
   data() {
     return {
@@ -33,6 +36,9 @@ export default {
         fileParameterName: "file",
         // testChunks: true, //是否开启秒传
         maxChunkRetries: 3,
+        headers: {
+          'X-Token': token,
+        },
         // simultaneousUploads: 30,
         // checkChunkUploadedByResponse: function(chunk, message) {
         //   console.log(chunk)
@@ -96,6 +102,7 @@ export default {
         method: 'post',
         url: '/cmp/v1/upload/chunk/merge/mirrorimage',
         headers: {
+          'X-Token': token,
           'Content-Type': 'application/x-www-form-urlencoded'
         },
         data: qs.stringify({
