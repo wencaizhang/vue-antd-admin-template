@@ -41,14 +41,14 @@ router.afterEach(() => {
 })
 
 function authPermission (to, from, next) {
-  const authType = store.state.app.authStatus;
+  const authStatus = store.state.app.authStatus;
   const authMap = {
     1: '未认证',
     4: '个人认证中',
     5: '个人认证未通过',
   }
   // 无权限查看其他页面
-  if (!Object.keys(authMap).includes(authType)) {
+  if (!Object.keys(authMap).includes(authStatus)) {
     next();
   } else {
     if (to.name === 'auth') {

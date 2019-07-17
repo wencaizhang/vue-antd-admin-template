@@ -2,18 +2,33 @@
 <script>
 import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN';
 
+import { getAuthInfo } from "@/api/user/user";
 export default {
   data() {
     return {
       locale: zhCN,
+      AppLoading: false,
     };
+  },
+  created () {
+    this.fetchAuthInfo();
+  },
+  methods: {
+    async fetchAuthInfo() {
+      this.AppLoading = true;
+      try {
+        const resp = await getAuthInfo();
+        this.$store.commit('app/setAuthType', resp.authStatus);
+      } catch (error) {
+        
+      } finally {
+        this.AppLoading = false;
+      }
+    },
   },
   computed: {
     title () {
       return `${this.$route.meta.title} - 云管平台`
-    },
-    AppLoading () {
-      return false;
     },
   },
   render (h) {

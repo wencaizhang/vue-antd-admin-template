@@ -66,6 +66,8 @@ export default {
       try {
         const resp = await getAuthInfo();
         Object.assign(this.authInfo, resp);
+
+        this.$store.commit('app/setAuthType', resp.authStatus);
       } catch (error) {
         
       } finally {
@@ -76,6 +78,7 @@ export default {
     handleTabChange(key) {
       console.log(key);
     },
+    
     onUpgrade () {
       console.log('onUpgrade')
       this.upgrade = true;
