@@ -5,10 +5,7 @@ import router from '@/router';
 import { clearToken } from '@/utils/util'
 import notification from "ant-design-vue/es/notification";
 import { LOGINFO, ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
-import settings from '@/utils/settings'
-
-// 免登录白名单
-const whiteList = settings.whiteList;
+import { whiteList } from '@/utils/settings'
 
 // 创建 axios 实例
 const service = axios.create({

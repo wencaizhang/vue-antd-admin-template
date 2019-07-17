@@ -9,7 +9,7 @@ import router   from './router'
 import store    from './store'
 import axios    from 'axios'
 import App      from './App.vue'
-import settings from '@/utils/settings'
+import { storageOptions } from '@/utils/settings'
 import '@/utils/permission' // 权限控制
 import '@/utils/components_use'  // 按需引入 ant-design-vue 组件
 
@@ -21,7 +21,7 @@ Vue.use(uploader)
 
 Vue.prototype.$http = axios
 
-Vue.use(Storage, settings.storageOptions)
+Vue.use(Storage, storageOptions)
 
 Vue.config.productionTip = false
 

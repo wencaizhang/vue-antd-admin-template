@@ -7,9 +7,7 @@ import store from '../store'
 import { LOGINFO } from "@/store/mutation-types";
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
-import settings from '@/utils/settings'
-// 免登录白名单
-const whiteList = settings.whiteList;
+import { whiteList } from '@/utils/settings'
 
 router.beforeEach((to, from, next) => {
   // console.log(to.name, from.name);
