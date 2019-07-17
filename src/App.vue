@@ -25,7 +25,9 @@ export default {
         const resp = await getAuthInfo();
         this.$store.commit('app/setAuthType', resp.authStatus);
       } catch (error) {
-        
+        if (error.response.status === 404) {
+          this.$store.commit('app/setAuthType', '1');
+        }
       } finally {
         this.AppLoading = false;
       }

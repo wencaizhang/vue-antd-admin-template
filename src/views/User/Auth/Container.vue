@@ -69,7 +69,10 @@ export default {
 
         this.$store.commit('app/setAuthType', resp.authStatus);
       } catch (error) {
-        
+        if (error.response.status === 404) {
+          Object.assign(this.authInfo, { authStatus: '1' });
+          this.$store.commit('app/setAuthType', '1');
+        }
       } finally {
         this.spinning = false;
       }
