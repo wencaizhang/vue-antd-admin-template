@@ -4,6 +4,7 @@ import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN';
 
 import { getAuthInfo } from "@/api/user/user";
 import { whiteList } from '@/utils/settings'
+import { LOGINFO } from "@/store/mutation-types";
 
 export default {
   data() {
@@ -13,12 +14,17 @@ export default {
     };
   },
   created () {
+    this.getUserInfoFromLS();
     let name = this.$route.name;
     if (!whiteList.includes(name)) {
       this.fetchAuthInfo();
     }
   },
   methods: {
+    getUserInfoFromLS () {
+      const data = this.$ls.get(LOGINFO);
+      this.$store.commit('app/setUserInfo', data);
+    },
     async fetchAuthInfo() {
       this.AppLoading = true;
       try {

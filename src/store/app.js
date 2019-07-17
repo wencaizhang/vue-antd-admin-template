@@ -9,9 +9,7 @@ export default {
     authInfo: {},
   },
   getters: {
-    getLogInfo () {
-      return Vue.ls.get(LOGINFO) || {}
-    },
+
   },
   mutations: {
     setUserInfo (state, info) {

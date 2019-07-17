@@ -31,15 +31,13 @@ import avatar from '@/assets/images/avatar.png';
 export default {
   name: "",
   components: {},
-
-  computed: {
-    userInfo () {
-      return this.$store.getters['app/getLogInfo'] || {};
-    }
+  mounted () {
+    this.userInfo = this.$store.state.app.userInfo;
   },
   data() {
     return {
       avatar,
+      userInfo: {},
     };
   },
 

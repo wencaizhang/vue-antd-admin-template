@@ -62,7 +62,6 @@
 </template>
 
 <script>
-import Vue from "vue";
 import notification from "ant-design-vue/es/notification";
 
 // import PhoneForm from "./Login/PhoneForm";
@@ -118,8 +117,9 @@ export default {
     loginSuccess(resp) {
       
       // const expire = 1 * 60 * 60 * 1000;
-      Vue.ls.set(LOGINFO, resp);
+      this.$ls.set(LOGINFO, resp);
       this.$store.commit('app/setAuthType', resp.status);
+      this.$store.commit('app/setUserInfo', resp);
 
       this.$router.push({ name: "Index" });
       this.$message.success(welcome() + "，欢迎回来", 3);
