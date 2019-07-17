@@ -10,7 +10,7 @@
           <Auth1 @upgrade="onUpgrade" :authInfo.sync="authInfo" @refresh="fetchAuthInfo" />
         </a-tab-pane>
         <a-tab-pane v-else tab="企业认证" key="2">
-          <Auth2  :authInfo.sync="authInfo" />
+          <Auth2  :authInfo.sync="authInfo" @refresh="fetchAuthInfo" />
         </a-tab-pane>
       </a-tabs>
     </a-spin>
@@ -69,7 +69,10 @@ export default {
       if (item.label.includes('个人')) {
         return '1';
       }
-      return '2';
+      if (item.label.includes('公司')) {
+        return '2';
+      }
+      return '1';
     }
   },
   methods: {
