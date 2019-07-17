@@ -10,7 +10,7 @@
           >
             <div v-if="upgradeAble" slot="message">
               {{ authTypeItem.label }}，
-              <a @click="upgrade">升级为企业认证</a>
+              <a @click="showModal">升级为企业认证</a>
             </div>
             <div v-else slot="message">
               {{ authTypeItem.label }}
@@ -138,13 +138,26 @@
         </a-form>
       </a-col>
     </a-row>
+
+    <a-modal
+      title="提示"
+      :visible="visible"
+      @ok="handleOk"
+      :confirmLoading="confirmLoading"
+      @cancel="handleCancel"
+    >
+      <p>
+        <a-icon type="info-circle" style="color: red;" />
+        升级到企业用户后需要提交企业相关信息重新认证，而且企业用户不能再降级为个人用户。确定升级为企业用户吗？
+      </p>
+    </a-modal>
   </div>
 </template>
 
 <script>
 import ruleObj from '@/utils/rules';
 import comm from './comm';
-import { auth } from '@/api/user/user';
+import { auth, authUpgrade } from '@/api/user/user';
 import AImage from '@/components/tools/AImage'
 export default {
   mixins: [comm],
@@ -156,6 +169,9 @@ export default {
         labelCol: { span: 4 },
         wrapperCol: { span: 12 },
       },
+      visible: false,
+      confirmLoading: false,
+
     };
   },
   computed: {
@@ -211,10 +227,21 @@ export default {
       }
     },
 
-    upgrade () {
-      console.log('升级！')
-      this.$emit('upgrade')
-    }
+    showModal() {
+      this.visible = true
+    },
+    handleOk(e) {
+      this.confirmLoading = true;
+      authUpgrade().then(resp => {
+        this.visible = false;
+        this.confirmLoading = false;
+        this.$message.success(resp.desc)
+        this.$emit('upgrade')
+      })
+    },
+    handleCancel(e) {
+      this.visible = false
+    },
   }
 };
 </script>

@@ -41,7 +41,7 @@ export default {
         { val: 9,  editAble: false, type: 'warning', label: '企业认证修改中' },
         { val: 10, editAble: true,  type: 'error',   label: '企业认证修改失败' },
         { val: 11, editAble: true,  type: 'error',   label: '个人认证修改失败' },
-        { val: 12, editAble: false, type: 'info',    label: '企业未认证' },
+        { val: 12, editAble: true, type: 'info',    label: '企业未认证' },
       ],
     };
   },

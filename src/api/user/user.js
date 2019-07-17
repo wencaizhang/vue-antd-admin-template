@@ -28,6 +28,9 @@ export const updateUserInfo = payload => POST('/user/update', payload);
 // 用户认证
 export const auth        = payload => POST('/user/auth', payload);
 
+// 用户认证 升级到企业认证
+export const authUpgrade = payload => POST('/user/type/upgrade', payload);
+
 // 用户实名认证
 export const getAuthInfo = payload => GET('/user/authInfo', payload);
 

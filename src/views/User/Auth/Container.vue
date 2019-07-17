@@ -3,14 +3,14 @@
     <a-spin size="large" :spinning="spinning">
       <a-tabs
         v-if="!spinning"
-        :defaultActiveKey="upgrade ? '2' : authType"
+        :defaultActiveKey="authType"
         @change="handleTabChange"
       >
-        <a-tab-pane v-if="!upgrade && authType == 1" tab="个人认证" key="1">
-          <Auth1 @upgrade="onUpgrade" :authInfo.sync="authInfo" @refresh="fetchAuthInfo"/>
+        <a-tab-pane v-if="authType == 1" tab="个人认证" key="1">
+          <Auth1 @upgrade="onUpgrade" :authInfo.sync="authInfo" @refresh="fetchAuthInfo" />
         </a-tab-pane>
         <a-tab-pane v-else tab="企业认证" key="2">
-          <Auth2 />
+          <Auth2  :authInfo.sync="authInfo" />
         </a-tab-pane>
       </a-tabs>
     </a-spin>
@@ -34,6 +34,21 @@ export default {
       formValues: {
         authType: "1"
       },
+      // 认证状态
+      authStatusMap: [
+        { val: 1,  editAble: true,  type: 'info',    label: '未认证' },
+        { val: 2,  editAble: true,  type: 'success', label: '个人认证完成' },
+        { val: 3,  editAble: true,  type: 'success', label: '企业认证完成' },
+        { val: 4,  editAble: false, type: 'warning', label: '个人认证中' },
+        { val: 5,  editAble: true,  type: 'error',   label: '个人认证未通过' },
+        { val: 6,  editAble: false, type: 'warning', label: '企业认证中' },
+        { val: 7,  editAble: true,  type: 'error',   label: '企业认证未通过' },
+        { val: 8,  editAble: false, type: 'warning', label: '个人认证修改中' },
+        { val: 9,  editAble: false, type: 'warning', label: '企业认证修改中' },
+        { val: 10, editAble: true,  type: 'error',   label: '企业认证修改失败' },
+        { val: 11, editAble: true,  type: 'error',   label: '个人认证修改失败' },
+        { val: 12, editAble: false, type: 'info',    label: '企业未认证' },
+      ],
 
       authInfo: {},
       loading: false,
@@ -47,17 +62,14 @@ export default {
   },
   computed: {
     authType () {
-      // 展示个人认账 1 / 展示企业认证 2
-      const authMap = {
-        // 1: '未认证用户',
-        2: "已认证个人用户",
-        3: "已认证企业用户",
-        // 4: '个人认证中',
-        // 5: '个人认证未通过',
-        6: "企业认证中",
-        7: "企业认证未通过"
-      };
-      return ["3", "6", "7"].includes(this.authInfo.authStatus) ? '2' : '1';
+      const item = this.authStatusMap.find(item => item.val == this.authInfo.authStatus);
+      if (!item) {
+        return '1';
+      }
+      if (item.label.includes('个人')) {
+        return '1';
+      }
+      return '2';
     }
   },
   methods: {
@@ -65,8 +77,7 @@ export default {
       this.spinning = true;
       try {
         const resp = await getAuthInfo();
-        Object.assign(this.authInfo, resp);
-
+        this.authInfo = Object.assign({}, this.authInfo, resp);
         this.$store.commit('app/setAuthType', resp.authStatus);
       } catch (error) {
         if (error.response.status === 404) {
@@ -83,8 +94,7 @@ export default {
     },
     
     onUpgrade () {
-      console.log('onUpgrade')
-      this.upgrade = true;
+      this.fetchAuthInfo()
     }
   }
 };

@@ -346,6 +346,7 @@ import { auth } from '@/api/user/user';
 import AImage from '@/components/tools/AImage'
 export default {
   mixins: [comm],
+  components: { AImage },
   data() {
     return {
       ruleObj,
