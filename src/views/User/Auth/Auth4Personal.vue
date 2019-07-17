@@ -8,7 +8,7 @@
             :type="authTypeItem.type"
             showIcon
           >
-            <div v-if="authInfo.authStatusMap == 2" slot="message">
+            <div v-if="upgradeAble" slot="message">
               {{ authTypeItem.label }}，
               <a @click="upgrade">升级为企业认证</a>
             </div>
@@ -160,6 +160,9 @@ export default {
   computed: {
     authTypeItem () {
       return this.status4P.find(item => item.val == this.authStatus) || this.authStatusMap[0];
+    },
+    upgradeAble () {
+      return this.authInfo.authStatus == 2;
     },
     pass () {
       // 认证通过 2，或者 个人认证修改失败 11
