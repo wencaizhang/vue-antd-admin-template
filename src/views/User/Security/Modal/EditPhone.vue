@@ -172,8 +172,9 @@ export default {
     },
     onClickBtn (callback) {
       const value = this.userInfo[this.currItem.key];
+      const smsType = this.step == 1 ? 4 : 3;
       const payload = this.currItem.key === 'phone' 
-        ? { phoneNumber: value, smsType: 0 }
+        ? { phoneNumber: value, smsType }
         : { email: value, codeType: '1', };
       callback && callback({ payload, api: this.fetchCode });
     },

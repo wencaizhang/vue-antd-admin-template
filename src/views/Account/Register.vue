@@ -375,7 +375,7 @@ export default {
             payload: {
               phoneNumber: data.phone,
               // 验证码类型[0:注册验证码 1:修改密码验证码 2:重置密码验证码 ]
-              smsType: 0
+              smsType: this.REGISTER ? 0 : 2,
             },
           });
       } catch (error) {}

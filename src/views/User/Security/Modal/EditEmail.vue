@@ -100,7 +100,7 @@ export default {
     },
     async onClickBtn (callback) {
       try {
-        const data = await this.handleValidateField('email')
+        const data = await this.handleValidateField('emailAddress')
         callback && callback({
           payload: {
             email: data.emailAddress,
