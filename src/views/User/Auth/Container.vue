@@ -1,6 +1,7 @@
 <template>
   <page-layout class="auth-container">
     <a-spin size="large" :spinning="spinning">
+      {{ authType }}
       <a-tabs
         v-if="!spinning"
         :defaultActiveKey="authType"
@@ -69,7 +70,7 @@ export default {
       if (item.label.includes('个人')) {
         return '1';
       }
-      if (item.label.includes('公司')) {
+      if (item.label.includes('企业')) {
         return '2';
       }
       return '1';
