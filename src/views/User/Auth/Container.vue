@@ -1,7 +1,6 @@
 <template>
   <page-layout class="auth-container">
     <a-spin size="large" :spinning="spinning">
-      {{ authType }}
       <a-tabs
         v-if="!spinning"
         :defaultActiveKey="authType"
