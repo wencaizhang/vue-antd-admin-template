@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     onShow () {
-      this.formValues = { hardDiskId: this.currRecord.id }
+      
     },
     async handleValidateField(fields = null) {
       return new Promise((resolve, reject) => {
@@ -93,7 +93,7 @@ export default {
       const self = this;
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          Object.assign(self.formValues, values);
+          Object.assign(self.formValues, values, { emailType: 'NEW' } );
           self.handleFetch();
         }
       });

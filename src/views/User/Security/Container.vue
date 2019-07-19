@@ -15,22 +15,22 @@
       </a-list>
     </page-layout>
 
-    <edit-email />
-    <edit-phone :currItem="currItem"/>
+    <bind-email />
+    <edit-phone-or-email :currItem="currItem"/>
     <edit-pwd />
   </div>
 </template>
 
 <script>
-import EditEmail from './Modal/EditEmail'
-import EditPhone from './Modal/EditPhone'
+import BindEmail from './Modal/BindEmail'
+import EditPhoneOrEmail from './Modal/EditPhoneOrEmail'
 import EditPwd from './Modal/EditPwd'
 import PageLayout from "@/components/Layout/PageLayout";
 export default {
   components: {
     PageLayout,
-    EditEmail,
-    EditPhone,
+    BindEmail,
+    EditPhoneOrEmail,
     EditPwd,
   },
   data() {
@@ -89,14 +89,11 @@ export default {
         
       }
     },
-    handleRefresh () {
-
-    },
     handleShowModal (key) {
       this.$store.commit(`${this.id}/toggleModalVisible`, key);
     },
     handleClick (item) {
-      console.log(item);
+      // console.log(item);
       this.currItem = item;
       this.handleShowModal (item.id);
     }
