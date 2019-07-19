@@ -124,7 +124,7 @@ export default {
           this.loading = true;
           updateUserInfo(values)
             .then(resp => {
-              this.userInfo = resp;
+              Object.assign(this.userInfo, values)
               this.loading = false;
               this.submitAble = false;
               this.$message.success('保存成功');
