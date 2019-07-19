@@ -144,7 +144,7 @@
       :visible="visible"
       @ok="handleOk"
       :confirmLoading="confirmLoading"
-      @cancel="handleCancel"
+      @cancel="handleCancelUpgradeTips"
     >
       <p>
         <a-icon type="info-circle" style="color: red;" />
@@ -239,7 +239,7 @@ export default {
         this.$emit('upgrade')
       })
     },
-    handleCancel(e) {
+    handleCancelUpgradeTips(e) {
       this.visible = false
     },
   }
