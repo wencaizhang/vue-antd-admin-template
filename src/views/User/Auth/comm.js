@@ -1,5 +1,8 @@
 
 import { LOGINFO, ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
+import notification from "ant-design-vue/es/notification";
+import { clearToken } from '@/utils/util';
+
 export default {
   props: {
     authInfo: Object,
@@ -95,6 +98,11 @@ export default {
     
     handleChange (type, e) {
       const { file, fileList } = e;
+      if (file.response && [401, 404].includes(file.response.status)) {
+        notification.error({ message: "请登录", description: "" });
+        clearToken();
+        this.$router.push({ name: 'login' })
+      }
       if (file.status === 'error') {
         this.$message.error('上传失败，请重试');
         let index = fileList.findIndex(item => item.uid === file.uid);

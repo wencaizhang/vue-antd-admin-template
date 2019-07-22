@@ -22,7 +22,8 @@
 import Vue from 'vue';
 import SparkMD5 from "spark-md5";
 import qs from 'qs'
-import { LOGINFO, ACCESS_TOKEN } from "@/store/mutation-types";
+import { LOGINFO, ACCESS_TOKEN } from "@/store/mutation-types";import notification from "ant-design-vue/es/notification";
+import { clearToken } from '@/utils/util';
 let token = Vue.ls.get(LOGINFO)[ACCESS_TOKEN];
 export default {
   data() {
@@ -96,8 +97,6 @@ export default {
       // );
     },
     onFileSuccess(rootFile, file, response, chunk) {
-      // let res = JSON.parse(response);
-      console.log('onFileSuccess');
       this.$http({
         method: 'post',
         url: '/cmp/v1/upload/chunk/merge/mirrorimage',
@@ -122,10 +121,12 @@ export default {
       return;
     },
     onFileError(rootFile, file, response, chunk) {
-      this.$message.info({
-        message: response,
-        type: "error"
-      });
+      let res = JSON.parse(response);
+      if (res && [401, 404].includes(res.status)) {
+        notification.error({ message: "请登录", description: "" });
+        clearToken();
+        this.$router.push({ name: 'login' })
+      }
     },
     /**
      * 计算md5，实现断点续传及秒传
@@ -183,12 +184,7 @@ export default {
       this.panelShow = false;
     },
     error(msg) {
-      this.$notify({
-        title: this.$t("c.false"),
-        message: msg,
-        type: "error",
-        duration: 2000
-      });
+      this.$message.error(msg);
     }
   }
 };
