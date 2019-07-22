@@ -29,7 +29,7 @@ router.beforeEach((to, from, next) => {
     NProgress.done()
     return false;
   }
-
+  
   authPermission(to, from, next);
 })
 
@@ -44,7 +44,7 @@ function authPermission (to, from, next) {
   if (['2', '3'].includes(authStatus)) {
     next();
   } else {
-    if (to.name === 'auth') {
+    if (whiteList.concat('auth').includes(to.name)) {
       next();
     } else if (from.name === 'auth') {
       next(false);
