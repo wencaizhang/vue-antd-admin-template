@@ -7,55 +7,99 @@
     <title>友普云自服务-控制台</title>
     <style>
     /* 按钮loading */
-    .spin-loading {
-      position: relative;
+    #loading-mask {
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      background: #fff;
+      user-select: none;
+      z-index: 9999;
+      overflow: hidden;
     }
 
-    .spin-loading::before {
+    .loading-wrapper {
       position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -100%);
+      text-align: center;
+    }
+
+    .loading-dot {
+      animation: antRotate 1.2s infinite linear;
+      transform: rotate(45deg);
+      position: relative;
+      display: inline-block;
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      box-sizing: border-box;
+    }
+
+    .loading-dot i {
+      width: 22px;
+      height: 22px;
+      position: absolute;
+      display: block;
+      background-color: #1890ff;
+      border-radius: 100%;
+      transform: scale(.75);
+      transform-origin: 50% 50%;
+      opacity: .3;
+      animation: antSpinMove 1s infinite linear alternate;
+    }
+
+    .loading-dot i:nth-child(1) {
+      top: 0;
+      left: 0;
+    }
+
+    .loading-dot i:nth-child(2) {
       top: 0;
       right: 0;
+      -webkit-animation-delay: .4s;
+      animation-delay: .4s;
+    }
+
+    .loading-dot i:nth-child(3) {
+      right: 0;
+      bottom: 0;
+      -webkit-animation-delay: .8s;
+      animation-delay: .8s;
+    }
+
+    .loading-dot i:nth-child(4) {
       bottom: 0;
       left: 0;
-      margin: auto;
-      /* center */
-
-      width: 4px;
-      height: 4px;
-      content: '';
-
-      -webkit-animation: spinZoom 1s steps(8) infinite;
-      animation: spinZoom 1s steps(8) infinite;
-      border-radius: 100%;
-      box-shadow:
-        0 -10px 0 1px currentColor,
-        10px 0 currentColor,
-        0 10px currentColor,
-        -10px 0 currentColor,
-        -7px -7px 0 .5px currentColor,
-        7px -7px 0 1.5px currentColor,
-        7px 7px currentColor,
-        -7px 7px currentColor;
+      -webkit-animation-delay: 1.2s;
+      animation-delay: 1.2s;
     }
 
-    /* loading动画 */
-    @-webkit-keyframes spinZoom {
-      0% {
-        -webkit-transform: scale(.75) rotate(0);
-      }
-
-      100% {
-        -webkit-transform: scale(.75) rotate(360deg);
+    @keyframes antRotate {
+      to {
+        -webkit-transform: rotate(405deg);
+        transform: rotate(405deg);
       }
     }
 
-    @keyframes spinZoom {
-      0% {
-        transform: scale(.75) rotate(0);
+    @-webkit-keyframes antRotate {
+      to {
+        -webkit-transform: rotate(405deg);
+        transform: rotate(405deg);
       }
+    }
 
-      100% {
-        transform: scale(.75) rotate(360deg);
+    @keyframes antSpinMove {
+      to {
+        opacity: 1;
+      }
+    }
+
+    @-webkit-keyframes antSpinMove {
+      to {
+        opacity: 1;
       }
     }
     /* reset */
@@ -81,22 +125,25 @@
     </style>
   </head>
   <body>
-    <p class="spin-box">
-      <span class="spin-text" style="margin-right: 10px">正在进入控制台</span>
-      <span class="spin-loading"></span>
-    </p>
+    <div id="loading-mask">
+      <div class="loading-wrapper">
+        <p class="spin-text" style="margin-bottom: 50px;">正在进入控制台</p>
+        <span class="loading-dot loading-dot-spin"><i></i><i></i><i></i><i></i></span>
+      </div>
+    </div>
 
     <script>
 
       var params = getParamsFromLocation();
+      var info = getValueFromStorage('cmp__logInfo');
       sendAjax({
         url: '/cmp/v1/compute/instance/console/enter',
         type: 'POST',
         data: params,
         headers: {
-          "Content-Type": "application/json",     
-          "tokenId":      getValueFromStorage('cmp__tokenId'),
-          "projectId":    getValueFromStorage('cmp__projectId'),
+          "Content-Type": "application/json",
+          "X-Token":      info.token,
+          "projectId":    info.projectId,
         },
         success: function (resp) {
           fetchSuccess(resp);
@@ -151,14 +198,14 @@
         var iframe = document.createElement('iframe');
         iframe.setAttribute('src', resp.consoleUrl);
         document.querySelector('body').appendChild(iframe);
-        document.querySelector('.spin-box').style.display = 'none';
+        document.querySelector('#loading-mask').style.display = 'none';
       }
       function fetchFail (err){
         var p = document.createElement('p');
         p.setAttribute('class', 'red');
         p.innerText = err.desc;
         document.querySelector('body').appendChild(p);
-        document.querySelector('.spin-box').style.display = 'none';
+        document.querySelector('#loading-mask').style.display = 'none';
       }
 
       // key: cmp__tokenId, cmp__tokenId
