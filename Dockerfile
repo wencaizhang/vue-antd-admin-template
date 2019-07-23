@@ -1,16 +1,27 @@
-FROM node:8-slim as builder
+FROM node:alpine as builder
 
-RUN npm install -g yarn --registry=https://registry.npm.taobao.org
+# from https://github.com/wencaizhang/best-Dockerfile-for-spa
+
+# 更新 Alpine 的软件源为国内（清华大学）的站点
+# RUN echo "https://mirror.tuna.tsinghua.edu.cn/alpine/v3.4/main/" > /etc/apk/repositories
+
+# 默认没有  bash，如果需要，解开注释安装  bash
+# RUN apk update \
+#   && apk upgrade \
+#   && apk add --no-cache bash \
+#   bash-doc \
+#   bash-completion \
+#   && rm -rf /var/cache/apk/* \
+#   && /bin/bash
+
 WORKDIR /app
-ADD package.json /app/package.json
-RUN chmod a+rwx  /usr/local/lib/node_modules/yarn/bin/yarn* \
-  && chmod a+rwx  /usr/local/bin/yarn* \
-  && yarn
-COPY . /app/
-RUN yarn build
 
-FROM nginx:alpine
-RUN adduser -D -H -s /sbin/nologin www-data
-COPY --from=builder /app/dist/ /var/www/html/
-COPY ./nginx.conf /etc/nginx/
-CMD ["nginx"]
+COPY package.json /app/package.json
+RUN npm install --registry=https://registry.npm.taobao.org
+
+COPY . /app
+RUN npm run build
+
+FROM nginx:alpine as server
+
+COPY --from=builder /app/dist /usr/share/nginx/html
