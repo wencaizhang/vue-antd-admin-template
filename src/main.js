@@ -12,7 +12,7 @@ import App      from './App.vue'
 import { storageOptions } from '@/utils/settings'
 import '@/utils/permission' // 权限控制
 import '@/utils/components_use'  // 按需引入 ant-design-vue 组件
-
+import './directives';
 // uploader 和 mock.js 不能同时使用
 Vue.use(uploader)
 

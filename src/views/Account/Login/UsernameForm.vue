@@ -2,6 +2,7 @@
   <a-form :form="form" class="user-layout-login">
     <a-form-item>
       <a-input
+        v-focus
         size="large"
         type="text"
         autocomplete="new-password"
