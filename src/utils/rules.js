@@ -6,18 +6,10 @@ export default {
     message: '请使用英文字母、数字、横杠和下划线的组合，且不超过 12 个字符!'
   },
 
-  userName: {
-    pattern: /^[a-zA-Z0-9!-_#@]+$/,
-    message: '请使用英文字母、数字和特殊字符!-_#@的组合!'
-  },
-  letterStart: {
-    pattern: /^[a-zA-Z]/,
-    message: '请使用英文字母开头!'
-  },
-
-  HanziAndLetter: {
-    pattern: /^[a-zA-Z\u4e00-\u9fa5]+$/,
-    message: '只允许汉字和英文字母!'
+  // 真实姓名
+  realName: {
+    pattern: /^(\w|_|-){1,12}$/,
+    message: '长度 1-20位，允许汉字，大小写字母不允许数字、特殊字符及空格!'
   },
 
   // 修改名称的时候最多允许 20 个字符
@@ -40,9 +32,13 @@ export default {
     pattern: /^\d{11}$/,
     message: '请输入正确手机号码!'
   },
-  email: {
-    pattern: /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/,
+  emial: {
+    pattern: /^\d{11}$/,
     message: '请输入正确邮箱地址!'
+  },
+  idCard: {
+    pattern: /^\d{11}$/,
+    message: '请输入正确身份证号码!'
   },
 
   http: {
@@ -54,14 +50,4 @@ export default {
     pattern: /.{1,100}/,
     message: '最多 100 个字符'
   },
-
-  number: {
-    pattern: /^\d+$/,
-    message: '只允许输入数字'
-  },
-
-  enterpriseName: {
-    pattern: /^[^_IOZSVa-z\W]{2}\d{6}[^_IOZSVa-z\W]{10}$/g,
-    message: '请填写正确的信用代码'
-  }
 }

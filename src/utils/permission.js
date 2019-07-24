@@ -3,21 +3,23 @@ import NProgress from 'nprogress'  // 顶部进度条
 import 'nprogress/nprogress.css'
 import router from '../router'
 import store from '../store'
-
-import { LOGINFO } from "@/store/mutation-types";
+import { redirectToLogin } from '@/utils/role'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 NProgress.configure({ showSpinner: false })// NProgress Configuration
 
-import { whiteList } from '@/utils/settings'
+import settings from '@/utils/settings'
+// 免登录白名单
+const whiteList = settings.whiteList;
 
 router.beforeEach((to, from, next) => {
   // console.log(to.name, from.name);
   NProgress.start();
   // 如果未登录
-  if (!Vue.ls.get(LOGINFO)) {
+  if (!Vue.ls.get(ACCESS_TOKEN)) {
     if (whiteList.includes(to.name)) {
       next()
     } else {
-      router.push({ name: 'login' })
+      redirectToLogin(next)
       NProgress.done()
     }
     return false;
@@ -29,31 +31,51 @@ router.beforeEach((to, from, next) => {
     NProgress.done()
     return false;
   }
-  
-  authPermission(to, from, next);
+
+  // // 如果已经登录，必须获取认证信息
+  // if (Vue.ls.get('isUser') && !store.state.app.authInfo.fetched) {
+  //   store
+  //     .dispatch('app/fetchAuthInfo')
+  //     .then(resp => {
+  //       store.commit('app/setAuthInfo', resp);
+  //       if (['1', '2'].includes(resp.authType)) {
+  //         next();
+  //       } else {
+  //         next({ name: 'auth' });
+  //       }
+  //       return;
+  //     })
+  // } else {
+  //   const authMap = {
+  //     0: '未认证用户',
+  //     1: '未认证用户',
+  //     // 2: '已认证个人用户',
+  //     // 3: '已认证企业用户',
+  //     4: '个人认证中',
+  //     5: '个人认证未通过',
+  //     // 6: '企业认证中',
+  //     // 7: '企业认证未通过',
+  //   }
+  //   const authType = store.getters['app/getAuthType'];
+  //   if (Object.keys(authMap).includes(authType)) {
+  //     // 无权限查看其他页面
+      
+  //     next();
+  //     // if (to.name === 'auth') {
+  //     //   next();
+  //     // } else {
+  //     //   next(false);
+  //     //   NProgress.done()
+  //     //   return;
+  //     // }
+  //   }
+  // }
+
+  // 正常跳转
+  next()
 })
 
 router.afterEach(() => {
   NProgress.done()
 })
 
-function authPermission (to, from, next) {
-  const authStatus = store.state.app.authStatus;
-
-  // 2,3分别是个人认证成功，企业认证成功
-  if (['2', '3'].includes(authStatus)) {
-    next();
-  } else {
-    if (whiteList.concat('auth').includes(to.name)) {
-      next();
-    } else if (from.name === 'auth') {
-      next(false);
-      Vue.prototype.$message.info('请先进行实名认证！')
-      NProgress.done();
-    } else {
-      next({ name: 'auth' });
-      Vue.prototype.$message.info('请先进行实名认证！')
-      NProgress.done();
-    }
-  }
-}

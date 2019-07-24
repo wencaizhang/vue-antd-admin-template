@@ -7,45 +7,20 @@
           style="display: inline-block; margin-left: 12px; height: 32px; line-height: 32px;"
         >{{ title }}</p>
       </h1>
-
       <a-form-item v-if="name === 'register'">
-        <a-popover :okText="false" cancelText placement="rightTop" :visible="visiblepopover">
-          <template slot="content">
-            <div :style="{ width: '340px' }">
-              <div style="margin-top: 10px;">
-                <p>1、不支持中文</p>
-                <p>2、只能以字母开头</p>
-                <p>3、长度为6-32个字符</p>
-                <p>4、只能包含英文字母、数字或特殊符号(!  -  _  #   @)</p>
-                <p>5、请勿包含身份证/银行卡等隐私信息，一旦设置成功无法修改</p>
-              </div>
-            </div>
-          </template>
-
-          <a-input
-            size="small"
-            type="text"
-            autocomplete="new-password"
-            placeholder="设置登录名称"
-            @focus="visiblepopover = !visiblepopover"
-            @blur="visiblepopover = !visiblepopover"
-            v-decorator="[
-              'userName',
-              {
-                rules: [
-                  { required: true, message: '请设置登录名称' },
-                  { min: 6, message: '最少 6 个字符' },
-                  { max: 32, message: '最多 32 个字符' },
-                  rulesObj.letterStart,
-                  rulesObj.userName
-                ]
-              }
-            ]"
-          >
-          </a-input>
-
-        </a-popover>
+        <a-input
+          size="small"
+          type="text"
+          autocomplete="new-password"
+          placeholder="设置登录名称"
+          v-decorator="[
+            'userName',
+            {rules: [{ required: true, message: '请设置登录名称' }]}
+          ]"
+        >
+        </a-input>
       </a-form-item>
+
       <!-- <a-form-item>
         <a-popover :okText="false" cancelText placement="rightTop" :visible="visiblepopover">
           <template slot="content">
@@ -103,9 +78,7 @@
             {
               rules: [
                 { required: true, message: '请设置登录密码' },
-                { min: 6, message: '最少 6 个字符' },
-                { max: 32, message: '最多 32 个字符' },
-                { validator: validatePwd },
+                { validator: handlePasswordLevel },
               ]
             }
           ]"
@@ -118,7 +91,7 @@
           />
         </a-input>
       </a-form-item>
-      <a-form-item>
+      <a-form-item v-if="name === 'register'">
         <a-input
           size="small"
           :type="password2Type"
@@ -156,7 +129,7 @@
         </a-input>
       </a-form-item>
       <a-form-item>
-        <div style="display: flex; height: 40px; align-items: center;">
+        <div style="display: flex;">
           <a-input
             size="small"
             type="text"
@@ -164,13 +137,7 @@
             placeholder="输入验证码"
             v-decorator="[
               'smsCode',
-              {
-                rules: [
-                  { required: true, message: '请输入 6 位数字验证码' },
-                  { len: 6, message: '请输入 6 位数字验证码' },
-                  rulesObj.number,
-                ]
-              }
+              {rules: [{ required: true, message: '请输入验证码' }]}
             ]"
           >
           </a-input>
@@ -180,7 +147,6 @@
 
       <a-button
         @click="handleSubmit"
-        :loading="loading"
         type="primary"
         block
         style="margin-top: 10px; height: 36px;"
@@ -202,7 +168,7 @@
 
 <script>
 import CaptchaButton from "@/components/tools/CaptchaButton";
-import { sendCode, createUser, forgotPwd } from "@/api/user/user";
+import { sendCode, createUser } from "@/api/user/user";
 import rulesObj from "@/utils/rules";
 import Canvas from "./Canvas.vue";
 
@@ -218,39 +184,37 @@ export default {
       name: "",
       title: "",
       submitText: "",
-      loading: false,
 
       form: null,
-      REGISTER: true,
 
       passwordType: "password",
       password2Type: "password",
       visiblepopover: false,
-      // state: {
-      //   passwordLevel: 0,
-      //   passwordLevelChecked: false,
-      //   percent: 10,
-      //   progressColor: "#FF0000"
-      // },
-      // pwdLevel: [
-      //   { text: "低", class: "error",   color: "#ff0000" },
-      //   { text: "低", class: "error",   color: "#ff0000" },
-      //   { text: "中", class: "warning", color: "#ff7e05" },
-      //   { text: "中", class: "warning", color: "#ff7e05" },
-      //   { text: "强", class: "success", color: "#52c41a" },
-      // ],
+      state: {
+        passwordLevel: 0,
+        passwordLevelChecked: false,
+        percent: 10,
+        progressColor: "#FF0000"
+      },
+      pwdLevel: [
+        { text: "低", class: "error",   color: "#ff0000" },
+        { text: "低", class: "error",   color: "#ff0000" },
+        { text: "中", class: "warning", color: "#ff7e05" },
+        { text: "中", class: "warning", color: "#ff7e05" },
+        { text: "强", class: "success", color: "#52c41a" },
+      ],
     };
   },
   created () {
-      // register or forget
-      // 根据路由来决定显示的文字和表单项目
-      const name = this.$route.name;
-      const bool = this.REGISTER = name === "register";
-      Object.assign(this, {
-        name,
-        title: bool ? "欢迎注册友普云服务" : "重置密码",
-        submitText: bool ? "注册" : "确定"
-      });
+
+    // register or forget
+    // 根据路由来决定显示的文字和表单项目
+    const name = this.$route.name;
+    Object.assign(this, {
+      name,
+      title: name === "register" ? "欢迎注册友普云服务" : "找回密码",
+      submitText: name === "register" ? "注册" : "确定"
+    });
     this.form = this.$form.createForm(this);
   },
   // mounted() {
@@ -259,7 +223,7 @@ export default {
   //   const name = this.$route.name;
   //   Object.assign(this, {
   //     name,
-  //     title: name === "register" ? "欢迎注册友普云服务" : "重置密码",
+  //     title: name === "register" ? "欢迎注册友普云服务" : "找回密码",
   //     submitText: name === "register" ? "注册" : "确定"
   //   });
   //   this.form = this.$form.createForm(this);
@@ -279,18 +243,7 @@ export default {
       }
     }
   },
-  computed: {
-    fetchAPI () {
-      console.log(this.REGISTER)
-      return this.REGISTER ? createUser : forgotPwd; 
-    }
-  },
   methods: {
-    validatePwd (rule, value, callback) {
-      const regsGroup = [/[a-zA-Z]/, /[0-9]/, /[_\-!@#]/];
-      const ret = regsGroup.filter(reg => reg.test(value));
-      ret.length < 2 ? callback('数字、大小写字母及特殊符号(! - _ # @)中至少包含2种组合') : callback();
-    },
     handlePasswordLevel(rule, value, callback) {
       let level = 0;
 
@@ -322,27 +275,20 @@ export default {
     },
     async handleSubmit() {
       try {
+        await this.handleValidatePwd();
         const values = await this.handleValidateField();
-        if (values.password === values.password2) {
-          this.loading = true;
-
-          const payload = {};
-          if (this.REGISTER) {
-            Object.assign(payload, values);
-          } else {
-            Object.assign(payload, {
-              newPwd: values.password,
-              phone: values.phone,
-              smsCode: values.smsCode
-            })
-          }
-          const resp = await this.fetchAPI(payload);
-          this.$message.success('注册成功，请登录');
-          this.$router.push({ name: "login" });
-        } else {
+        const resp = await createUser(values);
+        this.$router.push({ name: "login" });
+      } catch (error) {}
+    },
+    async handleValidatePwd() {
+      const keys = ["password", "password2"];
+      const data = await this.handleValidateField(keys);
+      return new Promise((resolve, reject) => {
+        if (data.password !== data.password2) {
           this.form.setFields({
             password2: {
-              value: values.password2,
+              value: data.password2,
               errors: [
                 {
                   message: "两次密码输入不一致!"
@@ -350,14 +296,11 @@ export default {
               ]
             }
           });
+          reject('两次密码输入不一致');
         }
-      } catch (error) {
-
-      } finally {
-        this.loading = false;
-      }
+        resolve();
+      })
     },
-
     async handleValidateField(fields = null) {
       return new Promise((resolve, reject) => {
         this.form.validateFieldsAndScroll(fields, (err, values) => {
@@ -368,14 +311,14 @@ export default {
 
     async getCaptcha(callback) {
       try {
-        const data = await this.handleValidateField(['phone']);
+        const data = await this.handleValidateField(["phone"]);
         callback &&
           callback({
             api: sendCode,
             payload: {
               phoneNumber: data.phone,
-              // 验证码类型[0:注册验证码 1:修改密码验证码 2:重置密码验证码 ]
-              smsType: this.REGISTER ? 0 : 2,
+              // 验证码类型[0:注册验证码 1:修改密码验证码 2:找回密码验证码 ]
+              smsType: 0
             },
           });
       } catch (error) {}

@@ -4,19 +4,10 @@ export default {
     return {
       name: "选项",
       pagination: { },
-      initPagination: {
-        total: 0,     // 数据个数
-        current: 1,   // 当前页码
-        pageSize: 10, // 每页显示数量
-        showSizeChanger: true,
-        pageSizeOptions: ['10', '20', '30', '40', '50'],
-      },
       payload: {},
       url: "/api/demo",
 
-      allData: [],  // 所有的数据
-      tempData: [], // 中间处理过程把数据临时存放到 tempData
-      data: [],     // 最终要展示在网页上的数据
+      data: [],     // 最终要展示在 table 中网页上的数据
 
       loading: false,
 
@@ -53,118 +44,37 @@ export default {
       if (this.searchValues) {
         this.searchValues = Object.assign({}, this.searchValues, { inputValue: '' })
       }
-
-      this.pagination = Object.assign({}, this.pagination, this.initPagination);
+      this.initPagination();
       this.fetch();
     },
 
-    /**
-     * 过滤
-     */
-    handleFilterByStatus () {
-      const { status } = this.searchValues;
-      if (status && this.tempData.length > 0) {
-        this.tempData = status === 'all' ? this.tempData : this.tempData.filter(item => item.status === status);
+    initPagination () {
+      this.pagination = {
+        total: 0,     // 数据个数
+        current: 1,   // 当前页码
+        pageSize: 10, // 每页显示数量
+        showSizeChanger: true,
+        pageSizeOptions: ['10', '20', '30', '40', '50'],
       }
     },
 
-    /**
-     * 搜索
-     */
-    handleFilterByInput () {
-
-      const { type, inputValue } = this.searchValues;
-
-      if (this.tempData.length === 0 || inputValue === '') {
-        return;
-      }
-
-      const lowerInputValue = inputValue.toLowerCase();
-
-      const data = this.tempData.filter(item => {
-        const value = item[type];
-        if (typeof value === 'string') {
-          return value.toLowerCase().includes(lowerInputValue)
-        }
-        else if (Array.isArray(value)) {
-          // 考虑一维 string 类型的数组
-          return value.find(item => item.toLowerCase().includes(lowerInputValue))
-        }
-        else if (value.toString() === "[object Object]") {
-          return Object.values(value).find(item => item.toLowerCase().includes(lowerInputValue));
-        };
-      });
-      this.tempData = data;
-    },
-
-    /**
-     * 分页
-     */
-    getCurrPageData () {
-      const { total, current, pageSize  } = this.pagination;
-      const begin = (current - 1) * pageSize || 0;
-      const end = current * pageSize || 10;
-      this.tempData = this.tempData.slice( begin, end );
-    },
-
-    handleDATA () {
-      this.handleClearSelected()
-      // 处理数据：分页，排序，过滤，搜索
-      this.tempData = this.allData;
-
-      // this.handleCustomData && this.handleCustomData();
-
-      this.handleFilterByStatus();
-      this.handleFilterByInput();
-
-      // 页码需要在分页之前
-      this.pagination = Object.assign({}, this.pagination, { total: this.tempData.length });
-
-      this.getCurrPageData();  // 分页
-
+    async fetch (payload = this.payload) {
       this.loading = true;
-      setTimeout(() => {
-        this.data = this.tempData;
-        this.loading = false;
-        this.handleFetchSuccess();
-      }, 100);
-    },
-
-    async fetch (payload={}) {
-      this.loading = true;
+      this.data = [];
       this.handleClearSelected();
-      payload = this.payload || {};
       try {
         const resp = await this.getList(payload);
 
-        resp.data.forEach(item => {
-          if (item.id) {
-            item.shortID = item.id.substring(0, 8);
-          }
-          if (item.createDate) {
-            // 计算时间戳
-            const createDate = item.createDate;
-            item.timestamp = getTimestamp(createDate);
-          }
-          if (item.status) {
-            // 保证状态永远是小写字母
-            item.status = item.status.toLowerCase();
-          }
+        this.pagination = Object.assign({}, this.pagination, {
+          total: resp.count,     // 数据个数
+          current: resp.pageIndex,   // 当前页码
+          pageSize: resp.pageSize, // 每页显示数量
+        });
+        this.data = resp.data;
+        this.defaultParseData();
+        this.handleParseData && this.handleParseData();
 
-          // 缺省处理
-          Object.keys(item).forEach(k => {
-            const value = item[k];
-            const str = '无';
-            if ([null, undefined, ''].includes(value)) {
-              item[k] = str;
-            }
-            if (value && Array.isArray(value) && value.length === 0) {
-              item[k] = [ ];
-            }
-          })
-        })
-        this.allData = this.handleParseData ? this.handleParseData(resp.data) : resp.data;
-        this.handleDATA();
+        this.handleFetchSuccess();
       }
       catch (err) {
         if (err.response.status === 404) {
@@ -176,12 +86,52 @@ export default {
       }
     },
 
+    defaultParseData () {
+      this.data.forEach(item => {
+        if (item.id) {
+          item.shortID = item.id.substring(0, 8);
+        }
+        if (item.createDate) {
+          // 计算时间戳
+          const createDate = item.createDate;
+          item.timestamp = getTimestamp(createDate);
+        }
+        if (item.status) {
+          // 保证状态永远是小写字母
+          item.status = item.status.toLowerCase();
+        }
+
+        // 缺省处理
+        Object.keys(item).forEach(k => {
+          const value = item[k];
+          const str = '无';
+          if ([null, undefined, ''].includes(value)) {
+            item[k] = str;
+          }
+          if (value && Array.isArray(value) && value.length === 0) {
+            item[k] = [ ];
+          }
+        })
+      })
+    },
+
     handleFetchSuccess () {
       // 数据请求结束后执行
     },
+    
     handleTableChange(pagination, filters, sorter) {
-      this.pagination = Object.assign({}, this.pagination, pagination);
-      this.handleDATA();
+      this.payload = Object.assign(this.payload, {
+        pageIndex: pagination.current,
+        pageSize: pagination.pageSize,
+        ...this._parseSort(sorter)
+      })
+      this.fetch();
+    },
+
+
+    _parseSort (sorter) {
+      // 自定义排序字段转化
+      return sorter
     },
 
     onTableSelectChange(selectedRowKeys) {
@@ -212,5 +162,6 @@ export default {
     },
 
     getSearchData() {},
+
   }
 };

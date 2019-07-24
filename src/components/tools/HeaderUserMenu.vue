@@ -6,13 +6,6 @@
         <span>{{ userInfo.name }}</span>
       </span>
       <a-menu slot="overlay" class="user-dropdown-menu-wrapper">
-        <a-menu-item key="0">
-          <router-link :to="{ name: 'basic' }">
-            <a-icon type="user" />
-            <span>个人中心</span>
-          </router-link>
-        </a-menu-item>
-        <a-menu-divider/>
         <a-menu-item key="3">
           <a href="javascript:;" @click="handleLogout">
             <a-icon type="logout" />
@@ -25,26 +18,26 @@
 </template>
 
 <script>
-import { clearToken } from '@/utils/util';
+import { clearToken, redirectToLogin } from '@/utils/role';
+import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 import avatar from '@/assets/images/avatar.png';
 
 export default {
   name: "",
   components: {},
   mounted () {
-    this.userInfo = this.$store.state.app.userInfo;
+    this.userInfo = this.$ls.get('userInfo') || {};
   },
   data() {
     return {
-      avatar,
       userInfo: {},
+      avatar,
     };
   },
-
   methods: {
     handleLogout() {
       clearToken();
-      this.$router.push({ name: 'login' })
+      redirectToLogin();
     },
   }
 };

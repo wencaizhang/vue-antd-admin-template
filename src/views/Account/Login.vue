@@ -15,19 +15,6 @@
 
       </div>
       <username-form ref="UsernameForm" />
-      <!-- <a-tabs
-        :activeKey="customActiveKey"
-        :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
-        @change="key => customActiveKey = key"
-      >
-        <a-tab-pane key="UsernameForm" tab="账号密码登录">
-          <UsernameForm ref="UsernameForm" />
-        </a-tab-pane>
-        <a-tab-pane key="PhoneForm" tab="手机号登录">
-          <PhoneForm ref="PhoneForm" />
-        </a-tab-pane>
-      </a-tabs> -->
-
       <div style="display: flex; flex-direction: row-reverse; justify-content: space-between; margin-bottom: 10px;">
 
       </div>
@@ -43,18 +30,6 @@
       >
         登录
       </a-button>
-
-      <div class="user-login-other" style="display: flex; justify-content: space-between; margin-top: 10px;">
-        <router-link class="forge" :to="{ name: 'forget' }">
-          找回密码
-        </router-link>
-        <span>
-          <span>没账号?</span>
-          <router-link class="register" :to="{ name: 'register' }">
-            去注册
-          </router-link>
-        </span>
-      </div>
     </div>
     <my-canvas />
     <basic-footer class="footer-copyright" />
@@ -62,6 +37,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import notification from "ant-design-vue/es/notification";
 
 // import PhoneForm from "./Login/PhoneForm";
@@ -71,7 +47,8 @@ import { mapActions } from "vuex";
 import { welcome } from "@/utils/util";
 
 import { userLogin } from "@/api/user/user";
-import { LOGINFO } from "@/store/mutation-types";
+import { workerLogin } from "@/api/user/worker";
+import { ACCESS_TOKEN, PROJECT_ID } from "@/store/mutation-types";
 import Canvas from "./Canvas.vue";
 import BasicFooter from "@/components/Layout/BasicFooter";
 import logo from '@/assets/images/logo/3.png';
@@ -84,11 +61,6 @@ export default {
     BasicFooter,
   },
 
-  watch: {
-    '$route' (to, from) {
-      // console.log(to, from)
-    }
-  },
   data() {
     return {
       customActiveKey: "UsernameForm",
@@ -98,16 +70,22 @@ export default {
 
       logo,
       title: '友普云自服务',
+
     };
   },
-
+  mounted () {
+    console.log('login mounted');
+    
+  },
   methods: {
+
     async handleSubmit() {
       try {
         const payload = await this.$refs[this.customActiveKey].handleSubmit();
         this.loading = true;
-        const resp = await userLogin(payload);
+        const resp = await workerLogin(payload);
         this.loginSuccess(resp);
+        const info = await this.$store.app.dispatch('fetchUserInfo');
       } catch (err) {
 
       } finally {
@@ -117,8 +95,16 @@ export default {
     loginSuccess(resp) {
       
       // const expire = 1 * 60 * 60 * 1000;
-      this.$ls.set(LOGINFO, resp);
-      this.$store.commit('app/setAuthType', resp.status);
+      Vue.ls.set(ACCESS_TOKEN, resp[ACCESS_TOKEN]);
+      Vue.ls.set('userInfo', resp);
+
+      // 管理员角色[1:普通管理员 110:超级管理员]
+      const roleMap = {
+        '1': 'admin',
+        '110': 'superAdmin',
+      }
+      const role = roleMap[resp.workerType];
+      this.$store.commit('app/setRole', role);
       this.$store.commit('app/setUserInfo', resp);
 
       this.$router.push({ name: "Index" });

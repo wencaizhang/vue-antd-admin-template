@@ -2,46 +2,18 @@
 <script>
 import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN';
 
-import { getAuthInfo } from "@/api/user/user";
-import { whiteList } from '@/utils/settings'
-import { LOGINFO } from "@/store/mutation-types";
-
 export default {
   data() {
     return {
       locale: zhCN,
-      AppLoading: false,
     };
-  },
-  created () {
-    this.getUserInfoFromLS();
-    let name = this.$route.name;
-    if (!whiteList.includes(name)) {
-      this.fetchAuthInfo();
-    }
-  },
-  methods: {
-    getUserInfoFromLS () {
-      const data = this.$ls.get(LOGINFO);
-      this.$store.commit('app/setUserInfo', data);
-    },
-    async fetchAuthInfo() {
-      this.AppLoading = true;
-      try {
-        const resp = await getAuthInfo();
-        this.$store.commit('app/setAuthType', resp.authStatus);
-      } catch (error) {
-        if (error.response.status === 404) {
-          this.$store.commit('app/setAuthType', '1');
-        }
-      } finally {
-        this.AppLoading = false;
-      }
-    },
   },
   computed: {
     title () {
       return `${this.$route.meta.title} - 云管平台`
+    },
+    AppLoading () {
+      return !this.$store.state.app.authInfo
     },
   },
   render (h) {
