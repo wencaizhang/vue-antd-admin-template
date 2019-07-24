@@ -46,52 +46,28 @@ const errHandle = error => {
 // request 拦截器
 service.interceptors.request.use(config => {
   const token = Vue.ls.get(ACCESS_TOKEN);
-  const projectId = Vue.ls.get(PROJECT_ID)
   if (token) {
     // 每个请求添加自定义 headers
-    config.headers["X-Token"] = token; // 让每个请求携带自定义 token 请根据实际情况自行修改
-    config.headers["projectId"] = projectId; // 让每个请求携带自定义 token 请根据实际情况自行修改
+    config.headers["X-Token"] = token;
   } else {
     const route = router.match(location);
     const name = route.name;
     if (whiteList.includes(name)) {
-      router.push({ name: 'login' })
+      router.push({ name: 'login' });
     }
   }
-  // console.log('>>>>>>>>')
-  // console.log(config)
-  // console.log('>>>>>>>>')
-
-
-  /**
-   * 取消 axios 请求
-   */
-
-  // const CancelToken = axios.CancelToken;
-  // const source = CancelToken.source();
-
-  // source.throwIfRequested = source.token.throwIfRequested;
-  // source.promise.then = source.token.promise.then.bind(source.promise);
-  // source.promise.catch = source.token.promise.catch.bind(source.promise);
-
-  // Vue.prototype.source = source;
-  // config.cancelToken = source;
-
   return config;
 }, errHandle);
 
 // response 拦截器
-service.interceptors.response.use(response => {
-  return response.data;
-}, errHandle);
+service.interceptors.response.use(response => response.data, errHandle);
 
+// 移除值为空的属性
 function trimPayload (payload={}) {
   Object.keys(payload).forEach(key => {
     const value = payload[key];
     if ( Object.prototype.toString.call(value) === '[object String]') {
-      if (key === 'description') {
-        // 描述字段跳过不处理
-      } else if (value === '' || value === undefined) {
+      if (value === '' || value === undefined) {
         delete payload[key]
       }
     }
