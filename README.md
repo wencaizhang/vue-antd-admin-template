@@ -1,4 +1,4 @@
-# 云管平台前端项目
+# 基于 Vue.js 和 Ant Desing Vue 的后台管理模板
 
 ## 项目启动程序
 
@@ -51,3 +51,20 @@ npm run build
 |-- vue.config.js           # vue-cli 配置文件
 `-- yarn.lock               #
 ```
+
+
+## 环境变量
+
+可以替换项目根目录中的下列文件来指定环境变量：
+
+```sh
+.env                # 在所有的环境中被载入
+.env.local          # 在所有的环境中被载入，但会被 git 忽略
+.env.development         # 只在开发环境被载入
+.env.development.local   # 只在开发环境被载入，但会被 git 忽略
+.env.production          # 只在生产环境中被载入
+.env.production.local    # 只在生产环境中被载入，但会被 git 忽略
+```
+
+
+详细文档：[环境变量和模式](https://cli.vuejs.org/zh/guide/mode-and-env.html)
