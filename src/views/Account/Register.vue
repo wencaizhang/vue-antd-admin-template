@@ -327,7 +327,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .suffix-eye {
   cursor: pointer;
   color: #d9d9d9;

@@ -14,7 +14,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .footer {
   padding: 0 16px;
   margin: 48px 0 24px;
